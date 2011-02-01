@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 using ITimeU2.Models;
+using System.Threading;
 
 namespace ITimeU2.Tests.Models
 {
@@ -36,11 +37,27 @@ namespace ITimeU2.Tests.Models
         [TestMethod]
         public void The_TimerModel_Has_A_Starttime()
         {
-            Given("we have a instance of the timerclass", () => timerModel = new TimerModel());
+            Given("we have an instance of the timerclass", () => timerModel = new TimerModel());
 
             When("we we click the startbutton", () => timerModel.Start());
 
-            Then("the timer should have a starttime", () => Assert.IsNotNull(timerModel.GetStarttime()));
+            Then("the timer should have a starttime", () => Assert.IsNotNull(timerModel.StartTime));
+        }
+
+        [TestMethod]
+        public void Start_Time_Should_Return_Same_Value()
+        {
+            Object startTime = null;
+            Given("We have an instance of timerclass", () => timerModel = new TimerModel());
+
+            When("We click the start button", () => {
+                timerModel.Start();
+                startTime = timerModel.StartTime;
+                Thread.Sleep(10);
+                });
+         
+
+            Then("THe timer should return the same value each time", () => Assert.AreEqual(startTime, timerModel.StartTime));
         }
 
         [TestCleanup]
