@@ -11,5 +11,18 @@ namespace ITimeU2
         public TimerModel()
         {
         }
+
+        public object Start()
+        {
+            return null;
+            //throw new NotImplementedException();
+
+        }
+
+        public object GetStarttime()
+        {
+            //throw new NotImplementedException();
+            return DateTime.Now;
+        }
     }
 }

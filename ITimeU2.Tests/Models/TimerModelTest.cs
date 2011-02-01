@@ -33,6 +33,16 @@ namespace ITimeU2.Tests.Models
             );
         }
 
+        [TestMethod]
+        public void The_TimerModel_Has_A_Starttime()
+        {
+            Given("we have a instance of the timerclass", () => timerModel = new TimerModel());
+
+            When("we we click the startbutton", () => timerModel.Start());
+
+            Then("the timer should have a starttime", () => Assert.IsNotNull(timerModel.GetStarttime()));
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {
