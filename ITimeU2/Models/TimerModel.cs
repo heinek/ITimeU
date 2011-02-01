@@ -7,22 +7,20 @@ namespace ITimeU2
 {
     public class TimerModel
     {
+        
+        public DateTime StartTime { get; private set; }
 
         public TimerModel()
         {
         }
 
-        public object Start()
+        public void Start()
         {
-            return null;
-            //throw new NotImplementedException();
+            if (StartTime == null)
+            {
+                StartTime = DateTime.Now;
+            }
+         }
 
-        }
-
-        public object GetStarttime()
-        {
-            //throw new NotImplementedException();
-            return DateTime.Now;
-        }
     }
 }
