@@ -1,0 +1,9 @@
+﻿@model ITimeU.Models.TimerModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<input type="button" id="btnStart" value="Start" onclick="location.href='@Url.Action("StartTimer", "Timer")'" />
