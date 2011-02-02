@@ -1,0 +1,15 @@
+﻿<Deployment xmlns="http://schemas.microsoft.com/client/2007/deployment" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" EntryPointAssembly="SilverlightPrototype1" EntryPointType="SilverlightPrototype1.App" RuntimeVersion="3.0.40818.0">
+  <Deployment.Parts>
+    <AssemblyPart x:Name="SilverlightPrototype1" Source="SilverlightPrototype1.dll" />
+    <AssemblyPart x:Name="Microsoft.Expression.Interactions" Source="Microsoft.Expression.Interactions.dll" />
+    <AssemblyPart x:Name="Microsoft.Expression.Prototyping.Interactivity" Source="Microsoft.Expression.Prototyping.Interactivity.dll" />
+    <AssemblyPart x:Name="Microsoft.Expression.Prototyping.Runtime" Source="Microsoft.Expression.Prototyping.Runtime.dll" />
+    <AssemblyPart x:Name="Microsoft.Expression.Prototyping.SketchControls" Source="Microsoft.Expression.Prototyping.SketchControls.dll" />
+    <AssemblyPart x:Name="SilverlightPrototype1.Screens" Source="SilverlightPrototype1.Screens.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls" Source="System.Windows.Controls.dll" />
+    <AssemblyPart x:Name="System.Windows.Interactivity" Source="System.Windows.Interactivity.dll" />
+    <AssemblyPart x:Name="System.Xml.Serialization" Source="System.Xml.Serialization.dll" />
+    <AssemblyPart x:Name="System.Windows.Controls.Navigation" Source="System.Windows.Controls.Navigation.dll" />
+    <AssemblyPart Source="en/Microsoft.Expression.Prototyping.Runtime.resources.dll" />
+  </Deployment.Parts>
+</Deployment>
