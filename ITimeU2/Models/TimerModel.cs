@@ -7,8 +7,8 @@ namespace ITimeU2
 {
     public class TimerModel
     {
-        
-        public DateTime StartTime { get; private set; }
+        private DateTime startTime;
+        public DateTime StartTime { get { return startTime; } private set { startTime = value; } }
 
         public TimerModel()
         {
