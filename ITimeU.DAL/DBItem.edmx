@@ -8,10 +8,6 @@
         <EntityContainer Name="ITimeUModelStoreContainer">
           <EntitySet Name="Race" EntityType="ITimeUModel.Store.Race" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Timer" EntityType="ITimeUModel.Store.Timer" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_Timer_Race" Association="ITimeUModel.Store.FK_Timer_Race">
-            <End Role="Race" EntitySet="Race" />
-            <End Role="Timer" EntitySet="Timer" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Race">
           <Key>
@@ -27,23 +23,10 @@
             <PropertyRef Name="TimerID" />
           </Key>
           <Property Name="TimerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
-          <Property Name="RaceID" Type="int" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Timer_Race">
-          <End Role="Race" Type="ITimeUModel.Store.Race" Multiplicity="1" />
-          <End Role="Timer" Type="ITimeUModel.Store.Timer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Race">
-              <PropertyRef Name="RaceID" />
-            </Principal>
-            <Dependent Role="Timer">
-              <PropertyRef Name="RaceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -51,10 +34,6 @@
         <EntityContainer Name="ITimeUEntities" annotation:LazyLoadingEnabled="true" >
           <EntitySet Name="Races" EntityType="ITimeUModel.Race" />
           <EntitySet Name="Timers" EntityType="ITimeUModel.Timer" />
-          <AssociationSet Name="FK_Timer_Race" Association="ITimeUModel.FK_Timer_Race">
-            <End Role="Race" EntitySet="Races" />
-            <End Role="Timer" EntitySet="Timers" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Race">
           <Key>
@@ -64,31 +43,16 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="StartDate" Nullable="false" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
-          <NavigationProperty Name="Timers" Relationship="ITimeUModel.FK_Timer_Race" FromRole="Race" ToRole="Timer" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
             <PropertyRef Name="TimerID" />
           </Key>
           <Property Type="Int32" Name="TimerID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="StartTime" Nullable="false" />
+          <Property Type="DateTime" Name="StartTime" />
           <Property Type="DateTime" Name="EndTime" />
-          <Property Type="Int32" Name="RaceID" Nullable="false" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
-          <NavigationProperty Name="Race" Relationship="ITimeUModel.FK_Timer_Race" FromRole="Timer" ToRole="Race" />
         </EntityType>
-        <Association Name="FK_Timer_Race">
-          <End Type="ITimeUModel.Race" Role="Race" Multiplicity="1" />
-          <End Type="ITimeUModel.Timer" Role="Timer" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Race">
-              <PropertyRef Name="RaceID" />
-            </Principal>
-            <Dependent Role="Timer">
-              <PropertyRef Name="RaceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -109,7 +73,6 @@
             <EntityTypeMapping TypeName="ITimeUModel.Timer">
               <MappingFragment StoreEntitySet="Timer">
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="TimerID" ColumnName="TimerID" />
@@ -137,12 +100,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="DBItem" >
-        <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="0.75" PointY="1" Height="1.7691861184438069" />
-        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="3" PointY="0.875" Height="1.9351000082492824" />
-        <AssociationConnector Association="ITimeUModel.FK_Timer_Race" >
-          <ConnectorPoint PointX="2.25" PointY="1.8845930592219036" />
-          <ConnectorPoint PointX="3" PointY="1.8845930592219036" />
-        </AssociationConnector>
+        <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="1.125" PointY="0.625" Height="1.6032722286383314" />
+        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="3.375" PointY="0.75" Height="1.603272228638331" />
       </Diagram>
     </Diagrams>
   </Designer>

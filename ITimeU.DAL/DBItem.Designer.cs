@@ -16,11 +16,6 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
-#region EDM Relationship Metadata
-
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Timer_Race", "Race", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.DAL.Race), "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.DAL.Timer), true)]
-
-#endregion
 
 namespace ITimeU.DAL
 {
@@ -260,31 +255,6 @@ namespace ITimeU.DAL
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Timer_Race", "Timer")]
-        public EntityCollection<Timer> Timers
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Timer>("ITimeUModel.FK_Timer_Race", "Timer");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Timer>("ITimeUModel.FK_Timer_Race", "Timer", value);
-                }
-            }
-        }
-
-        #endregion
     }
     
     /// <summary>
@@ -301,15 +271,11 @@ namespace ITimeU.DAL
         /// Create a new Timer object.
         /// </summary>
         /// <param name="timerID">Initial value of the TimerID property.</param>
-        /// <param name="startTime">Initial value of the StartTime property.</param>
-        /// <param name="raceID">Initial value of the RaceID property.</param>
         /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
-        public static Timer CreateTimer(global::System.Int32 timerID, global::System.DateTime startTime, global::System.Int32 raceID, global::System.Boolean isDeleted)
+        public static Timer CreateTimer(global::System.Int32 timerID, global::System.Boolean isDeleted)
         {
             Timer timer = new Timer();
             timer.TimerID = timerID;
-            timer.StartTime = startTime;
-            timer.RaceID = raceID;
             timer.IsDeleted = isDeleted;
             return timer;
         }
@@ -347,9 +313,9 @@ namespace ITimeU.DAL
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.DateTime StartTime
+        public Nullable<global::System.DateTime> StartTime
         {
             get
             {
@@ -364,8 +330,8 @@ namespace ITimeU.DAL
                 OnStartTimeChanged();
             }
         }
-        private global::System.DateTime _StartTime;
-        partial void OnStartTimeChanging(global::System.DateTime value);
+        private Nullable<global::System.DateTime> _StartTime;
+        partial void OnStartTimeChanging(Nullable<global::System.DateTime> value);
         partial void OnStartTimeChanged();
     
         /// <summary>
@@ -397,30 +363,6 @@ namespace ITimeU.DAL
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 RaceID
-        {
-            get
-            {
-                return _RaceID;
-            }
-            set
-            {
-                OnRaceIDChanging(value);
-                ReportPropertyChanging("RaceID");
-                _RaceID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("RaceID");
-                OnRaceIDChanged();
-            }
-        }
-        private global::System.Int32 _RaceID;
-        partial void OnRaceIDChanging(global::System.Int32 value);
-        partial void OnRaceIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
         public global::System.Boolean IsDeleted
         {
             get
@@ -442,47 +384,6 @@ namespace ITimeU.DAL
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Timer_Race", "Race")]
-        public Race Race
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Race> RaceReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race", value);
-                }
-            }
-        }
-
-        #endregion
     }
 
     #endregion

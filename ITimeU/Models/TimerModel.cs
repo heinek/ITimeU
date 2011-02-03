@@ -1,49 +1,43 @@
 ﻿using System;
+using ITimeU.DAL;
 
 namespace ITimeU.Models
 {
     public class TimerModel
     {
+        public int Id { get; set; }
+
         private DateTime? startTime;
-
-        public DateTime? StartTime {
-            get {
-
-                if (!IsStarted)
-        //    get
-        //    {
-        //        if (!IsStarted)
-        //        {
-        //            throw new NullReferenceException("Cannot return start time when timer hasn't started.");
-        //        }
-
-        //        return startTime;
-        //    }
-        //    private set { startTime = value; }
-        //}
-        public DateTime StartTime { get; set; }
-        private bool isStarted = false;
-        public bool IsStarted {
+        public DateTime? StartTime
+        {
             get
-                {
+            {
+                if (!IsStarted)
                     return null;
+                return startTime;
+            }
+            private set
+            {
+                startTime = value;
+            }
+        }
+        private bool isStarted = false;
+        public bool IsStarted
+        {
+            get
+            {
+                return isStarted;
             }
             private set
             {
                 isStarted = value;
             }
-                }
 
-                return startTime;
-            }
-            
-            private set { startTime = value; }
         }
         public TimerModel()
         {
-        }
 
-        public bool IsStarted { get; private set; }
+        }
 
         public void Start()
         {
@@ -51,9 +45,11 @@ namespace ITimeU.Models
             {
                 StartTime = DateTime.Now;
                 IsStarted = true;
+                var timerDal = TimerDAL.Create();
+                timerDal.StartTime = startTime;
+                timerDal.Save();
+                Id = timerDal.TimerID;
             }
         }
-
-
     }
 }

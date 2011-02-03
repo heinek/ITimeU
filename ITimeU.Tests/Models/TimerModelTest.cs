@@ -2,10 +2,12 @@
 using System.Threading;
 using System.Web.Mvc;
 using ITimeU.Controllers;
+using ITimeU.DAL;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
+
 
 namespace ITimeU.Tests.Models
 {
@@ -45,7 +47,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Start_Time_Should_Return_Same_Value()
         {
-            DateTime startTime = DateTime.MinValue;
+            DateTime? startTime = null;
             Given("We have an instance of timerclass", () => timerModel = new TimerModel());
 
             When("We click the start button", () =>
@@ -131,6 +133,28 @@ namespace ITimeU.Tests.Models
             Given("we are going to create a timer");
             When("we create the timer", () => timerModel = new TimerModel());
             Then("the timer should not be started", () => timerModel.IsStarted.ShouldBeFalse());
+        }
+
+        [TestMethod]
+        public void The_Starttime_Should_Be_Saved_To_The_Database()
+        {
+            DateTime? startTime = new DateTime();
+            Given("we have a timer", () => timerModel = new TimerModel());
+
+            When("we start the time", () =>
+            {
+                timerModel.Start();
+                startTime = timerModel.StartTime;
+
+            });
+
+            Then("the timestamp should be saved to the database", () =>
+            {
+                var timer = TimerDAL.GetTimerById(timerModel.Id);
+                timer.StartTime.HasValue.ShouldBeTrue();
+            }
+                );
+
         }
 
         [TestCleanup]
