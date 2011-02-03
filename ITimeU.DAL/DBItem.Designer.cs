@@ -16,6 +16,11 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Timer_Race", "Race", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.DAL.Race), "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.DAL.Timer), true)]
+
+#endregion
 
 namespace ITimeU.DAL
 {
@@ -63,10 +68,423 @@ namespace ITimeU.DAL
     
         #endregion
     
+        #region ObjectSet Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Race> Races
+        {
+            get
+            {
+                if ((_Races == null))
+                {
+                    _Races = base.CreateObjectSet<Race>("Races");
+                }
+                return _Races;
+            }
+        }
+        private ObjectSet<Race> _Races;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Timer> Timers
+        {
+            get
+            {
+                if ((_Timers == null))
+                {
+                    _Timers = base.CreateObjectSet<Timer>("Timers");
+                }
+                return _Timers;
+            }
+        }
+        private ObjectSet<Timer> _Timers;
+
+        #endregion
+        #region AddTo Methods
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Races EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRaces(Race race)
+        {
+            base.AddObject("Races", race);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToTimers(Timer timer)
+        {
+            base.AddObject("Timers", timer);
+        }
+
+        #endregion
     }
     
 
     #endregion
     
+    #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="Race")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Race : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Race object.
+        /// </summary>
+        /// <param name="raceID">Initial value of the RaceID property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="startDate">Initial value of the StartDate property.</param>
+        /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
+        public static Race CreateRace(global::System.Int32 raceID, global::System.String name, global::System.DateTime startDate, global::System.Boolean isDeleted)
+        {
+            Race race = new Race();
+            race.RaceID = raceID;
+            race.Name = name;
+            race.StartDate = startDate;
+            race.IsDeleted = isDeleted;
+            return race;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RaceID
+        {
+            get
+            {
+                return _RaceID;
+            }
+            set
+            {
+                if (_RaceID != value)
+                {
+                    OnRaceIDChanging(value);
+                    ReportPropertyChanging("RaceID");
+                    _RaceID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("RaceID");
+                    OnRaceIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _RaceID;
+        partial void OnRaceIDChanging(global::System.Int32 value);
+        partial void OnRaceIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime StartDate
+        {
+            get
+            {
+                return _StartDate;
+            }
+            set
+            {
+                OnStartDateChanging(value);
+                ReportPropertyChanging("StartDate");
+                _StartDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StartDate");
+                OnStartDateChanged();
+            }
+        }
+        private global::System.DateTime _StartDate;
+        partial void OnStartDateChanging(global::System.DateTime value);
+        partial void OnStartDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDeleted
+        {
+            get
+            {
+                return _IsDeleted;
+            }
+            set
+            {
+                OnIsDeletedChanging(value);
+                ReportPropertyChanging("IsDeleted");
+                _IsDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDeleted");
+                OnIsDeletedChanged();
+            }
+        }
+        private global::System.Boolean _IsDeleted;
+        partial void OnIsDeletedChanging(global::System.Boolean value);
+        partial void OnIsDeletedChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Timer_Race", "Timer")]
+        public EntityCollection<Timer> Timers
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Timer>("ITimeUModel.FK_Timer_Race", "Timer");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Timer>("ITimeUModel.FK_Timer_Race", "Timer", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="Timer")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Timer : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Timer object.
+        /// </summary>
+        /// <param name="timerID">Initial value of the TimerID property.</param>
+        /// <param name="startTime">Initial value of the StartTime property.</param>
+        /// <param name="raceID">Initial value of the RaceID property.</param>
+        /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
+        public static Timer CreateTimer(global::System.Int32 timerID, global::System.DateTime startTime, global::System.Int32 raceID, global::System.Boolean isDeleted)
+        {
+            Timer timer = new Timer();
+            timer.TimerID = timerID;
+            timer.StartTime = startTime;
+            timer.RaceID = raceID;
+            timer.IsDeleted = isDeleted;
+            return timer;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 TimerID
+        {
+            get
+            {
+                return _TimerID;
+            }
+            set
+            {
+                if (_TimerID != value)
+                {
+                    OnTimerIDChanging(value);
+                    ReportPropertyChanging("TimerID");
+                    _TimerID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("TimerID");
+                    OnTimerIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _TimerID;
+        partial void OnTimerIDChanging(global::System.Int32 value);
+        partial void OnTimerIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime StartTime
+        {
+            get
+            {
+                return _StartTime;
+            }
+            set
+            {
+                OnStartTimeChanging(value);
+                ReportPropertyChanging("StartTime");
+                _StartTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StartTime");
+                OnStartTimeChanged();
+            }
+        }
+        private global::System.DateTime _StartTime;
+        partial void OnStartTimeChanging(global::System.DateTime value);
+        partial void OnStartTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> EndTime
+        {
+            get
+            {
+                return _EndTime;
+            }
+            set
+            {
+                OnEndTimeChanging(value);
+                ReportPropertyChanging("EndTime");
+                _EndTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("EndTime");
+                OnEndTimeChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _EndTime;
+        partial void OnEndTimeChanging(Nullable<global::System.DateTime> value);
+        partial void OnEndTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RaceID
+        {
+            get
+            {
+                return _RaceID;
+            }
+            set
+            {
+                OnRaceIDChanging(value);
+                ReportPropertyChanging("RaceID");
+                _RaceID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RaceID");
+                OnRaceIDChanged();
+            }
+        }
+        private global::System.Int32 _RaceID;
+        partial void OnRaceIDChanging(global::System.Int32 value);
+        partial void OnRaceIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDeleted
+        {
+            get
+            {
+                return _IsDeleted;
+            }
+            set
+            {
+                OnIsDeletedChanging(value);
+                ReportPropertyChanging("IsDeleted");
+                _IsDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDeleted");
+                OnIsDeletedChanged();
+            }
+        }
+        private global::System.Boolean _IsDeleted;
+        partial void OnIsDeletedChanging(global::System.Boolean value);
+        partial void OnIsDeletedChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Timer_Race", "Race")]
+        public Race Race
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Race> RaceReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+
+    #endregion
     
 }

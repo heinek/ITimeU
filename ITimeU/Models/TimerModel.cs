@@ -1,28 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace ITimeU.Models
 {
     public class TimerModel
     {
-        private DateTime startTime;
+        //private DateTime startTime;
 
-        public DateTime StartTime { get {
-            if (!IsStarted)
+        //public DateTime StartTime
+        //{
+        //    get
+        //    {
+        //        if (!IsStarted)
+        //        {
+        //            throw new NullReferenceException("Cannot return start time when timer hasn't started.");
+        //        }
+
+        //        return startTime;
+        //    }
+        //    private set { startTime = value; }
+        //}
+        public DateTime StartTime { get; set; }
+        private bool isStarted = false;
+        public bool IsStarted {
+            get
             {
-                throw new NullReferenceException("Cannot return start time when timer hasn't started.");
+                return isStarted;
             }
-
-            return startTime;
-        } private set { startTime = value; } }
-
-        public bool IsStarted { get; private set; }
+            private set
+            {
+                isStarted = value;
+            }
+        }
 
         public TimerModel()
         {
-            IsStarted = false;
         }
 
         public void Start()
@@ -34,6 +45,6 @@ namespace ITimeU.Models
             }
         }
 
-        
+
     }
 }

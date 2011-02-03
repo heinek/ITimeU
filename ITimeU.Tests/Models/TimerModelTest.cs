@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
+using ITimeU.Controllers;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
-using System.Threading;
-using ITimeU.Controllers;
 
 namespace ITimeU.Tests.Models
 {
@@ -49,18 +46,18 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Start_Time_Should_Return_Same_Value()
         {
-            Object startTime = null;
+            DateTime startTime = DateTime.MinValue;
             Given("We have an instance of timerclass", () => timerModel = new TimerModel());
 
             When("We click the start button", () =>
             {
                 timerModel.Start();
                 startTime = timerModel.StartTime;
-                Thread.Sleep(10);
+                Thread.Sleep(100);
             });
 
 
-            Then("THe timer should return the same value each time", () => Assert.AreEqual(startTime, timerModel.StartTime));
+            Then("THe timer should return the same value each time", () => startTime.ShouldBe(timerModel.StartTime));
         }
 
         [TestMethod]
@@ -73,7 +70,7 @@ namespace ITimeU.Tests.Models
             Then("a view with a timer should appear", () =>
             {
                 TimerController timerController = new TimerController();
-                ViewResult result = (ViewResult) timerController.Index(null);
+                ViewResult result = (ViewResult)timerController.Index(null);
                 result.ViewName.ShouldBe("Index");
             });
         }
@@ -114,11 +111,11 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void The_Timer_Should_Initially_Not_Be_Started() 
+        public void The_Timer_Should_Initially_Not_Be_Started()
         {
             Given("we are going to create a timer");
-            When("we create the timer", ()=> timerModel = new TimerModel());
-            Then("the timer should not be started", ()=> timerModel.IsStarted.ShouldBeFalse());
+            When("we create the timer", () => timerModel = new TimerModel());
+            Then("the timer should not be started", () => timerModel.IsStarted.ShouldBeFalse());
         }
         [TestCleanup]
         public void TestCleanup()

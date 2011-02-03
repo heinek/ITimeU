@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -18,13 +14,19 @@ namespace ITimeU.Controllers
             {
                 timerModel = new TimerModel();
             }
-            
-            return View("Index",timerModel);
+            if (timerModel.IsStarted)
+            {
+                ViewBag.StartTime = timerModel.StartTime;
+            }
+            ViewBag.IsStarted = timerModel.IsStarted;
+            return View("Index", timerModel);
         }
-     
+
         public ActionResult StartTimer(TimerModel timerModel)
         {
             timerModel.Start();
+            ViewBag.IsStarted = timerModel.IsStarted;
+            ViewBag.StartTime = timerModel.StartTime;
             return View("Index", timerModel);
         }
 
