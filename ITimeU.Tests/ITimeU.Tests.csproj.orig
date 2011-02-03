@@ -48,15 +48,37 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="TinyBDD">
+<<<<<<< HEAD
+      <HintPath>..\..\..\Users\ajohanse.CORP\Documents\My Dropbox\Code\DLL\TinyBDD.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification">
+      <HintPath>..\..\..\Users\ajohanse.CORP\Documents\My Dropbox\Code\DLL\TinyBDD.Specification.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification.MSTest">
+      <HintPath>..\..\..\Users\ajohanse.CORP\Documents\My Dropbox\Code\DLL\TinyBDD.Specification.MSTest.dll</HintPath>
+=======
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.dll</HintPath>
-
+    </Reference>
+    <Reference Include="TinyBDD.Specification">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification.MSTest">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.MSTest.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification.NUnit">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification.NUnit.2.4.7">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.4.7.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification.NUnit.2.5.0">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.0.dll</HintPath>
+    </Reference>
+    <Reference Include="TinyBDD.Specification.NUnit.2.5.3">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.3.dll</HintPath>
- </ItemGroup>
+>>>>>>> 47d4d0c2798a3574fb28f7a4bf4bf27f0bcfc5ea
+    </Reference>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\TimerModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

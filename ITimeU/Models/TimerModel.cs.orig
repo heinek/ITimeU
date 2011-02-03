@@ -4,12 +4,11 @@ namespace ITimeU.Models
 {
     public class TimerModel
     {
-        private DateTime? startTime;
+<<<<<<< HEAD
+        //private DateTime startTime;
 
-        public DateTime? StartTime {
-            get {
-
-                if (!IsStarted)
+        //public DateTime StartTime
+        //{
         //    get
         //    {
         //        if (!IsStarted)
@@ -25,20 +24,31 @@ namespace ITimeU.Models
         private bool isStarted = false;
         public bool IsStarted {
             get
-                {
-                    return null;
+            {
+                return isStarted;
             }
             private set
             {
                 isStarted = value;
             }
+=======
+        private DateTime? startTime;
+
+        public DateTime? StartTime {
+            get {
+
+                if (!IsStarted)
+                {
+                    return null;
                 }
 
                 return startTime;
             }
             
             private set { startTime = value; }
+>>>>>>> 47d4d0c2798a3574fb28f7a4bf4bf27f0bcfc5ea
         }
+
         public TimerModel()
         {
         }

@@ -5,5 +5,12 @@
 <h2>
     Index</h2>
 <input type="button" id="btnStart" value="Start" onclick="location.href='@Url.Action("StartTimer", "Timer")'" />
-@if (Model.IsStarted) { <p>Timer is started! Start time: @Model.StartTime </p> }
+<<<<<<< HEAD
+@if (@ViewBag.IsStarted)
 {@ViewBag.StartTime}
+=======
+@if (Model.IsStarted) { <p>Timer is started! Start time: @Model.StartTime </p> }
+        
+    
+    
+>>>>>>> 47d4d0c2798a3574fb28f7a4bf4bf27f0bcfc5ea
