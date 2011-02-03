@@ -32,7 +32,6 @@ namespace ITimeU.Tests.Models
             );
 
             Then("we have a timer model", () => timerModel.ShouldNotBeNull()
-                /* Assert.IsNotNull(timerModel)*/
             );
         }
 
@@ -94,12 +93,15 @@ namespace ITimeU.Tests.Models
 
         }
 
+        /*
         [TestMethod]
         public void Should_Get_Exception_When_Getting_StartTime_Before_Timer_Is_Started()
         {
             Object startTime = null;
-            Given("We have an instance of timerclass", () => timerModel = new TimerModel());
-            When("We fetch the starttime", () =>
+
+            Given("we have an instance of timerclass", () => timerModel = new TimerModel());
+
+            When("we fetch the starttime", () =>
                 {
                     try
                     {
@@ -112,6 +114,19 @@ namespace ITimeU.Tests.Models
                     }
                 });
         }
+        */
+
+        [TestMethod]
+        public void Timer_StartTime_Should_Be_Null_Before_Timer_Is_Started()
+        {
+            DateTime? startTime = new DateTime();
+
+            Given("we have a timer", () => timerModel = new TimerModel());
+
+            When("we fetch the start time", () => startTime = timerModel.StartTime);
+
+            Then("the start time should be null", () => startTime.ShouldBeNull());
+        }
 
         [TestMethod]
         public void The_Timer_Should_Initially_Not_Be_Started() 
@@ -120,6 +135,7 @@ namespace ITimeU.Tests.Models
             When("we create the timer", ()=> timerModel = new TimerModel());
             Then("the timer should not be started", ()=> timerModel.IsStarted.ShouldBeFalse());
         }
+
         [TestCleanup]
         public void TestCleanup()
         {

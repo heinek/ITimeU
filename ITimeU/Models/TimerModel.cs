@@ -7,23 +7,28 @@ namespace ITimeU.Models
 {
     public class TimerModel
     {
-        private DateTime startTime;
+        private DateTime? startTime;
 
-        public DateTime StartTime { get {
-            if (!IsStarted)
-            {
-                throw new NullReferenceException("Cannot return start time when timer hasn't started.");
+        public DateTime? StartTime {
+            get {
+
+                if (!IsStarted)
+                {
+                    return null;
+                }
+
+                return startTime;
             }
-
-            return startTime;
-        } private set { startTime = value; } }
-
-        public bool IsStarted { get; private set; }
+            
+            private set { startTime = value; }
+        }
 
         public TimerModel()
         {
             IsStarted = false;
         }
+
+        public bool IsStarted { get; private set; }
 
         public void Start()
         {

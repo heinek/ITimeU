@@ -48,25 +48,25 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="TinyBDD">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.Specification.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification.MSTest">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.Specification.MSTest.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.MSTest.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification.NUnit">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification.NUnit.2.4.7">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.4.7.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.4.7.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification.NUnit.2.5.0">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.0.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.0.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification.NUnit.2.5.3">
-      <HintPath>..\..\..\..\..\..\Users\mingberg.CORP\Downloads\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.3.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.3.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
