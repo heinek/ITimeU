@@ -12,18 +12,20 @@ namespace ITimeU.Controllers
         //
         // GET: /Timer/
 
-        public ActionResult Index()
+        public ActionResult Index(TimerModel timerModel)
         {
+            if (timerModel == null)
+            {
+                timerModel = new TimerModel();
+            }
             
-            return View("Index");
+            return View("Index",timerModel);
         }
      
-        public ActionResult StartTimer()
+        public ActionResult StartTimer(TimerModel timerModel)
         {
-            TimerModel timerModel = new TimerModel();
             timerModel.Start();
-
-            return View(timerModel);
+            return View("Index", timerModel);
         }
 
     }

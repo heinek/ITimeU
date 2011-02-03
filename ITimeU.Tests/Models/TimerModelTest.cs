@@ -19,7 +19,7 @@ namespace ITimeU.Tests.Models
     public class TimerModelTest : ScenarioClass
     {
 
-        private static TimerModel timerModel = null;
+        private TimerModel timerModel = null;
 
         [TestMethod]
         public void We_Have_A_Timer_Model()
@@ -73,11 +73,53 @@ namespace ITimeU.Tests.Models
             Then("a view with a timer should appear", () =>
             {
                 TimerController timerController = new TimerController();
-                ViewResult result = (ViewResult) timerController.Index();
+                ViewResult result = (ViewResult) timerController.Index(null);
                 result.ViewName.ShouldBe("Index");
             });
         }
 
+        [TestMethod]
+        public void Start_Time_Should_Return_Same_Value_Even_when_you_press_start_again()
+        {
+            Object startTime = null;
+            Given("We have an instance of timerclass", () => timerModel = new TimerModel());
+            When("We click the start button twice", () =>
+                {
+                    timerModel.Start();
+                    startTime = timerModel.StartTime;
+                    Thread.Sleep(10);
+                    timerModel.Start();
+                });
+            Then("The timer should return the same value each time", () => startTime.ShouldBe(timerModel.StartTime));
+
+        }
+
+        [TestMethod]
+        public void Should_Get_Exception_When_Getting_StartTime_Before_Timer_Is_Started()
+        {
+            Object startTime = null;
+            Given("We have an instance of timerclass", () => timerModel = new TimerModel());
+            When("We fetch the starttime", () =>
+                {
+                    try
+                    {
+                        startTime = timerModel.StartTime;
+                        true.ShouldBeFalse();
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        true.ShouldBeTrue();
+                    }
+                });
+        }
+
+        [TestMethod]
+        public void The_Timer_Should_Initially_Not_Be_Started() 
+        {
+            Given("we are going to create a timer");
+            When("we create the timer", ()=> timerModel = new TimerModel());
+            Then("the timer should not be started", ()=> timerModel.IsStarted.ShouldBeFalse());
+        }
         [TestCleanup]
         public void TestCleanup()
         {
