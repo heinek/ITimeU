@@ -35,6 +35,9 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.3.1.416.3\lib\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -48,16 +51,7 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="TinyBDD">
-<<<<<<< HEAD
       <HintPath>..\..\..\Users\ajohanse.CORP\Documents\My Dropbox\Code\DLL\TinyBDD.dll</HintPath>
-    </Reference>
-    <Reference Include="TinyBDD.Specification">
-      <HintPath>..\..\..\Users\ajohanse.CORP\Documents\My Dropbox\Code\DLL\TinyBDD.Specification.dll</HintPath>
-    </Reference>
-    <Reference Include="TinyBDD.Specification.MSTest">
-      <HintPath>..\..\..\Users\ajohanse.CORP\Documents\My Dropbox\Code\DLL\TinyBDD.Specification.MSTest.dll</HintPath>
-=======
-      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.dll</HintPath>
@@ -76,11 +70,17 @@
     </Reference>
     <Reference Include="TinyBDD.Specification.NUnit.2.5.3">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.3.dll</HintPath>
->>>>>>> 47d4d0c2798a3574fb28f7a4bf4bf27f0bcfc5ea
+<<<<<<< HEAD
     </Reference>
   </ItemGroup>
+=======
+	</Reference>
+ </ItemGroup>
+>>>>>>> 5a1eafe465e1883773061b90fdd65fc2da7d05b8
   <ItemGroup>
+    <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
+    <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\AccountControllerTest.cs" />
@@ -89,10 +89,17 @@
     <Content Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ITimeU.DAL\ITimeU.DAL.csproj">
+      <Project>{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}</Project>
+      <Name>ITimeU.DAL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITimeU\ITimeU.csproj">
       <Project>{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}</Project>
       <Name>ITimeU</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
