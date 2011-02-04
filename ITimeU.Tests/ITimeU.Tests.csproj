@@ -56,6 +56,7 @@
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.4.7.dll</HintPath>
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.0.dll</HintPath>
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.NUnit.2.5.3.dll</HintPath>
+	</Reference>
  </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\TimerModelTest.cs" />
