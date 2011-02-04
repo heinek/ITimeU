@@ -4,10 +4,38 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
 	x:Class="SilverlightPrototype1Screens.Screen_1"
 	Width="640" Height="480">
 
 	<Grid x:Name="LayoutRoot" Background="White">
-		<Button Height="39" Margin="220,171,299,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Content="Start"/>
+		<Grid Height="39" Margin="148,173,233,0" VerticalAlignment="Top">
+			<Button x:Name="button" Style="{StaticResource Button-Sketch}" Content="Start" HorizontalAlignment="Left" Width="121" 
+				Grid.Column = "0" Grid.Row="0" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="Click" SourceName="button">
+						<ic:ChangePropertyAction TargetName="button_Copy" PropertyName="Visibility">
+							<ic:ChangePropertyAction.Value>
+								<Visibility>Visible</Visibility>
+							</ic:ChangePropertyAction.Value>
+						</ic:ChangePropertyAction>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</Button>
+			<TextBlock HorizontalAlignment="Right" 
+				Grid.Row="0" Margin="0,13,0,0" Style="{StaticResource TextBlock-Sketch}" Width="106" FontSize="21.333" Text="00:00:00" TextWrapping="Wrap" d:LayoutOverrides="GridBox" VerticalAlignment="Center" Height="39"/>
+			<Button x:Name="button_Copy" Style="{StaticResource Button-Sketch}" Content="Stop" HorizontalAlignment="Left" Width="121" 
+				Grid.Column = "0" Grid.Row="0" Visibility="Collapsed" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger SourceName="button_Copy" EventName="Click">
+						<ic:ChangePropertyAction TargetName="button_Copy" PropertyName="Visibility">
+							<ic:ChangePropertyAction.Value>
+								<Visibility>Collapsed</Visibility>
+							</ic:ChangePropertyAction.Value>
+						</ic:ChangePropertyAction>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</Button>
+		</Grid>
 	</Grid>
 </UserControl>
