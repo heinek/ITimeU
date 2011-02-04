@@ -31,20 +31,24 @@ namespace ITimeU.DAL
 
         public static TimerDAL Create()
         {
-            return new TimerDAL();
+            TimerDAL timerDal = new TimerDAL();
+            using (var ctx = new ITimeUEntities())
+            {
+                Timer timer = new Timer();
+                ctx.Timers.AddObject(timer);
+                ctx.SaveChanges();
+                timerDal.TimerID = ctx.Timers.OrderByDescending(tmr => tmr.TimerID).First().TimerID;
+            }
+            return timerDal;
         }
 
         public void Save()
         {
             using (var ctx = new ITimeUEntities())
             {
-                Timer timer = new Timer()
-                {
-                    StartTime = this.StartTime
-                };
-                ctx.Timers.AddObject(timer);
+                Timer timer = ctx.Timers.Single(tmr => tmr.TimerID == TimerID);
+                timer.StartTime = this.StartTime;
                 ctx.SaveChanges();
-                TimerID = ctx.Timers.OrderByDescending(tmr => tmr.TimerID).First().TimerID;
             }
         }
     }

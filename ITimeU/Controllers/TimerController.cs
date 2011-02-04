@@ -8,25 +8,29 @@ namespace ITimeU.Controllers
         //
         // GET: /Timer/
 
-        public ActionResult Index(TimerModel timerModel)
+        [HttpGet]
+        public ActionResult Index()
         {
-            if (timerModel == null)
+            var timer = new TimerModel();
+
+            if (Session["timer"] == null)
             {
-                timerModel = new TimerModel();
+                Session["timer"] = timer;
             }
-            if (timerModel.IsStarted)
+            else
             {
-                ViewBag.StartTime = timerModel.StartTime;
+                timer = (TimerModel)Session["timer"];
             }
-            ViewBag.IsStarted = timerModel.IsStarted;
-            return View("Index", timerModel);
+            return View("Index", timer);
         }
 
-        public ActionResult StartTimer(TimerModel timerModel)
+        [HttpPost]
+        public ActionResult Index(TimerModel timerModel)
         {
+            timerModel = (TimerModel)Session["timer"];
             timerModel.Start();
-            ViewBag.IsStarted = timerModel.IsStarted;
-            ViewBag.StartTime = timerModel.StartTime;
+            Session["timer"] = timerModel;
+
             return View("Index", timerModel);
         }
 

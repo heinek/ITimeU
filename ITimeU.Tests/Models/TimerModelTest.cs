@@ -62,7 +62,7 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void We_Should_Have_A_View_With_A_Start_Button()
+        public void We_Should_Have_A_View_Named_Index()
         {
             Given("we have an instance of timerclass", () => timerModel = new TimerModel());
 
@@ -71,7 +71,8 @@ namespace ITimeU.Tests.Models
             Then("a view with a timer should appear", () =>
             {
                 TimerController timerController = new TimerController();
-                ViewResult result = (ViewResult)timerController.Index(null);
+                timerController.SetFakeControllerContext();
+                ViewResult result = (ViewResult)timerController.Index();
                 result.ViewName.ShouldBe("Index");
             });
         }
@@ -89,6 +90,8 @@ namespace ITimeU.Tests.Models
                     timerModel.Start();
                 });
             Then("The timer should return the same value each time", () => startTime.ShouldBe(timerModel.StartTime));
+
+
 
         }
 

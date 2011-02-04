@@ -3,6 +3,7 @@ using ITimeU.DAL;
 
 namespace ITimeU.Models
 {
+    [Serializable]
     public class TimerModel
     {
         public int Id { get; set; }
