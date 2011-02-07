@@ -72,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\timer_handlers.js" />
+    <Content Include="Scripts\timer_jquery.js" />
+    <Content Include="Scripts\timer_stopwatch.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

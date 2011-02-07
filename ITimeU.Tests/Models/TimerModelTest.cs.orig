@@ -159,26 +159,9 @@ namespace ITimeU.Tests.Models
                 );
 
         }
-        [TestMethod]
-        public void The_Running_Time_Should_Be_Shown()
-        {
-            Given("we have a timer", () => timerModel = new TimerModel());
-
-            When("the timer is started"); timerModel.Start();
-
-            Then("the running time should have a value", () =>
-            {
-                TimerController timerController = new TimerController();
-                timerController.SetFakeControllerContext();
-                ViewResult result = (ViewResult)timerController.Index();
-                result.ViewName.ShouldBe("Index");
-                result.ViewData["time1"].ShouldNotBeNull();
-                
-            });
-        }
-
 
         [TestMethod]
+<<<<<<< HEAD
         public void The_start_Time_Should_Be_Stoped()
         {
             DateTime stopTime = new DateTime();
@@ -204,6 +187,26 @@ namespace ITimeU.Tests.Models
                 );
         }
 
+=======
+        public void The_Running_Time_Should_Be_Shown()
+        {
+            Given("we have a timer", () => timerModel = new TimerModel());
+
+            When("the timer is started"); timerModel.Start();
+
+            Then("the running time should have a value", () =>
+            {
+                TimerController timerController = new TimerController();
+                timerController.SetFakeControllerContext();
+                ViewResult result = (ViewResult)timerController.Index();
+                result.ViewName.ShouldBe("Index");
+                result.ViewData["time1"].ShouldNotBeNull();
+                
+            });
+        }
+
+       
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6
         [TestCleanup]
         public void TestCleanup()
         {

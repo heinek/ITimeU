@@ -26,6 +26,10 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
+<<<<<<< HEAD
 ITimeU/localSettings.config
 [Tt]est[Rr]esult*
+=======
+[Tt]est[Rr]esult*
 ITimeU/localSettings.config
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6

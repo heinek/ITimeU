@@ -43,6 +43,18 @@ namespace ITimeU.Controllers
             return View("Index", timerModel);
         }
 
+<<<<<<< HEAD
+=======
+        public ActionResult Start()
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            timerModel.Start();
+            Session["timer"] = timerModel;
+
+            return View("Index", timerModel);
+        }
+
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6
         public ActionResult Stop()
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
@@ -50,7 +62,9 @@ namespace ITimeU.Controllers
             Session["timer"] = timerModel;
             return View("Index", timerModel);
         }
-        
+<<<<<<< HEAD
+=======
 
-   }
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6
+    }
 }

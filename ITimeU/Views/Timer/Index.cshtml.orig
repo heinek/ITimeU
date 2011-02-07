@@ -2,15 +2,57 @@
 @{
     ViewBag.Title = "Index";
 }
+<<<<<<< HEAD
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+=======
+
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/timer_jquery.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/timer_stopwatch.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/timer_handlers.js")" type="text/javascript"></script>
+
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(":button").click(function () {
+            var btn = $(":button");
+            if (btn.val() == "Start") {
+<<<<<<< HEAD
+                btn.val('Stop');
+=======
+                btn.val('Stop');                
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6
+                $.get("/Timer/Start/");
+            }
+            else {
+                btn.val('Start');
+                $.get("/Timer/Stop/");
+            }
+        });
+    });
+</script>
+<<<<<<< HEAD
 <h2>
     Index</h2>
-<input type="button" id="btnStart" value="Start" onclick="location.href='@Url.Action("StartTimer", "Timer")'" />
-<<<<<<< HEAD
-@if (@ViewBag.IsStarted)
-{@ViewBag.StartTime}
+<input type="button" id="btnStart" value="Start" />
+@if (Model.IsStarted)
+{
+    <p>
+        Timer is started! Start time: @Model.StartTime
+    </p>
+    }
 =======
-@if (Model.IsStarted) { <p>Timer is started! Start time: @Model.StartTime </p> }
-        
+
+
+    <h2>Timer View</h2>
+
+    <span id="time1" style="width: 100px"></span>
     
+    <input type="button" id="start1" value="Start" style="width: 100px" />
     
->>>>>>> 47d4d0c2798a3574fb28f7a4bf4bf27f0bcfc5ea
+
+    
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6

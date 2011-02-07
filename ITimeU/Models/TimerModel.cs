@@ -23,6 +23,8 @@ namespace ITimeU.Models
             }
         }
         public DateTime? EndTime { get; set; }
+
+
         private bool isStarted = false;
         public bool IsStarted
         {
