@@ -9,11 +9,15 @@ using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 
 
+/// TODO:
+/// - Write class summary of this class.
+/// - Write test to fix bug: TimerModel doesn't currently set isStarted to false when stopping the timer.
+/// - Write test to fix bug: I think that TimerModel only will return its StartTime when the timer is started.
+/// It should also return the StartTime when the timer has stopped (i.e. after Stop() is called).
+///
+
 namespace ITimeU.Tests.Models
 {
-    /// <summary>
-    /// Summary description for TimerModelTest
-    /// </summary>
     [TestClass]
     public class TimerModelTest : ScenarioClass
     {
@@ -178,7 +182,6 @@ namespace ITimeU.Tests.Models
             });
         }
 
-       
         [TestCleanup]
         public void TestCleanup()
         {

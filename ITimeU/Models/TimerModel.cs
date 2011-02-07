@@ -1,6 +1,8 @@
 ﻿using System;
 using ITimeU.DAL;
 
+// TODO: Write class summary.
+
 namespace ITimeU.Models
 {
     [Serializable]
@@ -17,6 +19,7 @@ namespace ITimeU.Models
                     return null;
                 return startTime;
             }
+
             private set
             {
                 startTime = value;
@@ -24,8 +27,7 @@ namespace ITimeU.Models
         }
 
         public DateTime? EndTime { get; set; }
-
-
+        
         private bool isStarted = false;
         public bool IsStarted
         {
@@ -39,27 +41,45 @@ namespace ITimeU.Models
             }
 
         }
-        public TimerModel()
-        {
 
-        }
-
+        /// <summary>
+        /// Starts the timer.
+        /// </summary>
         public void Start()
         {
             if (!IsStarted)
             {
-                StartTime = DateTime.Now;
-                IsStarted = true;
-                var timerDal = TimerDAL.Create();
-                timerDal.StartTime = startTime;
-                timerDal.Save();
-                Id = timerDal.TimerID;
+                SetStartTimestamp(DateTime.Now);
+                Id = SaveStartTimeToDb();
             }
         }
 
+        private void SetStartTimestamp(DateTime startTime)
+        {
+            StartTime = startTime;
+            IsStarted = true;
+        }
+
+        private int SaveStartTimeToDb()
+        {
+            var timerDal = TimerDAL.Create();
+            timerDal.StartTime = startTime;
+            timerDal.Save();
+
+            return timerDal.TimerID;
+        }
+
+        /// <summary>
+        /// Stops the timer.
+        /// </summary>
         public void Stop()
         {
             EndTime = DateTime.Now;
+            SaveStopTimeStampToDb(EndTime);
+        }
+
+        private void SaveStopTimeStampToDb(DateTime? EndTime)
+        {
             var timerDal = TimerDAL.GetTimerById(Id);
             timerDal.EndTime = EndTime;
             timerDal.Save();
