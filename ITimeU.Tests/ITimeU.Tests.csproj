@@ -51,7 +51,7 @@
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="TinyBDD">
-      <HintPath>..\..\..\TinyBDD\TinyBDD.dll</HintPath>
+      <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.dll</HintPath>
     </Reference>
     <Reference Include="TinyBDD.Specification">
       <HintPath>..\library\TinyBDD-v0.1.0.94\TinyBDD.Specification.dll</HintPath>
