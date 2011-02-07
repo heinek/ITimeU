@@ -24,15 +24,31 @@ namespace ITimeU.Controllers
             return View("Index", timer);
         }
 
-        [HttpPost]
-        public ActionResult Index(TimerModel timerModel)
+        //[HttpPost]
+        //public ActionResult Index(TimerModel timerModel)
+        //{
+        //    timerModel = (TimerModel)Session["timer"];
+        //    timerModel.Start();
+        //    Session["timer"] = timerModel;
+
+        //    return View("Index", timerModel);
+        //}
+
+        public ActionResult Start()
         {
-            timerModel = (TimerModel)Session["timer"];
+            TimerModel timerModel = (TimerModel)Session["timer"];
             timerModel.Start();
             Session["timer"] = timerModel;
 
             return View("Index", timerModel);
         }
 
+        public ActionResult Stop()
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            timerModel.Stop();
+            Session["timer"] = timerModel;
+            return View("Index", timerModel);
+        }
     }
 }

@@ -160,6 +160,32 @@ namespace ITimeU.Tests.Models
 
         }
 
+        [TestMethod]
+        public void The_start_Time_Should_Be_Stoped()
+        {
+            DateTime stopTime = new DateTime();
+
+            Given("We have a start timer", () => 
+            {
+                timerModel = new TimerModel(); 
+                timerModel.Start();
+            }
+                );
+
+            When("We stop the time", () =>
+            {
+                timerModel.Stop();
+            }
+                );
+
+            Then("The start time should be stopped", () =>
+                {
+                    var time = TimerDAL.GetTimerById(timerModel.Id);
+                    timerModel.EndTime.HasValue.ShouldBeTrue();
+                }
+                );
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {

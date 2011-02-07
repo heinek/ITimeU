@@ -48,6 +48,7 @@ namespace ITimeU.DAL
             {
                 Timer timer = ctx.Timers.Single(tmr => tmr.TimerID == TimerID);
                 timer.StartTime = this.StartTime;
+                if(this.EndTime.HasValue) timer.EndTime = this.EndTime;
                 ctx.SaveChanges();
             }
         }
