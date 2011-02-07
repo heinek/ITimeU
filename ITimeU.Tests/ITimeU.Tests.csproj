@@ -81,7 +81,9 @@
     <Compile Include="Controllers\AccountControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.config" />
+    <Content Include="App.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ITimeU.DAL\ITimeU.DAL.csproj">

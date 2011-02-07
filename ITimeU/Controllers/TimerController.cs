@@ -34,5 +34,22 @@ namespace ITimeU.Controllers
             return View("Index", timerModel);
         }
 
+        public ActionResult Start()
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            timerModel.Start();
+            Session["timer"] = timerModel;
+
+            return View("Index", timerModel);
+        }
+
+        public ActionResult Stop()
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            timerModel.Stop();
+            Session["timer"] = timerModel;
+            return View("Index", timerModel);
+        }
+
     }
 }

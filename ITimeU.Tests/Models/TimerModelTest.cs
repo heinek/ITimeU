@@ -160,6 +160,25 @@ namespace ITimeU.Tests.Models
 
         }
 
+        [TestMethod]
+        public void The_Running_Time_Should_Be_Shown()
+        {
+            Given("we have a timer", () => timerModel = new TimerModel());
+
+            When("the timer is started"); timerModel.Start();
+
+            Then("the running time should have a value", () =>
+            {
+                TimerController timerController = new TimerController();
+                timerController.SetFakeControllerContext();
+                ViewResult result = (ViewResult)timerController.Index();
+                result.ViewName.ShouldBe("Index");
+                result.ViewData["time1"].ShouldNotBeNull();
+                
+            });
+        }
+
+       
         [TestCleanup]
         public void TestCleanup()
         {

@@ -22,6 +22,10 @@ namespace ITimeU.Models
                 startTime = value;
             }
         }
+
+        public DateTime? EndTime { get; set; }
+
+
         private bool isStarted = false;
         public bool IsStarted
         {
@@ -51,6 +55,14 @@ namespace ITimeU.Models
                 timerDal.Save();
                 Id = timerDal.TimerID;
             }
+        }
+
+        public void Stop()
+        {
+            EndTime = DateTime.Now;
+            var timerDal = TimerDAL.GetTimerById(Id);
+            timerDal.EndTime = EndTime;
+            timerDal.Save();
         }
     }
 }

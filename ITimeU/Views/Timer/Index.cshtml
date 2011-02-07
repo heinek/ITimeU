@@ -2,13 +2,35 @@
 @{
     ViewBag.Title = "Index";
 }
-@using (Html.BeginForm())
-{
-    <h2>
-        Index</h2>
-    <input type="submit" value="Start" />
-    if (Model.IsStarted)
-    { <p>
-        Timer is started! Start time: @Model.StartTime
-    </p> }
-}
+
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/timer_jquery.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/timer_stopwatch.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/timer_handlers.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(":button").click(function () {
+            var btn = $(":button");
+            if (btn.val() == "Start") {
+                btn.val('Stop');                
+                $.get("/Timer/Start/");
+            }
+            else {
+                btn.val('Start');
+                $.get("/Timer/Stop/");
+            }
+        });
+    });
+</script>
+
+
+    <h2>Timer View</h2>
+
+    <span id="time1" style="width: 100px"></span>
+    
+    <input type="button" id="start1" value="Start" style="width: 100px" />
+    
+
+    
