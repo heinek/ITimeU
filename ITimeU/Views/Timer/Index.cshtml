@@ -11,26 +11,40 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $(":button").click(function () {
-            var btn = $(":button");
-            if (btn.val() == "Start") {
-                btn.val('Stop');                
+        $("#start1").click(function () {
+            var btnStart = $("#start1");
+            var btnReset = $("#reset1");
+            if (btnStart.val() == "Start") {
+                btnStart.val('Stop');
+                btnReset.val('Runde');
                 $.get("/Timer/Start/");
             }
             else {
-                btn.val('Start');
+                btnStart.val('Start');
+                btnReset.val('Nullstill');
                 $.get("/Timer/Stop/");
             }
         });
     });
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#reset").click(function () {
+            var btn = $("#reset1");
+            if (btn.val() == "Nullstill") {
+                $.get("/Timer/Reset/");
+            }
+            else {
+            }
+        });
+    });
+</script>
 
     <h2>Timer View</h2>
 
     <span id="time1" style="width: 100px"></span>
     
-    <input type="button" id="start1" value="Start" style="width: 100px" />
+    <input type="button" id="start1" value="Start" style="width: 100px" />&nbsp;<input type="button" id="reset1" value="Nullstill" style="width: 100px" />
     
 
     

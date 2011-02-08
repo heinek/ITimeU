@@ -18,7 +18,6 @@ namespace ITimeU.Models
             StartTime = null;
             IsStarted = false;
         }
-
         /// <summary>
         /// Starts the timer.
         /// </summary>
@@ -65,6 +64,16 @@ namespace ITimeU.Models
             var timerDal = TimerDAL.GetTimerById(Id);
             timerDal.EndTime = EndTime;
             timerDal.Save();
+        }
+
+        public void Restart()
+        {
+            //var newTimer = TimerDAL.Create();
+            //newTimer.Save();
+            Id = 0;
+            IsStarted = false;
+            StartTime = null;
+            EndTime = null;
         }
     }
 }
