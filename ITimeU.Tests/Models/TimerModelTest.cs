@@ -232,21 +232,21 @@ namespace ITimeU.Tests.Models
 
             Given("We have a start timer", () =>
             {
-                timerModel = new TimerModel();
-                timerModel.Start();
+                timer = new TimerModel();
+                timer.Start();
             }
                 );
 
             When("We stop the time", () =>
             {
-                timerModel.Stop();
+                timer.Stop();
             }
                 );
 
             Then("The start time should be stopped", () =>
                 {
-                    var time = TimerDAL.GetTimerById(timerModel.Id);
-                    timerModel.EndTime.HasValue.ShouldBeTrue();
+                    var time = TimerDAL.GetTimerById(timer.Id);
+                    timer.EndTime.HasValue.ShouldBeTrue();
                 }
                 );
         }
@@ -256,19 +256,19 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a starttimer", () =>
                 {
-                    timerModel = new TimerModel();
-                    timerModel.Start();
+                    timer = new TimerModel();
+                    timer.Start();
                 });
 
             When("we stop and restart the timer", () =>
             {
-                timerModel.Stop();
-                timerModel.Restart();
+                timer.Stop();
+                timer.Restart();
             });
 
             Then("the timer should be set to 0", () =>
             {
-                timerModel.StartTime.ShouldBeNull();
+                timer.StartTime.ShouldBeNull();
             });
         }
 
@@ -277,19 +277,19 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a starttimer", () =>
             {
-                timerModel = new TimerModel();
-                timerModel.Start();
+                timer = new TimerModel();
+                timer.Start();
             });
 
             When("we stop and restart the timer", () =>
             {
-                timerModel.Stop();
-                timerModel.Restart();
+                timer.Stop();
+                timer.Restart();
             });
 
             Then("the timer should be set to 0", () =>
             {
-                timerModel.EndTime.ShouldBeNull();
+                timer.EndTime.ShouldBeNull();
             });
         }
 
@@ -299,20 +299,20 @@ namespace ITimeU.Tests.Models
             int timerModelId = 0;
             Given("we have a starttimer", () =>
             {
-                timerModel = new TimerModel();
-                timerModel.Start();
-                timerModelId = timerModel.Id;
+                timer = new TimerModel();
+                timer.Start();
+                timerModelId = timer.Id;
             });
 
             When("we stop and restart the timer", () =>
             {
-                timerModel.Stop();
-                timerModel.Restart();
+                timer.Stop();
+                timer.Restart();
             });
 
             Then("a new timer should be created", () =>
             {
-                timerModel.Id.ShouldNotBe(timerModelId);
+                timer.Id.ShouldNotBe(timerModelId);
             });
         }
 
@@ -322,21 +322,21 @@ namespace ITimeU.Tests.Models
             int timerModelId = 0;
             Given("we have a starttimer", () =>
             {
-                timerModel = new TimerModel();
-                timerModel.Start();
-                timerModelId = timerModel.Id;
+                timer = new TimerModel();
+                timer.Start();
+                timerModelId = timer.Id;
             });
 
             When("we stop and restart the timer", () =>
             {
-                timerModel.Stop();
-                timerModel.Restart();
-                timerModel.Start();
+                timer.Stop();
+                timer.Restart();
+                timer.Start();
             });
 
             Then("a new timer should be created", () =>
             {
-                timerModel.StartTime.ShouldNotBeNull();
+                timer.StartTime.ShouldNotBeNull();
             });
         }
 
