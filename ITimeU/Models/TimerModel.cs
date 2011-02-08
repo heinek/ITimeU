@@ -22,7 +22,6 @@ namespace ITimeU.Models
                 startTime = value;
             }
         }
-
         public DateTime? EndTime { get; set; }
 
 
@@ -63,6 +62,16 @@ namespace ITimeU.Models
             var timerDal = TimerDAL.GetTimerById(Id);
             timerDal.EndTime = EndTime;
             timerDal.Save();
+        }
+
+        public void Restart()
+        {
+            //var newTimer = TimerDAL.Create();
+            //newTimer.Save();
+            Id = 0;
+            IsStarted = false;
+            StartTime = null;
+            EndTime = null;
         }
     }
 }

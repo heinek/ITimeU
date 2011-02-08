@@ -1,28 +1,38 @@
 ﻿using System;
+using ITimeU.DAL;
 
 namespace ITimeU.Models
 {
+    [Serializable]
     public class TimerModel
     {
+        public int Id { get; set; }
+
+        private DateTime? startTime;
+        public DateTime? StartTime
+        {
+            get
+            {
+                if (!IsStarted)
+                    return null;
+                return startTime;
+            }
+            private set
+            {
+                startTime = value;
+            }
+        }
 <<<<<<< HEAD
-        //private DateTime startTime;
+        public DateTime? EndTime { get; set; }
+=======
 
-        //public DateTime StartTime
-        //{
-        //    get
-        //    {
-        //        if (!IsStarted)
-        //        {
-        //            throw new NullReferenceException("Cannot return start time when timer hasn't started.");
-        //        }
+        public DateTime? EndTime { get; set; }
 
-        //        return startTime;
-        //    }
-        //    private set { startTime = value; }
-        //}
-        public DateTime StartTime { get; set; }
+
+>>>>>>> 21ad705820e3bb5ae7c9bed3c3d215a1a7c785c6
         private bool isStarted = false;
-        public bool IsStarted {
+        public bool IsStarted
+        {
             get
             {
                 return isStarted;
@@ -31,29 +41,12 @@ namespace ITimeU.Models
             {
                 isStarted = value;
             }
-=======
-        private DateTime? startTime;
 
-        public DateTime? StartTime {
-            get {
-
-                if (!IsStarted)
-                {
-                    return null;
-                }
-
-                return startTime;
-            }
-            
-            private set { startTime = value; }
->>>>>>> 47d4d0c2798a3574fb28f7a4bf4bf27f0bcfc5ea
         }
-
         public TimerModel()
         {
-        }
 
-        public bool IsStarted { get; private set; }
+        }
 
         public void Start()
         {
@@ -61,9 +54,19 @@ namespace ITimeU.Models
             {
                 StartTime = DateTime.Now;
                 IsStarted = true;
+                var timerDal = TimerDAL.Create();
+                timerDal.StartTime = startTime;
+                timerDal.Save();
+                Id = timerDal.TimerID;
             }
         }
 
-
+        public void Stop()
+        {
+            EndTime = DateTime.Now;
+            var timerDal = TimerDAL.GetTimerById(Id);
+            timerDal.EndTime = EndTime;
+            timerDal.Save();
+        }
     }
 }
