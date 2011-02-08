@@ -173,7 +173,7 @@ namespace ITimeU.Tests.Models
                 ViewResult result = (ViewResult)timerController.Index();
                 result.ViewName.ShouldBe("Index");
                 result.ViewData["time1"].ShouldNotBeNull();
-                
+
             });
         }
 
@@ -183,9 +183,9 @@ namespace ITimeU.Tests.Models
         {
             DateTime stopTime = new DateTime();
 
-            Given("We have a start timer", () => 
+            Given("We have a start timer", () =>
             {
-                timerModel = new TimerModel(); 
+                timerModel = new TimerModel();
                 timerModel.Start();
             }
                 );
@@ -202,6 +202,95 @@ namespace ITimeU.Tests.Models
                     timerModel.EndTime.HasValue.ShouldBeTrue();
                 }
                 );
+        }
+
+        [TestMethod]
+        public void The_Starttime_Should_Be_Null_When_Reset_Is_Pushed()
+        {
+            Given("we have a starttimer", () =>
+                {
+                    timerModel = new TimerModel();
+                    timerModel.Start();
+                });
+
+            When("we stop and restart the timer", () =>
+            {
+                timerModel.Stop();
+                timerModel.Restart();
+            });
+
+            Then("the timer should be set to 0", () =>
+            {
+                timerModel.StartTime.ShouldBeNull();
+            });
+        }
+
+        [TestMethod]
+        public void The_Endtime_Should_Be_Null_When_Reset_Is_Pushed()
+        {
+            Given("we have a starttimer", () =>
+            {
+                timerModel = new TimerModel();
+                timerModel.Start();
+            });
+
+            When("we stop and restart the timer", () =>
+            {
+                timerModel.Stop();
+                timerModel.Restart();
+            });
+
+            Then("the timer should be set to 0", () =>
+            {
+                timerModel.EndTime.ShouldBeNull();
+            });
+        }
+
+        [TestMethod]
+        public void A_New_TimerModel_Should_Be_Created_When_We_Reset_The_Timer()
+        {
+            int timerModelId = 0;
+            Given("we have a starttimer", () =>
+            {
+                timerModel = new TimerModel();
+                timerModel.Start();
+                timerModelId = timerModel.Id;
+            });
+
+            When("we stop and restart the timer", () =>
+            {
+                timerModel.Stop();
+                timerModel.Restart();
+            });
+
+            Then("a new timer should be created", () =>
+            {
+                timerModel.Id.ShouldNotBe(timerModelId);
+            });
+        }
+
+        [TestMethod]
+        public void Starttime_Should_Be_Saved_When_We_Start_A_New_Timer_After_Reset()
+        {
+            int timerModelId = 0;
+            Given("we have a starttimer", () =>
+            {
+                timerModel = new TimerModel();
+                timerModel.Start();
+                timerModelId = timerModel.Id;
+            });
+
+            When("we stop and restart the timer", () =>
+            {
+                timerModel.Stop();
+                timerModel.Restart();
+                timerModel.Start();
+            });
+
+            Then("a new timer should be created", () =>
+            {
+                timerModel.StartTime.ShouldNotBeNull();
+            });
         }
 
         [TestCleanup]

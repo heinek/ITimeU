@@ -50,7 +50,14 @@ namespace ITimeU.Controllers
             Session["timer"] = timerModel;
             return View("Index", timerModel);
         }
-        
 
-   }
+        public ActionResult Reset()
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            timerModel.Restart();
+            Session["timer"] = timerModel;
+            return View("Index", timerModel);
+        }
+
+    }
 }

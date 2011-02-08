@@ -63,5 +63,15 @@ namespace ITimeU.Models
             timerDal.EndTime = EndTime;
             timerDal.Save();
         }
+
+        public void Restart()
+        {
+            //var newTimer = TimerDAL.Create();
+            //newTimer.Save();
+            Id = 0;
+            IsStarted = false;
+            StartTime = null;
+            EndTime = null;
+        }
     }
 }
