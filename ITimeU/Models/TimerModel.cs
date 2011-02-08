@@ -9,37 +9,14 @@ namespace ITimeU.Models
     public class TimerModel
     {
         public int Id { get; set; }
+        public DateTime? StartTime { get; private set; }
+        public DateTime? EndTime { get; private set; }
+        public bool IsStarted { get; private set; }
 
-        private DateTime? startTime;
-        public DateTime? StartTime
+        public TimerModel()
         {
-            get
-            {
-                if (!IsStarted)
-                    return null;
-                return startTime;
-            }
-
-            private set
-            {
-                startTime = value;
-            }
-        }
-
-        public DateTime? EndTime { get; set; }
-        
-        private bool isStarted = false;
-        public bool IsStarted
-        {
-            get
-            {
-                return isStarted;
-            }
-            private set
-            {
-                isStarted = value;
-            }
-
+            StartTime = null;
+            IsStarted = false;
         }
 
         /// <summary>
@@ -52,6 +29,10 @@ namespace ITimeU.Models
                 SetStartTimestamp(DateTime.Now);
                 Id = SaveStartTimeToDb();
             }
+            else
+            {
+                throw new InvalidOperationException("Cannot start an already started timer");
+            }
         }
 
         private void SetStartTimestamp(DateTime startTime)
@@ -63,7 +44,7 @@ namespace ITimeU.Models
         private int SaveStartTimeToDb()
         {
             var timerDal = TimerDAL.Create();
-            timerDal.StartTime = startTime;
+            timerDal.StartTime = StartTime;
             timerDal.Save();
 
             return timerDal.TimerID;
@@ -74,6 +55,7 @@ namespace ITimeU.Models
         /// </summary>
         public void Stop()
         {
+            IsStarted = false;
             EndTime = DateTime.Now;
             SaveStopTimeStampToDb(EndTime);
         }
