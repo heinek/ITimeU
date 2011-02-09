@@ -228,8 +228,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_start_Time_Should_Be_Stoped()
         {
-            DateTime stopTime = new DateTime();
-
             Given("We have a start timer", () =>
             {
                 timer = new TimerModel();

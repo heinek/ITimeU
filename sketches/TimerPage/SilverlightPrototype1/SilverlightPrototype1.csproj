@@ -1,96 +1,98 @@
 ﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<PropertyGroup>
-		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-		<ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
-		<ProjectGuid>{ed7a18f1-2dc7-434a-ab3c-1e600d06610d}</ProjectGuid>
-		<ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-		<OutputType>Library</OutputType>
-		<AppDesignerFolder>Properties</AppDesignerFolder>
-		<DefaultClrNameSpace>SilverlightPrototype1</DefaultClrNameSpace>
-		<RootNamespace>SilverlightPrototype1</RootNamespace>
-		<AssemblyName>SilverlightPrototype1</AssemblyName>
-		<ApplicationVersion>1.0.0.*</ApplicationVersion>
-		<ApplicationRevision>0</ApplicationRevision>
-		<AlwaysCompileMarkupFilesInSeparateDomain>false</AlwaysCompileMarkupFilesInSeparateDomain>
-		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-		<SilverlightApplication>true</SilverlightApplication>
-		<XapOutputs>true</XapOutputs>
-		<XapFilename>SilverlightPrototype1.xap</XapFilename>
-		<GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-		<SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
-		<SilverlightAppEntry>SilverlightPrototype1.App</SilverlightAppEntry>
-		<CreateTestPage>true</CreateTestPage>
-		<ValidateXaml>true</ValidateXaml>
-		<UsePlatformExtensions>false</UsePlatformExtensions>
-		<ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-		<TestPageFileName>TestPage.html</TestPageFileName>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-		<DebugSymbols>true</DebugSymbols>
-		<DebugType>full</DebugType>
-		<Optimize>false</Optimize>
-		<OutputPath>Bin\Debug</OutputPath>
-		<DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
-		<NoStdLib>true</NoStdLib>
-		<NoConfig>true</NoConfig>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-		<DebugType>pdbonly</DebugType>
-		<Optimize>true</Optimize>
-		<OutputPath>Bin\Release</OutputPath>
-		<DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
-		<NoStdLib>true</NoStdLib>
-		<NoConfig>true</NoConfig>
-		<ErrorReport>prompt</ErrorReport>
-		<WarningLevel>4</WarningLevel>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="System.Windows" />
-		<Reference Include="mscorlib" />
-		<Reference Include="system" />
-		<Reference Include="System.Core" />
-		<Reference Include="System.Net" />
-		<Reference Include="System.Xml" />
-		<Reference Include="System.Windows.Browser" />
-	</ItemGroup>
-	<PropertyGroup>
-		<SupportedCultures>en</SupportedCultures>
-		<ExpressionBlendPrototypingEnabled>false</ExpressionBlendPrototypingEnabled>
-		<ExpressionBlendPrototypeHarness>true</ExpressionBlendPrototypeHarness>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="System.Windows.Controls" />
-		<Reference Include="System.Windows.Interactivity" />
-		<Reference Include="Microsoft.Expression.Interactions" />
-		<Reference Include="Microsoft.Expression.Prototyping.Interactivity" />
-		<Reference Include="Microsoft.Expression.Prototyping.Runtime" />
-		<Reference Include="Microsoft.Expression.Prototyping.SketchControls" />
-	</ItemGroup>
-	<ItemGroup>
-		<ApplicationDefinition Include="App.xaml">
-			<Generator>MSBuild:MarkupCompilePass1</Generator>
-			<SubType>Designer</SubType>
-		</ApplicationDefinition>
-		<Compile Include="App.xaml.cs">
-			<DependentUpon>App.xaml</DependentUpon>
-		</Compile>
-		<Compile Include="Properties\AssemblyInfo.cs" />
-		<None Include="favicon.ico">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-			<Visible>false</Visible>
-		</None>
-	</ItemGroup>
-	<ItemGroup>
-		<Resource Include="Properties\AppManifest.xml" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="SilverlightPrototype1Screens\SilverlightPrototype1Screens.csproj">
-			<Name>SilverlightPrototype1Screens</Name>
-			<Project>{550ffc8b-ab9f-4edd-9853-66a223bf68e6}</Project>
-		</ProjectReference>
-	</ItemGroup>
-	<Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\V3.0\Microsoft.Silverlight.CSharp.targets" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
+    <ProjectGuid>{ed7a18f1-2dc7-434a-ab3c-1e600d06610d}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <DefaultClrNameSpace>SilverlightPrototype1</DefaultClrNameSpace>
+    <RootNamespace>SilverlightPrototype1</RootNamespace>
+    <AssemblyName>SilverlightPrototype1</AssemblyName>
+    <ApplicationVersion>1.0.0.*</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <AlwaysCompileMarkupFilesInSeparateDomain>false</AlwaysCompileMarkupFilesInSeparateDomain>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <XapOutputs>true</XapOutputs>
+    <XapFilename>SilverlightPrototype1.xap</XapFilename>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>SilverlightPrototype1.App</SilverlightAppEntry>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <TestPageFileName>TestPage.html</TestPageFileName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <PropertyGroup>
+    <SupportedCultures>en</SupportedCultures>
+    <ExpressionBlendPrototypingEnabled>false</ExpressionBlendPrototypingEnabled>
+    <ExpressionBlendPrototypeHarness>true</ExpressionBlendPrototypeHarness>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.ComponentModel.DataAnnotations, Version=2.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217" />
+    <Reference Include="System.Windows.Controls" />
+    <Reference Include="System.Windows.Controls.Data.Input, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Windows.Interactivity" />
+    <Reference Include="Microsoft.Expression.Interactions" />
+    <Reference Include="Microsoft.Expression.Prototyping.Interactivity" />
+    <Reference Include="Microsoft.Expression.Prototyping.Runtime" />
+    <Reference Include="Microsoft.Expression.Prototyping.SketchControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Visible>false</Visible>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Properties\AppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="SilverlightPrototype1Screens\SilverlightPrototype1Screens.csproj">
+      <Name>SilverlightPrototype1Screens</Name>
+      <Project>{550ffc8b-ab9f-4edd-9853-66a223bf68e6}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\V3.0\Microsoft.Silverlight.CSharp.targets" />
 </Project>
