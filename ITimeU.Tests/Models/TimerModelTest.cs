@@ -252,7 +252,7 @@ namespace ITimeU.Tests.Models
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
             });
 
             Then("the timer should be set to 0", () =>
@@ -273,7 +273,7 @@ namespace ITimeU.Tests.Models
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
             });
 
             Then("the timer should be set to 0", () =>
@@ -296,7 +296,7 @@ namespace ITimeU.Tests.Models
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
             });
 
             Then("a new timer should be created", () =>
@@ -312,12 +312,13 @@ namespace ITimeU.Tests.Models
             {
                 timer = new TimerModel();
                 timer.Start();
+
             });
 
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
                 timer.Start();
             });
 

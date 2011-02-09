@@ -131,12 +131,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITimeU.DAL\ITimeU.DAL.csproj">
-      <Project>{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}</Project>
-      <Name>ITimeU.DAL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Timer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
