@@ -17,39 +17,39 @@ using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 
-namespace ITimeU.DAL
+namespace ITimeU.Models
 {
     #region Contexts
     
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class ITimeUEntities : ObjectContext
+    public partial class Entities : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new ITimeUEntities object using the connection string found in the 'ITimeUEntities' section of the application configuration file.
+        /// Initializes a new Entities object using the connection string found in the 'Entities' section of the application configuration file.
         /// </summary>
-        public ITimeUEntities() : base("name=ITimeUEntities", "ITimeUEntities")
+        public Entities() : base("name=Entities", "Entities")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new ITimeUEntities object.
+        /// Initialize a new Entities object.
         /// </summary>
-        public ITimeUEntities(string connectionString) : base(connectionString, "ITimeUEntities")
+        public Entities(string connectionString) : base(connectionString, "Entities")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new ITimeUEntities object.
+        /// Initialize a new Entities object.
         /// </summary>
-        public ITimeUEntities(EntityConnection connection) : base(connection, "ITimeUEntities")
+        public Entities(EntityConnection connection) : base(connection, "Entities")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -64,38 +64,6 @@ namespace ITimeU.DAL
         #endregion
     
         #region ObjectSet Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Race> Races
-        {
-            get
-            {
-                if ((_Races == null))
-                {
-                    _Races = base.CreateObjectSet<Race>("Races");
-                }
-                return _Races;
-            }
-        }
-        private ObjectSet<Race> _Races;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Timer> Timers
-        {
-            get
-            {
-                if ((_Timers == null))
-                {
-                    _Timers = base.CreateObjectSet<Timer>("Timers");
-                }
-                return _Timers;
-            }
-        }
-        private ObjectSet<Timer> _Timers;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -148,6 +116,22 @@ namespace ITimeU.DAL
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<Race> Races
+        {
+            get
+            {
+                if ((_Races == null))
+                {
+                    _Races = base.CreateObjectSet<Race>("Races");
+                }
+                return _Races;
+            }
+        }
+        private ObjectSet<Race> _Races;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<RaceIntermediate> RaceIntermediates
         {
             get
@@ -160,25 +144,25 @@ namespace ITimeU.DAL
             }
         }
         private ObjectSet<RaceIntermediate> _RaceIntermediates;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Timer> Timers
+        {
+            get
+            {
+                if ((_Timers == null))
+                {
+                    _Timers = base.CreateObjectSet<Timer>("Timers");
+                }
+                return _Timers;
+            }
+        }
+        private ObjectSet<Timer> _Timers;
 
         #endregion
         #region AddTo Methods
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Races EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToRaces(Race race)
-        {
-            base.AddObject("Races", race);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToTimers(Timer timer)
-        {
-            base.AddObject("Timers", timer);
-        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the Checkpoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -205,11 +189,27 @@ namespace ITimeU.DAL
         }
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the Races EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRaces(Race race)
+        {
+            base.AddObject("Races", race);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the RaceIntermediates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToRaceIntermediates(RaceIntermediate raceIntermediate)
         {
             base.AddObject("RaceIntermediates", raceIntermediate);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToTimers(Timer timer)
+        {
+            base.AddObject("Timers", timer);
         }
 
         #endregion

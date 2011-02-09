@@ -43,21 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParticipantDAL.cs" />
-    <Compile Include="DBItem.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBItem.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RaceDAL.cs" />
-    <Compile Include="TimerDAL.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="DBItem.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBItem.Designer.cs</LastGenOutput>
-    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />

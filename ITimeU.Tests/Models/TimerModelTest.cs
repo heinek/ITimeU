@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Web.Mvc;
 using ITimeU.Controllers;
-using ITimeU.DAL;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
@@ -14,6 +14,7 @@ namespace ITimeU.Tests.Models
     public class TimerModelTest : ScenarioClass
     {
         private TimerModel timer = null;
+        private RaceModel race = null;
 
         [TestMethod]
         public void A_Timer_Exists()
@@ -129,8 +130,7 @@ namespace ITimeU.Tests.Models
 
             Then("the start time should be saved to the database", () =>
             {
-                var timerDal = TimerDAL.GetTimerById(timer.Id);
-                timerDal.StartTime.HasValue.ShouldBeTrue();
+                timer.StartTime.HasValue.ShouldBeTrue();
             });
         }
 
@@ -139,7 +139,8 @@ namespace ITimeU.Tests.Models
         {
             DateTime? startTime = new DateTime();
 
-            Given("we have a started timer", () => {
+            Given("we have a started timer", () =>
+            {
                 timer = new TimerModel();
                 timer.Start();
             });
@@ -152,8 +153,8 @@ namespace ITimeU.Tests.Models
 
             Then("the end time should be saved to the database", () =>
             {
-                var timerDal = TimerDAL.GetTimerById(timer.Id);
-                timerDal.EndTime.HasValue.ShouldBeTrue();
+                var timerModel = TimerModel.GetTimerById(timer.Id);
+                timerModel.EndTime.HasValue.ShouldBeTrue();
             });
         }
         [TestMethod]
@@ -243,7 +244,7 @@ namespace ITimeU.Tests.Models
 
             Then("The start time should be stopped", () =>
                 {
-                    var time = TimerDAL.GetTimerById(timer.Id);
+                    var time = TimerModel.GetTimerById(timer.Id);
                     timer.EndTime.HasValue.ShouldBeTrue();
                 }
                 );
@@ -322,7 +323,6 @@ namespace ITimeU.Tests.Models
             {
                 timer = new TimerModel();
                 timer.Start();
-                timerModelId = timer.Id;
             });
 
             When("we stop and restart the timer", () =>
@@ -336,6 +336,17 @@ namespace ITimeU.Tests.Models
             {
                 timer.StartTime.ShouldNotBeNull();
             });
+        }
+
+        [TestMethod]
+        public void We_Should_Have_A_List_With_Races()
+        {
+            var races = new List<RaceModel>();
+            Given("we have a timer", () => timer = new TimerModel());
+
+            When("we want to select a race", () => races = RaceModel.GetRaces());
+
+            Then("the racelist should contain at least one race", () => races.Count.ShouldNotBe(0));
         }
 
         [TestCleanup]
