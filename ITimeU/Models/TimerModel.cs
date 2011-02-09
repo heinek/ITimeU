@@ -66,7 +66,7 @@ namespace ITimeU.Models
             timerDal.Save();
         }
 
-        public void Restart()
+        public void Reset()
         {
             //var newTimer = TimerDAL.Create();
             //newTimer.Save();

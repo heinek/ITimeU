@@ -21,26 +21,22 @@
         var lblTimer = Tools.selectById(runningTimerLabelID);
 
         new TimerHandler().initTimer(lblTimer, btnStartTimer, btnReset);
-
+        btnReset.attr("disabled", true);
         btnStartTimer.click(function () {
             if (btnStartTimer.val() == "Start") {
                 btnStartTimer.val('Stop');
-                btnReset.val('Runde');
+                btnReset.attr("disabled", true);
                 $.get("/Timer/Start/");
             }
             else {
                 btnStartTimer.val('Start');
-                btnReset.val('Nullstill');
+                btnReset.attr("disabled", false);
                 $.get("/Timer/Stop/");
             }
         });
 
         btnReset.click(function () {
-            if (btnReset.val() == "Nullstill") {
-                $.get("/Timer/Reset/");
-            }
-            else {
-            }
+           $.get("/Timer/Reset/");
         });
     });
 </script>
