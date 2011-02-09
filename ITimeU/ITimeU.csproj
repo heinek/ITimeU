@@ -72,9 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Scripts\timer_handlers.js" />
-    <Content Include="Scripts\timer_jquery.js" />
-    <Content Include="Scripts\timer_stopwatch.js" />
+    <Content Include="Scripts\TimeFormatFactory.js" />
+    <Content Include="Scripts\TimerHandler.js" />
+    <Content Include="Scripts\Stopwatch.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -133,6 +133,7 @@
   <ItemGroup>
     <Content Include="localSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

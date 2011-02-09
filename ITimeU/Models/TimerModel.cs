@@ -18,6 +18,7 @@ namespace ITimeU.Models
             StartTime = null;
             IsStarted = false;
         }
+
         /// <summary>
         /// Starts the timer.
         /// </summary>
