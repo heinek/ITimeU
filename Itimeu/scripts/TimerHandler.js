@@ -18,8 +18,10 @@ TimerHandler.prototype.initTimer = function (labelID, buttonID) {
         var displayText = timeFormatFactory.MSSDFormat(runtime);
         $("#"+labelID).html(displayText);
     });
-    
-    $("#"+buttonID).bind("click", function () { timer.startStop(); });
+
+    $("#" + buttonID).bind("click", function () { timer.startStop(); });
+
+    $("#btnResetTimer").bind("click", function () { timer.resetLap(); });
     
     timer.doDisplay();
 }
