@@ -83,9 +83,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Scripts\timer_handlers.js" />
-    <Content Include="Scripts\timer_jquery.js" />
-    <Content Include="Scripts\timer_stopwatch.js" />
+    <Content Include="Scripts\TimeFormatFactory.js" />
+    <Content Include="Scripts\TimerHandler.js" />
+    <Content Include="Scripts\Stopwatch.js" />
+    <Content Include="Scripts\Tools.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -130,12 +131,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITimeU.DAL\ITimeU.DAL.csproj">
-      <Project>{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}</Project>
-      <Name>ITimeU.DAL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Timer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +139,7 @@
   <ItemGroup>
     <Content Include="localSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>

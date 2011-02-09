@@ -87,10 +87,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITimeU.DAL\ITimeU.DAL.csproj">
-      <Project>{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}</Project>
-      <Name>ITimeU.DAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ITimeU\ITimeU.csproj">
       <Project>{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}</Project>
       <Name>ITimeU</Name>
