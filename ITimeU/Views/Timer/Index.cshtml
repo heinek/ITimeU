@@ -15,21 +15,34 @@
         var startStopButtonID = "btnStartTimer"; //must be same as html below
 
         new TimerHandler().initTimer(runningTimerLabelID, startStopButtonID);
-
+        var btnReset = $("#reset1");
         var btnStartTimer = $("#" + startStopButtonID);
         btnStartTimer.click(function () {
             if (btnStartTimer.val() == "Start") {
                 btnStartTimer.val('Stop');
+                btnReset.val('Runde');
                 $.get("/Timer/Start/");
             }
             else {
                 btnStartTimer.val('Start');
+                btnReset.val('Nullstill');
                 $.get("/Timer/Stop/");
             }
         });
     });
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#reset").click(function () {
+            var btn = $("#reset1");
+            if (btn.val() == "Nullstill") {
+                $.get("/Timer/Reset/");
+            }
+            else {
+            }
+        });
+    });
+</script>
 
     <h2>Timer View</h2>
 
