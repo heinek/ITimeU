@@ -156,22 +156,6 @@ namespace ITimeU.Tests.Models
                 timerDal.EndTime.HasValue.ShouldBeTrue();
             });
         }
-        [TestMethod]
-        public void The_Running_Time_Should_Be_Shown()
-        {
-            Given("we have a timer", () => timer = new TimerModel());
-
-            When("the timer is started", () => timer.Start());
-
-            Then("the running time should have a value", () =>
-            {
-                TimerController timerController = new TimerController();
-                timerController.SetFakeControllerContext();
-                ViewResult result = (ViewResult)timerController.Index();
-                result.ViewName.ShouldBe("Index");
-                result.ViewData["time1"].ShouldNotBeNull();
-            });
-        }
 
         [TestMethod]
         public void A_Timer_Should_Not_Be_Running_After_It_Has_Stopped()
