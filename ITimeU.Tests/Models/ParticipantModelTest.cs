@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Web.Mvc;
 using ITimeU.Controllers;
-using ITimeU.DAL;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
