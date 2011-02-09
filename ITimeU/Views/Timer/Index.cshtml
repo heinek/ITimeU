@@ -5,20 +5,25 @@
 
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
 
-<script src="@Url.Content("~/Scripts/timer_jquery.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/timer_stopwatch.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/timer_handlers.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Stopwatch.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/TimerHandler.js")" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $(":button").click(function () {
-            var btn = $(":button");
-            if (btn.val() == "Start") {
-                btn.val('Stop');                
+        var runningTimerLabelID = "lblRunningTimer"; //must be same as html below
+        var startStopButtonID = "btnStartTimer"; //must be same as html below
+
+        new TimerHandler().initTimer(runningTimerLabelID, startStopButtonID);
+
+        var btnStartTimer = $("#" + startStopButtonID);
+        btnStartTimer.click(function () {
+            if (btnStartTimer.val() == "Start") {
+                btnStartTimer.val('Stop');
                 $.get("/Timer/Start/");
             }
             else {
-                btn.val('Start');
+                btnStartTimer.val('Start');
                 $.get("/Timer/Stop/");
             }
         });
@@ -28,9 +33,9 @@
 
     <h2>Timer View</h2>
 
-    <span id="time1" style="width: 100px"></span>
+    <span id="lblRunningTimer" style="width: 100px"></span>
     
-    <input type="button" id="start1" value="Start" style="width: 100px" />
+    <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
     
 
     
