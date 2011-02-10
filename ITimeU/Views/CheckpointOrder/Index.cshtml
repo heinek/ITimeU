@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ITimeU.Models.CheckpointOrderModel>
+
+@{
+    ViewBag.Title = "CheckpointOrder";
+}
+
+<h2>CheckpointOrder</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            CheckpointID
+        </th>
+        <th>
+            StartingNumber
+        </th>
+        <th>
+            OrderNumber
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+        <td>
+            @item.CheckpointID
+        </td>
+        <td>
+            @item.StartingNumber
+        </td>
+        <td>
+            @item.OrderNumber
+        </td>
+    </tr>
+}
+
+</table>
+
