@@ -10,11 +10,11 @@ function TimerHandler() { }
 */
 
 var timeFormatFactory = new TimeFormatFactory();
-
+var timer;
 // Initialises a Stopwatch instance that displays its time nicely formatted.
 TimerHandler.prototype.initTimer = function (lblTimer, btnStartStop, btnReset) {
 
-    var timer = new Stopwatch(function (runtime) {
+    timer = new Stopwatch(function (runtime) {
         var displayText = timeFormatFactory.MSSDFormat(runtime);
         lblTimer.html(displayText);
     });
@@ -22,6 +22,14 @@ TimerHandler.prototype.initTimer = function (lblTimer, btnStartStop, btnReset) {
     btnStartStop.bind("click", function () { timer.startStop(); });
     btnReset.bind("click", function () { timer.resetLap(); });
     timer.doDisplay();
+}
+
+TimerHandler.prototype.registerIntermediateTime = function (htmlListElement) {
+    timer.addIntermediate(function (runtime) {
+        var displayText = timeFormatFactory.MSSDFormat(runtime);
+        htmlListElement.append('<li>' + displayText + '</li>');
+        
+     });
 }
 
 

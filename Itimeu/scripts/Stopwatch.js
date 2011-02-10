@@ -32,6 +32,10 @@ Stopwatch.prototype.doDisplay = function () {
         this.displayTime(this.laptime);
 }
 
+Stopwatch.prototype.addIntermediate = function (updateList) {
+    updateList(this.runtime);
+}
+
 /**
 * Handles an incoming start/stop event.
 */

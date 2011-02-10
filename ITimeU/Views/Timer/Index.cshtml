@@ -15,29 +15,45 @@
         var runningTimerLabelID = "lblRunningTimer"; //must be same as html below
         var startStopButtonID = "btnStartTimer"; //must be same as html below
         var resetTimerButtonID = "btnResetTimer"; //must be same as html below
+        var btnIntermediateID = "btnIntermediate"; //must be same as html below
+        var listIntermediateID = "olIntermediates"; //must be same as html below
 
         var btnReset = Tools.selectById(resetTimerButtonID);
         var btnStartTimer = Tools.selectById(startStopButtonID);
         var lblTimer = Tools.selectById(runningTimerLabelID);
+        var btnIntermediate = Tools.selectById(btnIntermediateID);
+        var listIntermediate = Tools.selectById(listIntermediateID);
 
-        new TimerHandler().initTimer(lblTimer, btnStartTimer, btnReset);
+        var handler = new TimerHandler();
+        handler.initTimer(lblTimer, btnStartTimer, btnReset);
         btnReset.attr("disabled", true);
+        btnIntermediate.attr("disabled", true);
         btnStartTimer.click(function () {
             if (btnStartTimer.val() == "Start") {
                 btnStartTimer.val('Stop');
+                btnIntermediate.attr("disabled", false);
                 btnReset.attr("disabled", true);
                 $.get("/Timer/Start/");
             }
             else {
                 btnStartTimer.val('Start');
                 btnReset.attr("disabled", false);
+                btnIntermediate.attr("disabled", true);
                 $.get("/Timer/Stop/");
             }
         });
 
         btnReset.click(function () {
-           $.get("/Timer/Reset/");
+            $.get("/Timer/Reset/");
+            Tools.emptyList(listIntermediate);
         });
+
+        btnIntermediate.click(function () {
+            handler.registerIntermediateTime(listIntermediate);
+        });
+
+
+
     });
 </script>
 
@@ -48,6 +64,8 @@
     
     <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
     <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
+    <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
+    <ol id="olIntermediates" />
     
 
     
