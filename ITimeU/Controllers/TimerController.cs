@@ -54,7 +54,7 @@ namespace ITimeU.Controllers
         public ActionResult Reset()
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
-            timerModel.Restart();
+            timerModel.Reset();
             Session["timer"] = timerModel;
             return View("Index", timerModel);
         }
