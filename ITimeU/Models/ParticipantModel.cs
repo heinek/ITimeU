@@ -1,5 +1,4 @@
 ﻿using System;
-using ITimeU.DAL;
 
 namespace ITimeU.Models
 {
@@ -151,6 +150,9 @@ namespace ITimeU.Models
                 gender = value;
             }
         }
+
+        
+
 
         public ParticipantModel()
         {

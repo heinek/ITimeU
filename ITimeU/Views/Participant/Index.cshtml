@@ -1,39 +1,27 @@
-﻿@model ITimeU.Models.TimerModel
+﻿@model ITimeU.Models.ParticipantModel
 @{
     ViewBag.Title = "Index";
 }
 
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $("#ParticipantNumber").onKeyUp(function () {
-                        
-            // finn ut om det er Enter som er trykket 
 
-            // koble til event
-
-//            var btnStart = $("#start1");
-//            var btnReset = $("#reset1");
-//            if (btnStart.val() == "Start") {
-//                btnStart.val('Stop');
-//                btnReset.val('Runde');
-//                $.get("/Timer/Start/");
-//            }
-//            else {
-//                btnStart.val('Start');
-//                btnReset.val('Nullstill');
-//                $.get("/Timer/Stop/");
-//            }
-        });
+    btnRegister.click(function () {
+        $.get("/Participant/Register/");
     });
+
 </script>
 
     <h2>Participant View</h2>
 
     Startnummer: 
-    <input type="text" id="ParticipantNumber" value="" />
+    <input type="text" id="txtParticipantNumber" value="" />
+    <input type="button" id="btnRegister" value="Register" />
 
-    <ol id="ParticipantsList"></ol>    
+    <!-- liste med startnummer fra databasen -->
+    <span id="txtStartingNumbers"></span>
     
 
     
