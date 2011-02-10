@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using ITimeU.Models;
+using ITimeU.Logging;
 
 namespace ITimeU.Controllers
 {
@@ -59,5 +60,11 @@ namespace ITimeU.Controllers
             return View("Index", timerModel);
         }
 
+        public ActionResult SaveIntermediateTime(string runtime)
+        {
+            string reply = "Hello. Runtime is: " + runtime;
+            LogWriter.getInstance().Write(reply);
+            return Content(reply);
+        }
     }
 }
