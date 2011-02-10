@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\ParticipantModelTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
@@ -87,10 +88,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITimeU.DAL\ITimeU.DAL.csproj">
-      <Project>{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}</Project>
-      <Name>ITimeU.DAL</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ITimeU\ITimeU.csproj">
       <Project>{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}</Project>
       <Name>ITimeU</Name>
@@ -99,6 +96,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

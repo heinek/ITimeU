@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Web.Mvc;
 using ITimeU.Controllers;
-using ITimeU.DAL;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
@@ -14,6 +14,7 @@ namespace ITimeU.Tests.Models
     public class TimerModelTest : ScenarioClass
     {
         private TimerModel timer = null;
+        private RaceModel race = null;
 
         [TestMethod]
         public void A_Timer_Exists()
@@ -87,7 +88,7 @@ namespace ITimeU.Tests.Models
                     timer.Start();
                     false.ShouldBeTrue(); // Fail test, we shouldn't get here.
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
                     true.ShouldBeTrue();
                 }
@@ -115,31 +116,27 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void The_Start_Time_Should_Be_Saved_To_The_Database()
+        public void The_Start_Time_Should_Be_Set_When_Started()
         {
-            DateTime? startTime = new DateTime();
-
             Given("we have a timer", () => timer = new TimerModel());
 
-            When("we start the timer", () =>
-            {
-                timer.Start();
-                startTime = timer.StartTime;
-            });
+            When("we start the timer", () => timer.Start());
 
             Then("the start time should be saved to the database", () =>
             {
-                var timerDal = TimerDAL.GetTimerById(timer.Id);
-                timerDal.StartTime.HasValue.ShouldBeTrue();
+                timer.StartTime.HasValue.ShouldBeTrue();
             });
         }
 
         [TestMethod]
         public void The_End_Time_Should_Be_Saved_To_The_Database()
         {
-            DateTime? startTime = new DateTime();
+            // Known bug in this test. See doc/KnownBugs.txt.
 
-            Given("we have a started timer", () => {
+            DateTime endTime = new DateTime();
+
+            Given("we have a started timer", () =>
+            {
                 timer = new TimerModel();
                 timer.Start();
             });
@@ -147,13 +144,28 @@ namespace ITimeU.Tests.Models
             When("we stop the timer", () =>
             {
                 timer.Stop();
-                startTime = timer.EndTime;
+                endTime = (DateTime)timer.EndTime;
             });
 
             Then("the end time should be saved to the database", () =>
             {
-                var timerDal = TimerDAL.GetTimerById(timer.Id);
-                timerDal.EndTime.HasValue.ShouldBeTrue();
+                int year = endTime.Year;
+                int month = endTime.Month;
+                int day = endTime.Day;
+                int hour = endTime.Hour;
+                int min = endTime.Minute;
+                int sec = endTime.Second;
+                int millisec = endTime.Millisecond;
+
+                var timerDb = TimerModel.GetTimerById(timer.Id);
+                var endTimeDb = (DateTime) timerDb.EndTime;
+
+                endTimeDb.Year.ShouldBe(year);
+                endTimeDb.Month.ShouldBe(month);
+                endTimeDb.Day.ShouldBe(day);
+                endTimeDb.Minute.ShouldBe(min);
+                endTimeDb.Second.ShouldBe(sec);
+                endTimeDb.Millisecond.ShouldBe(millisec);
             });
         }
 
@@ -192,7 +204,6 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        // TODO: A Stopped timer must have an end time
         [TestMethod]
         public void A_Stopped_Timer_Must_Have_An_End_Time()
         {
@@ -209,52 +220,23 @@ namespace ITimeU.Tests.Models
                 timer.EndTime.ShouldBeInstanceOfType<DateTime>();
             });
         }
-
-
-           
-
+        
         [TestMethod]
-        public void The_start_Time_Should_Be_Stoped()
+        public void The_Start_Time_Should_Be_Null_When_Reset_Is_Pushed()
         {
-            DateTime stopTime = new DateTime();
-
-            Given("We have a start timer", () =>
+            Given("we have a started timer", () =>
             {
                 timer = new TimerModel();
                 timer.Start();
-            }
-                );
-
-            When("We stop the time", () =>
-            {
-                timer.Stop();
-            }
-                );
-
-            Then("The start time should be stopped", () =>
-                {
-                    var time = TimerDAL.GetTimerById(timer.Id);
-                    timer.EndTime.HasValue.ShouldBeTrue();
-                }
-                );
-        }
-
-        [TestMethod]
-        public void The_Starttime_Should_Be_Null_When_Reset_Is_Pushed()
-        {
-            Given("we have a starttimer", () =>
-                {
-                    timer = new TimerModel();
-                    timer.Start();
-                });
-
-            When("we stop and restart the timer", () =>
-            {
-                timer.Stop();
-                timer.Restart();
             });
 
-            Then("the timer should be set to 0", () =>
+            When("we stop and reset the timer", () =>
+            {
+                timer.Stop();
+                timer.Reset();
+            });
+
+            Then("the start time should be set to null", () =>
             {
                 timer.StartTime.ShouldBeNull();
             });
@@ -263,19 +245,19 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_Endtime_Should_Be_Null_When_Reset_Is_Pushed()
         {
-            Given("we have a starttimer", () =>
+            Given("we have a started timer", () =>
             {
                 timer = new TimerModel();
                 timer.Start();
             });
 
-            When("we stop and restart the timer", () =>
+            When("we stop and reset the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
             });
 
-            Then("the timer should be set to 0", () =>
+            Then("the end time should be set to null", () =>
             {
                 timer.EndTime.ShouldBeNull();
             });
@@ -285,7 +267,7 @@ namespace ITimeU.Tests.Models
         public void A_New_TimerModel_Should_Be_Created_When_We_Reset_The_Timer()
         {
             int timerId = 0;
-            Given("we have a starttimer", () =>
+            Given("we have a started timer", () =>
             {
                 timer = new TimerModel();
                 timer.Start();
@@ -295,7 +277,7 @@ namespace ITimeU.Tests.Models
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
             });
 
             Then("a new timer should be created", () =>
@@ -305,35 +287,66 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void Starttime_Should_Be_Saved_When_We_Start_A_New_Timer_After_Reset()
+        public void The_Start_Time_Should_Be_Set_When_We_Reset_And_Start_The_Timer()
         {
-            int timerId = 0;
-            Given("we have a starttimer", () =>
+            Given("we have a started timer", () =>
             {
                 timer = new TimerModel();
                 timer.Start();
-                timerId = timer.Id;
             });
 
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Reset();
                 timer.Start();
             });
 
-            Then("a new timer should be created", () =>
+            Then("the start time should be set", () =>
             {
                 timer.StartTime.ShouldNotBeNull();
             });
         }
 
+        [TestMethod]
+        public void Resetting_The_Timer_When_It_Is_Started_Should_Not_Be_Allowed()
+        {
+            // Reason: The GUI button "Nullstill" (eng: Reset) is disabled when the
+            // timer is started. This test ensures this behavior.
+
+            Given("we have a started timer", () =>
+            {
+                timer = new TimerModel();
+                timer.Start();
+            });
+
+            When("we reset the timer", () =>
+            {
+                try
+                {
+                    timer.Reset();
+                    false.ShouldBeTrue();
+                } catch (InvalidOperationException) { }
+            });
+
+            Then("we should get an exception");
+        }
+
+        [TestMethod]
+        public void We_Should_Have_A_List_With_Races()
+        {
+            var races = new List<RaceModel>();
+            Given("we have a timer", () => timer = new TimerModel());
+
+            When("we want to select a race", () => races = RaceModel.GetRaces());
+
+            Then("the racelist should contain at least one race", () => races.Count.ShouldNotBe(0));
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {
-
             StartScenario();
-
         }
 
 

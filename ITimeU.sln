@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU.DAL", "ITimeU.DAL\ITimeU.DAL.csproj", "{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU", "ITimeU\ITimeU.csproj", "{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU.Tests", "ITimeU.Tests\ITimeU.Tests.csproj", "{E92D2870-1EAB-4BD1-BC96-41D783A6ACCA}"
@@ -26,16 +24,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{BC7FAE9F-8780-46B4-A298-0A42E0F969BB}.Release|x86.ActiveCfg = Release|Any CPU
 		{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
