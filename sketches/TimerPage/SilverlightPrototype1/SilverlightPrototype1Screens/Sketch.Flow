@@ -6,12 +6,24 @@
     <Screen>
       <Type>Navigation</Type>
       <ClassName>SilverlightPrototype1Screens.Screen_1</ClassName>
-      <DisplayName>Screen 1</DisplayName>
+      <DisplayName>Timer</DisplayName>
       <FileName>Screen 1.xaml</FileName>
       <Annotations />
       <Position>
         <X>0</X>
         <Y>0</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_2</ClassName>
+      <DisplayName>Order</DisplayName>
+      <FileName>Screen 2.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>150</X>
+        <Y>32</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
@@ -61,6 +73,9 @@
   </VisualTags>
   <ViewState>
     <Zoom>1</Zoom>
-    <Center xsi:nil="true" />
+    <Center>
+      <X>150</X>
+      <Y>32.185</Y>
+    </Center>
   </ViewState>
 </Data>

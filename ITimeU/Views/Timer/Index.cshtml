@@ -5,33 +5,38 @@
 
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
 
-<script src="@Url.Content("~/Scripts/timer_jquery.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/timer_stopwatch.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/timer_handlers.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Stopwatch.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/TimerHandler.js")" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#start1").click(function () {
-            var btnStart = $("#start1");
-            var btnReset = $("#reset1");
-            if (btnStart.val() == "Start") {
-                btnStart.val('Stop');
+        var runningTimerLabelID = "lblRunningTimer"; //must be same as html below
+        var startStopButtonID = "btnStartTimer"; //must be same as html below
+        var resetTimerButtonID = "btnResetTimer"; //must be same as html below
+
+        var btnReset = Tools.selectById(resetTimerButtonID);
+        var btnStartTimer = Tools.selectById(startStopButtonID);
+        var lblTimer = Tools.selectById(runningTimerLabelID);
+
+        new TimerHandler().initTimer(lblTimer, btnStartTimer, btnReset);
+
+        btnStartTimer.click(function () {
+            if (btnStartTimer.val() == "Start") {
+                btnStartTimer.val('Stop');
                 btnReset.val('Runde');
                 $.get("/Timer/Start/");
             }
             else {
-                btnStart.val('Start');
+                btnStartTimer.val('Start');
                 btnReset.val('Nullstill');
                 $.get("/Timer/Stop/");
             }
         });
-    });
-</script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $("#reset").click(function () {
-            var btn = $("#reset1");
-            if (btn.val() == "Nullstill") {
+
+        btnReset.click(function () {
+            if (btnReset.val() == "Nullstill") {
                 $.get("/Timer/Reset/");
             }
             else {
@@ -40,11 +45,13 @@
     });
 </script>
 
+
     <h2>Timer View</h2>
 
-    <span id="time1" style="width: 100px"></span>
+    <span id="lblRunningTimer" style="width: 100px"></span>
     
-    <input type="button" id="start1" value="Start" style="width: 100px" />&nbsp;<input type="button" id="reset1" value="Nullstill" style="width: 100px" />
+    <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
+    <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
     
 
     

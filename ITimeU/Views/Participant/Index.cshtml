@@ -1,0 +1,39 @@
+﻿@model ITimeU.Models.TimerModel
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ParticipantNumber").onKeyUp(function () {
+                        
+            // finn ut om det er Enter som er trykket 
+
+            // koble til event
+
+//            var btnStart = $("#start1");
+//            var btnReset = $("#reset1");
+//            if (btnStart.val() == "Start") {
+//                btnStart.val('Stop');
+//                btnReset.val('Runde');
+//                $.get("/Timer/Start/");
+//            }
+//            else {
+//                btnStart.val('Start');
+//                btnReset.val('Nullstill');
+//                $.get("/Timer/Stop/");
+//            }
+        });
+    });
+</script>
+
+    <h2>Participant View</h2>
+
+    Startnummer: 
+    <input type="text" id="ParticipantNumber" value="" />
+
+    <ol id="ParticipantsList"></ol>    
+    
+
+    

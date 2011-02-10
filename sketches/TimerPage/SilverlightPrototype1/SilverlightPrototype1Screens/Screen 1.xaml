@@ -5,16 +5,54 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
 	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+	xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input"
 	x:Class="SilverlightPrototype1Screens.Screen_1"
 	Width="640" Height="480">
 
 	<Grid x:Name="LayoutRoot" Background="White">
-		<Grid Height="39" Margin="148,173,233,0" VerticalAlignment="Top">
-			<Button x:Name="button" Style="{StaticResource Button-Sketch}" Content="Start" HorizontalAlignment="Left" Width="121" 
-				Grid.Column = "0" Grid.Row="0" >
+		<Grid Margin="37,0,0,199" HorizontalAlignment="Left" Width="400" Height="39" VerticalAlignment="Bottom">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="0.332*"/>
+				<ColumnDefinition Width="0.335*"/>
+				<ColumnDefinition Width="0.332*"/>
+			</Grid.ColumnDefinitions>
+			<Button x:Name="button_Start" Style="{StaticResource Button-Sketch}" Content="Start" 
+				Grid.Column = "1" Grid.Row="0" Height="39" Margin="36,0,-36,0" >
 				<i:Interaction.Triggers>
-					<i:EventTrigger EventName="Click" SourceName="button">
-						<ic:ChangePropertyAction TargetName="button_Copy" PropertyName="Visibility">
+					<i:EventTrigger EventName="Click" SourceName="button_Start">
+						<ic:ChangePropertyAction TargetName="button_Stop" PropertyName="Visibility">
+							<ic:ChangePropertyAction.Value>
+								<Visibility>Visible</Visibility>
+							</ic:ChangePropertyAction.Value>
+						</ic:ChangePropertyAction>
+						<ic:ChangePropertyAction TargetName="button_Reset" PropertyName="IsEnabled">
+							<ic:ChangePropertyAction.Value>False</ic:ChangePropertyAction.Value>
+						</ic:ChangePropertyAction>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</Button>
+			<TextBlock 
+				Grid.Row="0" Margin="24,5,34,4" Style="{StaticResource TextBlock-Sketch}" FontSize="21.333" Text="00:00:00" TextWrapping="Wrap" Width="75" Height="30"/>
+			<Button x:Name="button_Stop" Style="{StaticResource Button-Sketch}" Content="Stop" 
+				Grid.Column = "1" Grid.Row="0" Height="39" Visibility="Collapsed" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger SourceName="button_Stop" EventName="Click">
+						<ic:ChangePropertyAction TargetName="button_Stop" PropertyName="Visibility">
+							<ic:ChangePropertyAction.Value>
+								<Visibility>Collapsed</Visibility>
+							</ic:ChangePropertyAction.Value>
+						</ic:ChangePropertyAction>
+						<ic:ChangePropertyAction TargetName="button_Reset" PropertyName="IsEnabled">
+							<ic:ChangePropertyAction.Value>True</ic:ChangePropertyAction.Value>
+						</ic:ChangePropertyAction>
+					</i:EventTrigger>
+				</i:Interaction.Triggers>
+			</Button>
+			<Button x:Name="button_Lap" Style="{StaticResource Button-Sketch}" Content="Mellomtid" 
+				Grid.Column = "2" Grid.Row="0" Height="39" Margin="0,0,-202,0" HorizontalAlignment="Right" Width="134" >
+				<i:Interaction.Triggers>
+					<i:EventTrigger EventName="Click" SourceName="button_Start">
+						<ic:ChangePropertyAction TargetName="button_Stop" PropertyName="Visibility">
 							<ic:ChangePropertyAction.Value>
 								<Visibility>Visible</Visibility>
 							</ic:ChangePropertyAction.Value>
@@ -22,20 +60,23 @@
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
 			</Button>
-			<TextBlock HorizontalAlignment="Right" 
-				Grid.Row="0" Margin="0,13,0,0" Style="{StaticResource TextBlock-Sketch}" Width="106" FontSize="21.333" Text="00:00:00" TextWrapping="Wrap" d:LayoutOverrides="GridBox" VerticalAlignment="Center" Height="39"/>
-			<Button x:Name="button_Copy" Style="{StaticResource Button-Sketch}" Content="Stop" HorizontalAlignment="Left" Width="121" 
-				Grid.Column = "0" Grid.Row="0" Visibility="Collapsed" >
+			<Button x:Name="button_Reset" Style="{StaticResource Button-Sketch}" Content="Nullstill" 
+				Grid.Column = "2" Grid.Row="0" Height="39" Margin="50,0,-51,0" >
 				<i:Interaction.Triggers>
-					<i:EventTrigger SourceName="button_Copy" EventName="Click">
-						<ic:ChangePropertyAction TargetName="button_Copy" PropertyName="Visibility">
+					<i:EventTrigger EventName="Click" SourceName="button_Start">
+						<ic:ChangePropertyAction TargetName="button_Stop" PropertyName="Visibility">
 							<ic:ChangePropertyAction.Value>
-								<Visibility>Collapsed</Visibility>
+								<Visibility>Visible</Visibility>
 							</ic:ChangePropertyAction.Value>
 						</ic:ChangePropertyAction>
 					</i:EventTrigger>
 				</i:Interaction.Triggers>
 			</Button>
 		</Grid>
+		<dataInput:Label HorizontalAlignment="Left" Margin="91,38,0,0" VerticalAlignment="Top" Content="ITimeU 1.0" FontFamily="Trebuchet MS" FontSize="26.667"/>
+		<ComboBox x:Name="dropDownRace" Margin="205,117,301,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" Height="39"/>
+		<TextBlock x:Name="txtChooseRace" HorizontalAlignment="Left" Margin="60,122,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Velg løp" TextWrapping="Wrap" FontSize="21.333" Width="75" Height="30"/>
+		<TextBlock x:Name="txtChooseRace_Copy" Height="30" HorizontalAlignment="Left" Margin="60,178,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Width="126" FontSize="21.333" Text="Velg mellomtid" TextWrapping="Wrap"/>
+		<ComboBox x:Name="dropDownIntermediateTime" Height="39" Margin="205,173,301,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top"/>
 	</Grid>
 </UserControl>
