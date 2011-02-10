@@ -1,5 +1,5 @@
 ﻿using System;
-using ITimeU.DAL;
+using System.Linq;
 
 // TODO: Write class summary.
 
@@ -42,11 +42,7 @@ namespace ITimeU.Models
 
         private int SaveStartTimeToDb()
         {
-            var timerDal = TimerDAL.Create();
-            timerDal.StartTime = StartTime;
-            timerDal.Save();
-
-            return timerDal.TimerID;
+            return Create().Id;
         }
 
         /// <summary>
@@ -61,12 +57,12 @@ namespace ITimeU.Models
 
         private void SaveStopTimeStampToDb(DateTime? EndTime)
         {
-            var timerDal = TimerDAL.GetTimerById(Id);
+            var timerDal = GetTimerById(Id);
             timerDal.EndTime = EndTime;
             timerDal.Save();
         }
 
-        public void Restart()
+        public void Reset()
         {
             //var newTimer = TimerDAL.Create();
             //newTimer.Save();
@@ -74,6 +70,43 @@ namespace ITimeU.Models
             IsStarted = false;
             StartTime = null;
             EndTime = null;
+        }
+
+        public static TimerModel GetTimerById(int id)
+        {
+            using (var ctx = new Entities())
+            {
+                var timer = ctx.Timers.Single(tmr => tmr.TimerID == id);
+                var timerDal = new TimerModel()
+                {
+                    Id = timer.TimerID,
+                    StartTime = timer.StartTime,
+                    EndTime = timer.EndTime
+                };
+                return timerDal;
+            }
+        }
+        public static TimerModel Create()
+        {
+            TimerModel timerModel = new TimerModel();
+            using (var ctx = new Entities())
+            {
+                Timer timer = new Timer();
+                ctx.Timers.AddObject(timer);
+                ctx.SaveChanges();
+                timerModel.Id = ctx.Timers.OrderByDescending(tmr => tmr.TimerID).First().TimerID;
+            }
+            return timerModel;
+        }
+        public void Save()
+        {
+            using (var ctx = new Entities())
+            {
+                Timer timer = ctx.Timers.Single(tmr => tmr.TimerID == Id);
+                timer.StartTime = this.StartTime;
+                if (this.EndTime.HasValue) timer.EndTime = this.EndTime;
+                ctx.SaveChanges();
+            }
         }
     }
 }
