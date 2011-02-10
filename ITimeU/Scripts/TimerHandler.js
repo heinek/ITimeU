@@ -44,16 +44,18 @@ TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _list
     });
 }
 
-TimerHandler.prototype.setResetAction = function(_btnReset, resetFunction) {
+TimerHandler.prototype.setResetAction = function (_btnReset, resetFunction) {
     btnReset = _btnReset;
     Tools.disable(btnReset);
     btnReset.bind("click", function () {
         timer.resetLap();
         resetFunction();
-        Tools.emptyList(listIntermediate);
+        if (listIntermediate) {
+            Tools.emptyList(listIntermediate);
+        }
         Tools.disable(btnReset);
     });
-    
+
 }
 
 TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunction, stopFunction) {
@@ -62,18 +64,26 @@ TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunct
         timer.startStop();
         if (btnStartStop.val() == startBtnText) {
             btnStartStop.val(stopBtnText);
-            Tools.enable(btnIntermediate);
-            Tools.disable(btnReset);
+            if (btnIntermediate) {
+                Tools.enable(btnIntermediate);
+            }
+            if (btnReset) {
+                Tools.disable(btnReset);
+            }
             startFunction();
         }
         else {
             btnStartStop.val(startBtnText);
-            Tools.enable(btnReset);
-            Tools.disable(btnIntermediate);
+            if (btnReset) {
+                Tools.enable(btnReset);
+            }
+            if (btnIntermediate) {
+                Tools.disable(btnIntermediate);
+            }
             stopFunction();
         }
     });
-   
+
 }
 
 
