@@ -131,6 +131,8 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_End_Time_Should_Be_Saved_To_The_Database()
         {
+            // Known bug in this test. See doc/KnownBugs.txt.
+
             DateTime endTime = new DateTime();
 
             Given("we have a started timer", () =>
