@@ -11,25 +11,69 @@ function TimerHandler() { }
 
 var timeFormatFactory = new TimeFormatFactory();
 var timer;
+
+var btnStartStop;
+var btnIntermediate;
+var btnReset;
+var listIntermediate;
+
+var startBtnText = "Start";
+var stopBtnText = "Stop";
+
 // Initialises a Stopwatch instance that displays its time nicely formatted.
-TimerHandler.prototype.initTimer = function (lblTimer, btnStartStop, btnReset) {
+TimerHandler.prototype.initTimer = function (lblTimer) {
 
     timer = new Stopwatch(function (runtime) {
         var displayText = timeFormatFactory.MSSDFormat(runtime);
         lblTimer.html(displayText);
     });
 
-    btnStartStop.bind("click", function () { timer.startStop(); });
-    btnReset.bind("click", function () { timer.resetLap(); });
     timer.doDisplay();
 }
 
-TimerHandler.prototype.registerIntermediateTime = function (htmlListElement) {
-    timer.addIntermediate(function (runtime) {
-        var displayText = timeFormatFactory.MSSDFormat(runtime);
-        htmlListElement.append('<li>' + displayText + '</li>');
-        
-     });
+TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate) {
+    btnIntermediate = _btnIntermediate;
+    listIntermediate = _listIntermediate;
+    Tools.disable(btnIntermediate);
+    btnIntermediate.click(function () {
+        timer.addIntermediate(function (runtime) {
+            var displayText = timeFormatFactory.MSSDFormat(runtime);
+            listIntermediate.append('<li class="liIntermediate">' + displayText + '</li>');
+
+        });
+    });
+}
+
+TimerHandler.prototype.setResetAction = function(_btnReset, resetFunction) {
+    btnReset = _btnReset;
+    Tools.disable(btnReset);
+    btnReset.bind("click", function () {
+        timer.resetLap();
+        resetFunction();
+        Tools.emptyList(listIntermediate);
+        Tools.disable(btnReset);
+    });
+    
+}
+
+TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunction, stopFunction) {
+    btnStartStop = _btnStartStop;
+    btnStartStop.bind("click", function () {
+        timer.startStop();
+        if (btnStartStop.val() == startBtnText) {
+            btnStartStop.val(stopBtnText);
+            Tools.enable(btnIntermediate);
+            Tools.disable(btnReset);
+            startFunction();
+        }
+        else {
+            btnStartStop.val(startBtnText);
+            Tools.enable(btnReset);
+            Tools.disable(btnIntermediate);
+            stopFunction();
+        }
+    });
+   
 }
 
 
