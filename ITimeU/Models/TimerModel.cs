@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ITimeU.Logging;
 
 // TODO: Write class summary.
 
@@ -57,15 +58,17 @@ namespace ITimeU.Models
 
         private void SaveStopTimeStampToDb(DateTime? EndTime)
         {
-            var timerDal = GetTimerById(Id);
-            timerDal.EndTime = EndTime;
-            timerDal.Save();
+            var timer = GetTimerById(Id);
+            timer.EndTime = EndTime;
+            timer.Save();
         }
 
         public void Reset()
         {
-            //var newTimer = TimerDAL.Create();
-            //newTimer.Save();
+            if (IsStarted)
+                throw new InvalidOperationException(
+                    "Cannot reset a started timer. Stop timer before resetting.");
+
             Id = 0;
             IsStarted = false;
             StartTime = null;
@@ -86,9 +89,11 @@ namespace ITimeU.Models
                 return timerDal;
             }
         }
+
         public static TimerModel Create()
         {
             TimerModel timerModel = new TimerModel();
+
             using (var ctx = new Entities())
             {
                 Timer timer = new Timer();
@@ -96,15 +101,20 @@ namespace ITimeU.Models
                 ctx.SaveChanges();
                 timerModel.Id = ctx.Timers.OrderByDescending(tmr => tmr.TimerID).First().TimerID;
             }
+
             return timerModel;
         }
+
         public void Save()
         {
             using (var ctx = new Entities())
             {
                 Timer timer = ctx.Timers.Single(tmr => tmr.TimerID == Id);
+
                 timer.StartTime = this.StartTime;
-                if (this.EndTime.HasValue) timer.EndTime = this.EndTime;
+                if (this.EndTime.HasValue)
+                    timer.EndTime = this.EndTime;
+
                 ctx.SaveChanges();
             }
         }
