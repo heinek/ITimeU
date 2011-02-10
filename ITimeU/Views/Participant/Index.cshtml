@@ -16,12 +16,17 @@
 
     <h2>Participant View</h2>
 
-    Startnummer: 
-    <input type="text" id="txtParticipantNumber" value="" />
-    <input type="button" id="btnRegister" value="Register" />
-
-    <!-- liste med startnummer fra databasen -->
-    <span id="txtStartingNumbers"></span>
-    
-
-    
+    <table>
+        <tr>
+            <td>Race:</td>
+            <td><select id="ddRace"></select></td>
+        </tr>
+        <tr>
+            <td>Starting number:</td>
+            <td><input type="text" id="txtParticipantNumber" value="" /></td>
+        </tr>
+        <tr>
+            <td colspan="2><input type="button" id="btnRegister" value="Register" /></td>
+        </tr>
+    </table>
+      
