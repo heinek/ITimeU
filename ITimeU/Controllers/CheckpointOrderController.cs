@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ITimeU.Models;
 
 namespace ITimeU.Controllers
 {
@@ -13,7 +14,7 @@ namespace ITimeU.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(CheckpointOrderModel.GetCheckpointOrders());
         }
 
     }
