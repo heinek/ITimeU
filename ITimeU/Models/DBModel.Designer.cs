@@ -160,6 +160,22 @@ namespace ITimeU.Models
             }
         }
         private ObjectSet<Timer> _Timers;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Runtime> Runtimes
+        {
+            get
+            {
+                if ((_Runtimes == null))
+                {
+                    _Runtimes = base.CreateObjectSet<Runtime>("Runtimes");
+                }
+                return _Runtimes;
+            }
+        }
+        private ObjectSet<Runtime> _Runtimes;
 
         #endregion
         #region AddTo Methods
@@ -210,6 +226,14 @@ namespace ITimeU.Models
         public void AddToTimers(Timer timer)
         {
             base.AddObject("Timers", timer);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Runtimes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRuntimes(Runtime runtime)
+        {
+            base.AddObject("Runtimes", runtime);
         }
 
         #endregion
@@ -964,12 +988,10 @@ namespace ITimeU.Models
         /// Create a new RaceIntermediate object.
         /// </summary>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
-        /// <param name="participantID">Initial value of the ParticipantID property.</param>
-        public static RaceIntermediate CreateRaceIntermediate(global::System.Int32 checkpointID, global::System.Int32 participantID)
+        public static RaceIntermediate CreateRaceIntermediate(global::System.Int32 checkpointID)
         {
             RaceIntermediate raceIntermediate = new RaceIntermediate();
             raceIntermediate.CheckpointID = checkpointID;
-            raceIntermediate.ParticipantID = participantID;
             return raceIntermediate;
         }
 
@@ -1006,9 +1028,9 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 ParticipantID
+        public Nullable<global::System.Int32> ParticipantID
         {
             get
             {
@@ -1016,18 +1038,15 @@ namespace ITimeU.Models
             }
             set
             {
-                if (_ParticipantID != value)
-                {
-                    OnParticipantIDChanging(value);
-                    ReportPropertyChanging("ParticipantID");
-                    _ParticipantID = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("ParticipantID");
-                    OnParticipantIDChanged();
-                }
+                OnParticipantIDChanging(value);
+                ReportPropertyChanging("ParticipantID");
+                _ParticipantID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ParticipantID");
+                OnParticipantIDChanged();
             }
         }
-        private global::System.Int32 _ParticipantID;
-        partial void OnParticipantIDChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _ParticipantID;
+        partial void OnParticipantIDChanging(Nullable<global::System.Int32> value);
         partial void OnParticipantIDChanged();
     
         /// <summary>
@@ -1077,6 +1096,87 @@ namespace ITimeU.Models
         private Nullable<global::System.Boolean> _IsDeleted;
         partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDeletedChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="Runtime")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Runtime : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Runtime object.
+        /// </summary>
+        /// <param name="runtimeID">Initial value of the RuntimeID property.</param>
+        /// <param name="runtime1">Initial value of the Runtime1 property.</param>
+        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1)
+        {
+            Runtime runtime = new Runtime();
+            runtime.RuntimeID = runtimeID;
+            runtime.Runtime1 = runtime1;
+            return runtime;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RuntimeID
+        {
+            get
+            {
+                return _RuntimeID;
+            }
+            set
+            {
+                if (_RuntimeID != value)
+                {
+                    OnRuntimeIDChanging(value);
+                    ReportPropertyChanging("RuntimeID");
+                    _RuntimeID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("RuntimeID");
+                    OnRuntimeIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _RuntimeID;
+        partial void OnRuntimeIDChanging(global::System.Int32 value);
+        partial void OnRuntimeIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Runtime1
+        {
+            get
+            {
+                return _Runtime1;
+            }
+            set
+            {
+                OnRuntime1Changing(value);
+                ReportPropertyChanging("Runtime1");
+                _Runtime1 = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Runtime1");
+                OnRuntime1Changed();
+            }
+        }
+        private global::System.Int32 _Runtime1;
+        partial void OnRuntime1Changing(global::System.Int32 value);
+        partial void OnRuntime1Changed();
 
         #endregion
     

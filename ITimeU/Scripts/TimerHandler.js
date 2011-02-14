@@ -39,9 +39,8 @@ TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _list
         timer.addIntermediate(function (runtime) {
             var displayText = timeFormatFactory.MSSDFormat(runtime);
             listIntermediate.append('<li class="liIntermediate">' + displayText + '</li>');
-            // Send runtime (milliseconds) TimerController/runtime or something like that
-            url = "/Timer/SaveIntermediateTime/?runtime=" + runtime;
-            //alert(url);
+            // Save runtime to database...
+            url = "/Runtime/Save/?runtime=" + runtime;
             $.get(url);
         });
     });

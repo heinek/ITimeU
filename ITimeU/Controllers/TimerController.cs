@@ -25,16 +25,6 @@ namespace ITimeU.Controllers
             return View("Index", timer);
         }
 
-        //[HttpPost]
-        //public ActionResult Index(TimerModel timerModel)
-        //{
-        //    timerModel = (TimerModel)Session["timer"];
-        //    timerModel.Start();
-        //    Session["timer"] = timerModel;
-
-        //    return View("Index", timerModel);
-        //}
-
         public ActionResult Start()
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
@@ -60,11 +50,5 @@ namespace ITimeU.Controllers
             return View("Index", timerModel);
         }
 
-        public ActionResult SaveIntermediateTime(string runtime)
-        {
-            string reply = "Hello. Runtime is: " + runtime;
-            LogWriter.getInstance().Write(reply);
-            return Content(reply);
-        }
     }
 }
