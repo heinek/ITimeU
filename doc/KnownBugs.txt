@@ -1,0 +1,6 @@
+KNOWN BUGS:
+- 10.02.11, YK:
+See test TimerModel.The_End_Time_Should_Be_Saved_To_The_Database. This _sometimes_ fails. In endTimeDb.Millisecond.ShouldBe(millisec), the endTimeDb.Millisecond is sometimes a few milliseconds above the expected value. It should be the same. For instance, the test log is:
+"Assert.AreEqual failed. Expected:<366>. Actual:<367>."
+
+Looking at the value attempted to be written in TimerModel.Save(), it is correctly 366. The value stored in the database, however, is 367, in this case.

@@ -4,9 +4,10 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ITimeUModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="ITimeUModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ITimeUModelStoreContainer">
           <EntitySet Name="Checkpoint" EntityType="ITimeUModel.Store.Checkpoint" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CheckpointOrder" EntityType="ITimeUModel.Store.CheckpointOrder" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Club" EntityType="ITimeUModel.Store.Club" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Participant" EntityType="ITimeUModel.Store.Participant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Race" EntityType="ITimeUModel.Store.Race" store:Type="Tables" Schema="dbo" />
@@ -20,6 +21,16 @@
           <Property Name="CheckpointID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RaceID" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="CheckpointOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CheckpointID" Type="int" />
+          <Property Name="StartingNumber" Type="int" />
+          <Property Name="OrderNumber" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="Club">
@@ -77,8 +88,7 @@
           <Property Name="EndTime" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ITimeUModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
@@ -89,122 +99,168 @@
           <EntitySet Name="Races" EntityType="ITimeUModel.Race" />
           <EntitySet Name="RaceIntermediates" EntityType="ITimeUModel.RaceIntermediate" />
           <EntitySet Name="Timers" EntityType="ITimeUModel.Timer" />
+          <EntitySet Name="CheckpointOrders" EntityType="ITimeUModel.CheckpointOrder" />
         </EntityContainer>
         <EntityType Name="Checkpoint">
           <Key>
             <PropertyRef Name="CheckpointID" />
           </Key>
-          <Property Name="CheckpointID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RaceID" Type="Int32" />
-          <Property Name="Name" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Type="Int32" Name="CheckpointID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="RaceID" />
+          <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="IsDeleted" />
         </EntityType>
         <EntityType Name="Club">
           <Key>
             <PropertyRef Name="ClubID" />
           </Key>
-          <Property Name="ClubID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="ContactName" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="ContactPhone" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="ContactEmail" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="ClubID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContactName" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContactPhone" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ContactEmail" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Participant">
           <Key>
             <PropertyRef Name="ParticipantID" />
           </Key>
-          <Property Name="ParticipantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="SurName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="PostalAddress" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="PostalCode" Type="String" MaxLength="4" Unicode="true" FixedLength="false" />
-          <Property Name="PostalPlace" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Phone" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Email" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
-          <Property Name="Club" Type="Int32" />
-          <Property Name="Birthday" Type="DateTime" />
-          <Property Name="Gender" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Type="Int32" Name="ParticipantID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FirstName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SurName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalAddress" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalCode" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalPlace" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Phone" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Club" />
+          <Property Type="DateTime" Name="Birthday" />
+          <Property Type="String" Name="Gender" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Boolean" Name="IsDeleted" />
         </EntityType>
         <EntityType Name="Race">
           <Key>
             <PropertyRef Name="RaceID" />
           </Key>
-          <Property Name="RaceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Type="Int32" Name="RaceID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="StartDate" Nullable="false" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
         </EntityType>
         <EntityType Name="RaceIntermediate">
           <Key>
             <PropertyRef Name="CheckpointID" />
             <PropertyRef Name="ParticipantID" />
           </Key>
-          <Property Name="CheckpointID" Type="Int32" Nullable="false" />
-          <Property Name="ParticipantID" Type="Int32" Nullable="false" />
-          <Property Name="TimeStamp" Type="DateTime" />
-          <Property Name="IsDeleted" Type="Boolean" />
+          <Property Type="Int32" Name="CheckpointID" Nullable="false" />
+          <Property Type="Int32" Name="ParticipantID" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" />
+          <Property Type="Boolean" Name="IsDeleted" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
             <PropertyRef Name="TimerID" />
           </Key>
-          <Property Name="TimerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StartTime" Type="DateTime" />
-          <Property Name="EndTime" Type="DateTime" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Type="Int32" Name="TimerID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="StartTime" />
+          <Property Type="DateTime" Name="EndTime" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
         </EntityType>
-      </Schema>
+        <EntityType Name="CheckpointOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="CheckpointID" />
+          <Property Type="Int32" Name="StartingNumber" />
+          <Property Type="Int32" Name="OrderNumber" />
+          <Property Type="Boolean" Name="IsDeleted" />
+        </EntityType>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ITimeUModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="Checkpoints"><EntityTypeMapping TypeName="ITimeUModel.Checkpoint"><MappingFragment StoreEntitySet="Checkpoint">
-            <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
-            <ScalarProperty Name="RaceID" ColumnName="RaceID" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
-            <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Clubs"><EntityTypeMapping TypeName="ITimeUModel.Club"><MappingFragment StoreEntitySet="Club">
-            <ScalarProperty Name="ClubID" ColumnName="ClubID" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
-            <ScalarProperty Name="ContactName" ColumnName="ContactName" />
-            <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
-            <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Participants"><EntityTypeMapping TypeName="ITimeUModel.Participant"><MappingFragment StoreEntitySet="Participant">
-            <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
-            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-            <ScalarProperty Name="SurName" ColumnName="SurName" />
-            <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
-            <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
-            <ScalarProperty Name="PostalPlace" ColumnName="PostalPlace" />
-            <ScalarProperty Name="Phone" ColumnName="Phone" />
-            <ScalarProperty Name="Email" ColumnName="Email" />
-            <ScalarProperty Name="Club" ColumnName="Club" />
-            <ScalarProperty Name="Birthday" ColumnName="Birthday" />
-            <ScalarProperty Name="Gender" ColumnName="Gender" />
-            <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Races"><EntityTypeMapping TypeName="ITimeUModel.Race"><MappingFragment StoreEntitySet="Race">
-            <ScalarProperty Name="RaceID" ColumnName="RaceID" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
-            <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-            <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="RaceIntermediates"><EntityTypeMapping TypeName="ITimeUModel.RaceIntermediate"><MappingFragment StoreEntitySet="RaceIntermediate">
-            <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
-            <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
-            <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-            <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="Timers"><EntityTypeMapping TypeName="ITimeUModel.Timer"><MappingFragment StoreEntitySet="Timer">
-            <ScalarProperty Name="TimerID" ColumnName="TimerID" />
-            <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-            <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-            <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Checkpoints">
+            <EntityTypeMapping TypeName="ITimeUModel.Checkpoint">
+              <MappingFragment StoreEntitySet="Checkpoint">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RaceID" ColumnName="RaceID" />
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clubs">
+            <EntityTypeMapping TypeName="ITimeUModel.Club">
+              <MappingFragment StoreEntitySet="Club">
+                <ScalarProperty Name="ContactEmail" ColumnName="ContactEmail" />
+                <ScalarProperty Name="ContactPhone" ColumnName="ContactPhone" />
+                <ScalarProperty Name="ContactName" ColumnName="ContactName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClubID" ColumnName="ClubID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Participants">
+            <EntityTypeMapping TypeName="ITimeUModel.Participant">
+              <MappingFragment StoreEntitySet="Participant">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Club" ColumnName="Club" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="PostalPlace" ColumnName="PostalPlace" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
+                <ScalarProperty Name="SurName" ColumnName="SurName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Races">
+            <EntityTypeMapping TypeName="ITimeUModel.Race">
+              <MappingFragment StoreEntitySet="Race">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RaceID" ColumnName="RaceID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RaceIntermediates">
+            <EntityTypeMapping TypeName="ITimeUModel.RaceIntermediate">
+              <MappingFragment StoreEntitySet="RaceIntermediate">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Timers">
+            <EntityTypeMapping TypeName="ITimeUModel.Timer">
+              <MappingFragment StoreEntitySet="Timer">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="TimerID" ColumnName="TimerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CheckpointOrders">
+            <EntityTypeMapping TypeName="ITimeUModel.CheckpointOrder">
+              <MappingFragment StoreEntitySet="CheckpointOrder">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="StartingNumber" ColumnName="StartingNumber" />
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -226,12 +282,13 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="DBModel">
-        <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="0.75" PointY="0.75" Height="1.6032722286383314" IsExpanded="true" />
-        <EntityTypeShape EntityType="ITimeUModel.Club" Width="1.5" PointX="2.75" PointY="0.75" Height="1.7691861184438071" IsExpanded="true" />
-        <EntityTypeShape EntityType="ITimeUModel.Participant" Width="1.5" PointX="0.75" PointY="3.75" Height="2.9305833470821376" IsExpanded="true" />
-        <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="2.75" PointY="3.75" Height="1.60327222863833" IsExpanded="true" />
-        <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="4.75" PointY="0.75" Height="1.6032722286383319" IsExpanded="true" />
-        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="4.75" PointY="3.75" Height="1.6032722286383314" IsExpanded="true" />
+        <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="0.75" PointY="0.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.Club" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9802864583333388" />
+        <EntityTypeShape EntityType="ITimeUModel.Participant" Width="1.5" PointX="0.75" PointY="3.75" Height="3.3263964843750031" />
+        <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="2.75" PointY="3.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="4.75" PointY="0.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="4.75" PointY="3.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="6.75" PointY="0.75" Height="1.7879850260416674" />
       </Diagram>
     </Diagrams>
   </Designer>

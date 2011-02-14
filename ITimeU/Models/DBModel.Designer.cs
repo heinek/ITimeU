@@ -160,6 +160,22 @@ namespace ITimeU.Models
             }
         }
         private ObjectSet<Timer> _Timers;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<CheckpointOrder> CheckpointOrders
+        {
+            get
+            {
+                if ((_CheckpointOrders == null))
+                {
+                    _CheckpointOrders = base.CreateObjectSet<CheckpointOrder>("CheckpointOrders");
+                }
+                return _CheckpointOrders;
+            }
+        }
+        private ObjectSet<CheckpointOrder> _CheckpointOrders;
 
         #endregion
         #region AddTo Methods
@@ -210,6 +226,14 @@ namespace ITimeU.Models
         public void AddToTimers(Timer timer)
         {
             base.AddObject("Timers", timer);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the CheckpointOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToCheckpointOrders(CheckpointOrder checkpointOrder)
+        {
+            base.AddObject("CheckpointOrders", checkpointOrder);
         }
 
         #endregion
@@ -318,6 +342,157 @@ namespace ITimeU.Models
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsDeleted
+        {
+            get
+            {
+                return _IsDeleted;
+            }
+            set
+            {
+                OnIsDeletedChanging(value);
+                ReportPropertyChanging("IsDeleted");
+                _IsDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDeleted");
+                OnIsDeletedChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsDeleted;
+        partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
+        partial void OnIsDeletedChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="CheckpointOrder")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class CheckpointOrder : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new CheckpointOrder object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        public static CheckpointOrder CreateCheckpointOrder(global::System.Int32 id)
+        {
+            CheckpointOrder checkpointOrder = new CheckpointOrder();
+            checkpointOrder.ID = id;
+            return checkpointOrder;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> CheckpointID
+        {
+            get
+            {
+                return _CheckpointID;
+            }
+            set
+            {
+                OnCheckpointIDChanging(value);
+                ReportPropertyChanging("CheckpointID");
+                _CheckpointID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CheckpointID");
+                OnCheckpointIDChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _CheckpointID;
+        partial void OnCheckpointIDChanging(Nullable<global::System.Int32> value);
+        partial void OnCheckpointIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> StartingNumber
+        {
+            get
+            {
+                return _StartingNumber;
+            }
+            set
+            {
+                OnStartingNumberChanging(value);
+                ReportPropertyChanging("StartingNumber");
+                _StartingNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StartingNumber");
+                OnStartingNumberChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _StartingNumber;
+        partial void OnStartingNumberChanging(Nullable<global::System.Int32> value);
+        partial void OnStartingNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _OrderNumber;
+        partial void OnOrderNumberChanging(Nullable<global::System.Int32> value);
+        partial void OnOrderNumberChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

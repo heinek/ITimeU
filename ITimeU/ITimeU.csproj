@@ -70,6 +70,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
