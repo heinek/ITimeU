@@ -1,0 +1,32 @@
+﻿@model ITimeU.Models.ParticipantModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+
+    btnRegister.click(function () {
+        $.get("/Participant/Register/");
+    });
+
+</script>
+
+    <h2>Participant View</h2>
+
+    <table>
+        <tr>
+            <td>Race:</td>
+            <td><select id="ddRace"></select></td>
+        </tr>
+        <tr>
+            <td>Starting number:</td>
+            <td><input type="text" id="txtParticipantNumber" value="" /></td>
+        </tr>
+        <tr>
+            <td colspan="2><input type="button" id="btnRegister" value="Register" /></td>
+        </tr>
+    </table>
+      
