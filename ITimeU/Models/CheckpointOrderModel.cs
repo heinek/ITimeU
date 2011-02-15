@@ -7,15 +7,28 @@ namespace ITimeU.Models
 {
     public class CheckpointOrderModel
     {
+        private int _checkpointID;
+        private int _startingNumber;
+        private int _orderNumber;
+
         public CheckpointOrderModel()
         {
-            CheckpointID = 0;
-            StartingNumber = 0;
-            OrderNumber = 0;
+            _checkpointID = 0;
+            _startingNumber = 0;
+            _orderNumber = 0;
         }
 
         public int ID { get; set; }
-        public int CheckpointID { get; set; }
+        public int CheckpointID 
+        { 
+            get
+            {
+                return _checkpointID;
+            }
+            set
+            {
+            }
+        }
         public int StartingNumber { get; set; }
         public int OrderNumber { get; set; }
 
@@ -37,15 +50,15 @@ namespace ITimeU.Models
             return checkpointOrderModel;
         }
 
-        public void Save()
+        public void Save(int CheckpointID, int StartingNumber, int OrderNumber)
         {
             using (var ctx = new Entities())
             {
                 CheckpointOrder checkpointOrder = ctx.CheckpointOrders.Single(chkpnt => chkpnt.ID == ID);
   
-                checkpointOrder.CheckpointID = this.CheckpointID;
-                checkpointOrder.StartingNumber = this.StartingNumber;
-                checkpointOrder.OrderNumber = this.OrderNumber;
+                checkpointOrder.CheckpointID = CheckpointID;
+                checkpointOrder.StartingNumber = StartingNumber;
+                checkpointOrder.OrderNumber = OrderNumber;
                 
                 ctx.SaveChanges();
             }
@@ -74,12 +87,12 @@ namespace ITimeU.Models
                 return ctx.CheckpointOrders.Select(chkpnt =>
                     new CheckpointOrder()
                     {
-                        CheckpointID = chkpnt.CheckpointID, 
-                        StartingNumber = chkpnt.StartingNumber, 
+                        CheckpointID = chkpnt.CheckpointID,
+                        StartingNumber = chkpnt.StartingNumber,
                         OrderNumber = chkpnt.OrderNumber
                     }).ToList();
             }
         }
-        
+
     }
 }
