@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using ITimeU.Models;
+using ITimeU.Logging;
 
 namespace ITimeU.Controllers
 {
@@ -23,16 +24,6 @@ namespace ITimeU.Controllers
             }
             return View("Index", timer);
         }
-
-        //[HttpPost]
-        //public ActionResult Index(TimerModel timerModel)
-        //{
-        //    timerModel = (TimerModel)Session["timer"];
-        //    timerModel.Start();
-        //    Session["timer"] = timerModel;
-
-        //    return View("Index", timerModel);
-        //}
 
         public ActionResult Start()
         {

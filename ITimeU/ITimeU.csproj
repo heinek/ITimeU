@@ -66,6 +66,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RuntimeController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -80,6 +81,7 @@
     </Compile>
     <Compile Include="Models\ParticipantModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
+    <Compile Include="Models\RuntimeModel.cs" />
     <Compile Include="Models\TimerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
