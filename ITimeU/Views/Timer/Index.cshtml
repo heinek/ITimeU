@@ -50,13 +50,18 @@
 
     <h2>Timer View</h2>
 
-    <span id="lblRunningTimer" style="width: 100px"></span>
+    <div> 
+        @Html.Partial("_Checkpoint")
+    </div>
+
+    <p>
+        <span id="lblRunningTimer" style="width: 100px"></span>
     
-    <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
-    <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
-    <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
-    <ol id="olIntermediates"/>
-    
+        <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
+        <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
+        <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
+        <ol id="olIntermediates"/>
+    </p>
     
 
     
