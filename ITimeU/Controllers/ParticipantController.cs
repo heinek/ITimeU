@@ -11,17 +11,8 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var participant = new ParticipantModel();
-
-            if (Session["participant"] == null)
-            {
-                Session["participant"] = participant;
-            }
-            else
-            {
-                participant = (ParticipantModel)Session["participant"];
-            }
-            return View("Index", participant);
+            var participantModel = new ParticipantModel();
+            return View("Index", participantModel);
         }
     }
 }

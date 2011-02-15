@@ -7,6 +7,7 @@
     <Schema Namespace="ITimeUModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="ITimeUModelStoreContainer">
           <EntitySet Name="Checkpoint" EntityType="ITimeUModel.Store.Checkpoint" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CheckpointOrder" EntityType="ITimeUModel.Store.CheckpointOrder" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Club" EntityType="ITimeUModel.Store.Club" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Participant" EntityType="ITimeUModel.Store.Participant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Race" EntityType="ITimeUModel.Store.Race" store:Type="Tables" Schema="dbo" />
@@ -28,6 +29,16 @@
           <Property Name="CheckpointID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="RaceID" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
+        <EntityType Name="CheckpointOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CheckpointID" Type="int" />
+          <Property Name="StartingNumber" Type="int" />
+          <Property Name="OrderNumber" Type="int" />
           <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="Club">
@@ -105,8 +116,9 @@
           <EntitySet Name="Races" EntityType="ITimeUModel.Race" />
           <EntitySet Name="RaceIntermediates" EntityType="ITimeUModel.RaceIntermediate" />
           <EntitySet Name="Timers" EntityType="ITimeUModel.Timer" />
+          <EntitySet Name="CheckpointOrders" EntityType="ITimeUModel.CheckpointOrder" />
           <EntitySet Name="Runtimes" EntityType="ITimeUModel.Runtime" />
-        </EntityContainer>
+       </EntityContainer>
         <EntityType Name="Checkpoint">
           <Key>
             <PropertyRef Name="CheckpointID" />
@@ -170,6 +182,16 @@
           <Property Type="DateTime" Name="EndTime" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
         </EntityType>
+        <EntityType Name="CheckpointOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="CheckpointID" />
+          <Property Type="Int32" Name="StartingNumber" />
+          <Property Type="Int32" Name="OrderNumber" />
+          <Property Type="Boolean" Name="IsDeleted" />
+        </EntityType>
         <EntityType Name="Runtime">
           <Key>
             <PropertyRef Name="RuntimeID" />
@@ -177,8 +199,8 @@
           <Property Type="Int32" Name="RuntimeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Runtime1" Nullable="false" />
         </EntityType>
-        </Schema>
-    </edmx:ConceptualModels>
+      </Schema>
+   </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
@@ -252,6 +274,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CheckpointOrders">
+            <EntityTypeMapping TypeName="ITimeUModel.CheckpointOrder">
+              <MappingFragment StoreEntitySet="CheckpointOrder">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="StartingNumber" ColumnName="StartingNumber" />
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>          
           <EntitySetMapping Name="Runtimes">
             <EntityTypeMapping TypeName="ITimeUModel.Runtime">
               <MappingFragment StoreEntitySet="Runtime">
@@ -287,7 +320,8 @@
         <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="2.75" PointY="3.75" Height="1.7879850260416674" />
         <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="4.75" PointY="0.75" Height="1.7879850260416674" />
         <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="6.75" PointY="0.75" Height="1.7879850260416674" />
-        <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="5.375" PointY="3.75" Height="1.4033821614583317" />
+        <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="7.125" PointY="3.75" Height="1.9802864583333331" />
+        <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="5.375" PointY="3.75" Height="1.4033821614583317" /> 
       </Diagram>
     </Diagrams>
   </Designer>
