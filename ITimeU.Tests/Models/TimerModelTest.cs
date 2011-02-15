@@ -332,6 +332,28 @@ namespace ITimeU.Tests.Models
             Then("we should get an exception");
         }
 
+        /*
+        [TestMethod]
+        public void MyTestMethod()
+        {
+            Given("we have a started timer", () =>
+            {
+                timer = new TimerModel();
+                timer.Start();
+            });
+
+            When("we save the intermediate time", () =>
+            {
+                timer.saveIntermediateTime();
+            });
+
+            Then("the intermediate time should be saved to the database", () => 
+            {
+                
+            });
+        }
+        */
+
         [TestMethod]
         public void We_Should_Have_A_List_With_Races()
         {

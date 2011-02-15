@@ -21,6 +21,9 @@ namespace ITimeU.Tests.Models
             StartScenario();
         }
 
+        /// <summary>
+        /// NOTE: The web server must be started in order for this test to run correctly.
+        /// </summary>
         [TestMethod]
         public void The_Runtime_Should_Be_Saved_To_Database_On_Http_Request()
         {
