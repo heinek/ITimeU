@@ -1,0 +1,25 @@
+﻿@model ITimeU.Models.CheckpointOrderModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>CheckpointOrderModel</legend>
+
+    <div class="display-label">CheckpointID</div>
+    <div class="display-field">@Model.CheckpointID</div>
+
+    <div class="display-label">StartingNumber</div>
+    <div class="display-field">@Model.StartingNumber</div>
+
+    <div class="display-label">OrderNumber</div>
+    <div class="display-field">@Model.OrderNumber</div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
