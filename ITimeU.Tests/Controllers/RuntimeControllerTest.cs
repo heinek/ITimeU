@@ -28,7 +28,7 @@ namespace ITimeU.Tests.Models
         public void The_Runtime_Should_Be_Saved_To_Database_On_Http_Request()
         {
             HttpWebRequest httpRequest = null;
-            int runtime = 3424; // just a random number
+            int runtime = 360000000; // Runtime, in milliseconds. Equals 100 hours.
             String requestUrl = null;
             RuntimeModel runtimeStoredInDb = null;
 
