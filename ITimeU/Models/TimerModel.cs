@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ITimeU.Logging;
 
 // TODO: Write class summary.
 
@@ -13,6 +13,7 @@ namespace ITimeU.Models
         public DateTime? StartTime { get; private set; }
         public DateTime? EndTime { get; private set; }
         public bool IsStarted { get; private set; }
+        public List<DateTime> Timestamps { get; set; }
 
         public TimerModel()
         {
@@ -28,6 +29,7 @@ namespace ITimeU.Models
             {
                 SetStartTimestamp(DateTime.Now);
                 Id = SaveStartTimeToDb();
+                Timestamps = new List<DateTime>();
             }
             else
             {
@@ -117,6 +119,18 @@ namespace ITimeU.Models
 
                 ctx.SaveChanges();
             }
+        }
+
+
+        public void EditTimeStamp(DateTime timestamp, DateTime newTimestamp)
+        {
+            DeleteTimeStamp(timestamp);
+            Timestamps.Add(newTimestamp);
+        }
+
+        public void DeleteTimeStamp(DateTime timestamp)
+        {
+            Timestamps.Remove(timestamp);
         }
     }
 }

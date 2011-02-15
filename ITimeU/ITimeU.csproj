@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\DataTime.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
