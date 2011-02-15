@@ -34,13 +34,15 @@
             function () { $.get("/Timer/Stop/"); }
         );
 
-
         handler.setResetAction(
             btnReset,
             function () { $.get("/Timer/Reset/"); }
-         );
+        );
 
-        handler.setIntermediateAction(btnIntermediate, listIntermediate);
+        handler.setIntermediateAction(
+            btnIntermediate,
+            listIntermediate
+        );
 
     });
 </script>
