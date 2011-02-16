@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CheckpointController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />
@@ -73,6 +74,7 @@
     </Compile>
     <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CheckpointModel.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -156,6 +158,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_Checkpoint.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Checkpoint\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

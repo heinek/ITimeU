@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ITimeU.Models.Checkpoint>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            RaceID
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            IsDeleted
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CheckpointID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CheckpointID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CheckpointID })
+        </td>
+        <td>
+            @item.RaceID
+        </td>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @item.IsDeleted
+        </td>
+    </tr>
+}
+
+</table>
+
