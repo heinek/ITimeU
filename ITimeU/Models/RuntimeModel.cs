@@ -17,6 +17,11 @@ namespace ITimeU.Tests.Models
             Runtime = _runtime;
         }
 
+        /// <summary>
+        /// Gets a runtime with the given id from the database.
+        /// </summary>
+        /// <param name="idToGet">The id of the runtime to get.</param>
+        /// <returns>The retrieved runtime.</returns>
         public static RuntimeModel getById(int runtimeId)
         {
             using (var ctx = new Entities())
@@ -26,6 +31,11 @@ namespace ITimeU.Tests.Models
             }
         }
 
+        /// <summary>
+        /// Creates a runtime in the database.
+        /// </summary>
+        /// <param name="runtime">The runtime in milliseconds.</param>
+        /// <returns>The created runtime.</returns>
         public static RuntimeModel Create(int runtime)
         {
             Runtime runtimeDb = CreateDbEntity(runtime);
