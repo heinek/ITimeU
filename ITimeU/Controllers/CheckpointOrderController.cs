@@ -31,6 +31,9 @@ namespace ITimeU.Controllers
 
         public ActionResult Create()
         {
+            var entities = new Entities();
+            ViewBag.Checkpoints = entities.Checkpoints.ToList();
+
             return View("Create");
         } 
 
@@ -38,17 +41,19 @@ namespace ITimeU.Controllers
         // POST: /CheckpointOrder/Create
 
         [HttpPost]
-        public ActionResult Create(CheckpointOrder co)
+        public ActionResult Create(CheckpointOrder co, int checkpointId, int startingNumber, int orderNumber)
         {
             if (!ModelState.IsValid)
             {
+                // insert into db
                 return View("Create", co);
             }
 
-            CheckpointOrderModel.Create((int)co.CheckpointID, (int)co.StartingNumber, (int)co.OrderNumber);
+            CheckpointOrderModel.Create(checkpointId, startingNumber, orderNumber);
 
             return RedirectToAction("Index");
-        } 
+        }
+
         
         //
         // GET: /CheckpointOrder/Edit/5

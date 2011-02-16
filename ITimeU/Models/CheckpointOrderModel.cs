@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ITimeU.Models
 {
@@ -41,10 +42,12 @@ namespace ITimeU.Models
                 CheckpointOrder checkpointOrder = new CheckpointOrder();
                 checkpointOrder.CheckpointID = checkpointId;
                 checkpointOrder.StartingNumber = startingNumber;
-                checkpointOrder.StartingNumber = (ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.CheckpointID).First().CheckpointID) + 1;
+                checkpointOrder.OrderNumber = (ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.CheckpointID).First().CheckpointID) + 1;
                 ctx.CheckpointOrders.AddObject(checkpointOrder);
                 ctx.SaveChanges();
                 checkpointOrder.ID = (int)ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.CheckpointID).First().CheckpointID;
+
+                
             }
 
             return checkpointOrderModel;
@@ -80,19 +83,15 @@ namespace ITimeU.Models
             }
         }
 
-        public static List<CheckpointOrder> GetCheckpointOrders()
+        public IEnumerable<SelectListItem> Checkpoints()
         {
+            //return new SelectList(new List<string>() { "1", "2" });
             using (var ctx = new Entities())
             {
-                return ctx.CheckpointOrders.Select(chkpnt =>
-                    new CheckpointOrder()
-                    {
-                        CheckpointID = chkpnt.CheckpointID,
-                        StartingNumber = chkpnt.StartingNumber,
-                        OrderNumber = chkpnt.OrderNumber
-                    }).ToList();
+                return new SelectList(ctx.Checkpoints.ToList(), "CheckpointID", "Name");
             }
         }
+
 
     }
 }
