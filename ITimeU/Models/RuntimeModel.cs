@@ -31,8 +31,7 @@ namespace ITimeU.Tests.Models
             Runtime runtimeDb = CreateDbEntity(runtime);
             SaveToDb(runtimeDb);
 
-            // TODO: change runtime to runtimeDb.runtime
-            return new RuntimeModel(runtimeDb.RuntimeID, runtime);
+            return new RuntimeModel(runtimeDb.RuntimeID, runtimeDb.Runtime1);
         }
 
         private static Runtime CreateDbEntity(int runtime)
