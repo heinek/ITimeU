@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ITimeU.Tests.Models;
 
 // TODO: Write class summary.
 
@@ -13,12 +14,15 @@ namespace ITimeU.Models
         public DateTime? StartTime { get; private set; }
         public DateTime? EndTime { get; private set; }
         public bool IsStarted { get; private set; }
-        public List<DateTime> Timestamps { get; set; }
+        public List<RuntimeModel> Runtimes { get; set; }
 
         public TimerModel()
         {
             StartTime = null;
             IsStarted = false;
+            Runtimes = new List<RuntimeModel>();
+            Runtimes.Add(new RuntimeModel() { Id = 8, Runtime = 4000 });
+            
         }
         /// <summary>
         /// Starts the timer.
@@ -29,7 +33,6 @@ namespace ITimeU.Models
             {
                 SetStartTimestamp(DateTime.Now);
                 Id = SaveStartTimeToDb();
-                Timestamps = new List<DateTime>();
             }
             else
             {
@@ -121,17 +124,21 @@ namespace ITimeU.Models
                 ctx.SaveChanges();
             }
         }
-
-
-        public void EditTimeStamp(DateTime timestamp, DateTime newTimestamp)
+        public void EditRuntime(RuntimeModel runtime, int newRuntime)
         {
-            DeleteTimeStamp(timestamp);
-            Timestamps.Add(newTimestamp);
+            var newRuntimemodel = new RuntimeModel() {Runtime = newRuntime};
+            DeleteRuntime(runtime);
+            Runtimes.Add(newRuntimemodel);
         }
 
-        public void DeleteTimeStamp(DateTime timestamp)
+        public void DeleteRuntime(RuntimeModel runtime)
         {
-            Timestamps.Remove(timestamp);
+            Runtimes.Remove(runtime);
+        }
+
+        public void AddRuntime(int milliseconds)
+        {
+            Runtimes.Add(RuntimeModel.Create(milliseconds));
         }
     }
 }

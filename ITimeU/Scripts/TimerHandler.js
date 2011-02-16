@@ -15,8 +15,12 @@ var timer;
 var btnStartStop;
 var btnIntermediate;
 var btnReset;
+var btnEdit;
+var btnDelete;
 var listIntermediate;
-
+var runtimeid;
+var tbruntime;
+var listRuntimes ='';
 var startBtnText = "Start";
 var stopBtnText = "Stop";
 
@@ -37,11 +41,12 @@ TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _list
     Tools.disable(btnIntermediate);
     btnIntermediate.click(function () {
         timer.addIntermediate(function (runtime) {
-            var displayText = timeFormatFactory.MSSDFormat(runtime);
-            listIntermediate.append('<li class="liIntermediate">' + displayText + '</li>');
-            // Save runtime to database...
-            url = "/Runtime/Save/?runtime=" + runtime;
+            url = "/Timer/SaveRuntime/?runtime=" + runtime;
             $.get(url);
+            var tmpList = listRuntimes;
+            listRuntimes = '<option value="' + runtime + '">' + runtime + '</option>';
+            listRuntimes += tmpList;
+            listIntermediate.html(listRuntimes);
         });
     });
 }
@@ -52,12 +57,38 @@ TimerHandler.prototype.setResetAction = function (_btnReset, resetFunction) {
     btnReset.bind("click", function () {
         timer.resetLap();
         resetFunction();
+        if (tbruntime) {
+            tbruntime.val("");
+        }
         if (listIntermediate) {
             Tools.emptyList(listIntermediate);
         }
         Tools.disable(btnReset);
     });
 
+}
+
+TimerHandler.prototype.setSelectChangedAction = function (_listIntermediate, _tbRuntime) {
+    listIntermediate = _listIntermediate;
+    tbruntime = _tbRuntime;
+    listIntermediate.change(function () {
+        var editruntime = '';
+        $("listIntermediate option:selected").each(function () {
+            editruntime = listIntermediate.text();
+        });
+        tbruntime.val(editruntime);
+    });
+}
+
+TimerHandler.prototype.setEditAction = function (_btnEdit, _tbRuntime, _runtimeid) {
+    btnEdit = _btnEdit;
+    tbruntime = _tbRuntime;
+    runtimeid = _runtimeid;
+    Tools.disable(btnEdit);
+    btnEdit.bind("click", function () {
+        url = "/Timer/EditRuntime/?runtimeid=" + runtimeid + "&newruntime=" + tbruntime.val();
+        $.get(url);
+    });
 }
 
 TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunction, stopFunction) {

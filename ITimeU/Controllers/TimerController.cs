@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 using ITimeU.Models;
-using ITimeU.Logging;
+using ITimeU.Tests.Models;
 
 namespace ITimeU.Controllers
 {
@@ -49,6 +49,25 @@ namespace ITimeU.Controllers
             Session["timer"] = timerModel;
             return View("Index", timerModel);
         }
+        public ActionResult SaveRuntime(string runtime)
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            int milliseconds;
+            int.TryParse(runtime, out milliseconds);
+            timerModel.AddRuntime(milliseconds);
+            return Content(runtime);
+        }
 
+        public ActionResult EditRuntime(string runtimeid, string newruntime)
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            int rtid, milliseconds;
+            int.TryParse(runtimeid, out rtid);
+            int.TryParse(newruntime, out milliseconds);
+            RuntimeModel runtimeModel = RuntimeModel.getById(rtid);
+            timerModel.EditRuntime(runtimeModel, milliseconds);
+            return Content(newruntime);
+
+        }
     }
 }

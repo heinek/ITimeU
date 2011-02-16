@@ -11,6 +11,10 @@ namespace ITimeU.Tests.Models
         public int Id { get; set; }
         public int Runtime { get; set; }
 
+        public RuntimeModel()
+        {
+
+        }
         private RuntimeModel(int _id, int _runtime)
         {
             Id = _id;

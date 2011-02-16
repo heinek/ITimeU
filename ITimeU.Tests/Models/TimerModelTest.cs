@@ -16,6 +16,7 @@ namespace ITimeU.Tests.Models
     {
         private TimerModel timer = null;
         private RaceModel race = null;
+        private RuntimeModel runtime = null;
 
         [TestMethod]
         public void A_Timer_Exists()
@@ -370,47 +371,45 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Editing_A_Timestamp_Should_Give_A_New_Timestamp()
         {
-            var timestamp = new DateTime();
-            var newTimestamp = new DateTime();
-            Given("we have a timestamp", () =>
+            var runtimemodel = new RuntimeModel();
+            var newRuntimemodel = new RuntimeModel();
+            Given("we have a runtime", () =>
             {
+                runtimemodel = RuntimeModel.Create(200);
                 timer = new TimerModel();
                 timer.Start();
-                //timer.SaveIntermediate();
-                timer.Timestamps.Add(new DateTime(2011, 2, 14, 15, 0, 0));
-                timestamp = timer.Timestamps.First();
+                timer.Runtimes.Add(runtimemodel);
             });
 
-            When("we want to change the timestamp", () =>
+            When("we want to change the runtime", () =>
             {
-                timer.EditTimeStamp(timestamp, new DateTime(2011, 2, 14, 15, 30, 0));
-                newTimestamp = timer.Timestamps.First();
+                timer.EditRuntime(runtimemodel, 400);
+                newRuntimemodel = timer.Runtimes.First();
             });
 
-            Then("the new timestamp shouldn't be equal to the previous", () => newTimestamp.ShouldNotBe(timestamp));
+            Then("the new runtime shouldn't be equal to the previous", () => newRuntimemodel.Runtime.ShouldNotBe(runtimemodel.Runtime));
         }
 
         [TestMethod]
         public void Deleting_A_Timestamp_Should_Reduce_The_Timestamplist_With_1()
         {
-            var timestamp = new DateTime();
+            var runtime = new RuntimeModel();
+            runtime.Runtime = 900;
             var listcount = 0;
-            Given("we have a timestamplist", () => {
+            Given("we have a runtimelist", () => {
                 timer = new TimerModel();
                 timer.Start();
-                //timer.SaveIntermediate();
-                timer.Timestamps.Add(new DateTime(2011, 2, 14, 15, 0, 0));
-                timestamp = timer.Timestamps.First();
-                listcount = timer.Timestamps.Count;
+                timer.Runtimes.Add(runtime);
+                listcount = timer.Runtimes.Count;
             });
 
-            When("we want to delete a timestamp", () => {
-                timer.DeleteTimeStamp(timestamp);
+            When("we want to delete a runtime", () => {
+                timer.DeleteRuntime(runtime);
             });
 
-            Then("the timestamplist should be rduced with 1", () =>
+            Then("the runtime list should be rduced with 1", () =>
             {
-                timer.Timestamps.Count.ShouldBe(listcount - 1);
+                timer.Runtimes.Count.ShouldBe(listcount - 1);
             });
         }
 

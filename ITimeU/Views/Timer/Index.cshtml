@@ -16,7 +16,8 @@
         var startStopButtonID = "btnStartTimer"; //must be same as html below
         var resetTimerButtonID = "btnResetTimer"; //must be same as html below
         var btnIntermediateID = "btnIntermediate"; //must be same as html below
-        var listIntermediateID = "olIntermediates"; //must be same as html below
+        var listIntermediateID = "lstIntermediates"; //must be same as html below
+        var tbRuntimeID = "tbEdit"; //must be same as html below
         var listHolderID = "listHolder";
 
         var btnReset = Tools.selectById(resetTimerButtonID);
@@ -24,6 +25,7 @@
         var lblTimer = Tools.selectById(runningTimerLabelID);
         var btnIntermediate = Tools.selectById(btnIntermediateID);
         var listIntermediate = Tools.selectById(listIntermediateID);
+        var tbRuntime = Tools.selectById(tbRuntimeID);
         var listHolder = Tools.selectById(listHolderID);
 
         var handler = new TimerHandler();
@@ -44,9 +46,21 @@
             listIntermediate
         );
 
+//        handler.setEditAction(
+
     });
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#lstIntermediates").change(function () {
+                    var str = "";
+                    $("#lstIntermediates :selected").each(function () {
+                        str += $(this).text() + " ";
+                    });
+                    $("#tbEdit").val(str);
+        });
+    });
+</script>
 
     <h2>Timer View</h2>
 
@@ -55,7 +69,22 @@
     <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
     <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
     <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
-    <ol id="olIntermediates"/>
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr style="vertical-align:top">
+        <td>
+        @*<ol id="olIntermediates"/>*@
+        @Html.ListBox("lstIntermediates", new SelectList(Model.Runtimes, "Id", "Runtime"))
+        </td>
+        <td>@Html.TextBox("tbEdit")</td>
+        <td>
+            <input type="button" id="btnChange" value="Endre" style="width: 100px" /></td>
+            <td>
+            <input type="button" id="btnDelete" value="Slett" style="width: 100px" />
+            </td>
+    </tr>
+</table>
+    <div id="divit"></div>
+    
     
     
 
