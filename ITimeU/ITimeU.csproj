@@ -65,8 +65,10 @@
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckpointOrderController.cs" />
+    <Compile Include="Controllers\CheckpointController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RuntimeController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -74,6 +76,7 @@
     <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CheckpointOrderModel.cs" />
+    <Compile Include="Models\CheckpointModel.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -81,6 +84,7 @@
     </Compile>
     <Compile Include="Models\ParticipantModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
+    <Compile Include="Models\RuntimeModel.cs" />
     <Compile Include="Models\TimerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -159,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CheckpointOrder\Index.cshtml" />
+    <Content Include="Views\Checkpoint\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\CheckpointOrder\Details.cshtml" />

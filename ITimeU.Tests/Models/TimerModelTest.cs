@@ -56,26 +56,6 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void The_TimerController_Should_Have_A_View_Named_Index()
-        {
-            TimerController timerController = null;
-
-            Given("we have a timer", () => timer = new TimerModel());
-
-            When("we want to start the timer", () =>
-            {
-                timerController = new TimerController();
-                timerController.SetFakeControllerContext();
-            });
-
-            Then("a view with a timer should appear", () =>
-            {
-                ViewResult result = (ViewResult)timerController.Index();
-                result.ViewName.ShouldBe("Index");
-            });
-        }
-
-        [TestMethod]
         public void Starting_A_Timer_Twice_Should_Throw_Exception()
         {
             Given("we have a timer", () => timer = new TimerModel());
@@ -348,7 +328,6 @@ namespace ITimeU.Tests.Models
         {
             StartScenario();
         }
-
 
     }
 }

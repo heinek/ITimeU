@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace ITimeU.Logging
 {
@@ -14,7 +15,8 @@ namespace ITimeU.Logging
 
         public LogWriter()
         {
-            this.file = "Log.txt";
+            string path = System.IO.Path.GetTempPath() + @"\";
+            this.file = path + "Log.txt";
         }
 
         public LogWriter(string file)
@@ -29,9 +31,10 @@ namespace ITimeU.Logging
             return instance;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Write(string content)
         {
-            StreamWriter writer = new StreamWriter(file);
+            StreamWriter writer = File.AppendText(file);
             writer.Write(content + "\n");
             writer.Close();
         }

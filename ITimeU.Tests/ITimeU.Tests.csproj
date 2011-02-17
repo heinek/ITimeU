@@ -75,7 +75,9 @@
   <ItemGroup>
     <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
+    <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\ParticipantModelTest.cs" />
+    <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

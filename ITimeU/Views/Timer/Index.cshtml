@@ -34,13 +34,15 @@
             function () { $.get("/Timer/Stop/"); }
         );
 
-
         handler.setResetAction(
             btnReset,
             function () { $.get("/Timer/Reset/"); }
-         );
+        );
 
-        handler.setIntermediateAction(btnIntermediate, listIntermediate);
+        handler.setIntermediateAction(
+            btnIntermediate,
+            listIntermediate
+        );
 
     });
 </script>
@@ -48,13 +50,21 @@
 
     <h2>Timer View</h2>
 
-    <span id="lblRunningTimer" style="width: 100px"></span>
+    <table style="border-style:hidden">
+        <tr>
+            <td style="border-style:hidden"><h3>Sjekkpunkt: @ViewData["checkpoint"]</h3></td>
+            <td style="border-style:hidden">[@Html.ActionLink("Endre", "Index", "Checkpoint")]</td>
+        </tr>
+    </table>
     
-    <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
-    <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
-    <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
-    <ol id="olIntermediates"/>
+    <p>
+        <span id="lblRunningTimer" style="width: 100px"></span>
     
+        <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
+        <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
+        <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
+        <ol id="olIntermediates"/>
+    </p>
     
 
     

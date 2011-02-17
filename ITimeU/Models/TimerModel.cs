@@ -75,6 +75,7 @@ namespace ITimeU.Models
             EndTime = null;
         }
 
+        // TODO: Move method to appropriate location in this class.
         public static TimerModel GetTimerById(int id)
         {
             using (var ctx = new Entities())
