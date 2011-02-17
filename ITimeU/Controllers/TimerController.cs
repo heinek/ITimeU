@@ -11,18 +11,23 @@ namespace ITimeU.Controllers
         // GET: /Timer/
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? checkpoint_id)
         {
             var timer = new TimerModel();
 
             if (Session["timer"] == null)
-            {
                 Session["timer"] = timer;
+            else
+                timer = (TimerModel)Session["timer"];
+
+            if (checkpoint_id != null)
+            {
+                CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+                ViewData["checkpoint"] = checkpoint.Name;
             }
             else
-            {
-                timer = (TimerModel)Session["timer"];
-            }
+                ViewData["checkpoint"] = "Ingen valgt";
+            
             return View("Index", timer);
         }
 

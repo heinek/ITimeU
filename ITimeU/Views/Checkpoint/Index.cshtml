@@ -1,0 +1,18 @@
+﻿@model IList<ITimeU.Models.CheckpointModel>
+
+@{
+    ViewBag.Title = "Select checkpoint";
+}
+
+<h2>Select checkpoint</h2>
+
+<form action="/Checkpoint/" method="get">
+    <select name="id">
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
+
+    <input type="submit" />
+</form>
