@@ -15,7 +15,8 @@ namespace ITimeU.Controllers
         public ActionResult Index()
         {
             var entities = new Entities();
-            return View(entities.CheckpointOrders.ToList());
+            ViewBag.Checkpoints = entities.Checkpoints.ToList();
+            return View(new CheckpointOrderModel());
         }
 
         //
@@ -139,7 +140,7 @@ namespace ITimeU.Controllers
                 entities.AddToCheckpointOrders(CheckpointOrderToInsert);
                 entities.SaveChanges();
 
-                return View("Index");
+                return null;
             }
         }
 

@@ -106,6 +106,14 @@ namespace ITimeU.Models
                 return new SelectList(ctx.Checkpoints.ToList(), "CheckpointID", "Name");
             }
         }
+
+        public IEnumerable<SelectListItem> CheckpointOrders()
+        {
+            using (var ctx = new Entities())
+            {
+                return new SelectList(ctx.CheckpointOrders.ToList(), "ID", "StartingNumber");
+            }
+        }
         
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ITimeU.Models.CheckpointOrderModel>
+﻿@model ITimeU.Models.CheckpointOrderModel
 
 @{
     ViewBag.Title = "CheckpointOrder";
@@ -10,8 +10,8 @@
 
 <h2>CheckpointOrder</h2>
 
-@using (Html.BeginForm()) { 
-    @Html.ValidationSummary(true) 
+@*@using (Html.BeginForm()) { 
+    @Html.ValidationSummary(true) *@
     <fieldset> 
         <legend>CheckpointOrder</legend> 
  
@@ -33,7 +33,8 @@
                         if (e.keyCode == 13) {
                             $.get("/CheckpointOrder/AddStartingNumber/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val());
                             var tmpOrder = checkpointOrders;
-                            checkpointOrders = $('#txtStartingNumber').val() + tmpOrder;
+                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
+                            $('#lstCheckpointOrders').html(checkpointOrders);
                         }
                     });
                 }); 
@@ -41,8 +42,8 @@
         </div> 
 
         <div>
-            @Html.ListBox("lstCheckpointOrders")
+            @Html.ListBox("lstCheckpointOrders", Model.CheckpointOrders())
         </div>
 
     </fieldset>
-}
+@*}*@
