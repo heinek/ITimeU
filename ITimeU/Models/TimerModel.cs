@@ -22,7 +22,7 @@ namespace ITimeU.Models
             IsStarted = false;
             Runtimes = new List<RuntimeModel>();
             Runtimes.Add(new RuntimeModel() { Id = 8, Runtime = 4000 });
-            
+
         }
         /// <summary>
         /// Starts the timer.
@@ -126,19 +126,40 @@ namespace ITimeU.Models
         }
         public void EditRuntime(RuntimeModel runtime, int newRuntime)
         {
-            var newRuntimemodel = new RuntimeModel() {Runtime = newRuntime};
+            var newRuntimemodel = new RuntimeModel() { Runtime = newRuntime };
             DeleteRuntime(runtime);
-            Runtimes.Add(newRuntimemodel);
+            AddRuntime(newRuntimemodel);
         }
 
         public void DeleteRuntime(RuntimeModel runtime)
         {
             Runtimes.Remove(runtime);
+            using (var ctx = new Entities())
+            {
+                var runtimeToDelete = ctx.Runtimes.OrderByDescending(runt => runt.RuntimeID).First(runt => runt.Runtime1 == runtime.Runtime);
+                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                ctx.SaveChanges();
+            }
         }
 
         public void AddRuntime(int milliseconds)
         {
-            Runtimes.Add(RuntimeModel.Create(milliseconds));
+            var newRuntime = RuntimeModel.Create(milliseconds);
+            Runtimes.Add(newRuntime);
+            using (var ctx = new Entities())
+            {
+                ctx.Runtimes.AddObject(new Runtime() { Runtime1 = newRuntime.Runtime });
+                ctx.SaveChanges();
+            }
+        }
+        public void AddRuntime(RuntimeModel runtimemodel)
+        {
+            Runtimes.Add(runtimemodel);
+            using (var ctx = new Entities())
+            {
+                ctx.Runtimes.AddObject(new Runtime() { Runtime1 = runtimemodel.Runtime });
+                ctx.SaveChanges();
+            }
         }
     }
 }

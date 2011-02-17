@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using ITimeU.Models;
 using ITimeU.Tests.Models;
 
@@ -58,13 +59,13 @@ namespace ITimeU.Controllers
             return Content(runtime);
         }
 
-        public ActionResult EditRuntime(string runtimeid, string newruntime)
+        public ActionResult EditRuntime(string orginalruntime, string newruntime)
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
-            int rtid, milliseconds;
-            int.TryParse(runtimeid, out rtid);
-            int.TryParse(newruntime, out milliseconds);
-            RuntimeModel runtimeModel = RuntimeModel.getById(rtid);
+            int orgmilliseconds, milliseconds;
+            int.TryParse(orginalruntime.Trim(), out orgmilliseconds);
+            int.TryParse(newruntime.Trim(), out milliseconds);
+            RuntimeModel runtimeModel = timerModel.Runtimes.OrderByDescending(runtime => runtime.Id).Where(runtime => runtime.Runtime == orgmilliseconds).First();
             timerModel.EditRuntime(runtimeModel, milliseconds);
             return Content(newruntime);
 

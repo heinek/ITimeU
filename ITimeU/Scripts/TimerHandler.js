@@ -19,11 +19,11 @@ var btnEdit;
 var btnDelete;
 var listIntermediate;
 var runtimeid;
-var tbruntime;
-var listRuntimes ='';
+var listRuntimes = [];
 var startBtnText = "Start";
 var stopBtnText = "Stop";
-
+var initialvalue;
+var tbedit;
 // Initialises a Stopwatch instance that displays its time nicely formatted.
 TimerHandler.prototype.initTimer = function (lblTimer) {
 
@@ -68,26 +68,44 @@ TimerHandler.prototype.setResetAction = function (_btnReset, resetFunction) {
 
 }
 
-TimerHandler.prototype.setSelectChangedAction = function (_listIntermediate, _tbRuntime) {
-    listIntermediate = _listIntermediate;
-    tbruntime = _tbRuntime;
-    listIntermediate.change(function () {
-        var editruntime = '';
-        $("listIntermediate option:selected").each(function () {
-            editruntime = listIntermediate.text();
+TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _tbedit) {
+    listIntermediate = _listIntermediates;
+    btnEdit = _btnEdit;
+    tbedit = _tbedit;
+    btnEdit.bind("click", function () {
+//        //        var tmplist1 = listRuntimes.val().replace(initialvalue, tbedit.val());
+//        $.each(listRuntimes, function (key, value) {
+//            //            value.replace(initialvalue, tbedit.val());
+//            value.replace('0', '1');
+//        });
+
+        var tmplist1 = [];
+        $.each(listRuntimes, function (key, value) {
+            tmplist1.push(value.replace(initialvalue, tbedit.val()));
         });
-        tbruntime.val(editruntime);
+
+
+        //var tmplist = listRuntimes.text().replace('00', '11');
+        url = "/Timer/EditRuntime/?orginalruntime=" + initialvalue + "&newruntime=" + tbedit.val();
+        $.get(url);
+
+        listIntermediate.html(tmplist1);
+        tbedit.val("");
+        Tools.disable(btnEdit);
     });
 }
 
-TimerHandler.prototype.setEditAction = function (_btnEdit, _tbRuntime, _runtimeid) {
-    btnEdit = _btnEdit;
-    tbruntime = _tbRuntime;
-    runtimeid = _runtimeid;
-    Tools.disable(btnEdit);
-    btnEdit.bind("click", function () {
-        url = "/Timer/EditRuntime/?runtimeid=" + runtimeid + "&newruntime=" + tbruntime.val();
-        $.get(url);
+TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbedit) {
+    listIntermediate = _listIntermediates;
+    tbedit = _tbedit;
+    listIntermediate.bind("change", function () {
+        var str = "";
+        $("#lstIntermediates :selected").each(function () {
+            str += $(this).text() + " ";
+        });
+        initialvalue = str;
+        tbedit.val(str);
+        Tools.enable(btnEdit);
     });
 }
 
