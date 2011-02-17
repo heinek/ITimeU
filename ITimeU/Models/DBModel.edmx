@@ -173,7 +173,7 @@
           <Property Type="Int32" Name="CheckpointID" />
           <Property Type="Int32" Name="StartingNumber" />
           <Property Type="Int32" Name="OrderNumber" />
-          <Property Type="Boolean" Name="IsDeleted" />
+          <Property Type="Boolean" Name="IsDeleted" DefaultValue="False" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>

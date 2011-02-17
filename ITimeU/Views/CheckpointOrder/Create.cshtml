@@ -17,28 +17,38 @@
         <legend>CheckpointOrder</legend> 
  
         <div class="editor-label"> 
-            @Html.LabelFor(model => model.CheckpointID, "Checkpoints") 
+            @Html.LabelFor(model => model.CheckpointID, "Checkpoint") 
         </div> 
         <div class="editor-field"> 
-            @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
+            @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
         </div> 
 
         <div class="editor-label"> 
             @Html.LabelFor(model => model.StartingNumber, "Starting number") 
         </div> 
         <div class="editor-field">
-            @Html.EditorFor(model => model.StartingNumber) 
+            @Html.TextBox("txtStartingNumber")
+            @Html.ValidationMessageFor(model => model.StartingNumber) 
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#txtStartingNumber').keypress(function (e) {
+                        if (e.keyCode == 13) {
+                            $.get("/CheckpointOrder/AddStartingNumber/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val());
+                        }
+                    });
+                }); 
+            </script>
         </div> 
 
-        <div class="editor-label"> 
-            @Html.LabelFor(model => model.OrderNumber, "Order number") 
+        <!--<div class="editor-label"> 
+            @Html.LabelFor(model => model.OrderNumber, "Order number")    
         </div> 
         <div class="editor-field">
             @Html.EditorFor(model => model.OrderNumber)
-        </div> 
- 
+            @Html.ValidationMessageFor(model => model.OrderNumber)
+        </div>--> 
         <p> 
-            <input type="submit" value="Create" /> 
+            <!--<input type="submit" value="Create" /> -->
         </p> 
     </fieldset>     
 } 

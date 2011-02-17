@@ -514,7 +514,7 @@ namespace ITimeU.Models
                 OnIsDeletedChanged();
             }
         }
-        private Nullable<global::System.Boolean> _IsDeleted;
+        private Nullable<global::System.Boolean> _IsDeleted = false;
         partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDeletedChanged();
 
