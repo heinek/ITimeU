@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace ITimeU.Models
 {
@@ -16,6 +17,12 @@ namespace ITimeU.Models
             Name = _checkpointName;
         }
 
+        public CheckpointModel(Checkpoint checkpoint)
+        {
+            Id = checkpoint.CheckpointID;
+            Name = checkpoint.Name;
+        }
+
         /// <summary>
         /// Gets a checkpoint with the given id from the database.
         /// </summary>
@@ -23,9 +30,34 @@ namespace ITimeU.Models
         /// <returns>The retrieved checkpoint.</returns>
         public static CheckpointModel getById(int idToGet)
         {
-            var ctx = new Entities();
-            Checkpoint checkpointDb = ctx.Checkpoints.Single(temp => temp.CheckpointID == idToGet);
-            return new CheckpointModel(checkpointDb.CheckpointID, checkpointDb.Name);
+            //var entities = new Entities();
+            //Checkpoint checkpointDb = entities.Checkpoints.Single(temp => temp.CheckpointID == idToGet);
+            //return new CheckpointModel(checkpointDb.CheckpointID, checkpointDb.Name);
+            return new CheckpointModel(getCheckpointDbById(idToGet));
+        }
+
+        private static Checkpoint getCheckpointDbById(int idToGet) {
+            var entities = new Entities();
+            return entities.Checkpoints.Single(temp => temp.CheckpointID == idToGet);
+        }
+
+        /// <summary>
+        /// Retrieves all checkpoints in database.
+        /// </summary>
+        /// <returns></returns>
+        public static List<CheckpointModel> getAll()
+        {
+            var entities = new Entities();
+            IEnumerable<Checkpoint> checkpoints = entities.Checkpoints.AsEnumerable<Checkpoint>();
+
+            List<CheckpointModel> models = new List<CheckpointModel>();
+            foreach (Checkpoint checkpoint in checkpoints)
+            {
+                CheckpointModel converted = new CheckpointModel(checkpoint);
+                models.Add(converted);
+            }
+
+            return models;
         }
 
         /// <summary>
@@ -39,7 +71,7 @@ namespace ITimeU.Models
             SaveToDb(checkpointDb);
             return new CheckpointModel(checkpointDb.CheckpointID, checkpointDb.Name);
         }
-
+        
         private static Checkpoint CreateDbEntity(string checkpointName)
         {
             Checkpoint checkpointDb = new Checkpoint();
@@ -50,12 +82,11 @@ namespace ITimeU.Models
 
         private static void SaveToDb(Checkpoint checkpointDb)
         {
-            var ctx = new Entities();
-            ctx.Checkpoints.AddObject(checkpointDb);
-            ctx.SaveChanges();
+            var entities = new Entities();
+            entities.Checkpoints.AddObject(checkpointDb);
+            entities.SaveChanges();
         }
-
-        // override object.Equals
+        
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -77,5 +108,6 @@ namespace ITimeU.Models
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
         }
 
+       
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 using ITimeU.Models;
+using ITimeU.Logging;
 
 namespace ITimeU.Tests.Models
 {
@@ -27,13 +28,31 @@ namespace ITimeU.Tests.Models
             StartScenario();
         }
 
-        /*
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
         {
-            Given("We have ");
+            int previousSize = CheckpointModel.getAll().Count;
+            List<CheckpointModel> checkpointsDb = null;
+
+            Given("we insert three checkpoints in the datbase", () =>
+            {
+                CheckpointModel.Create("First checkpoint");
+                CheckpointModel.Create("Second checkpoint");
+                CheckpointModel.Create("Third checkpoint");
+            });
+
+            When("we fetch all checkpoints", () =>
+            {
+                checkpointsDb = CheckpointModel.getAll();
+                LogWriter.getInstance().Write("Received checkpointsDb2: " + checkpointsDb);
+            });
+
+            Then("we should have a list of checkpoints", () =>
+            {
+                checkpointsDb.Count.ShouldBe(previousSize + 3);
+            });
+
         }
-        */
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Insert_A_New_Checkpoint_To_The_Database()
