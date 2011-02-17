@@ -50,6 +50,13 @@
 
     <h2>Timer View</h2>
 
+    <table style="border-style:hidden">
+        <tr>
+            <td style="border-style:hidden"><h3>Sjekkpunkt: @ViewData["checkpoint"]</h3></td>
+            <td style="border-style:hidden">[@Html.ActionLink("Endre", "Index", "Checkpoint")]</td>
+        </tr>
+    </table>
+    
     <p>
         <span id="lblRunningTimer" style="width: 100px"></span>
     
