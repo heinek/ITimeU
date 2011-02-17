@@ -23,11 +23,6 @@ namespace ITimeU.Controllers
                 timer = (TimerModel)Session["timer"];
             }
 
-            if (checkpoint_id != null)
-            {
-
-            }
-
             return View("Index", timer);
         }
 
