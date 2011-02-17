@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading;
 using System.Web.Mvc;
@@ -15,6 +16,7 @@ namespace ITimeU.Tests.Models
     {
         private TimerModel timer = null;
         private RaceModel race = null;
+        private RuntimeModel runtime = null;
 
         [TestMethod]
         public void A_Timer_Exists()
@@ -138,7 +140,7 @@ namespace ITimeU.Tests.Models
                 int millisec = endTime.Millisecond;
 
                 var timerDb = TimerModel.GetTimerById(timer.Id);
-                var endTimeDb = (DateTime) timerDb.EndTime;
+                var endTimeDb = (DateTime)timerDb.EndTime;
 
                 endTimeDb.Year.ShouldBe(year);
                 endTimeDb.Month.ShouldBe(month);
@@ -200,7 +202,7 @@ namespace ITimeU.Tests.Models
                 timer.EndTime.ShouldBeInstanceOfType<DateTime>();
             });
         }
-        
+
         [TestMethod]
         public void The_Start_Time_Should_Be_Null_When_Reset_Is_Pushed()
         {
@@ -306,7 +308,8 @@ namespace ITimeU.Tests.Models
                 {
                     timer.Reset();
                     false.ShouldBeTrue();
-                } catch (InvalidOperationException) { }
+                }
+                catch (InvalidOperationException) { }
             });
 
             Then("we should get an exception");
@@ -322,6 +325,52 @@ namespace ITimeU.Tests.Models
 
             Then("the racelist should contain at least one race", () => races.Count.ShouldNotBe(0));
         }
+
+        [TestMethod]
+        public void Editing_A_Timestamp_Should_Give_A_New_Timestamp()
+        {
+            var runtimemodel = new RuntimeModel();
+            var newRuntimemodel = new RuntimeModel();
+            Given("we have a runtime", () =>
+            {
+                runtimemodel = RuntimeModel.Create(200);
+                timer = new TimerModel();
+                timer.Start();
+                timer.Runtimes.Add(runtimemodel);
+            });
+
+            When("we want to change the runtime", () =>
+            {
+                timer.EditRuntime(runtimemodel, 400);
+                newRuntimemodel = timer.Runtimes.First();
+            });
+
+            Then("the new runtime shouldn't be equal to the previous", () => newRuntimemodel.Runtime.ShouldNotBe(runtimemodel.Runtime));
+        }
+
+        [TestMethod]
+        public void Deleting_A_Timestamp_Should_Reduce_The_Timestamplist_With_1()
+        {
+            var runtime = new RuntimeModel();
+            runtime.Runtime = 900;
+            var listcount = 0;
+            Given("we have a runtimelist", () => {
+                timer = new TimerModel();
+                timer.Start();
+                timer.Runtimes.Add(runtime);
+                listcount = timer.Runtimes.Count;
+            });
+
+            When("we want to delete a runtime", () => {
+                timer.DeleteRuntime(runtime);
+            });
+
+            Then("the runtime list should be rduced with 1", () =>
+            {
+                timer.Runtimes.Count.ShouldBe(listcount - 1);
+            });
+        }
+
 
         [TestCleanup]
         public void TestCleanup()

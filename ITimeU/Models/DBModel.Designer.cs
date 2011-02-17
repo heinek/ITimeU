@@ -84,22 +84,6 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<CheckpointOrder> CheckpointOrders
-        {
-            get
-            {
-                if ((_CheckpointOrders == null))
-                {
-                    _CheckpointOrders = base.CreateObjectSet<CheckpointOrder>("CheckpointOrders");
-                }
-                return _CheckpointOrders;
-            }
-        }
-        private ObjectSet<CheckpointOrder> _CheckpointOrders;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Club> Clubs
         {
             get
@@ -176,6 +160,38 @@ namespace ITimeU.Models
             }
         }
         private ObjectSet<Timer> _Timers;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<RaceIntermediate> RaceIntermediates
+        {
+            get
+            {
+                if ((_RaceIntermediates == null))
+                {
+                    _RaceIntermediates = base.CreateObjectSet<RaceIntermediate>("RaceIntermediates");
+                }
+                return _RaceIntermediates;
+            }
+        }
+        private ObjectSet<RaceIntermediate> _RaceIntermediates;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<CheckpointOrder> CheckpointOrders
+        {
+            get
+            {
+                if ((_CheckpointOrders == null))
+                {
+                    _CheckpointOrders = base.CreateObjectSet<CheckpointOrder>("CheckpointOrders");
+                }
+                return _CheckpointOrders;
+            }
+        }
+        private ObjectSet<CheckpointOrder> _CheckpointOrders;
 
         #endregion
         #region AddTo Methods
@@ -186,14 +202,6 @@ namespace ITimeU.Models
         public void AddToCheckpoints(Checkpoint checkpoint)
         {
             base.AddObject("Checkpoints", checkpoint);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the CheckpointOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToCheckpointOrders(CheckpointOrder checkpointOrder)
-        {
-            base.AddObject("CheckpointOrders", checkpointOrder);
         }
     
         /// <summary>
@@ -234,6 +242,22 @@ namespace ITimeU.Models
         public void AddToTimers(Timer timer)
         {
             base.AddObject("Timers", timer);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the RaceIntermediates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRaceIntermediates(RaceIntermediate raceIntermediate)
+        {
+            base.AddObject("RaceIntermediates", raceIntermediate);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the CheckpointOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToCheckpointOrders(CheckpointOrder checkpointOrder)
+        {
+            base.AddObject("CheckpointOrders", checkpointOrder);
         }
 
         #endregion
@@ -514,7 +538,7 @@ namespace ITimeU.Models
                 OnIsDeletedChanged();
             }
         }
-        private Nullable<global::System.Boolean> _IsDeleted = false;
+        private Nullable<global::System.Boolean> _IsDeleted;
         partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDeletedChanged();
 
@@ -1119,6 +1143,138 @@ namespace ITimeU.Models
         }
         private global::System.Boolean _IsDeleted;
         partial void OnIsDeletedChanging(global::System.Boolean value);
+        partial void OnIsDeletedChanged();
+
+        #endregion
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="RaceIntermediate")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class RaceIntermediate : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new RaceIntermediate object.
+        /// </summary>
+        /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
+        /// <param name="participantID">Initial value of the ParticipantID property.</param>
+        public static RaceIntermediate CreateRaceIntermediate(global::System.Int32 checkpointID, global::System.Int32 participantID)
+        {
+            RaceIntermediate raceIntermediate = new RaceIntermediate();
+            raceIntermediate.CheckpointID = checkpointID;
+            raceIntermediate.ParticipantID = participantID;
+            return raceIntermediate;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CheckpointID
+        {
+            get
+            {
+                return _CheckpointID;
+            }
+            set
+            {
+                if (_CheckpointID != value)
+                {
+                    OnCheckpointIDChanging(value);
+                    ReportPropertyChanging("CheckpointID");
+                    _CheckpointID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("CheckpointID");
+                    OnCheckpointIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _CheckpointID;
+        partial void OnCheckpointIDChanging(global::System.Int32 value);
+        partial void OnCheckpointIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ParticipantID
+        {
+            get
+            {
+                return _ParticipantID;
+            }
+            set
+            {
+                if (_ParticipantID != value)
+                {
+                    OnParticipantIDChanging(value);
+                    ReportPropertyChanging("ParticipantID");
+                    _ParticipantID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ParticipantID");
+                    OnParticipantIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ParticipantID;
+        partial void OnParticipantIDChanging(global::System.Int32 value);
+        partial void OnParticipantIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> TimeStamp
+        {
+            get
+            {
+                return _TimeStamp;
+            }
+            set
+            {
+                OnTimeStampChanging(value);
+                ReportPropertyChanging("TimeStamp");
+                _TimeStamp = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TimeStamp");
+                OnTimeStampChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _TimeStamp;
+        partial void OnTimeStampChanging(Nullable<global::System.DateTime> value);
+        partial void OnTimeStampChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> IsDeleted
+        {
+            get
+            {
+                return _IsDeleted;
+            }
+            set
+            {
+                OnIsDeletedChanging(value);
+                ReportPropertyChanging("IsDeleted");
+                _IsDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDeleted");
+                OnIsDeletedChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _IsDeleted;
+        partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDeletedChanged();
 
         #endregion

@@ -1,46 +1,48 @@
-﻿@model IEnumerable<ITimeU.Models.CheckpointOrder>
+﻿@model IEnumerable<ITimeU.Models.CheckpointOrderModel>
 
 @{
     ViewBag.Title = "CheckpointOrder";
 }
+<script language="javascript" type="text/javascript">
+    var checkpointOrders = [];
+
+</script>
 
 <h2>CheckpointOrder</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th></th>
-        <th>
-            CheckpointID
-        </th>
-        <th>
-            StartingNumber
-        </th>
-        <th>
-            OrderNumber
-        </th>
-    </tr>
-@foreach (var item in Model)
-{
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-        </td>
-        <td>
-            @item.CheckpointID
-        </td>
-        <td>
-            @item.StartingNumber
-        </td>
-        <td>
-            @item.OrderNumber
-        </td>
-    </tr>
+@using (Html.BeginForm()) { 
+    @Html.ValidationSummary(true) 
+    <fieldset> 
+        <legend>CheckpointOrder</legend> 
+ 
+        <div class="editor-label"> 
+            @Html.Label("lblCheckpoint", "Checkpoint") 
+        </div> 
+        <div class="editor-field"> 
+            @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
+        </div> 
+
+        <div class="editor-label"> 
+            @Html.Label("lblStartingNumber", "Starting number") 
+        </div> 
+        <div class="editor-field">
+            @Html.TextBox("txtStartingNumber")
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('#txtStartingNumber').keypress(function (e) {
+                        if (e.keyCode == 13) {
+                            $.get("/CheckpointOrder/AddStartingNumber/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val());
+                            var tmpOrder = checkpointOrders;
+                            checkpointOrders = $('#txtStartingNumber').val() + tmpOrder;
+                        }
+                    });
+                }); 
+            </script>
+        </div> 
+
+        <div>
+            @Html.ListBox("lstCheckpointOrders")
+        </div>
+
+    </fieldset>
 }
-
-</table>
-

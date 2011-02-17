@@ -8,8 +8,20 @@
 	xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input"
 	x:Class="SilverlightPrototype1Screens.Screen_1"
 	Width="640" Height="480">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ProjectDataSources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate x:Key="ItemTemplate">
+				<StackPanel>
+					<TextBlock Text="{Binding Property1}"/>
+				</StackPanel>
+			</DataTemplate>
+		</ResourceDictionary>
+	</UserControl.Resources>
 
-	<Grid x:Name="LayoutRoot" Background="White">
+	<Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding Source={StaticResource Timestamps}}">
 		<Grid Margin="37,0,0,199" HorizontalAlignment="Left" Width="400" Height="39" VerticalAlignment="Bottom">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="0.332*"/>
@@ -78,5 +90,14 @@
 		<TextBlock x:Name="txtChooseRace" HorizontalAlignment="Left" Margin="60,122,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Velg løp" TextWrapping="Wrap" FontSize="21.333" Width="75" Height="30"/>
 		<TextBlock x:Name="txtChooseRace_Copy" Height="30" HorizontalAlignment="Left" Margin="60,178,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Width="126" FontSize="21.333" Text="Velg mellomtid" TextWrapping="Wrap"/>
 		<ComboBox x:Name="dropDownIntermediateTime" Height="39" Margin="205,173,301,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top"/>
+		<ListBox x:Name="lstTimes" Height="170" Margin="60,0,301,9" Style="{StaticResource ListBox-Sketch}" VerticalAlignment="Bottom" ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Collection}"/>
+		<TextBox x:Name="tbTime" HorizontalAlignment="Right" Margin="0,0,120,151" Style="{StaticResource TextBox-Sketch}" VerticalAlignment="Bottom" TextWrapping="Wrap" Width="161"/>
+		<Button x:Name="btnChange" HorizontalAlignment="Right" Margin="0,0,41,149" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Width="75" Content="Endre">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="Click">
+					<ic:ChangePropertyAction TargetName="tbTime" PropertyName="Text"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</Button>
 	</Grid>
 </UserControl>
