@@ -157,9 +157,6 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_Checkpoint.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Checkpoint\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

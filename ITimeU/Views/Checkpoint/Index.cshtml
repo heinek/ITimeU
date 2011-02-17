@@ -1,46 +1,18 @@
-﻿@model IEnumerable<ITimeU.Models.Checkpoint>
+﻿@model IList<ITimeU.Models.CheckpointModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Select checkpoint";
 }
 
-<h2>Index</h2>
+<h2>Select checkpoint</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th></th>
-        <th>
-            RaceID
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            IsDeleted
-        </th>
-    </tr>
+<form action="/Checkpoint/" method="get">
+    <select name="id">
+        @foreach (var item in Model)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CheckpointID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CheckpointID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CheckpointID })
-        </td>
-        <td>
-            @item.RaceID
-        </td>
-        <td>
-            @item.Name
-        </td>
-        <td>
-            @item.IsDeleted
-        </td>
-    </tr>
-}
-
-</table>
-
+    <input type="submit" />
+</form>

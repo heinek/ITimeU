@@ -10,7 +10,29 @@ namespace ITimeU.Controllers
         // GET: /Timer/
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? checkpoint_id)
+        {
+            var timer = new TimerModel();
+
+            if (Session["timer"] == null)
+            {
+                Session["timer"] = timer;
+            }
+            else
+            {
+                timer = (TimerModel)Session["timer"];
+            }
+
+            if (checkpoint_id != null)
+            {
+
+            }
+
+            return View("Index", timer);
+        }
+
+        [HttpGet]
+        public ActionResult Index2()
         {
             var timer = new TimerModel();
 
