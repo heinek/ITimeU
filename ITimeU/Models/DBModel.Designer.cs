@@ -16,6 +16,11 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Timer), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
+
+#endregion
 
 namespace ITimeU.Models
 {
@@ -390,9 +395,74 @@ namespace ITimeU.Models
         private Nullable<global::System.Boolean> _IsDeleted;
         partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> TimerID
+        {
+            get
+            {
+                return _TimerID;
+            }
+            set
+            {
+                OnTimerIDChanging(value);
+                ReportPropertyChanging("TimerID");
+                _TimerID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TimerID");
+                OnTimerIDChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _TimerID;
+        partial void OnTimerIDChanging(Nullable<global::System.Int32> value);
+        partial void OnTimerIDChanged();
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer")]
+        public Timer Timer
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Timer> TimerReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -1489,6 +1559,31 @@ namespace ITimeU.Models
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Checkpoint")]
+        public EntityCollection<Checkpoint> Checkpoints
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Checkpoint>("ITimeUModel.FK_Checkpoint_Timer", "Checkpoint");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Checkpoint>("ITimeUModel.FK_Checkpoint_Timer", "Checkpoint", value);
+                }
+            }
+        }
+
+        #endregion
     }
 
     #endregion
