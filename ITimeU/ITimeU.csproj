@@ -69,6 +69,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
+    <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -88,6 +89,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\bg.jpg" />
+    <Content Include="Content\images\button_bg.jpg" />
+    <Content Include="Content\images\button_bg_over.jpg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\TimeFormatFactory.js" />
     <Content Include="Scripts\TimerHandler.js" />

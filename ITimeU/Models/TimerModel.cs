@@ -14,15 +14,19 @@ namespace ITimeU.Models
         public DateTime? StartTime { get; private set; }
         public DateTime? EndTime { get; private set; }
         public bool IsStarted { get; private set; }
-        public List<RuntimeModel> Runtimes { get; set; }
+        //public List<RuntimeModel> Runtimes { get; set; }
+        public Dictionary<int, int> RuntimeDic { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerModel"/> class.
+        /// </summary>
         public TimerModel()
         {
             StartTime = null;
             IsStarted = false;
-            Runtimes = new List<RuntimeModel>();
-            Runtimes.Add(new RuntimeModel() { Id = 8, Runtime = 4000 });
-
+            //Runtimes = new List<RuntimeModel>();
+            //Runtimes.Add(new RuntimeModel());
+            RuntimeDic = new Dictionary<int, int>();
         }
         /// <summary>
         /// Starts the timer.
@@ -40,12 +44,20 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Sets the start timestamp.
+        /// </summary>
+        /// <param name="startTime">The start time.</param>
         private void SetStartTimestamp(DateTime startTime)
         {
             StartTime = startTime;
             IsStarted = true;
         }
 
+        /// <summary>
+        /// Saves the start time to db.
+        /// </summary>
+        /// <returns></returns>
         private int SaveStartTimeToDb()
         {
             return Create().Id;
@@ -61,6 +73,10 @@ namespace ITimeU.Models
             SaveStopTimeStampToDb(EndTime);
         }
 
+        /// <summary>
+        /// Saves the stop time stamp to db.
+        /// </summary>
+        /// <param name="EndTime">The end time.</param>
         private void SaveStopTimeStampToDb(DateTime? EndTime)
         {
             var timer = GetTimerById(Id);
@@ -68,6 +84,9 @@ namespace ITimeU.Models
             timer.Save();
         }
 
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
         public void Reset()
         {
             if (IsStarted)
@@ -81,6 +100,11 @@ namespace ITimeU.Models
         }
 
         // TODO: Move method to appropriate location in this class.
+        /// <summary>
+        /// Gets the timer by id.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
         public static TimerModel GetTimerById(int id)
         {
             using (var ctx = new Entities())
@@ -96,6 +120,10 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <returns></returns>
         public static TimerModel Create()
         {
             TimerModel timerModel = new TimerModel();
@@ -111,6 +139,9 @@ namespace ITimeU.Models
             return timerModel;
         }
 
+        /// <summary>
+        /// Saves this instance.
+        /// </summary>
         public void Save()
         {
             using (var ctx = new Entities())
@@ -124,40 +155,79 @@ namespace ITimeU.Models
                 ctx.SaveChanges();
             }
         }
-        public void EditRuntime(RuntimeModel runtime, int newRuntime)
+        /// <summary>
+        /// Adds the runtime.
+        /// </summary>
+        /// <param name="milliseconds">The milliseconds.</param>
+        /// <returns></returns>
+        public RuntimeModel AddRuntime(int milliseconds)
         {
-            var newRuntimemodel = new RuntimeModel() { Runtime = newRuntime };
-            DeleteRuntime(runtime);
-            AddRuntime(newRuntimemodel);
-        }
-
-        public void DeleteRuntime(RuntimeModel runtime)
-        {
-            Runtimes.Remove(runtime);
+            var newRuntime = RuntimeModel.Create(milliseconds);
+            //Runtimes.Add(newRuntime);
             using (var ctx = new Entities())
             {
-                var runtimeToDelete = ctx.Runtimes.OrderByDescending(runt => runt.RuntimeID).First(runt => runt.Runtime1 == runtime.Runtime);
+                var runtime = new Runtime() { Runtime1 = newRuntime.Runtime };
+                ctx.Runtimes.AddObject(runtime);
+                ctx.SaveChanges();
+                newRuntime.Id = runtime.RuntimeID;
+                RuntimeDic.Add(runtime.RuntimeID, runtime.Runtime1);
+            }
+            return newRuntime;
+        }
+
+        /// <summary>
+        /// Adds the runtime.
+        /// </summary>
+        /// <param name="runtimemodel">The runtimemodel.</param>
+        public void AddRuntime(RuntimeModel runtimemodel)
+        {
+            var runtime = new Runtime() { Runtime1 = runtimemodel.Runtime };
+            using (var ctx = new Entities())
+            {
+                ctx.Runtimes.AddObject(runtime);
+                ctx.SaveChanges();
+                runtimemodel.Id = runtime.RuntimeID;
+            }
+            //Runtimes.Add(runtimemodel);
+            RuntimeDic.Add(runtime.RuntimeID, runtime.Runtime1);
+
+        }
+
+        /// <summary>
+        /// Edits the runtime.
+        /// </summary>
+        /// <param name="runtimeId">The runtime id.</param>
+        /// <param name="newRuntime">The new runtime.</param>
+        public void EditRuntime(int runtimeId, int newRuntime)
+        {
+            RuntimeDic[runtimeId] = newRuntime;
+        }
+
+        /// <summary>
+        /// Deletes the runtime.
+        /// </summary>
+        /// <param name="runtime">The runtime.</param>
+        public void DeleteRuntime(RuntimeModel runtime)
+        {
+            RuntimeDic.Remove(runtime.Id);
+            using (var ctx = new Entities())
+            {
+                var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtime.Id).Single();
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
                 ctx.SaveChanges();
             }
         }
-
-        public void AddRuntime(int milliseconds)
+        /// <summary>
+        /// Deletes the runtime.
+        /// </summary>
+        /// <param name="runtimeid">The runtimeid.</param>
+        public void DeleteRuntime(int runtimeid)
         {
-            var newRuntime = RuntimeModel.Create(milliseconds);
-            Runtimes.Add(newRuntime);
+            RuntimeDic.Remove(runtimeid);
             using (var ctx = new Entities())
             {
-                ctx.Runtimes.AddObject(new Runtime() { Runtime1 = newRuntime.Runtime });
-                ctx.SaveChanges();
-            }
-        }
-        public void AddRuntime(RuntimeModel runtimemodel)
-        {
-            Runtimes.Add(runtimemodel);
-            using (var ctx = new Entities())
-            {
-                ctx.Runtimes.AddObject(new Runtime() { Runtime1 = runtimemodel.Runtime });
+                var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
+                ctx.Runtimes.DeleteObject(runtimeToDelete);
                 ctx.SaveChanges();
             }
         }

@@ -17,6 +17,8 @@
         var tbEditID = "tbEdit"; //must be same as html below
         var btnEditID = "btnChange"; //must be same as html below
         var listHolderID = "listHolder";
+        var btnDeleteID = "btnDelete";
+
 
         var btnReset = Tools.selectById(resetTimerButtonID);
         var btnStartTimer = Tools.selectById(startStopButtonID);
@@ -25,6 +27,7 @@
         var btnIntermediate = Tools.selectById(btnIntermediateID);
         var listIntermediate = Tools.selectById(listIntermediateID);
         var tbEdit = Tools.selectById(tbEditID);
+        var btnDelete = Tools.selectById(btnDeleteID);
         var listHolder = Tools.selectById(listHolderID);
 
         var handler = new TimerHandler();
@@ -51,40 +54,48 @@
             tbEdit
         );
 
+        handler.setDeleteAction(
+            listIntermediate,
+            btnDelete
+        );
+
         handler.setChangeAction(
             listIntermediate,
             tbEdit
         );
     });
 </script>
-<h2>
-    Timer View</h2>
-    <table style="border-style:hidden">
-        <tr>
-            <td style="border-style:hidden"><h3>Sjekkpunkt: @ViewData["checkpoint"]</h3></td>
-            <td style="border-style:hidden">[@Html.ActionLink("Endre", "Index", "Checkpoint")]</td>
-        </tr>
-    </table>
-    
-    <p>
-<span id="lblRunningTimer" style="width: 100px"></span>
-<input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
-<input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
-<input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
-<table border="0" cellpadding="0" cellspacing="0">
-    <tr style="vertical-align: top">
-        <td>
-            @Html.ListBox("lstIntermediates", new SelectList(Model.Runtimes, "Id", "Runtime"))
+<table style="border-style: hidden">
+    <tr>
+        <td style="border-style: hidden">
+            <h3>
+                Sjekkpunkt: @ViewData["checkpoint"]</h3>
         </td>
-        <td>@Html.TextBox("tbEdit")
-        </td>
-        <td>
-            <input type="button" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
-        </td>
-        <td>
-            <input type="button" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
+        <td style="border-style: hidden">
+            [@Html.ActionLink("Endre", "Index", "Checkpoint")]
         </td>
     </tr>
 </table>
-<div id="divit">
+<div id="containter">
+    <div class="row">
+        <div class="left">
+            <span id="lblRunningTimer" class="timer"></span>
+        </div>
+        <div class="right">
+            <input type="button" id="btnStartTimer" value="Start" style="width: 100px" />
+            <input type="button" id="btnResetTimer" value="Nullstill" style="width: 100px" />
+            <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="left">
+            @Html.ListBox("lstIntermediates", new SelectList(Model.RuntimeDic, "Key", "Value"), new { @class = "listbox" })
+        </div>
+        <div class="right">
+            @Html.TextBox("tbEdit", null, new { @class = "textbox" })
+            <br />
+            <input type="button" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
+            <input type="button" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
+        </div>
+    </div>
 </div>

@@ -1,3 +1,5 @@
+///<reference path="jquery-1.4.4.js"/>
+
 var TimerHandler;
 if (!TimerHandler)
     TimerHandler = {};
@@ -18,11 +20,10 @@ var btnReset;
 var btnEdit;
 var btnDelete;
 var listIntermediate;
+var initialid;
 var runtimeid;
-var listRuntimes = [];
 var startBtnText = "Start";
 var stopBtnText = "Stop";
-var initialvalue;
 var tbedit;
 // Initialises a Stopwatch instance that displays its time nicely formatted.
 TimerHandler.prototype.initTimer = function (lblTimer) {
@@ -31,7 +32,6 @@ TimerHandler.prototype.initTimer = function (lblTimer) {
         var displayText = timeFormatFactory.MSSDFormat(runtime);
         lblTimer.html(displayText);
     });
-
     timer.doDisplay();
 }
 
@@ -42,11 +42,9 @@ TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _list
     btnIntermediate.click(function () {
         timer.addIntermediate(function (runtime) {
             url = "/Timer/SaveRuntime/?runtime=" + runtime;
-            $.get(url);
-            var tmpList = listRuntimes;
-            listRuntimes = '<option value="' + runtime + '">' + runtime + '</option>';
-            listRuntimes += tmpList;
-            listIntermediate.html(listRuntimes);
+            $.get(url, function (data) {
+                listIntermediate.html(data);
+            });
         });
     });
 }
@@ -73,25 +71,27 @@ TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _
     btnEdit = _btnEdit;
     tbedit = _tbedit;
     btnEdit.bind("click", function () {
-//        //        var tmplist1 = listRuntimes.val().replace(initialvalue, tbedit.val());
-//        $.each(listRuntimes, function (key, value) {
-//            //            value.replace(initialvalue, tbedit.val());
-//            value.replace('0', '1');
-//        });
-
-        var tmplist1 = [];
-        $.each(listRuntimes, function (key, value) {
-            tmplist1.push(value.replace(initialvalue, tbedit.val()));
+        url = "/Timer/EditRuntime/?orginalruntimeid=" + initialid + "&newruntime=" + tbedit.val();
+        $.get(url, function (data) {
+            listIntermediate.html(data);
         });
-
-
-        //var tmplist = listRuntimes.text().replace('00', '11');
-        url = "/Timer/EditRuntime/?orginalruntime=" + initialvalue + "&newruntime=" + tbedit.val();
-        $.get(url);
-
-        listIntermediate.html(tmplist1);
         tbedit.val("");
         Tools.disable(btnEdit);
+        Tools.disable(btnDelete);
+    });
+}
+
+TimerHandler.prototype.setDeleteAction = function (_listIntermediates, _btnDelete) {
+    listIntermediate = _listIntermediates;
+    btnDelete = _btnDelete;
+    btnDelete.bind("click", function () {
+        url = "/Timer/DeleteRuntime/?runtimeid=" + initialid;
+        $.get(url, function (data) {
+            listIntermediate.html(data);
+        });
+        tbedit.val("");
+        Tools.disable(btnEdit);
+        Tools.disable(btnDelete);
     });
 }
 
@@ -100,12 +100,15 @@ TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbedit) 
     tbedit = _tbedit;
     listIntermediate.bind("change", function () {
         var str = "";
+        var strid = "";
         $("#lstIntermediates :selected").each(function () {
-            str += $(this).text() + " ";
+            strid += $(this).val();
+            str += $(this).text();
         });
-        initialvalue = str;
+        initialid = strid;
         tbedit.val(str);
         Tools.enable(btnEdit);
+        Tools.enable(btnDelete);
     });
 }
 
