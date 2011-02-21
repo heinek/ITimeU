@@ -17,11 +17,15 @@ namespace ITimeU.Controllers
         public ActionResult Index(int? checkpoint_id)
         {
             var timer = new TimerModel();
+            Session["timer"] = timer;
 
+            /*
+             * // We don't need this?
             if (Session["timer"] == null)
                 Session["timer"] = timer;
             else
                 timer = (TimerModel)Session["timer"];
+            */
 
             if (checkpoint_id != null)
             {

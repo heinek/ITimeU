@@ -96,7 +96,7 @@ namespace ITimeU.Tests.Models
             {
                 timer = new TimerModel();
                 checkpoint = CheckpointModel.Create("Supercheckpoint", timer);
-            });
+            }); 
 
             When("we start the timer", () => timer.Start());
 
