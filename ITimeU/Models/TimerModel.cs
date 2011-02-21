@@ -93,6 +93,9 @@ namespace ITimeU.Models
             Id = timer.TimerID;
             StartTime = timer.StartTime;
             EndTime = timer.EndTime;
+
+            if (StartTime != null && EndTime == null)
+                IsStarted = true;
         }
 
         public static TimerModel GetTimerById(int id)
@@ -115,6 +118,7 @@ namespace ITimeU.Models
                 StartTime = DateTime.Now;
                 EndTime = null;
                 IsStarted = true;
+
                 SaveToDb();
             }
             else
@@ -133,6 +137,7 @@ namespace ITimeU.Models
 
             EndTime = DateTime.Now;
             IsStarted = false;
+
             SaveToDb();
         /// <summary>
         /// Saves the stop time stamp to db.
@@ -145,22 +150,9 @@ namespace ITimeU.Models
             if (!dbEntryCreated)
                 Id = CreateDbEntity();
 
-            using (var context = new Entities())
-            {
-                Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
-
-                timer.StartTime = this.StartTime;
-                timer.EndTime = this.EndTime;
-
-                context.SaveChanges();
-            }
+            updateDbEntry();
         }
 
-
-        /// Saves the timestamp. Note that a new row is created in the database rather than updating
-        /// any possible previous rows. Otherwise, any timestamps of earlier start times would be lost.
-        /// </summary>
-        /// <returns>The ID of the new timer generated.</returns>
         private int CreateDbEntity()
         {
             var context = new Entities();
@@ -171,6 +163,17 @@ namespace ITimeU.Models
 
             dbEntryCreated = true;
             return timer.TimerID;
+        }
+
+        private void updateDbEntry()
+        {
+            var context = new Entities();
+            Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
+
+            timer.StartTime = this.StartTime;
+            timer.EndTime = this.EndTime;
+
+            context.SaveChanges();
         }
 
         public override bool Equals(object obj)

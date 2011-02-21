@@ -230,6 +230,28 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
+        public void MyTestMethod()
+        {
+            TimerModel timerDb = null;
+
+            Given("we have a timer", () =>
+            {
+                timer = new TimerModel();
+            });
+
+            When("we start the timer, and retrieve it from the database", () =>
+            {
+                timer.Start();
+            });
+
+            Then("the timer retrieved from the database should be started", () =>
+            {
+                timerDb = TimerModel.GetTimerById(timer.Id);
+                timerDb.IsStarted.ShouldBeTrue();
+            });
+        }
+
+        [TestMethod]
         public void A_Stopped_Timer_Must_Have_A_Start_Time()
         {
             Given("we have a started timer", () =>
