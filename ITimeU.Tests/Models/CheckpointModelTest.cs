@@ -94,7 +94,7 @@ namespace ITimeU.Tests.Models
             CheckpointModel checkpoint = null;
             Given("we have a timer which is associated with a checkpoint", () =>
             {
-                timer = TimerModel.Create();
+                timer = new TimerModel();
                 checkpoint = CheckpointModel.Create("Supercheckpoint", timer);
             });
 
@@ -138,7 +138,7 @@ namespace ITimeU.Tests.Models
 
             Given("we have a timer", () =>
             {
-                timer = TimerModel.Create();
+                timer = new TimerModel();
             });
 
             When("when we create a checkpoint and associate it with a timer", () =>

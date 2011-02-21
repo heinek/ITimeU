@@ -63,6 +63,7 @@ namespace ITimeU.Models
         {
             StartTime = null;
             IsStarted = false;
+            Id = CreateDbEntity();
             //Runtimes = new List<RuntimeModel>();
             //Runtimes.Add(new RuntimeModel());
             RuntimeDic = new Dictionary<int, int>();
@@ -91,44 +92,39 @@ namespace ITimeU.Models
         }
 
         /// <summary>
+        /// <summary>
+        /// Sets the start timestamp.
+        /// </summary>
+        /// <param name="startTime">The start time.</param>
+        /// </summary>
+        /// <returns>The ID of the new timer generated.</returns>
+        private int CreateDbEntity()
+        {
+            var context = new Entities();
+
+            Timer timer = new Timer();
+            context.Timers.AddObject(timer);
+            context.SaveChanges();
+
+            return timer.TimerID;
+        }
+
+        /// <summary>
         /// Starts the timer.
         /// </summary>
         public void Start()
         {
             if (!IsStarted)
             {
-                SetStartTimestamp(DateTime.Now);
-                Id = SaveStartTimeToDb();
+                StartTime = DateTime.Now;
+                EndTime = null;
+                IsStarted = true;
+                SaveToDb();
             }
             else
             {
                 throw new InvalidOperationException("Cannot start an already started timer");
             }
-        }
-
-        /// <summary>
-        /// Sets the start timestamp.
-        /// </summary>
-        /// <param name="startTime">The start time.</param>
-        private void SetStartTimestamp(DateTime startTime)
-        {
-            StartTime = startTime;
-            IsStarted = true;
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <returns>The ID of the new timer generated.</returns>
-        private int SaveStartTimeToDb()
-        {
-            var context = new Entities();
-
-            Timer timer = new Timer();
-            timer.StartTime = StartTime;
-            context.Timers.AddObject(timer);
-            context.SaveChanges();
-
-            return timer.TimerID;
         }
 
         /// <summary>
@@ -139,23 +135,16 @@ namespace ITimeU.Models
             if (!IsStarted)
                 throw new InvalidOperationException("Cannot stop a stopped timer");
 
-            IsStarted = false;
             EndTime = DateTime.Now;
-            SaveStopTimeStampToDb(EndTime);
-        }
-
+            IsStarted = false;
+            SaveToDb();
         /// <summary>
         /// Saves the stop time stamp to db.
         /// </summary>
         /// <param name="EndTime">The end time.</param>
-        private void SaveStopTimeStampToDb(DateTime? EndTime)
-        {
-            var timer = GetTimerById(Id);
-            timer.EndTime = EndTime;
-            timer.Save();
         }
 
-        private void Save()
+        private void SaveToDb()
         {
             using (var context = new Entities())
             {
@@ -167,19 +156,7 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
-
-        public void Restart()
-        {
-            if (IsStarted)
-                throw new InvalidOperationException(
-                    "Cannot restart a started timer. Stop timer before restarting.");
-
-            StartTime = DateTime.Now;
-            IsStarted = true;
-            EndTime = null;
-            Save();
-        }
-
+      
         /// <summary>
         /// Gets the timer by id.
         /// </summary>
@@ -189,21 +166,6 @@ namespace ITimeU.Models
         /// Creates this instance.
         /// </summary>
         /// <returns></returns>
-        public static TimerModel Create()
-        {
-            TimerModel timerModel = new TimerModel();
-
-            using (var context = new Entities())
-            {
-                Timer timer = new Timer();
-                context.Timers.AddObject(timer);
-                context.SaveChanges();
-                timerModel.Id = context.Timers.OrderByDescending(tmr => tmr.TimerID).First().TimerID;
-            }
-
-            return timerModel;
-        }
-        
         /// <summary>
         /// Saves this instance.
         /// </summary>

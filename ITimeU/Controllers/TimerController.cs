@@ -62,10 +62,8 @@ namespace ITimeU.Controllers
         /// </summary>
         public ActionResult Restart()
         {
-            TimerModel timerModel = (TimerModel)Session["timer"];
-            timerModel.Restart();
-            Session["timer"] = timerModel;
-            return View("Index", timerModel);
+            // TODO: Update javascript to call start instead of restart.
+            return Start();
         }
         /// <summary>
         /// Saves the runtime.

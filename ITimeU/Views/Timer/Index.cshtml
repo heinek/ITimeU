@@ -27,9 +27,9 @@
 
         handler.setStartStopActions(
             btnStartTimer,
-            function () { $.get("/Timer/Start/"); }, // Start button clicked
-            function () { $.get("/Timer/Stop/"); }, // Stop button clicked
-            function () { $.get("/Timer/Restart/"); }// Restart button clicked
+            function () { alert('starting');  $.get("/Timer/Start/"); }, // Start button clicked
+            function () { alert('stopping'); $.get("/Timer/Stop/"); }, // Stop button clicked
+            function () { alert('restarting'); $.get("/Timer/Start/"); } // Restart button clicked
         );
 
         handler.setIntermediateAction(

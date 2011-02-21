@@ -17,7 +17,6 @@ namespace ITimeU.Tests.Models
     public class TimerModelTest : ScenarioClass
     {
         private TimerModel timer = null;
-        private RaceModel race = null;
         private RuntimeModel runtime = null;
 
         [TestMethod]
@@ -31,6 +30,12 @@ namespace ITimeU.Tests.Models
 
             Then("we have a timer", () => timer.ShouldNotBeNull()
             );
+        }
+
+        [TestMethod]
+        public void Creating_A_Timer_Should_Save_It_To_Db()
+        {
+            
         }
 
         [TestMethod]
@@ -125,9 +130,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_Start_Time_Should_Be_Saved_To_The_Database()
         {
-            // Known bug in this test. See doc/KnownBugs.txt.
-            // TODO: Write timestamps to log to find out why this test sometimes fails.
-
             DateTime startTime = new DateTime();
 
             Given("we have a started timer", () =>
@@ -144,6 +146,7 @@ namespace ITimeU.Tests.Models
             Then("the start time should be saved to the database", () =>
             {
                 var timerDb = TimerModel.GetTimerById(timer.Id);
+
                 var startTimeDb = (DateTime)timerDb.StartTime;
                 startTimeDb.ShouldBe(startTime);
             });
@@ -171,11 +174,11 @@ namespace ITimeU.Tests.Models
             Then("the end time should be saved to the database", () =>
             {
                 var timerDb = TimerModel.GetTimerById(timer.Id);
+
                 var endTimeDb = (DateTime)timerDb.EndTime;
                 endTimeDb.ShouldBe(endTime);
             });
         }
-
 
         [TestMethod]
         public void A_Timer_Should_Not_Be_Running_After_It_Has_Stopped()
@@ -244,7 +247,7 @@ namespace ITimeU.Tests.Models
             {
                 timer.Stop();
                 Thread.Sleep(100); // Avoid that the restarting happens too fast for StartTime to change.
-                timer.Restart();
+                timer.Start();
             });
 
             Then("the start time should be set, and be later/higher than the old start time", () =>
@@ -268,7 +271,7 @@ namespace ITimeU.Tests.Models
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Start();
             });
 
             Then("the end time should be reset/null", () =>
@@ -292,7 +295,7 @@ namespace ITimeU.Tests.Models
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
-                timer.Restart();
+                timer.Start();
             });
 
             Then("the end time should be null", () =>
@@ -302,33 +305,37 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void Restarting_A_Started_Timer_Should_Not_Be_Allowed()
+        public void Restarting_A_Timer_Should_Update_The_Existing_Database_Row()
         {
+            int? oldTimerId = null;
+
             Given("we have a started timer", () =>
             {
                 timer = new TimerModel();
                 timer.Start();
+                oldTimerId = timer.Id;
             });
 
-            When("we restart the timer", () =>
+            When("we stop and restart the timer", () =>
             {
-                try
-                {
-                    timer.Restart();
-                    false.ShouldBe(true);
-                }
-                catch (InvalidOperationException e) { }
+                timer.Stop();
+                timer.Start();
             });
 
-            Then("we should get an exception");
+            Then("the end time should be null", () =>
+            {
+                timer.Id.ShouldBe(oldTimerId);
+            });
         }
 
         /// TODO:
         /// OK - isStarted stuff.
         /// OK - we should not be able to restart a started timer. you have to stop a timer before restarting it.
+        /// - starting a timer after stopping it should automatically imply that the timer is restarted
+        /// - If creating a TimerModel based on a Timer, check that IsStarted = True if startTime is set
+        /// and endTime is null.
         /// - database checks for all new tests.
         /// - remove all stuff related to old Reset().
-
 
         [TestMethod]
         public void Two_TimerModels_With_Same_Properties_Should_Equal_Each_Other()

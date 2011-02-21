@@ -35,7 +35,7 @@ TimerHandler.prototype.showTimer = function (lblTimer) {
  * Start/Stop/Restart button functionality
 */
 TimerHandler.prototype.setStartStopActions = function (
-    _btnStartStop, startFunction, restartFunction, stopFunction)
+    _btnStartStop, startFunction, stopFunction, restartFunction)
 {
     btnStartStop = _btnStartStop;
 
