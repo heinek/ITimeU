@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CheckpointOrderController.cs" />
+    <Compile Include="Controllers\CheckpointController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />
@@ -73,6 +75,8 @@
     </Compile>
     <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\CheckpointOrderModel.cs" />
+    <Compile Include="Models\CheckpointModel.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -86,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="Scripts\CheckpointOrderHandler.js" />
     <Content Include="Scripts\TimeFormatFactory.js" />
     <Content Include="Scripts\TimerHandler.js" />
     <Content Include="Scripts\Stopwatch.js" />
@@ -95,9 +100,11 @@
     </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.4.4.js" />
@@ -153,6 +160,16 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DBModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CheckpointOrder\Index.cshtml" />
+    <Content Include="Views\Checkpoint\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CheckpointOrder\Details.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\CheckpointOrder\Create.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

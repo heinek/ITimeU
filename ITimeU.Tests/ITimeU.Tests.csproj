@@ -43,6 +43,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -75,6 +76,7 @@
   <ItemGroup>
     <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
+    <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\ParticipantModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />

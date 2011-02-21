@@ -15,7 +15,8 @@ namespace ITimeU.Controllers
         public ActionResult Index()
         {
             var entities = new Entities();
-            return View(entities.CheckpointOrders.ToList());
+            ViewBag.Checkpoints = entities.Checkpoints.ToList();
+            return View(new CheckpointOrderModel());
         }
 
         //
@@ -23,51 +24,58 @@ namespace ITimeU.Controllers
 
         public ActionResult Details(int id)
         {
-            return View("Details");
+            return View(GetCheckpointOrder(id));
         }
 
         //
         // GET: /CheckpointOrder/Create
 
+        [HttpGet]
         public ActionResult Create()
         {
-            return View("Create");
+            var entities = new Entities();
+            ViewBag.Checkpoints = entities.Checkpoints.ToList();
+
+            //CheckpointOrderModel checkpointOrderModel = new CheckpointOrderModel();
+            //checkpointOrderModel.OrderNumber = (int)(entities.CheckpointOrders.OrderByDescending(m => m.OrderNumber).First()).OrderNumber + 1;
+
+            
+            //return View(checkpointOrderModel);
+            return View("Create", new CheckpointOrderModel());
         } 
 
         //
         // POST: /CheckpointOrder/Create
 
         [HttpPost]
-        public ActionResult Create(CheckpointOrder co)
+        public ActionResult Create(CheckpointOrder CheckpointOrderToInsert)
         {
-            if (!ModelState.IsValid)
-            {
-                return View("Create", co);
-            }
+           return View("Index");
+        }
 
-            CheckpointOrderModel.Create((int)co.CheckpointID, (int)co.StartingNumber, (int)co.OrderNumber);
-
-            return RedirectToAction("Index");
-        } 
         
         //
         // GET: /CheckpointOrder/Edit/5
  
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(GetCheckpointOrder(id));
         }
 
         //
         // POST: /CheckpointOrder/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(CheckpointOrder co)
         {
             try
             {
-                // TODO: Add update logic here
- 
+                Entities ent = new Entities();
+                CheckpointOrder origCheckpointOrder = GetCheckpointOrder((int)co.CheckpointID);
+                ent.CheckpointOrders.Attach(co);
+                ent.ApplyOriginalValues("CheckpointOrders", origCheckpointOrder);
+                ent.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
             catch
@@ -99,6 +107,40 @@ namespace ITimeU.Controllers
             catch
             {
                 return View();
+            }
+        }
+
+        [NonAction]
+        private CheckpointOrder GetCheckpointOrder(int id)
+        {
+            Entities ent = new Entities();
+            var coQuery = from c in ent.CheckpointOrders
+                          where c.CheckpointID == id
+                          select c;
+            CheckpointOrder co = coQuery.FirstOrDefault();
+            return co;
+        }
+
+        public ActionResult AddStartingNumber(string checkpointID, string startingNumber)
+        {
+            using (var entities = new Entities())
+            {
+                CheckpointOrder CheckpointOrderToInsert = new CheckpointOrder();
+
+                int nextOrderNumber = 1;
+                if (entities.CheckpointOrders.Count() > 0)
+                {
+                    nextOrderNumber = (int)(entities.CheckpointOrders.OrderByDescending(m => m.OrderNumber).First()).OrderNumber + 1;
+                }
+
+                CheckpointOrderToInsert.OrderNumber = nextOrderNumber;
+                CheckpointOrderToInsert.CheckpointID = int.Parse(checkpointID);
+                CheckpointOrderToInsert.StartingNumber = int.Parse(startingNumber);
+
+                entities.AddToCheckpointOrders(CheckpointOrderToInsert);
+                entities.SaveChanges();
+
+                return null;
             }
         }
 

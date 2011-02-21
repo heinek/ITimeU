@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace ITimeU.Logging
 {
@@ -30,6 +31,7 @@ namespace ITimeU.Logging
             return instance;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void Write(string content)
         {
             StreamWriter writer = File.AppendText(file);

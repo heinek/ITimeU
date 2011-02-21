@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ITimeU.Logging;
+using ITimeU.Tests.Models;
 
 // TODO: Write class summary.
 
@@ -13,11 +14,15 @@ namespace ITimeU.Models
         public DateTime? StartTime { get; private set; }
         public DateTime? EndTime { get; private set; }
         public bool IsStarted { get; private set; }
+        public List<RuntimeModel> Runtimes { get; set; }
 
         public TimerModel()
         {
             StartTime = null;
             IsStarted = false;
+            Runtimes = new List<RuntimeModel>();
+            Runtimes.Add(new RuntimeModel() { Id = 8, Runtime = 4000 });
+
         }
         /// <summary>
         /// Starts the timer.
@@ -116,6 +121,43 @@ namespace ITimeU.Models
                 if (this.EndTime.HasValue)
                     timer.EndTime = this.EndTime;
 
+                ctx.SaveChanges();
+            }
+        }
+        public void EditRuntime(RuntimeModel runtime, int newRuntime)
+        {
+            var newRuntimemodel = new RuntimeModel() { Runtime = newRuntime };
+            DeleteRuntime(runtime);
+            AddRuntime(newRuntimemodel);
+        }
+
+        public void DeleteRuntime(RuntimeModel runtime)
+        {
+            Runtimes.Remove(runtime);
+            using (var ctx = new Entities())
+            {
+                var runtimeToDelete = ctx.Runtimes.OrderByDescending(runt => runt.RuntimeID).First(runt => runt.Runtime1 == runtime.Runtime);
+                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                ctx.SaveChanges();
+            }
+        }
+
+        public void AddRuntime(int milliseconds)
+        {
+            var newRuntime = RuntimeModel.Create(milliseconds);
+            Runtimes.Add(newRuntime);
+            using (var ctx = new Entities())
+            {
+                ctx.Runtimes.AddObject(new Runtime() { Runtime1 = newRuntime.Runtime });
+                ctx.SaveChanges();
+            }
+        }
+        public void AddRuntime(RuntimeModel runtimemodel)
+        {
+            Runtimes.Add(runtimemodel);
+            using (var ctx = new Entities())
+            {
+                ctx.Runtimes.AddObject(new Runtime() { Runtime1 = runtimemodel.Runtime });
                 ctx.SaveChanges();
             }
         }

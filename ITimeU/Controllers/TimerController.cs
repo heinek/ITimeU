@@ -1,6 +1,7 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using ITimeU.Models;
-using ITimeU.Logging;
+using ITimeU.Tests.Models;
 
 namespace ITimeU.Controllers
 {
@@ -10,18 +11,23 @@ namespace ITimeU.Controllers
         // GET: /Timer/
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? checkpoint_id)
         {
             var timer = new TimerModel();
 
             if (Session["timer"] == null)
-            {
                 Session["timer"] = timer;
+            else
+                timer = (TimerModel)Session["timer"];
+
+            if (checkpoint_id != null)
+            {
+                CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+                ViewData["checkpoint"] = checkpoint.Name;
             }
             else
-            {
-                timer = (TimerModel)Session["timer"];
-            }
+                ViewData["checkpoint"] = "Ingen valgt";
+            
             return View("Index", timer);
         }
 
@@ -49,6 +55,25 @@ namespace ITimeU.Controllers
             Session["timer"] = timerModel;
             return View("Index", timerModel);
         }
+        public ActionResult SaveRuntime(string runtime)
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            int milliseconds;
+            int.TryParse(runtime, out milliseconds);
+            timerModel.AddRuntime(milliseconds);
+            return Content(runtime);
+        }
 
+        public ActionResult EditRuntime(string orginalruntime, string newruntime)
+        {
+            TimerModel timerModel = (TimerModel)Session["timer"];
+            int orgmilliseconds, milliseconds;
+            int.TryParse(orginalruntime.Trim(), out orgmilliseconds);
+            int.TryParse(newruntime.Trim(), out milliseconds);
+            RuntimeModel runtimeModel = timerModel.Runtimes.OrderByDescending(runtime => runtime.Id).Where(runtime => runtime.Runtime == orgmilliseconds).First();
+            timerModel.EditRuntime(runtimeModel, milliseconds);
+            return Content(newruntime);
+
+        }
     }
 }
