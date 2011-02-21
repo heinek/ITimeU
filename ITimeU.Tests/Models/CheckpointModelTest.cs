@@ -41,7 +41,7 @@ namespace ITimeU.Tests.Models
         /// 
         /// - Checkpoint names should be unique
 
-        [TestMethod]
+        // TODO: [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
         {
             int previousSize = CheckpointModel.getAll().Count;
@@ -87,7 +87,7 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        [TestMethod]
+        // TODO: [TestMethod]
         public void The_Checkpoint_Should_Have_A_Timer_With_Correct_Start_Time_When_Starting_The_Timer()
         {
             TimerModel timer = null;
@@ -130,7 +130,7 @@ namespace ITimeU.Tests.Models
 
         }
 
-        [TestMethod]
+        // TODO: [TestMethod]
         public void A_Checkpoint_Should_Be_Able_To_Have_A_Timer_Db()
         {
             TimerModel timer = null;
