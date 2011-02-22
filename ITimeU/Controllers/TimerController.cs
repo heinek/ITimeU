@@ -60,10 +60,10 @@ namespace ITimeU.Controllers
         /// <summary>
         /// Resets this instance.
         /// </summary>
-        public ActionResult Reset()
+        public ActionResult Restart()
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
-            timerModel.Reset();
+            timerModel.Restart();
             Session["timer"] = timerModel;
             return View("Index", timerModel);
         }

@@ -13,6 +13,8 @@ namespace ITimeU.Models
 
     public class CheckpointModel
     {
+        private string p;
+
         public int Id { get; private set; }
         public string Name { get; set; } // TODO: set should be private
         public TimerModel Timer { get; private set; }
@@ -30,6 +32,12 @@ namespace ITimeU.Models
             Name = checkpoint.Name;
             if (checkpoint.Timer != null)
                 Timer = new TimerModel(checkpoint.Timer);
+        }
+
+        public CheckpointModel(string checkpointName, TimerModel timer)
+        {
+            Name = checkpointName;
+            Timer = timer;
         }
 
         /// <summary>

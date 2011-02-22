@@ -28,6 +28,19 @@ namespace ITimeU.Tests.Models
             StartScenario();
         }
 
+        /// TODO:
+        /// - When starting a timer with a given checkpoints, its timings should be associated with that
+        /// checkpoint. I.e. when calling checkpoint.timings, we should get the start time, runtimes and
+        /// end time for that checkpoint. Splittng, we test for the following:
+        ///     - When starting the timer, the checkpoint should have a timer with the correct start time.
+        ///     - When stopping the timer, the checkpoint should have a timer with the correct end time.
+        ///     - When recording runtimes, the checkpoint should have a timer with the correct runtimes.
+        /// - The timer's checkpoint should be saved to the DB
+        /// - When clicking "Mellomtid", the runtime should be stored for that timer.
+        /// - I.e.: Different timers should have different
+        /// 
+        /// - Checkpoint names should be unique
+
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
         {
@@ -74,18 +87,6 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        /// TODO:
-        /// - When starting a timer with a given checkpoints, its timings should be associated with that
-        /// checkpoint. I.e. when calling checkpoint.timings, we should get the start time, runtimes and
-        /// end time for that checkpoint. Splittng, we test for the following:
-        ///     - When starting the timer, the checkpoint should have a timer with the correct start time.
-        ///     - When stopping the timer, the checkpoint should have a timer with the correct end time.
-        ///     - When recording runtimes, the checkpoint should have a timer with the correct runtimes.
-        /// - The timer's checkpoint should be saved to the DB
-        /// - When clicking "Mellomtid", the runtime should be stored for that timer.
-        /// - I.e.: Different timers should have different
-        /// - Checkpoint names should be unique
-
         [TestMethod]
         public void The_Checkpoint_Should_Have_A_Timer_With_Correct_Start_Time_When_Starting_The_Timer()
         {
@@ -114,6 +115,29 @@ namespace ITimeU.Tests.Models
 
             Given("we have a timer", () =>
             {
+                timer = new TimerModel();
+            });
+
+            When("when we create a checkpoint and associate it with a timer", () =>
+            {
+                checkpoint = new CheckpointModel("Supercheckpoint", timer);
+            });
+
+            Then("the checkpoint should have the correct timer associated with it", () =>
+            {
+                checkpoint.Timer.ShouldBe(timer);
+            });
+
+        }
+
+        [TestMethod]
+        public void A_Checkpoint_Should_Be_Able_To_Have_A_Timer_Db()
+        {
+            TimerModel timer = null;
+            CheckpointModel checkpoint = null;
+
+            Given("we have a timer", () =>
+            {
                 timer = TimerModel.Create();
             });
 
@@ -124,9 +148,9 @@ namespace ITimeU.Tests.Models
 
             Then("the checkpoint should have the correct timer associated with it", () =>
             {
-                checkpoint.Timer.ShouldBe(timer);
+                CheckpointModel checkpointDb = CheckpointModel.getById(checkpoint.Id);
+                checkpointDb.Timer.ShouldBe(timer);
             });
-
         }
 
         [TestMethod]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ITimeU.Tests.Models;
+using ITimeU.Library;
 
 // TODO: Write class summary.
 
@@ -11,8 +12,46 @@ namespace ITimeU.Models
     public class TimerModel
     {
         public int Id { get; set; }
-        public DateTime? StartTime { get; private set; }
-        public DateTime? EndTime { get; private set; }
+
+        private DateTime? startTime;
+        public DateTime? StartTime
+        {
+            get
+            {
+                return startTime;
+            }
+
+            /// <summary>
+            /// When set, the milliseconds of the DateTime is rounded to its nearest hundred.
+            /// This is done because the database has an inaccuracy (of about 3ms).
+            /// </summary>
+            private set
+            {
+                if (value == null)
+                    startTime = null;
+                else
+                    startTime = DateTimeRounder.RoundToOneDecimal((DateTime)value);
+            }
+
+        }
+
+        public DateTime? endTime;
+        public DateTime? EndTime {
+
+            get
+            {
+                return endTime;
+            }
+
+            private set
+            {
+                if (value == null)
+                    endTime = null;
+                else
+                    endTime = DateTimeRounder.RoundToOneDecimal((DateTime)value);
+            }
+        }
+
         public bool IsStarted { get; private set; }
         //public List<RuntimeModel> Runtimes { get; set; }
         public Dictionary<int, int> RuntimeDic { get; set; }
@@ -38,9 +77,9 @@ namespace ITimeU.Models
 
         public static TimerModel GetTimerById(int id)
         {
-            using (var ctx = new Entities())
+            using (var context = new Entities())
             {
-                var timer = ctx.Timers.Single(tmr => tmr.TimerID == id);
+                var timer = context.Timers.Single(tmr => tmr.TimerID == id);
                 var timerDal = new TimerModel()
                 {
                     Id = timer.TimerID,
@@ -97,6 +136,9 @@ namespace ITimeU.Models
         /// </summary>
         public void Stop()
         {
+            if (!IsStarted)
+                throw new InvalidOperationException("Cannot stop a stopped timer");
+
             IsStarted = false;
             EndTime = DateTime.Now;
             SaveStopTimeStampToDb(EndTime);
@@ -113,29 +155,29 @@ namespace ITimeU.Models
             timer.Save();
         }
 
-        public void Save()
+        private void Save()
         {
             using (var context = new Entities())
             {
                 Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
 
                 timer.StartTime = this.StartTime;
-                if (this.EndTime.HasValue)
-                    timer.EndTime = this.EndTime;
+                timer.EndTime = this.EndTime;
 
                 context.SaveChanges();
             }
         }
 
-        public void Reset()
+        public void Restart()
         {
             if (IsStarted)
                 throw new InvalidOperationException(
-                    "Cannot reset a started timer. Stop timer before resetting.");
+                    "Cannot restart a started timer. Stop timer before restarting.");
 
-            IsStarted = false;
-            StartTime = null;
+            StartTime = DateTime.Now;
+            IsStarted = true;
             EndTime = null;
+            Save();
         }
 
         /// <summary>
@@ -267,5 +309,6 @@ namespace ITimeU.Models
         {
             return "[TimerModel, id: " + Id + "]";
         }
+
     }
 }
