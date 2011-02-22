@@ -11,6 +11,10 @@ using TinyBDD.Specification.MSTest;
 
 namespace ITimeU.Tests.Models
 {
+    /// <summary>
+    /// TODO: Constructor new TimerModel(Timer) must be created a test for.
+    /// </summary>
+    
     [TestClass]
     public class TimerModelTest : ScenarioClass
     {
@@ -32,11 +36,11 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void A_Timer_Has_A_Starttime()
+        public void A_Started_Timer_Must_Have_A_Starttime()
         {
             Given("we have an instance of the timerclass", () => timer = new TimerModel());
             When("we we click the startbutton", () => timer.Start());
-            Then("the timer should have a starttime", () => Assert.IsNotNull(timer.StartTime));
+            Then("the timer should have a starttime", () => timer.StartTime.ShouldBeInstanceOfType<DateTime>());
         }
 
         [TestMethod]
@@ -96,17 +100,45 @@ namespace ITimeU.Tests.Models
             When("we create the timer", () => timer = new TimerModel());
             Then("the timer should not be started", () => timer.IsStarted.ShouldBeFalse());
         }
-
+        
         [TestMethod]
-        public void The_Start_Time_Should_Be_Set_When_Started()
+        public void The_Start_Time_Should_Be_Saved_To_The_Database()
         {
-            Given("we have a timer", () => timer = new TimerModel());
+            // Known bug in this test. See doc/KnownBugs.txt.
 
-            When("we start the timer", () => timer.Start());
+            DateTime startTime = new DateTime();
+
+            Given("we have a started timer", () =>
+            {
+                timer = new TimerModel();
+            });
+
+            When("we start the timer", () =>
+            {
+                timer.Start();
+                startTime = (DateTime)timer.StartTime;
+            });
 
             Then("the start time should be saved to the database", () =>
             {
-                timer.StartTime.HasValue.ShouldBeTrue();
+                // startTimeDb.ShouldBe(startTime) does not work, so have to do it pretty heavy like this.
+                int year = startTime.Year;
+                int month = startTime.Month;
+                int day = startTime.Day;
+                int hour = startTime.Hour;
+                int min = startTime.Minute;
+                int sec = startTime.Second;
+                int millisec = startTime.Millisecond;
+
+                var timerDb = TimerModel.GetTimerById(timer.Id);
+                var startTimeDb = (DateTime)timerDb.StartTime;
+
+                startTimeDb.Year.ShouldBe(year);
+                startTimeDb.Month.ShouldBe(month);
+                startTimeDb.Day.ShouldBe(day);
+                startTimeDb.Minute.ShouldBe(min);
+                startTimeDb.Second.ShouldBe(sec);
+                startTimeDb.Millisecond.ShouldBe(millisec);
             });
         }
 
@@ -131,6 +163,7 @@ namespace ITimeU.Tests.Models
 
             Then("the end time should be saved to the database", () =>
             {
+                // endTimeDb.ShouldBe(endTime) does not work, so have to do it pretty heavy like this.
                 int year = endTime.Year;
                 int month = endTime.Month;
                 int day = endTime.Day;
@@ -248,23 +281,24 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void A_New_TimerModel_Should_Be_Created_When_We_Reset_The_Timer()
         {
-            int timerId = 0;
+            int oldTimerId = 0;
             Given("we have a started timer", () =>
             {
                 timer = new TimerModel();
                 timer.Start();
-                timerId = timer.Id;
+                oldTimerId = timer.Id;
             });
 
             When("we stop and restart the timer", () =>
             {
                 timer.Stop();
                 timer.Reset();
+                timer.Start();
             });
 
             Then("a new timer should be created", () =>
             {
-                timer.Id.ShouldNotBe(timerId);
+                timer.Id.ShouldNotBe(oldTimerId);
             });
         }
 
@@ -286,7 +320,7 @@ namespace ITimeU.Tests.Models
 
             Then("the start time should be set", () =>
             {
-                timer.StartTime.ShouldNotBeNull();
+                timer.StartTime.ShouldBeInstanceOfType<DateTime>();
             });
         }
 
@@ -313,6 +347,60 @@ namespace ITimeU.Tests.Models
             });
 
             Then("we should get an exception");
+        }
+
+        [TestMethod]
+        public void Two_TimerModels_With_Same_Properties_Should_Equal_Each_Other()
+        {
+            // Define common properties...
+            int timerId = 5;
+            DateTime startTime = DateTime.Now;
+            DateTime endTime = startTime.Add(new TimeSpan(5, 3, 2)); // 5 hours, 3 minutes, 2 seconds
+
+            // Create first instance...
+            ITimeU.Models.Timer data1 = new ITimeU.Models.Timer();
+            data1.TimerID = timerId;
+            data1.StartTime = startTime;
+            data1.EndTime = endTime;
+
+            // Create new instance with same properties...
+            ITimeU.Models.Timer data2 = new ITimeU.Models.Timer();
+            data2.TimerID = timerId;
+            data2.StartTime = startTime;
+            data2.EndTime = endTime;
+
+            TimerModel a = new TimerModel(data1);
+            TimerModel b = new TimerModel(data2);
+            a.ShouldBe(b);
+
+            data2.StartTime = endTime;
+            TimerModel c = new TimerModel(data2);
+            a.ShouldNotBe(c);
+        }
+
+        [TestMethod]
+        public void Two_TimerModels_With_Different_Properties_Should_Not_Equal_Each_Other()
+        {
+            // Define common properties...
+            int timerId = 5;
+            DateTime startTime = DateTime.Now;
+            DateTime endTime = startTime.Add(new TimeSpan(5, 3, 2)); // 5 hours, 3 minutes, 2 seconds
+
+            // Create first instance...
+            ITimeU.Models.Timer data1 = new ITimeU.Models.Timer();
+            data1.TimerID = timerId;
+            data1.StartTime = startTime;
+            data1.EndTime = endTime;
+
+            // Create new instance with same properties...
+            ITimeU.Models.Timer data2 = new ITimeU.Models.Timer();
+            data2.TimerID = timerId;
+            data2.StartTime = startTime;
+            // Don't set end time.
+
+            TimerModel a = new TimerModel(data1);
+            TimerModel c = new TimerModel(data2);
+            a.ShouldNotBe(c);
         }
 
         [TestMethod]
