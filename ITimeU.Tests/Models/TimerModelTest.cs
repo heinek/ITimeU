@@ -50,24 +50,14 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void Retrieveing_Timer_Id_Before_Timer_Has_Saved_Data_Should_Not_Be_Possible()
+        public void Timer_Id_Should_Be_Zero_Before_Timer_Has_Saved_Data()
         {
-            Given("we have a timer", () => timer = new TimerModel());
-
-            When("we try to get the ID of the timer", () =>
+            When("we create a new timer", () =>
             {
-                try
-                {
-                    int timerId = timer.Id;
-                    false.ShouldBe(true);
-                }
-                catch (NullReferenceException)
-                {
-                    true.ShouldBe(true);
-                }
+                timer = new TimerModel();
             });
 
-            Then("an exception should be raised");
+            Then("its ID should be zero", () => timer.Id.ShouldBe(0));
         }
 
         [TestMethod]

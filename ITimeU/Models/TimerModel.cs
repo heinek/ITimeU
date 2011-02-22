@@ -18,9 +18,7 @@ namespace ITimeU.Models
                 if (dbEntryCreated)
                     return id;
                 else
-                    throw new NullReferenceException(
-                        "Id not set until instance is saved to database. Do this by setting one of" +
-                        "the properties of this instance.");
+                    return 0;
             }
 
             private set
