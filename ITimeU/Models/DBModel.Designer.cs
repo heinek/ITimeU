@@ -1296,11 +1296,13 @@ namespace ITimeU.Models
         /// </summary>
         /// <param name="runtimeID">Initial value of the RuntimeID property.</param>
         /// <param name="runtime1">Initial value of the Runtime1 property.</param>
-        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1)
+        /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
+        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID)
         {
             Runtime runtime = new Runtime();
             runtime.RuntimeID = runtimeID;
             runtime.Runtime1 = runtime1;
+            runtime.CheckpointID = checkpointID;
             return runtime;
         }
 
@@ -1357,6 +1359,30 @@ namespace ITimeU.Models
         private global::System.Int32 _Runtime1;
         partial void OnRuntime1Changing(global::System.Int32 value);
         partial void OnRuntime1Changed();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 CheckpointID
+        {
+            get
+            {
+                return _CheckpointID;
+            }
+            set
+            {
+                OnCheckpointIDChanging(value);
+                ReportPropertyChanging("CheckpointID");
+                _CheckpointID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CheckpointID");
+                OnCheckpointIDChanged();
+            }
+        }
+        private global::System.Int32 _CheckpointID;
+        partial void OnCheckpointIDChanging(global::System.Int32 value);
+        partial void OnCheckpointIDChanged();
 
         #endregion
     

@@ -86,6 +86,7 @@
           </Key>
           <Property Name="RuntimeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Runtime" Type="int" Nullable="false" />
+          <Property Name="CheckpointID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
@@ -161,6 +162,7 @@
           </Key>
           <Property Type="Int32" Name="RuntimeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Runtime1" Nullable="false" />
+          <Property Type="Int32" Name="CheckpointID" Nullable="false" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
@@ -250,6 +252,7 @@
           <EntitySetMapping Name="Runtimes">
             <EntityTypeMapping TypeName="ITimeUModel.Runtime">
               <MappingFragment StoreEntitySet="Runtime">
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
                 <ScalarProperty Name="Runtime1" ColumnName="Runtime" />
                 <ScalarProperty Name="RuntimeID" ColumnName="RuntimeID" />
               </MappingFragment>

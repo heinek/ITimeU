@@ -13,7 +13,6 @@ function TimerHandler() { }
 
 var timeFormatFactory = new TimeFormatFactory();
 var timer;
-
 var btnStartStop;
 var btnIntermediate;
 var btnReset;
@@ -25,6 +24,7 @@ var runtimeid;
 var startBtnText = "Start";
 var stopBtnText = "Stop";
 var tbedit;
+var ddlCheckpoints
 // Initialises a Stopwatch instance that displays its time nicely formatted.
 TimerHandler.prototype.initTimer = function (lblTimer) {
 
@@ -35,13 +35,14 @@ TimerHandler.prototype.initTimer = function (lblTimer) {
     timer.doDisplay();
 }
 
-TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate) {
+TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate, _ddlCheckpoints) {
     btnIntermediate = _btnIntermediate;
     listIntermediate = _listIntermediate;
+    ddlCheckpoints = _ddlCheckpoints;
     Tools.disable(btnIntermediate);
     btnIntermediate.click(function () {
         timer.addIntermediate(function (runtime) {
-            url = "/Timer/SaveRuntime/?runtime=" + runtime;
+            url = "/Timer/SaveRuntime/?runtime=" + runtime + "&checkpointid=" + ddlCheckpoints.val();
             $.get(url, function (data) {
                 listIntermediate.html(data);
             });
@@ -58,9 +59,7 @@ TimerHandler.prototype.setResetAction = function (_btnReset, resetFunction) {
         if (tbruntime) {
             tbruntime.val("");
         }
-        if (listIntermediate) {
-            Tools.emptyList(listIntermediate);
-        }
+        listIntermediate.html("");
         Tools.disable(btnReset);
     });
 
