@@ -33,9 +33,24 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void Creating_A_Timer_Should_Save_It_To_Db()
+        public void Retrieveing_Timer_Id_Before_Timer_Has_Saved_Data_Should_Not_Be_Possible()
         {
-            
+            Given("we have a timer", () => timer = new TimerModel());
+
+            When("we try to get the ID of the timer", () =>
+            {
+                try
+                {
+                    int timerId = timer.Id;
+                    false.ShouldBe(true);
+                }
+                catch (NullReferenceException)
+                {
+                    true.ShouldBe(true);
+                }
+            });
+
+            Then("an exception should be raised");
         }
 
         [TestMethod]
@@ -130,7 +145,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_Start_Time_Should_Be_Saved_To_The_Database()
         {
-            DateTime startTime = new DateTime();
+            DateTime? startTime = new DateTime();
 
             Given("we have a started timer", () =>
             {
@@ -140,14 +155,14 @@ namespace ITimeU.Tests.Models
             When("we start the timer", () =>
             {
                 timer.Start();
-                startTime = (DateTime)timer.StartTime;
+                startTime = timer.StartTime;
             });
 
             Then("the start time should be saved to the database", () =>
             {
                 var timerDb = TimerModel.GetTimerById(timer.Id);
 
-                var startTimeDb = (DateTime)timerDb.StartTime;
+                var startTimeDb = timerDb.StartTime;
                 startTimeDb.ShouldBe(startTime);
             });
         }
@@ -340,55 +355,78 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Two_TimerModels_With_Same_Properties_Should_Equal_Each_Other()
         {
-            // Define common properties...
-            int timerId = 5;
-            DateTime startTime = DateTime.Now;
-            DateTime endTime = startTime.Add(new TimeSpan(5, 3, 2)); // 5 hours, 3 minutes, 2 seconds
+            ITimeU.Models.Timer timer1 = null;
+            ITimeU.Models.Timer timer2 = null;
 
-            // Create first instance...
-            ITimeU.Models.Timer data1 = new ITimeU.Models.Timer();
-            data1.TimerID = timerId;
-            data1.StartTime = startTime;
-            data1.EndTime = endTime;
+            TimerModel timerModel1 = null;
+            TimerModel timerModel2 = null;
 
-            // Create new instance with same properties...
-            ITimeU.Models.Timer data2 = new ITimeU.Models.Timer();
-            data2.TimerID = timerId;
-            data2.StartTime = startTime;
-            data2.EndTime = endTime;
+            Given("we have some common properties of two timers", () =>
+            {
+                // Common properties...
+                int timerId = 5;
+                DateTime startTime = DateTime.Now;
+                DateTime endTime = startTime.Add(new TimeSpan(5, 3, 2)); // 5 hours, 3 minutes, 2 seconds
 
-            TimerModel a = new TimerModel(data1);
-            TimerModel b = new TimerModel(data2);
-            a.ShouldBe(b);
+                timer1 = createTimer(timerId, startTime, endTime);
+                timer2 = createTimer(timerId, startTime, endTime);
+            });
 
-            data2.StartTime = endTime;
-            TimerModel c = new TimerModel(data2);
-            a.ShouldNotBe(c);
+            When("we create two timers with the same properties", () =>
+            {
+                timerModel1 = new TimerModel(timer1);
+                timerModel2 = new TimerModel(timer2);
+            });
+
+            Then("the two timers should equal each other (though not same instance)", () =>
+            {
+                timerModel1.ShouldNotBeSameAs(timerModel2);
+                timerModel1.ShouldBe(timerModel2);
+            });
+    
         }
 
         [TestMethod]
         public void Two_TimerModels_With_Different_Properties_Should_Not_Equal_Each_Other()
         {
-            // Define common properties...
-            int timerId = 5;
-            DateTime startTime = DateTime.Now;
-            DateTime endTime = startTime.Add(new TimeSpan(5, 3, 2)); // 5 hours, 3 minutes, 2 seconds
+            ITimeU.Models.Timer timer1 = null;
+            ITimeU.Models.Timer timer2 = null;
 
-            // Create first instance...
-            ITimeU.Models.Timer data1 = new ITimeU.Models.Timer();
-            data1.TimerID = timerId;
-            data1.StartTime = startTime;
-            data1.EndTime = endTime;
+            TimerModel timerModel1 = null;
+            TimerModel timerModel2 = null;
 
-            // Create new instance with same properties...
-            ITimeU.Models.Timer data2 = new ITimeU.Models.Timer();
-            data2.TimerID = timerId;
-            data2.StartTime = startTime;
-            // Don't set end time.
+            Given("we have some common properties of two timers", () =>
+            {
+                // Common properties...
+                int timerId = 5;
+                DateTime startTime = DateTime.Now;
+                DateTime endTime = startTime.Add(new TimeSpan(5, 3, 2)); // 5 hours, 3 minutes, 2 seconds
 
-            TimerModel a = new TimerModel(data1);
-            TimerModel c = new TimerModel(data2);
-            a.ShouldNotBe(c);
+                timer1 = createTimer(timerId, startTime, endTime);
+                timer2 = createTimer(timerId, endTime, endTime);
+            });
+
+            When("we create two timers with the different properties", () =>
+            {
+                timerModel1 = new TimerModel(timer1);
+                timerModel2 = new TimerModel(timer2);
+            });
+
+            Then("the two timers should not equal each other", () =>
+            {
+                timerModel1.ShouldNotBe(timerModel2);
+            });
+        }
+
+        private static ITimeU.Models.Timer createTimer(int timerId, DateTime startTime, DateTime endTime)
+        {
+            ITimeU.Models.Timer timer = new ITimeU.Models.Timer();
+
+            timer.TimerID = timerId;
+            timer.StartTime = startTime;
+            timer.EndTime = endTime;
+
+            return timer;
         }
         
         [TestMethod]

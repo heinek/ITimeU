@@ -11,7 +11,27 @@ namespace ITimeU.Models
     [Serializable]
     public class TimerModel
     {
-        public int Id { get; set; }
+        private int id;
+        public int Id {
+            get
+            {
+                if (dbEntryCreated)
+                    return id;
+                else
+                    throw new NullReferenceException(
+                        "Id not set until instance is saved to database. Do this by setting one of" +
+                        "the properties of this instance.");
+            }
+
+            private set
+            {
+                id = value;
+                dbEntryCreated = true;
+            }
+
+        }
+
+        private bool dbEntryCreated = false;
 
         private DateTime? startTime;
         public DateTime? StartTime
@@ -63,7 +83,6 @@ namespace ITimeU.Models
         {
             StartTime = null;
             IsStarted = false;
-            Id = CreateDbEntity();
             //Runtimes = new List<RuntimeModel>();
             //Runtimes.Add(new RuntimeModel());
             RuntimeDic = new Dictionary<int, int>();
@@ -71,9 +90,9 @@ namespace ITimeU.Models
 
         public TimerModel(Timer timer)
         {
+            Id = timer.TimerID;
             StartTime = timer.StartTime;
             EndTime = timer.EndTime;
-            Id = timer.TimerID;
         }
 
         public static TimerModel GetTimerById(int id)
@@ -81,35 +100,12 @@ namespace ITimeU.Models
             using (var context = new Entities())
             {
                 var timer = context.Timers.Single(tmr => tmr.TimerID == id);
-                var timerDal = new TimerModel()
-                {
-                    Id = timer.TimerID,
-                    StartTime = timer.StartTime,
-                    EndTime = timer.EndTime
-                };
-                return timerDal;
+                return new TimerModel(timer);
             }
         }
 
-        /// <summary>
-        /// <summary>
-        /// Sets the start timestamp.
-        /// </summary>
-        /// <param name="startTime">The start time.</param>
-        /// </summary>
-        /// <returns>The ID of the new timer generated.</returns>
-        private int CreateDbEntity()
-        {
-            var context = new Entities();
 
-            Timer timer = new Timer();
-            context.Timers.AddObject(timer);
-            context.SaveChanges();
 
-            return timer.TimerID;
-        }
-
-        /// <summary>
         /// Starts the timer.
         /// </summary>
         public void Start()
@@ -146,6 +142,9 @@ namespace ITimeU.Models
 
         private void SaveToDb()
         {
+            if (!dbEntryCreated)
+                Id = CreateDbEntity();
+
             using (var context = new Entities())
             {
                 Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
@@ -156,19 +155,24 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
-      
-        /// <summary>
-        /// Gets the timer by id.
+
+
+        /// Saves the timestamp. Note that a new row is created in the database rather than updating
+        /// any possible previous rows. Otherwise, any timestamps of earlier start times would be lost.
         /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns></returns>
-        /// <summary>
-        /// Creates this instance.
-        /// </summary>
-        /// <returns></returns>
-        /// <summary>
-        /// Saves this instance.
-        /// </summary>
+        /// <returns>The ID of the new timer generated.</returns>
+        private int CreateDbEntity()
+        {
+            var context = new Entities();
+
+            Timer timer = new Timer();
+            context.Timers.AddObject(timer);
+            context.SaveChanges();
+
+            dbEntryCreated = true;
+            return timer.TimerID;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
