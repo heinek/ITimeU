@@ -10,6 +10,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 
+/*
+    Given("", () =>
+    {
+
+    });
+
+    When("", () =>
+    {
+
+    });
+
+    Then("", () =>
+    {
+
+    });
+*/
+
 namespace ITimeU.Tests.Models
 {
     
@@ -343,15 +360,6 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        /// TODO:
-        /// OK - isStarted stuff.
-        /// OK - we should not be able to restart a started timer. you have to stop a timer before restarting it.
-        /// - starting a timer after stopping it should automatically imply that the timer is restarted
-        /// - If creating a TimerModel based on a Timer, check that IsStarted = True if startTime is set
-        /// and endTime is null.
-        /// - database checks for all new tests.
-        /// - remove all stuff related to old Reset().
-
         [TestMethod]
         public void Two_TimerModels_With_Same_Properties_Should_Equal_Each_Other()
         {
@@ -430,40 +438,79 @@ namespace ITimeU.Tests.Models
         }
         
         [TestMethod]
-        public void A_DateTime_Value_In_Db_Should_Equal_The_Acutal_DateTime_Value()
+        public void A_DateTime_Value_In_Db_Should_Equal_The_Actual_DateTime_Value()
         {
-            var context = new Entities();
-            ITimeU.Models.Timer t = new ITimeU.Models.Timer();
-            t.StartTime = new DateTime(2010, 8, 5, 23, 45, 40, 799);
-            context.Timers.AddObject(t);
-            context.SaveChanges();
+            ITimeU.Models.Timer t = null;
+            Entities context = null;
 
-            var tDb = context.Timers.Single(tmr => tmr.TimerID == t.TimerID);
-            tDb.StartTime.ShouldBe(t.StartTime);
+            Given("we have a timer database entry with a start time", () =>
+            {
+                t = new ITimeU.Models.Timer();
+                t.StartTime = new DateTime(2010, 8, 5, 23, 45, 40, 799);
+            });
+
+            When("we save the timer to the database", () =>
+            {
+                context = new Entities();
+                context.Timers.AddObject(t);
+                context.SaveChanges();
+            });
+
+            Then("the start time should be the same in the timer and in the database", () =>
+            {
+                var tDb = context.Timers.Single(tmr => tmr.TimerID == t.TimerID);
+                tDb.StartTime.ShouldBe(t.StartTime);
+            });
         }
 
         [TestMethod]
         public void Setting_A_Timers_Start_Time_Should_Be_Rounded()
         {
-            ITimeU.Models.Timer t = new ITimeU.Models.Timer();
-            t.StartTime = new DateTime(2010, 8, 5, 23, 45, 40, 972);
+            ITimeU.Models.Timer t = null;
 
-            TimerModel timer = new TimerModel(t);
-            timer.StartTime.Value.Millisecond.ShouldBe(0);
+            Given("we have a timer database entry with a start time set to 42.972 seconds", () =>
+            {
+                t = new ITimeU.Models.Timer();
+                t.StartTime = new DateTime(2010, 8, 5, 23, 45, 42, 972);
+            });
+
+            When("we create a timer model based on the timer entry", () =>
+            {
+                timer = new TimerModel(t);
+            });
+
+            Then("the time should be rounded to 43 seconds and 0 milliseconds", () =>
+            {
+                timer.StartTime.Value.Second.ShouldBe(43);
+                timer.StartTime.Value.Millisecond.ShouldBe(0);
+            });
         }
 
         [TestMethod]
         public void Setting_A_Timers_Start_Time_Should_Be_Rounded_Also_When_Saving_To_Db()
         {
-            var context = new Entities();
-            ITimeU.Models.Timer t = new ITimeU.Models.Timer();
-            t.StartTime = new DateTime(2010, 8, 5, 23, 45, 40, 972);
-            context.Timers.AddObject(t);
-            context.SaveChanges();
+            ITimeU.Models.Timer t = null;
 
-            TimerModel timer = TimerModel.GetTimerById(t.TimerID);
-            timer.StartTime.Value.Millisecond.ShouldBe(0);
+            Given("we have a timer database entry with a start time set to 42.972 seconds", () =>
+            {
+                t = new ITimeU.Models.Timer();
+                t.StartTime = new DateTime(2010, 8, 5, 23, 45, 42, 972);
+            });
 
+            When("we save the timer entry to database and retrieve it back", () =>
+            {
+                var context = new Entities();
+                context.Timers.AddObject(t);
+                context.SaveChanges();
+            });
+
+            Then("the time should be rounded to 43 seconds and 0 milliseconds", () =>
+            {
+                TimerModel timer = TimerModel.GetTimerById(t.TimerID);
+
+                timer.StartTime.Value.Second.ShouldBe(43);
+                timer.StartTime.Value.Millisecond.ShouldBe(0);
+            });
         }
 
         //    Then("the new runtime shouldn't be equal to the previous", () => newRuntimemodel.Runtime.ShouldNotBe(runtimemodel.Runtime));
