@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ITimeU.Tests.Models;
+using ITimeU.Library;
 
 // TODO: Write class summary.
 
@@ -10,9 +11,65 @@ namespace ITimeU.Models
     [Serializable]
     public class TimerModel
     {
-        public int Id { get; set; }
-        public DateTime? StartTime { get; private set; }
-        public DateTime? EndTime { get; private set; }
+        private int id;
+        public int Id {
+            get
+            {
+                if (dbEntryCreated)
+                    return id;
+                else
+                    return 0;
+            }
+
+            private set
+            {
+                id = value;
+                dbEntryCreated = true;
+            }
+
+        }
+
+        private bool dbEntryCreated = false;
+
+        private DateTime? startTime;
+        public DateTime? StartTime
+        {
+            get
+            {
+                return startTime;
+            }
+
+            /// <summary>
+            /// When set, the milliseconds of the DateTime is rounded to its nearest hundred.
+            /// This is done because the database has an inaccuracy (of about 3ms).
+            /// </summary>
+            private set
+            {
+                if (value == null)
+                    startTime = null;
+                else
+                    startTime = DateTimeRounder.RoundToOneDecimal((DateTime)value);
+            }
+
+        }
+
+        public DateTime? endTime;
+        public DateTime? EndTime {
+
+            get
+            {
+                return endTime;
+            }
+
+            private set
+            {
+                if (value == null)
+                    endTime = null;
+                else
+                    endTime = DateTimeRounder.RoundToOneDecimal((DateTime)value);
+            }
+        }
+
         public bool IsStarted { get; private set; }
         public Dictionary<int, int> RuntimeDic { get; set; }
 
@@ -26,15 +83,38 @@ namespace ITimeU.Models
             RuntimeDic = new Dictionary<int, int>();
         }
 
-        /// <summary>
+        public TimerModel(Timer timer)
+        {
+            Id = timer.TimerID;
+            StartTime = timer.StartTime;
+            EndTime = timer.EndTime;
+
+            if (StartTime != null && EndTime == null)
+                IsStarted = true;
+        }
+
+        public static TimerModel GetTimerById(int id)
+        {
+            using (var context = new Entities())
+            {
+                var timer = context.Timers.Single(tmr => tmr.TimerID == id);
+                return new TimerModel(timer);
+            }
+        }
+
+
+
         /// Starts the timer.
         /// </summary>
         public void Start()
         {
             if (!IsStarted)
             {
-                SetStartTimestamp(DateTime.Now);
-                Id = SaveStartTimeToDb();
+                StartTime = DateTime.Now;
+                EndTime = null;
+                IsStarted = true;
+
+                SaveToDb();
             }
             else
             {
@@ -43,115 +123,75 @@ namespace ITimeU.Models
         }
 
         /// <summary>
-        /// Sets the start timestamp.
-        /// </summary>
-        /// <param name="startTime">The start time.</param>
-        private void SetStartTimestamp(DateTime startTime)
-        {
-            StartTime = startTime;
-            IsStarted = true;
-        }
-
-        /// <summary>
-        /// Saves the start time to db.
-        /// </summary>
-        /// <returns>TimerModel Id</returns>
-        private int SaveStartTimeToDb()
-        {
-            return Create().Id;
-        }
-
-        /// <summary>
         /// Stops the timer.
         /// </summary>
         public void Stop()
         {
-            IsStarted = false;
-            EndTime = DateTime.Now;
-            SaveStopTimeStampToDb(EndTime);
-        }
+            if (!IsStarted)
+                throw new InvalidOperationException("Cannot stop a stopped timer");
 
+            EndTime = DateTime.Now;
+            IsStarted = false;
+
+            SaveToDb();
         /// <summary>
         /// Saves the stop time stamp to db.
         /// </summary>
         /// <param name="EndTime">The end time.</param>
-        private void SaveStopTimeStampToDb(DateTime? EndTime)
-        {
-            var timer = GetTimerById(Id);
-            timer.EndTime = EndTime;
-            timer.Save();
         }
 
-        /// <summary>
-        /// Resets this instance.
-        /// </summary>
-        public void Reset()
+        private void SaveToDb()
         {
-            if (IsStarted)
-                throw new InvalidOperationException(
-                    "Cannot reset a started timer. Stop timer before resetting.");
+            if (!dbEntryCreated)
+                Id = CreateDbEntity();
 
-            Id = 0;
-            IsStarted = false;
-            StartTime = null;
-            EndTime = null;
+            updateDbEntry();
         }
 
-        // TODO: Move method to appropriate location in this class.
-        /// <summary>
-        /// Gets the timer by id.
-        /// </summary>
-        /// <param name="id">The id.</param>
-        /// <returns></returns>
-        public static TimerModel GetTimerById(int id)
+        private int CreateDbEntity()
         {
-            using (var ctx = new Entities())
+            var context = new Entities();
+
+            Timer timer = new Timer();
+            context.Timers.AddObject(timer);
+            context.SaveChanges();
+
+            dbEntryCreated = true;
+            return timer.TimerID;
+        }
+
+        private void updateDbEntry()
+        {
+            var context = new Entities();
+            Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
+            timer.StartTime = this.StartTime;
+
+            timer.EndTime = this.EndTime;
+            context.SaveChanges();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
             {
-                var timer = ctx.Timers.Single(tmr => tmr.TimerID == id);
-                var timerDal = new TimerModel()
-                {
-                    Id = timer.TimerID,
-                    StartTime = timer.StartTime,
-                    EndTime = timer.EndTime
-                };
-                return timerDal;
+                return false;
             }
+            TimerModel other = (TimerModel)obj;
+
+            return
+                Id == other.Id &&
+                IsStarted == other.IsStarted &&
+                StartTime == other.StartTime &&
+                EndTime == other.EndTime;
         }
 
-        /// <summary>
-        /// Creates this instance.
-        /// </summary>
-        /// <returns></returns>
-        public static TimerModel Create()
+        public override int GetHashCode()
         {
-            TimerModel timerModel = new TimerModel();
-
-            using (var ctx = new Entities())
-            {
-                Timer timer = new Timer();
-                ctx.Timers.AddObject(timer);
-                ctx.SaveChanges();
-                timerModel.Id = ctx.Timers.OrderByDescending(tmr => tmr.TimerID).First().TimerID;
-            }
-
-            return timerModel;
+            return Id.GetHashCode() ^ IsStarted.GetHashCode()
+                ^ (StartTime == null ? DateTime.MinValue.GetHashCode() : StartTime.GetHashCode())
+                ^ (EndTime == null ? DateTime.MinValue.GetHashCode() : EndTime.GetHashCode());
         }
 
-        /// <summary>
-        /// Saves this instance.
-        /// </summary>
-        public void Save()
-        {
-            using (var ctx = new Entities())
-            {
-                Timer timer = ctx.Timers.Single(tmr => tmr.TimerID == Id);
-                timer.StartTime = this.StartTime;
-
-                if (this.EndTime.HasValue)
-                    timer.EndTime = this.EndTime;
-                ctx.SaveChanges();
-            }
-        }
         /// <summary>
         /// Adds the runtime.
         /// </summary>
@@ -224,8 +264,13 @@ namespace ITimeU.Models
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
-                ctx.SaveChanges();
             }
         }
+
+        public override string ToString()
+        {
+            return "[TimerModel, id: " + Id + "]";
+        }
+
     }
 }

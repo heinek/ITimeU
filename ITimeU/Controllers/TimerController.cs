@@ -17,11 +17,15 @@ namespace ITimeU.Controllers
         public ActionResult Index(int? checkpoint_id)
         {
             var timer = new TimerModel();
+            Session["timer"] = timer;
 
+            /*
+             * // We don't need this?
             if (Session["timer"] == null)
                 Session["timer"] = timer;
             else
                 timer = (TimerModel)Session["timer"];
+            */
 
             if (checkpoint_id != null)
             {
@@ -58,12 +62,10 @@ namespace ITimeU.Controllers
         /// <summary>
         /// Resets this instance.
         /// </summary>
-        public ActionResult Reset()
+        public ActionResult Restart()
         {
-            TimerModel timerModel = (TimerModel)Session["timer"];
-            timerModel.Reset();
-            Session["timer"] = timerModel;
-            return View("Index", timerModel);
+            // TODO: Update javascript to call start instead of restart.
+            return Start();
         }
         /// <summary>
         /// Saves the runtime.

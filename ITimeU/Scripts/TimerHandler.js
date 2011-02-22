@@ -1,33 +1,29 @@
 ///<reference path="jquery-1.4.4.js"/>
 
-var TimerHandler;
-if (!TimerHandler)
-    TimerHandler = {};
-
-function TimerHandler() { }
-
 /** 
 * This file uses a Stopwatch instance to handle DOM events.
-* It assumes that the document has elements with the IDs passed to initTimer function
+* It assumes that the document has elements with the IDs passed to initTimer function.
 */
+
+function TimerHandler() { }
 
 var timeFormatFactory = new TimeFormatFactory();
 var timer;
 var btnStartStop;
-var btnIntermediate;
-var btnReset;
 var btnEdit;
 var btnDelete;
-var listIntermediate;
 var initialid;
 var runtimeid;
 var startBtnText = "Start";
 var stopBtnText = "Stop";
+var restartBtnText = "Restart";
 var tbedit;
 var ddlCheckpoints
-// Initialises a Stopwatch instance that displays its time nicely formatted.
-TimerHandler.prototype.initTimer = function (lblTimer) {
 
+var btnIntermediate;
+var listIntermediate;
+// Initialises a Stopwatch instance that displays its time nicely formatted.
+TimerHandler.prototype.showTimer = function (lblTimer) {
     timer = new Stopwatch(function (runtime) {
         var displayText = timeFormatFactory.MSSDFormat(runtime);
         lblTimer.html(displayText);
@@ -36,32 +32,57 @@ TimerHandler.prototype.initTimer = function (lblTimer) {
 }
 
 TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate, _ddlCheckpoints) {
-    btnIntermediate = _btnIntermediate;
-    listIntermediate = _listIntermediate;
+/*
+ * Start/Stop/Restart button functionality
+*/
     ddlCheckpoints = _ddlCheckpoints;
-    Tools.disable(btnIntermediate);
-    btnIntermediate.click(function () {
-        timer.addIntermediate(function (runtime) {
-            url = "/Timer/SaveRuntime/?runtime=" + runtime + "&checkpointid=" + ddlCheckpoints.val();
-            $.get(url, function (data) {
-                listIntermediate.html(data);
-            });
-        });
-    });
-}
+TimerHandler.prototype.setStartStopActions = function (
+    _btnStartStop, startFunction, stopFunction, restartFunction)
+{
+    btnStartStop = _btnStartStop;
 
-TimerHandler.prototype.setResetAction = function (_btnReset, resetFunction) {
-    btnReset = _btnReset;
-    Tools.disable(btnReset);
-    btnReset.bind("click", function () {
-        timer.resetLap();
-        resetFunction();
-        if (tbruntime) {
-            tbruntime.val("");
-        }
+    btnStartStop.bind("click", function () {
+        timer.startStop();
+
+        if (btnStartStop.val() == startBtnText) {
+            // Start is clicked
+            if (btnIntermediate) {
+                Tools.enable(btnIntermediate);
+            }
+
+            btnStartStop.val(stopBtnText);
+
+            startFunction();
+        } else if (btnStartStop.val() == stopBtnText) {
+            // Stop is clicked
+
+            if (btnIntermediate) {
+                Tools.disable(btnIntermediate);
+            url = "/Timer/SaveRuntime/?runtime=" + runtime + "&checkpointid=" + ddlCheckpoints.val();
+            }
+
+            btnStartStop.val(restartBtnText);
+
+            stopFunction();
+        } else if (btnStartStop.val() == restartBtnText) {
+            // Restart is clicked
+
+            if (btnIntermediate) {
+                Tools.enable(btnIntermediate);
+            }
         listIntermediate.html("");
+            if (listIntermediate) {
+                Tools.emptyList(listIntermediate);
+            }
+
+            timer.resetLap();
+            btnStartStop.val(stopBtnText);
+
+            restartFunction();
+        }
         Tools.disable(btnReset);
     });
+
 
 }
 
@@ -109,7 +130,6 @@ TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbedit) 
         Tools.enable(btnEdit);
         Tools.enable(btnDelete);
     });
-}
 
 TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunction, stopFunction) {
     btnStartStop = _btnStartStop;
@@ -137,6 +157,6 @@ TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunct
         }
     });
 
+        });
+    });
 }
-
-

@@ -14,6 +14,10 @@
           <EntitySet Name="RaceIntermediate" EntityType="ITimeUModel.Store.RaceIntermediate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Runtime" EntityType="ITimeUModel.Store.Runtime" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Timer" EntityType="ITimeUModel.Store.Timer" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Checkpoint_Timer" Association="ITimeUModel.Store.FK_Checkpoint_Timer">
+            <End Role="Timer" EntitySet="Timer" />
+            <End Role="Checkpoint" EntitySet="Checkpoint" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Checkpoint">
           <Key>
@@ -23,6 +27,7 @@
           <Property Name="RaceID" Type="int" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" />
+          <Property Name="TimerID" Type="int" />
         </EntityType>
         <EntityType Name="CheckpointOrder">
           <Key>
@@ -97,6 +102,18 @@
           <Property Name="EndTime" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Checkpoint_Timer">
+          <End Role="Timer" Type="ITimeUModel.Store.Timer" Multiplicity="0..1" />
+          <End Role="Checkpoint" Type="ITimeUModel.Store.Checkpoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Timer">
+              <PropertyRef Name="TimerID" />
+            </Principal>
+            <Dependent Role="Checkpoint">
+              <PropertyRef Name="TimerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -110,6 +127,10 @@
           <EntitySet Name="Timers" EntityType="ITimeUModel.Timer" />
           <EntitySet Name="RaceIntermediates" EntityType="ITimeUModel.RaceIntermediate" />
           <EntitySet Name="CheckpointOrders" EntityType="ITimeUModel.CheckpointOrder" />
+          <AssociationSet Name="FK_Checkpoint_Timer" Association="ITimeUModel.FK_Checkpoint_Timer">
+            <End Role="Timer" EntitySet="Timers" />
+            <End Role="Checkpoint" EntitySet="Checkpoints" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Checkpoint">
           <Key>
@@ -119,6 +140,8 @@
           <Property Type="Int32" Name="RaceID" />
           <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IsDeleted" />
+          <Property Type="Int32" Name="TimerID" />
+          <NavigationProperty Name="Timer" Relationship="ITimeUModel.FK_Checkpoint_Timer" FromRole="Checkpoint" ToRole="Timer" />
         </EntityType>
         <EntityType Name="Club">
           <Key>
@@ -172,7 +195,20 @@
           <Property Type="DateTime" Name="StartTime" />
           <Property Type="DateTime" Name="EndTime" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="Checkpoints" Relationship="ITimeUModel.FK_Checkpoint_Timer" FromRole="Timer" ToRole="Checkpoint" />
         </EntityType>
+        <Association Name="FK_Checkpoint_Timer">
+          <End Type="ITimeUModel.Timer" Role="Timer" Multiplicity="0..1" />
+          <End Type="ITimeUModel.Checkpoint" Role="Checkpoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Timer">
+              <PropertyRef Name="TimerID" />
+            </Principal>
+            <Dependent Role="Checkpoint">
+              <PropertyRef Name="TimerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="RaceIntermediate">
           <Key>
             <PropertyRef Name="CheckpointID" />
@@ -203,6 +239,7 @@
           <EntitySetMapping Name="Checkpoints">
             <EntityTypeMapping TypeName="ITimeUModel.Checkpoint">
               <MappingFragment StoreEntitySet="Checkpoint">
+                <ScalarProperty Name="TimerID" ColumnName="TimerID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="RaceID" ColumnName="RaceID" />
@@ -310,14 +347,18 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="DBModel">
-        <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="0.75" PointY="0.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="2.875" PointY="0.75" Height="2.172587890625" />
         <EntityTypeShape EntityType="ITimeUModel.Club" Width="1.5" PointX="0.75" PointY="3.75" Height="1.9802864583333353" />
         <EntityTypeShape EntityType="ITimeUModel.Participant" Width="1.5" PointX="2.75" PointY="3.75" Height="3.3263964843750031" />
-        <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="4.75" PointY="0.75" Height="1.7879850260416674" />
-        <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="4.75" PointY="3.75" Height="1.4033821614583388" />
-        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="6.75" PointY="0.75" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="6.75" PointY="3.875" Height="1.7879850260416674" />
+        <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="4.875" PointY="0.75" Height="1.4033821614583388" />
+        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9802864583333339" />
         <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="5.375" PointY="6.75" Height="1.7879850260416674" />
         <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="2.75" PointY="0.75" Height="1.9802864583333317" />
+        <AssociationConnector Association="ITimeUModel.FK_Checkpoint_Timer" >
+          <ConnectorPoint PointX="2.25" PointY="1.740143229166667" />
+          <ConnectorPoint PointX="2.875" PointY="1.740143229166667" />
+        </AssociationConnector>
       </Diagram>
     </Diagrams>
   </Designer>
