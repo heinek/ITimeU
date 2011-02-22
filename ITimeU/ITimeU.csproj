@@ -74,6 +74,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Library\DateTimeRounder.cs" />
     <Compile Include="Logging\LogWriter.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CheckpointOrderModel.cs" />

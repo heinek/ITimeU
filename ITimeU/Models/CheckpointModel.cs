@@ -6,11 +6,20 @@ using System.Data;
 
 namespace ITimeU.Models
 {
+    /// <summary>
+    /// TODO:
+    /// - Models should use the entity object properties when possible for its getters and setters!
+    /// </summary>
+
     public class CheckpointModel
     {
-        public int Id { get; private set; }
-        public string Name { get; set; }
+        private string p;
 
+        public int Id { get; private set; }
+        public string Name { get; set; } // TODO: set should be private
+        public TimerModel Timer { get; private set; }
+
+        // TODO: Remove this constructor if it is not used.
         private CheckpointModel(int _id, string _checkpointName)
         {
             Id = _id;
@@ -21,6 +30,14 @@ namespace ITimeU.Models
         {
             Id = checkpoint.CheckpointID;
             Name = checkpoint.Name;
+            if (checkpoint.Timer != null)
+                Timer = new TimerModel(checkpoint.Timer);
+        }
+
+        public CheckpointModel(string checkpointName, TimerModel timer)
+        {
+            Name = checkpointName;
+            Timer = timer;
         }
 
         /// <summary>
@@ -30,9 +47,6 @@ namespace ITimeU.Models
         /// <returns>The retrieved checkpoint.</returns>
         public static CheckpointModel getById(int idToGet)
         {
-            //var entities = new Entities();
-            //Checkpoint checkpointDb = entities.Checkpoints.Single(temp => temp.CheckpointID == idToGet);
-            //return new CheckpointModel(checkpointDb.CheckpointID, checkpointDb.Name);
             return new CheckpointModel(getCheckpointDbById(idToGet));
         }
 
@@ -69,13 +83,35 @@ namespace ITimeU.Models
         {
             Checkpoint checkpointDb = CreateDbEntity(checkpointName);
             SaveToDb(checkpointDb);
-            return new CheckpointModel(checkpointDb.CheckpointID, checkpointDb.Name);
+            return new CheckpointModel(checkpointDb);
         }
-        
+
         private static Checkpoint CreateDbEntity(string checkpointName)
         {
             Checkpoint checkpointDb = new Checkpoint();
             checkpointDb.Name = checkpointName;
+
+            return checkpointDb;
+        }
+
+        /// <summary>
+        /// Creates a checkpoint in the database. The timings the given timer are doing, will be
+        /// associated with this checkpoint.
+        /// </summary>
+        /// <param name="checkpointName">The name of the checkpoint.</param>
+        /// <param name="timer">The timer that will do the timings for this checkpoint.</param>
+        /// <returns>The created checkpoint.</returns>
+        public static CheckpointModel Create(string checkpointName, TimerModel timer)
+        {
+            Checkpoint checkpointDb = CreateDbEntity(checkpointName, timer);
+            SaveToDb(checkpointDb);
+            return new CheckpointModel(checkpointDb);
+        }
+
+        private static Checkpoint CreateDbEntity(string checkpointName, TimerModel timer)
+        {
+            Checkpoint checkpointDb = CreateDbEntity(checkpointName);
+            checkpointDb.TimerID = timer.Id;
 
             return checkpointDb;
         }
@@ -86,7 +122,7 @@ namespace ITimeU.Models
             entities.Checkpoints.AddObject(checkpointDb);
             entities.SaveChanges();
         }
-        
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
