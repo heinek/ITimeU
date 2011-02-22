@@ -142,8 +142,10 @@ namespace ITimeU.Models
             /// <param name="EndTime">The end time.</param>
         }
 
-        private void SaveToDb()
+        internal void SaveToDb()
         {
+            // TODO: Now there are two saves to database if no row exists, first an insert, then an update.
+            // Reduce this to one.
             if (!dbEntryCreated)
                 Id = CreateDbEntity();
 

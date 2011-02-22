@@ -30,7 +30,7 @@ namespace ITimeU.Tests.Models
             HttpWebRequest httpRequest = null;
             int runtime = 360000000; // Runtime, in milliseconds. Equals 100 hours.
             String requestUrl = null;
-            RuntimeModel runtimeStoredInDb = null;
+            String httpResponse = null;
 
             Given("the time keeper wants to save a runtime", () =>
             {
@@ -40,13 +40,13 @@ namespace ITimeU.Tests.Models
             When("the time keeper saves the runtime", () =>
             {
                 httpRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
-                String httpResponse = doHttpRequest(httpRequest);
-                int runtimeId = Int32.Parse(httpResponse);
-                runtimeStoredInDb = RuntimeModel.getById(runtimeId);
+                httpResponse = doHttpRequest(httpRequest);
             });
 
             Then("the runtime should be saved in the database", () =>
             {
+                int runtimeId = Int32.Parse(httpResponse);
+                RuntimeModel runtimeStoredInDb = RuntimeModel.getById(runtimeId);
                 runtimeStoredInDb.Runtime.ShouldBe(runtime);
             });
         }
