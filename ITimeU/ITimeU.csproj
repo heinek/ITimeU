@@ -66,6 +66,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CheckpointOrderController.cs" />
     <Compile Include="Controllers\CheckpointController.cs" />
+    <Compile Include="Controllers\MockController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />

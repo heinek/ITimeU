@@ -3,8 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using System;
 using System.Net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 using ITimeU.Controllers;
 using System.Web.Routing;
@@ -17,6 +15,7 @@ namespace ITimeU.Tests.Controllers
     [TestClass]
     public class TimerControllerTest : ScenarioClass
     {
+
         [TestCleanup]
         public void TestCleanup()
         {
