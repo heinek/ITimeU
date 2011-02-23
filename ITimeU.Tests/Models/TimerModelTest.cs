@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Threading;
-using System.Web.Mvc;
 using System.Linq;
-using ITimeU.Controllers;
+using System.Threading;
+using System.Linq;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
@@ -479,7 +477,6 @@ namespace ITimeU.Tests.Models
         public void Setting_A_Timers_Start_Time_Should_Be_Rounded()
         {
             ITimeU.Models.Timer t = null;
-
             Given("we have a timer database entry with a start time set to 42.972 seconds", () =>
             {
                 t = new ITimeU.Models.Timer();
@@ -524,32 +521,6 @@ namespace ITimeU.Tests.Models
                 timer.StartTime.Value.Millisecond.ShouldBe(0);
             });
         }
-
-        //    Then("the new runtime shouldn't be equal to the previous", () => newRuntimemodel.Runtime.ShouldNotBe(runtimemodel.Runtime));
-
-        //[TestMethod]
-        //public void Deleting_A_Timestamp_Should_Reduce_The_Timestamplist_With_1()
-        //{
-        //    var runtime = new RuntimeModel();
-        //    runtime.Runtime = 900;
-        //    var listcount = 0;
-        //    Given("we have a runtimelist", () => {
-        //        timer = new TimerModel();
-        //        timer.Start();
-        //        timer.Runtimes.Add(runtime);
-        //        listcount = timer.Runtimes.Count;
-        //    });
-
-        //    When("we want to delete a runtime", () => {
-        //        timer.DeleteRuntime(runtime);
-        //    });
-
-        //    Then("the runtime list should be rduced with 1", () =>
-        //    {
-        //        timer.Runtimes.Count.ShouldBe(listcount - 1);
-        //    });
-        //}
-
         [TestMethod]
         public void Deleting_A_Runtime_From_Dictionary_Should_Reduce_The_Dictionary_With_1()
         {
@@ -559,7 +530,7 @@ namespace ITimeU.Tests.Models
             {
                 timer = new TimerModel();
                 timer.Start();
-                runtime = timer.AddRuntime(300);
+                runtime = timer.AddRuntime(300, 1);
                 listcount = timer.RuntimeDic.Count;
             });
 
@@ -583,7 +554,7 @@ namespace ITimeU.Tests.Models
             {
                 timer = new TimerModel();
                 timer.Start();
-                runtimemodel = timer.AddRuntime(500);
+                runtimemodel = timer.AddRuntime(500, 1);
             });
 
             When("we want to change the runtime", () =>

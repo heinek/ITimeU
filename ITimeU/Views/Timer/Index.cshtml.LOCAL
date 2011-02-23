@@ -20,12 +20,16 @@
         var ddlCheckpoints = $("#ddlCheckpoints");
 
         var handler = new TimerHandler();
-
+        handler.initTimer(lblTimer);
         handler.setStartStopActions(
             btnStart,
-            function () { $.get("/Timer/Start/"); }, // Start button clicked
-            function () { $.get("/Timer/Stop/"); }, // Stop button clicked
-            function () { $.get("/Timer/Start/"); } // Restart button clicked
+            function () { $.get("/Timer/Start/"); },
+            function () { $.get("/Timer/Stop/"); }
+        );
+
+        handler.setResetAction(
+            btnReset,
+            function () { $.get("/Timer/Reset/"); }
         );
 
         handler.setIntermediateAction(
@@ -49,9 +53,7 @@
             listIntermediate,
             tbEdit
         );
-
-        handler.showTimer(lblTimer);
-  });
+    });
 </script>
 <div class="contentmargin">
 <div class="containter">
@@ -73,6 +75,7 @@
         </div>
         <div class="right">
             <input type="button" id="btnStart" value="Start" style="width: 100px" />
+            <input type="button" id="btnReset" value="Nullstill" style="width: 100px" />
             <input type="button" id="btnIntermediate" value="Mellomtid" style="width: 100px" />
         </div>
     </div>

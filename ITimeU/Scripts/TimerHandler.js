@@ -9,7 +9,6 @@ function TimerHandler() { }
 
 var timeFormatFactory = new TimeFormatFactory();
 var timer;
-
 var btnStartStop;
 var btnEdit;
 var btnDelete;
@@ -19,6 +18,7 @@ var startBtnText = "Start";
 var stopBtnText = "Stop";
 var restartBtnText = "Restart";
 var tbedit;
+var ddlCheckpoints
 
 var btnIntermediate;
 var listIntermediate;
@@ -31,9 +31,11 @@ TimerHandler.prototype.showTimer = function (lblTimer) {
     timer.doDisplay();
 }
 
+TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate, _ddlCheckpoints) {
 /*
  * Start/Stop/Restart button functionality
 */
+    ddlCheckpoints = _ddlCheckpoints;
 TimerHandler.prototype.setStartStopActions = function (
     _btnStartStop, startFunction, stopFunction, restartFunction)
 {
@@ -56,6 +58,7 @@ TimerHandler.prototype.setStartStopActions = function (
 
             if (btnIntermediate) {
                 Tools.disable(btnIntermediate);
+            url = "/Timer/SaveRuntime/?runtime=" + runtime + "&checkpointid=" + ddlCheckpoints.val();
             }
 
             btnStartStop.val(restartBtnText);
@@ -67,7 +70,7 @@ TimerHandler.prototype.setStartStopActions = function (
             if (btnIntermediate) {
                 Tools.enable(btnIntermediate);
             }
-
+        listIntermediate.html("");
             if (listIntermediate) {
                 Tools.emptyList(listIntermediate);
             }
@@ -77,6 +80,7 @@ TimerHandler.prototype.setStartStopActions = function (
 
             restartFunction();
         }
+        Tools.disable(btnReset);
     });
 
 
@@ -127,26 +131,31 @@ TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbedit) 
         Tools.enable(btnDelete);
     });
 
-}
-
-
-/*
- * Intermediate button functionality
-*/
-TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate) {
-    btnIntermediate = _btnIntermediate;
-    listIntermediate = _listIntermediate;
-    Tools.disable(btnIntermediate);
-    btnIntermediate.click(function () {
-        timer.addIntermediate(function (runtime) {
-            var displayText = timeFormatFactory.MSSDFormat(runtime);
-            listIntermediate.append('<li class="liIntermediate">' + displayText + '</li>');
-            // Save runtime to database...
-            url = "/Runtime/Save/?runtime=" + runtime;
-            // $.get(url);
-            $.get(url, function (data) {
-                listIntermediate.html(data);
-            });
+TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunction, stopFunction) {
+    btnStartStop = _btnStartStop;
+    btnStartStop.bind("click", function () {
+        timer.startStop();
+        if (btnStartStop.val() == startBtnText) {
+            btnStartStop.val(stopBtnText);
+            if (btnIntermediate) {
+                Tools.enable(btnIntermediate);
+            }
+            if (btnReset) {
+                Tools.disable(btnReset);
+            }
+            startFunction();
+        }
+        else {
+            btnStartStop.val(startBtnText);
+            if (btnReset) {
+                Tools.enable(btnReset);
+            }
+            if (btnIntermediate) {
+                Tools.disable(btnIntermediate);
+            }
+            stopFunction();
+        }
+    });
 
         });
     });

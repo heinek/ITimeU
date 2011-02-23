@@ -71,7 +71,6 @@ namespace ITimeU.Models
         }
 
         public bool IsStarted { get; private set; }
-        //public List<RuntimeModel> Runtimes { get; set; }
         public Dictionary<int, int> RuntimeDic { get; set; }
 
         /// <summary>
@@ -81,8 +80,6 @@ namespace ITimeU.Models
         {
             StartTime = null;
             IsStarted = false;
-            //Runtimes = new List<RuntimeModel>();
-            //Runtimes.Add(new RuntimeModel());
             RuntimeDic = new Dictionary<int, int>();
         }
 
@@ -167,10 +164,9 @@ namespace ITimeU.Models
         {
             var context = new Entities();
             Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
-
             timer.StartTime = this.StartTime;
-            timer.EndTime = this.EndTime;
 
+            timer.EndTime = this.EndTime;
             context.SaveChanges();
         }
 
@@ -200,14 +196,14 @@ namespace ITimeU.Models
         /// Adds the runtime.
         /// </summary>
         /// <param name="milliseconds">The milliseconds.</param>
+        /// <param name="checkpointid">The checkpointid.</param>
         /// <returns></returns>
-        public RuntimeModel AddRuntime(int milliseconds)
+        public RuntimeModel AddRuntime(int milliseconds, int checkpointid)
         {
             var newRuntime = RuntimeModel.Create(milliseconds);
-            //Runtimes.Add(newRuntime);
             using (var ctx = new Entities())
             {
-                var runtime = new Runtime() { Runtime1 = newRuntime.Runtime };
+                var runtime = new Runtime() { Runtime1 = newRuntime.Runtime, CheckpointID = checkpointid };
                 ctx.Runtimes.AddObject(runtime);
                 ctx.SaveChanges();
                 newRuntime.Id = runtime.RuntimeID;
@@ -229,9 +225,7 @@ namespace ITimeU.Models
                 ctx.SaveChanges();
                 runtimemodel.Id = runtime.RuntimeID;
             }
-            //Runtimes.Add(runtimemodel);
             RuntimeDic.Add(runtime.RuntimeID, runtime.Runtime1);
-
         }
 
         /// <summary>
@@ -258,6 +252,7 @@ namespace ITimeU.Models
                 ctx.SaveChanges();
             }
         }
+
         /// <summary>
         /// Deletes the runtime.
         /// </summary>
