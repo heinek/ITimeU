@@ -6,6 +6,7 @@ using System.Net;
 using TinyBDD.Specification.MSTest;
 using ITimeU.Controllers;
 using System.Web.Routing;
+using System.Web.Mvc;
 
 namespace ITimeU.Tests.Controllers
 {
@@ -27,37 +28,34 @@ namespace ITimeU.Tests.Controllers
         {
             TimerController timerCtrl = null;
             CheckpointModel checkpoint = null;
+            TimerModel timerInView = null;
 
             Given("the user has selected a checkpoint", () =>
             {
-                checkpoint = new CheckpointModel("Hemsedal");
-
-                // Execute controller
+                checkpoint = new CheckpointModel("Hemsedal"); // Create a new checkpoint for this test.
                 timerCtrl = new TimerController();
-                timerCtrl.Index(checkpoint.Id);
-                
-                /*
-                // Execute controller
-                requestUrl = @"http://localhost:54197/Timer?checkpoint_id=" + checkpoint.Id;
-                HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
-                httpRequest.GetResponse().Close();
-                */
+                setMockSessionFor(timerCtrl);
             });
 
-            When("the user starts the timer", () =>
+            When("the user selects a checkpoint and clicks OK", () =>
             {
-                timerCtrl.Start();
-                /*
-                requestUrl = @"http://localhost:54197/Timer/Start";
-                HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
-                httpRequest.GetResponse().Close();
-                */
+                ViewResult ctrlResult = (ViewResult)timerCtrl.Index(checkpoint.Id);
+                timerInView = (TimerModel)ctrlResult.Model;
             });
 
-            Then("the checkpoint should be associated with that timer", () =>
+            Then("the checkpoint's timer should be associated with the timer in the view", () =>
             {
-                checkpoint.Timer.IsStarted.ShouldBeTrue(); //fails because timer is null
+                // We currently have to re-fetch the checkpoint from database, because the CheckpointModel
+                // instance is not updated simply be launching the TimerController's Index action.
+                CheckpointModel checkpointDb = CheckpointModel.getById(checkpoint.Id);
+                timerInView.ShouldBe(checkpointDb.Timer);
             });
+        }
+
+        private static void setMockSessionFor(TimerController timerCtrl)
+        {
+            var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
+            timerCtrl.SetFakeControllerContext();
         }
 
     }

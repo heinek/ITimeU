@@ -16,8 +16,8 @@ namespace ITimeU.Models
         private string p;
 
         public int Id { get; private set; }
-        private bool dbEntryCreated = false;
-        public string Name { get; private set; } // TODO: set should be private
+        private bool dbEntryCreated = false; // TODO: Remove
+        public string Name { get; private set; }
 
         private TimerModel timer;
         public TimerModel Timer {
@@ -43,6 +43,7 @@ namespace ITimeU.Models
             Name = checkpoint.Name;
             if (checkpoint.Timer != null) // Is this check needed?
                 Timer = new TimerModel(checkpoint.Timer);
+            dbEntryCreated = true;
         }
 
         public CheckpointModel(string checkpointName)
@@ -74,6 +75,7 @@ namespace ITimeU.Models
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
+            dbEntryCreated = true;
 
             return checkpoint.CheckpointID;
         }

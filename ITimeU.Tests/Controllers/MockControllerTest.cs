@@ -23,11 +23,29 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
+        public void Getting_The_Main_View_Of_The_Controller_Should_Be_Impossible()
+        {
+            MockController controller = null;
+
+            Given("we have a mock controller", () => controller = new MockController());
+
+            When("we call its index action, i.e. we want to get its main view", () =>
+            {
+                try {                
+                    controller.Index();
+                    false.ShouldBeTrue();
+                } catch (InvalidOperationException) { }
+            });
+
+            Then("it should not be possible (as it is only a mock controller)");
+        }
+
+        [TestMethod]
         public void Test_Mock_Session()
         {
             MockController controller = null;
 
-            Given("we have a timer controller with a fake session", () =>
+            Given("we have a mock controller with a fake session", () =>
             {
                 controller = new MockController();
                 var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
@@ -41,5 +59,6 @@ namespace ITimeU.Tests.Models
                 controller.HttpContext.Session["item2"].ShouldBe("This is used for testing a mock session.");
             });
         }
+
     }
 }
