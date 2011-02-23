@@ -356,8 +356,8 @@
         <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="5.375" PointY="6.75" Height="1.7879850260416674" />
         <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="4.75" PointY="2.625" Height="1.7691861184438067" />
         <AssociationConnector Association="ITimeUModel.FK_Checkpoint_Timer" >
-          <ConnectorPoint PointX="2.25" PointY="1.6345930592219038" />
-          <ConnectorPoint PointX="2.875" PointY="1.6345930592219038" />
+          <ConnectorPoint PointX="2.25" PointY="1.7401432291666672" />
+          <ConnectorPoint PointX="2.875" PointY="1.7401432291666672" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
