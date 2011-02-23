@@ -74,7 +74,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\CheckpointControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
     <Compile Include="Logging\LogWriterTest.cs" />

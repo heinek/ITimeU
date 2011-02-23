@@ -17,8 +17,25 @@ namespace ITimeU.Models
 
         public int Id { get; private set; }
         private bool dbEntryCreated = false;
-        public string Name { get; set; } // TODO: set should be private
-        public TimerModel Timer { get; private set; }
+        public string Name { get; private set; } // TODO: set should be private
+
+        private TimerModel timer;
+        public TimerModel Timer {
+            get
+            {
+                return timer;
+            }
+
+            internal set
+            {
+                timer = value;
+                // Timer.SaveToDb(): The timer must exist in database so that the database foreign key
+                // can be set correctly.
+                timer.SaveToDb();
+                SaveToDb();
+            }
+        
+        }
 
         public CheckpointModel(Checkpoint checkpoint)
         {
@@ -38,8 +55,6 @@ namespace ITimeU.Models
         {
             Name = checkpointName;
             Timer = timer;
-            // The timer must exist in database in order for this checkpoint to be saved correctly.
-            Timer.SaveToDb();
             SaveToDb();
         }
 
