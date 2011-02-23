@@ -30,6 +30,7 @@ namespace ITimeU.Controllers
             if (checkpoint_id != null)
             {
                 CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+                // TODO: checkpoint.Timer = timer;
             }
 
             var entities = new Entities();
