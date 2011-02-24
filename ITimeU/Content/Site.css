@@ -5,7 +5,7 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 body
 {
-	background-color: #5c87b2;
+	background-color: #F3F0E2;
 	font-size: 75%;
 	font-family: Verdana, Tahoma, Arial, "Helvetica Neue" , Helvetica, Sans-Serif;
 	margin: 0;
@@ -15,8 +15,8 @@ body
 
 a:link
 {
-	color: #034af3;
-	text-decoration: underline;
+	color: #fff;
+	text-decoration: none;
 }
 a:visited
 {
@@ -76,6 +76,36 @@ first child of the left and right table columns */
 	margin-top: 0;
 }
 
+.menubig
+{
+	padding-left: 120px;
+	text-align: center;
+	font-size: 36px;
+	font-weight: 600;
+	color: White;
+	position: relative;
+	top: -230px;
+}
+
+.biglink:link
+{
+	font-family: Verdana;
+	text-decoration: none;
+	color: White;
+}
+
+.biglink:visited
+{
+	text-decoration: none;
+	color: White;
+}
+
+.biglink:hover
+{
+	text-decoration: none;
+	font-weight: 900;
+	color: White;
+}
 /* PRIMARY LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
 
@@ -123,6 +153,11 @@ page width. Or, you can specify an exact pixel width. */
 	line-height: normal;
 	margin: 0;
 	font-size: .9em;
+}
+
+.contentmargin
+{
+	margin: 6px;
 }
 
 /* TAB MENU   
@@ -205,21 +240,22 @@ input[type="text"]
 {
 	border: 1px solid #CCC;
 }
-
+/*
 input[type="button"]
 {
-	    background-color: #DB6600;
-    background-image: url("images/button_bg.jpg");
-    border: 1px solid #DB6600;
-    color: #FFFFFF;
-    padding: 3px 6px;
+	background-color: #DB6600;
+	background-image: url("images/button_bg.jpg");
+	border: 1px solid #DB6600;
+	color: #FFFFFF;
+	padding: 3px 6px;
 }
 input[type="button"]:hover
 {
-    background-color: #000000;
-    background-image: url("images/button_bg_over.jpg");
-    border: 1px solid #000000;
+	background-color: #000000;
+	background-image: url("images/button_bg_over.jpg");
+	border: 1px solid #000000;
 }
+*/
 input[type="password"]
 {
 	width: 200px;
@@ -251,11 +287,16 @@ table th
 
 /* TABLE DIVS
 ----------------------------------------------------------*/
-#container
+.container
 {
 	display: table;
 }
-
+.containermaster
+{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
 .row
 {
 	display: table-row;
@@ -267,9 +308,72 @@ table th
 	vertical-align: top;
 }
 
+.rowtopmaster
+{
+	display: table-row;
+	background-color: #2A2925;
+	width: 100%;
+	height: 70px;
+}
 
+.lefttopmaster
+{
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+}
+
+.righttopmaster
+{
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+}
+
+.leftmiddlemaster
+{
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+	background-color: #EAE3C6;
+	height: 100%;
+}
+.rightmiddlemaster
+{
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+	background-color: #EAE3C6;
+	height: 100%;
+}
+.centermiddlemaster
+{
+	width: 900px;
+	padding: 0;
+	margin: 0;
+}
+.rowmiddlemaster
+{
+	display: table-row;
+	height: 700px;
+}
 /* MISC  
 ----------------------------------------------------------*/
+.background
+{
+	background-image: url("images/DefaultBG.png");
+	background-repeat: no-repeat;
+	background-position: top;
+	width: 900px;
+	height: 601px;
+	opacity: .5;
+	filter: alpha(opacity=50);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
 .clear
 {
 	clear: both;
@@ -287,18 +391,43 @@ table th
 
 .textbox
 {
-	height: 20px;
 	width: 195px;
-	border: 0;
-	padding: 4px 4px;
 	margin-bottom: 10px;
 }
-
+.textboxsmall
+{
+	width: 15px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
+}
+.textboxxsmall
+{
+	width: 12px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
+}
+.logo
+{
+	background-position: center;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	background-image: url("images/Logo3.png");
+}
+.menubg
+{
+	padding-top:500px;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url("images/menubg.png");
+}
 .listbox
 {
 	width: 100px;
 	height: 300px;
-	
 }
 
 .timer
@@ -340,6 +469,49 @@ div#title
 {
 	color: white;
 	text-decoration: none;
+}
+
+.btnUp
+{
+	background-image: url("images/up.png");
+	border: 1px solid #CCC;
+	background-repeat: no-repeat;
+	margin: 0px;
+}
+
+.btnUp:hover
+{
+	background-image: url("images/upOver.png");
+}
+
+.btnDown
+{
+	background-image: url("images/up.png");
+	-webkit-transform: rotate(-180deg);
+	-moz-transform: rotate(-180deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+	border: 1px solid #CCC;
+	background-repeat: no-repeat; /* 	position: relative; 	top: 5px; 	left: -28px; */
+	margin: 0px;
+}
+.btnDown:hover
+{
+	background-image: url("images/upOver.png");
+}
+
+.btnRegular
+{
+	background-color: #DB6600;
+	background-image: url("images/button_bg.jpg");
+	border: 1px solid #DB6600;
+	color: #FFFFFF;
+	padding: 3px 6px;
+}
+.btnRegular:hover
+{
+	background-color: #000000;
+	background-image: url("images/button_bg_over.jpg");
+	border: 1px solid #000000;
 }
 
 /* Styles for validation helpers

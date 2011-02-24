@@ -8,11 +8,11 @@ if (!Stopwatch)
 
 /**
 * Constructs a new Stopwatch instance.
-* @param {Object} displayTime the strategy for displaying the time
+* @param {Object} displayTime a function for displaying the time
 */
 function Stopwatch(displayTime) {
     this.runtime = 0; // milliseconds
-    this.timer = null; // nonnull iff runnig
+    this.timer = null; // non-null if running
     this.displayTime = displayTime; // not showing runtime anywhere
 }
 
@@ -42,6 +42,7 @@ Stopwatch.prototype.addIntermediate = function (updateList) {
 Stopwatch.prototype.startStop = function () {
     if (!this.timer) {
         var instance = this;
+        this.runtime = 0;
         this.timer = window.setInterval(function () {
             instance.runtime += Stopwatch.INCREMENT;
             instance.doDisplay();
@@ -65,8 +66,7 @@ Stopwatch.prototype.resetLap = function () {
         else {
             this.runtime = 0;
         }
-    }
-    else {
+    } else {
         delete this.laptime;
     }
     this.doDisplay();

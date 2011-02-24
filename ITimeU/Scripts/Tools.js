@@ -3,7 +3,7 @@ if(!Tools)
     Tools = {};
 
 
-Tools.selectById = function (id) {
+Tools.selectElementById = function (id) {
     return $('#' + id);
 }
 

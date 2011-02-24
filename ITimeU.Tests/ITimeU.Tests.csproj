@@ -74,11 +74,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
+    <Compile Include="Library\DateTimeRounderTest.cs" />
     <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
+    <Compile Include="Models\RuntimeModelTest.cs" />
     <Compile Include="Models\ParticipantModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />

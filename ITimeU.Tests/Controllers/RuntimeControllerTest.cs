@@ -27,10 +27,9 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_Runtime_Should_Be_Saved_To_Database_On_Http_Request()
         {
-            HttpWebRequest httpRequest = null;
             int runtime = 360000000; // Runtime, in milliseconds. Equals 100 hours.
             String requestUrl = null;
-            RuntimeModel runtimeStoredInDb = null;
+            String webResponse = null;
 
             Given("the time keeper wants to save a runtime", () =>
             {
@@ -39,26 +38,38 @@ namespace ITimeU.Tests.Models
 
             When("the time keeper saves the runtime", () =>
             {
-                httpRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
-                String httpResponse = doHttpRequest(httpRequest);
-                int runtimeId = Int32.Parse(httpResponse);
-                runtimeStoredInDb = RuntimeModel.getById(runtimeId);
+                webResponse = visit(requestUrl); ;
             });
 
             Then("the runtime should be saved in the database", () =>
             {
+                int runtimeId = Int32.Parse(webResponse);
+                RuntimeModel runtimeStoredInDb = RuntimeModel.getById(runtimeId);
                 runtimeStoredInDb.Runtime.ShouldBe(runtime);
             });
         }
 
-        private string doHttpRequest(HttpWebRequest httpRequest)
+        private string visit(string requestUrl)
         {
-            // Get and read HTTP respose...
+            HttpWebResponse httpResponse = doHttpRequest(requestUrl);
+            string response = readHttpResponse(httpResponse);
+            httpResponse.Close();
+
+            return response;
+        }
+
+        private static HttpWebResponse doHttpRequest(string requestUrl)
+        {
+            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
             HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
+            return httpResponse;
+        }
+
+        private static string readHttpResponse(HttpWebResponse httpResponse)
+        {
             StreamReader responseStream = new StreamReader(httpResponse.GetResponseStream());
             string response = responseStream.ReadToEnd();
             responseStream.Close();
-            httpResponse.Close();
 
             return response;
         }

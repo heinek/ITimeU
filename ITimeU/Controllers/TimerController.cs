@@ -6,6 +6,7 @@ namespace ITimeU.Controllers
 {
     public class TimerController : Controller
     {
+
         //
         // GET: /Timer/
 
@@ -16,21 +17,26 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int? checkpoint_id)
         {
+            Logging.LogWriter.getInstance().Write("yoyoyo");
             var timer = new TimerModel();
+            Session["timer"] = timer;
 
+            /*
+             * // We don't need this?
             if (Session["timer"] == null)
                 Session["timer"] = timer;
             else
                 timer = (TimerModel)Session["timer"];
+            */
 
             if (checkpoint_id != null)
             {
                 CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
-                ViewData["checkpoint"] = checkpoint.Name;
+                checkpoint.Timer = timer;
             }
-            else
-                ViewData["checkpoint"] = "Ingen valgt";
 
+            var entities = new Entities();
+            ViewBag.Checkpoints = entities.Checkpoints.ToList();
             return View("Index", timer);
         }
 
@@ -42,7 +48,6 @@ namespace ITimeU.Controllers
             TimerModel timerModel = (TimerModel)Session["timer"];
             timerModel.Start();
             Session["timer"] = timerModel;
-
             return View("Index", timerModel);
         }
 
@@ -60,40 +65,45 @@ namespace ITimeU.Controllers
         /// <summary>
         /// Resets this instance.
         /// </summary>
-        public ActionResult Reset()
+        public ActionResult Restart()
         {
-            TimerModel timerModel = (TimerModel)Session["timer"];
-            timerModel.Reset();
-            Session["timer"] = timerModel;
-            return View("Index", timerModel);
+            // TODO: Update javascript to call start instead of restart.
+            return Start();
         }
         /// <summary>
         /// Saves the runtime.
         /// </summary>
         /// <param name="runtime">The runtime.</param>
-        public ActionResult SaveRuntime(string runtime)
+        public ActionResult SaveRuntime(string runtime, string checkpointid)
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
-            int milliseconds;
+            int milliseconds, cpid;
             int.TryParse(runtime, out milliseconds);
-            timerModel.AddRuntime(milliseconds);
-            return Content(timerModel.RuntimeDic.ToListboxvalues(true));
+            int.TryParse(checkpointid, out cpid);
+            timerModel.AddRuntime(milliseconds, cpid);
+            return Content(timerModel.RuntimeDic.ToListboxvalues(true, true));
         }
 
         /// <summary>
         /// Edits the runtime.
         /// </summary>
         /// <param name="orginalruntimeid">The orginalruntimeid.</param>
-        /// <param name="newruntime">The newruntime.</param>
-        public ActionResult EditRuntime(string orginalruntimeid, string newruntime)
+        /// <param name="hour">Hours.</param>
+        /// <param name="min">Minutes.</param>
+        /// <param name="sek">Seconds.</param>
+        /// <param name="msek">Milliseconds.</param>
+        /// <returns></returns>
+        public ActionResult EditRuntime(string orginalruntimeid, string hour, string min, string sek, string msek)
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
-            int orgid, milliseconds;
+            int orgid, h, m, s, ms;
             int.TryParse(orginalruntimeid.Trim(), out orgid);
-            int.TryParse(newruntime.Trim(), out milliseconds);
-            //RuntimeModel runtimeModel = timerModel.Runtimes.Where(runtime => runtime.Id == orgid).Single();
-            timerModel.EditRuntime(orgid, milliseconds);
-            return Content(timerModel.RuntimeDic.ToListboxvalues(true));
+            int.TryParse(hour, out h);
+            int.TryParse(min, out m);
+            int.TryParse(sek, out s);
+            int.TryParse(msek, out ms);
+            timerModel.EditRuntime(orgid, h, m, s, ms);
+            return Content(timerModel.RuntimeDic.ToListboxvalues(true, true));
         }
 
         /// <summary>
@@ -106,13 +116,7 @@ namespace ITimeU.Controllers
             int rtid;
             int.TryParse(runtimeid.Trim(), out rtid);
             timerModel.DeleteRuntime(rtid);
-            return Content(timerModel.RuntimeDic.ToListboxvalues(true));
-        }
-
-        public int GetLastRuntimeId()
-        {
-            TimerModel timerModel = (TimerModel)Session["timer"];
-            return timerModel.RuntimeDic.Last().Key;
+            return Content(timerModel.RuntimeDic.ToListboxvalues(true, true));
         }
     }
 }
