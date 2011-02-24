@@ -13,10 +13,19 @@ namespace ITimeU.Models
 
     public class CheckpointModel
     {
-        private string p;
-
         public int Id { get; private set; }
-        private bool dbEntryCreated = false; // TODO: Remove
+
+        private bool dbEntryCreated
+        {
+            get
+            {
+                if (Id == 0)
+                    return false;
+                else
+                    return true;
+            }
+        }
+
         public string Name { get; private set; }
 
         private TimerModel timer;
@@ -41,9 +50,8 @@ namespace ITimeU.Models
         {
             Id = checkpoint.CheckpointID;
             Name = checkpoint.Name;
-            if (checkpoint.Timer != null) // Is this check needed?
+            if (checkpoint.Timer != null)
                 this.timer = new TimerModel(checkpoint.Timer);
-            dbEntryCreated = true;
         }
 
         public CheckpointModel(string checkpointName)
@@ -75,7 +83,6 @@ namespace ITimeU.Models
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
-            dbEntryCreated = true;
 
             return checkpoint.CheckpointID;
         }
@@ -139,7 +146,8 @@ namespace ITimeU.Models
 
         public override int GetHashCode()
         {
-            return Id.GetHashCode() ^ Name.GetHashCode();
+            return Id.GetHashCode() ^ Name.GetHashCode() ^
+                (Timer == null ? 0.GetHashCode() : Timer.GetHashCode());
         }
 
         public override string ToString()

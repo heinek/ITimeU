@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 using System.IO;
+using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
 {
@@ -33,7 +34,10 @@ namespace ITimeU.Tests.Models
 
             Given("the time keeper wants to save a runtime", () =>
             {
-                requestUrl = @"http://localhost:54197/Runtime/Save/?runtime=" + runtime;
+                CheckpointModel checkpoint = new CheckpointModel("TheRuntimeCheckpoint");
+                requestUrl = @"http://localhost:54197/Runtime/Save/" +
+                    "?runtime=" + runtime +
+                    "&checkpointId=" + checkpoint.Id;
             });
 
             When("the time keeper saves the runtime", () =>
