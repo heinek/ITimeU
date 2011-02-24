@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Linq;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
@@ -27,7 +25,7 @@ using TinyBDD.Specification.MSTest;
 
 namespace ITimeU.Tests.Models
 {
-    
+
     [TestClass]
     public class TimerModelTest : ScenarioClass
     {
@@ -146,7 +144,7 @@ namespace ITimeU.Tests.Models
             When("we create the timer", () => timer = new TimerModel());
             Then("the timer should not be started", () => timer.IsStarted.ShouldBeFalse());
         }
-        
+
         [TestMethod]
         public void The_Start_Time_Should_Be_Saved_To_The_Database()
         {
@@ -401,7 +399,7 @@ namespace ITimeU.Tests.Models
                 timerModel1.ShouldNotBeSameAs(timerModel2);
                 timerModel1.ShouldBe(timerModel2);
             });
-    
+
         }
 
         [TestMethod]
@@ -446,7 +444,7 @@ namespace ITimeU.Tests.Models
 
             return timer;
         }
-        
+
         [TestMethod]
         public void A_DateTime_Value_In_Db_Should_Equal_The_Actual_DateTime_Value()
         {
@@ -559,7 +557,7 @@ namespace ITimeU.Tests.Models
 
             When("we want to change the runtime", () =>
             {
-                timer.EditRuntime(runtimemodel.Id, 400);
+                timer.EditRuntime(runtimemodel.Id, 0, 1, 32, 20);
                 newValue = Convert.ToInt32(timer.RuntimeDic.First().Value);
             });
 

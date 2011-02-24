@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ITimeU.Tests.Models;
 using ITimeU.Library;
+using ITimeU.Tests.Models;
 
 // TODO: Write class summary.
 
@@ -12,7 +12,8 @@ namespace ITimeU.Models
     public class TimerModel
     {
         private int id;
-        public int Id {
+        public int Id
+        {
             get
             {
                 if (dbEntryCreated)
@@ -54,7 +55,8 @@ namespace ITimeU.Models
         }
 
         public DateTime? endTime;
-        public DateTime? EndTime {
+        public DateTime? EndTime
+        {
 
             get
             {
@@ -134,10 +136,10 @@ namespace ITimeU.Models
             IsStarted = false;
 
             SaveToDb();
-        /// <summary>
-        /// Saves the stop time stamp to db.
-        /// </summary>
-        /// <param name="EndTime">The end time.</param>
+            /// <summary>
+            /// Saves the stop time stamp to db.
+            /// </summary>
+            /// <param name="EndTime">The end time.</param>
         }
 
         private void SaveToDb()
@@ -165,7 +167,6 @@ namespace ITimeU.Models
             var context = new Entities();
             Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
             timer.StartTime = this.StartTime;
-
             timer.EndTime = this.EndTime;
             context.SaveChanges();
         }
@@ -200,15 +201,8 @@ namespace ITimeU.Models
         /// <returns></returns>
         public RuntimeModel AddRuntime(int milliseconds, int checkpointid)
         {
-            var newRuntime = RuntimeModel.Create(milliseconds);
-            using (var ctx = new Entities())
-            {
-                var runtime = new Runtime() { Runtime1 = newRuntime.Runtime, CheckpointID = checkpointid };
-                ctx.Runtimes.AddObject(runtime);
-                ctx.SaveChanges();
-                newRuntime.Id = runtime.RuntimeID;
-                RuntimeDic.Add(runtime.RuntimeID, runtime.Runtime1);
-            }
+            var newRuntime = RuntimeModel.Create(milliseconds, checkpointid);
+            RuntimeDic.Add(newRuntime.Id, newRuntime.Runtime);
             return newRuntime;
         }
 
@@ -218,24 +212,22 @@ namespace ITimeU.Models
         /// <param name="runtimemodel">The runtimemodel.</param>
         public void AddRuntime(RuntimeModel runtimemodel)
         {
-            var runtime = new Runtime() { Runtime1 = runtimemodel.Runtime };
-            using (var ctx = new Entities())
-            {
-                ctx.Runtimes.AddObject(runtime);
-                ctx.SaveChanges();
-                runtimemodel.Id = runtime.RuntimeID;
-            }
-            RuntimeDic.Add(runtime.RuntimeID, runtime.Runtime1);
+            RuntimeModel.Create(runtimemodel.Runtime, runtimemodel.CheckPointId);
+            RuntimeDic.Add(runtimemodel.Id, runtimemodel.Runtime);
         }
 
         /// <summary>
         /// Edits the runtime.
         /// </summary>
         /// <param name="runtimeId">The runtime id.</param>
-        /// <param name="newRuntime">The new runtime.</param>
-        public void EditRuntime(int runtimeId, int newRuntime)
+        /// <param name="h">The hour.</param>
+        /// <param name="m">The minutes.</param>
+        /// <param name="s">The seconds.</param>
+        public void EditRuntime(int runtimeId, int h, int m, int s, int ms)
         {
-            RuntimeDic[runtimeId] = newRuntime;
+            TimeSpan ts = new TimeSpan(0, h, m, s, ms);
+            RuntimeDic[runtimeId] = (int)ts.TotalMilliseconds;
+            RuntimeModel.EditRuntime(runtimeId, (int)ts.TotalMilliseconds);
         }
 
         /// <summary>

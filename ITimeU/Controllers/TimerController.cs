@@ -78,22 +78,29 @@ namespace ITimeU.Controllers
             int.TryParse(runtime, out milliseconds);
             int.TryParse(checkpointid, out cpid);
             timerModel.AddRuntime(milliseconds, cpid);
-            return Content(timerModel.RuntimeDic.ToListboxvalues(true));
+            return Content(timerModel.RuntimeDic.ToListboxvalues(true, true));
         }
 
         /// <summary>
         /// Edits the runtime.
         /// </summary>
         /// <param name="orginalruntimeid">The orginalruntimeid.</param>
-        /// <param name="newruntime">The newruntime.</param>
-        public ActionResult EditRuntime(string orginalruntimeid, string newruntime)
+        /// <param name="hour">Hours.</param>
+        /// <param name="min">Minutes.</param>
+        /// <param name="sek">Seconds.</param>
+        /// <param name="msek">Milliseconds.</param>
+        /// <returns></returns>
+        public ActionResult EditRuntime(string orginalruntimeid, string hour, string min, string sek, string msek)
         {
             TimerModel timerModel = (TimerModel)Session["timer"];
-            int orgid, milliseconds;
+            int orgid, h, m, s, ms;
             int.TryParse(orginalruntimeid.Trim(), out orgid);
-            int.TryParse(newruntime.Trim(), out milliseconds);
-            timerModel.EditRuntime(orgid, milliseconds);
-            return Content(timerModel.RuntimeDic.ToListboxvalues(true));
+            int.TryParse(hour, out h);
+            int.TryParse(min, out m);
+            int.TryParse(sek, out s);
+            int.TryParse(msek, out ms);
+            timerModel.EditRuntime(orgid, h, m, s, ms);
+            return Content(timerModel.RuntimeDic.ToListboxvalues(true, true));
         }
 
         /// <summary>
@@ -106,7 +113,7 @@ namespace ITimeU.Controllers
             int rtid;
             int.TryParse(runtimeid.Trim(), out rtid);
             timerModel.DeleteRuntime(rtid);
-            return Content(timerModel.RuntimeDic.ToListboxvalues(true));
+            return Content(timerModel.RuntimeDic.ToListboxvalues(true, true));
         }
     }
 }

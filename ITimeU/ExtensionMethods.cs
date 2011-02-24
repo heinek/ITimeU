@@ -7,7 +7,7 @@ namespace ITimeU
 {
     public static class ExtensionMethods
     {
-        public static string ToListboxvalues(this Dictionary<int, int> dictionary, bool sortDesc = false)
+        public static string ToListboxvalues(this Dictionary<int, int> dictionary, bool sortDesc = false, bool toTimer = false)
         {
             StringBuilder listboxlist = new StringBuilder();
             var tmpDic = new Dictionary<int, int>();
@@ -15,7 +15,7 @@ namespace ITimeU
             else tmpDic = dictionary;
             foreach (var kvp in tmpDic)
             {
-                listboxlist.Append(string.Format("<option value=\"{0}\">{1}</option>", kvp.Key.ToString(), kvp.Value.ToTimerString()));
+                listboxlist.Append(string.Format("<option value=\"{0}\">{1}</option>", kvp.Key.ToString(), toTimer ? kvp.Value.ToTimerString() : kvp.Value.ToString()));
             }
             return listboxlist.ToString();
         }
