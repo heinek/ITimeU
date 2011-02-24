@@ -99,6 +99,9 @@
     <Content Include="Content\images\Logo2.png" />
     <Content Include="Content\images\Logo3.png" />
     <Content Include="Content\images\menubg.png" />
+    <Content Include="Content\images\up.png" />
+    <Content Include="Content\images\upOver.png" />
+    <Content Include="Content\images\upSmall.png" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\CheckpointOrderHandler.js" />
     <Content Include="Scripts\TimeFormatFactory.js" />
