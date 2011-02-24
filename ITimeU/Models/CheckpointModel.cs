@@ -42,7 +42,7 @@ namespace ITimeU.Models
             Id = checkpoint.CheckpointID;
             Name = checkpoint.Name;
             if (checkpoint.Timer != null) // Is this check needed?
-                Timer = new TimerModel(checkpoint.Timer);
+                this.timer = new TimerModel(checkpoint.Timer);
             dbEntryCreated = true;
         }
 

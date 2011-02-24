@@ -45,8 +45,9 @@ namespace ITimeU.Tests.Controllers
 
             Then("the checkpoint's timer should be associated with the timer in the view", () =>
             {
-                // We currently have to re-fetch the checkpoint from database, because the CheckpointModel
-                // instance is not updated simply be launching the TimerController's Index action.
+                // We currently have to re-fetch the checkpoint from database, because the TimerController
+                // updates its own instance of the CheckpointModel, not the checkpoint instance we're using
+                // here.
                 CheckpointModel checkpointDb = CheckpointModel.getById(checkpoint.Id);
                 timerInView.ShouldBe(checkpointDb.Timer);
             });
