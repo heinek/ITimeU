@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Library\DateTimeRounder.cs" />
     <Compile Include="Library\Logging\LogWriter.cs" />
+    <Compile Include="Library\FriResImporter.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />
