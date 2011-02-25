@@ -74,6 +74,8 @@ namespace ITimeU.Models
 
         public bool IsStarted { get; private set; }
         public Dictionary<int, int> RuntimeDic { get; set; }
+        public Dictionary<int, Dictionary<int, int>> CheckpointRuntimes { get; set; }
+        public int CheckpointId { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerModel"/> class.
@@ -83,6 +85,27 @@ namespace ITimeU.Models
             StartTime = null;
             IsStarted = false;
             RuntimeDic = new Dictionary<int, int>();
+            CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerModel"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        public TimerModel(int id)
+        {
+            using (var context = new Entities())
+            {
+                var timer = context.Timers.Single(tmr => tmr.TimerID == id);
+            }
+            Id = id;
+            StartTime = null;
+            IsStarted = false;
+            CheckpointId = GetFirstCheckpoint();
+            RuntimeDic = new Dictionary<int, int>();
+            RuntimeDic.Add(1, 2000);
+            CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
+            CheckpointRuntimes.Add(CheckpointId, RuntimeDic);
         }
 
         public TimerModel(Timer timer)
@@ -203,6 +226,14 @@ namespace ITimeU.Models
         {
             var newRuntime = RuntimeModel.Create(milliseconds, checkpointid);
             RuntimeDic.Add(newRuntime.Id, newRuntime.Runtime);
+            if (CheckpointRuntimes.ContainsKey(checkpointid))
+                CheckpointRuntimes[checkpointid] = RuntimeDic;
+            else
+                CheckpointRuntimes.Add(checkpointid, RuntimeDic);
+            if (CheckpointRuntimes.ContainsKey(checkpointid))
+                CheckpointRuntimes[checkpointid] = RuntimeDic;
+            else
+                CheckpointRuntimes.Add(checkpointid, RuntimeDic);
             return newRuntime;
         }
 
@@ -214,6 +245,10 @@ namespace ITimeU.Models
         {
             RuntimeModel.Create(runtimemodel.Runtime, runtimemodel.CheckPointId);
             RuntimeDic.Add(runtimemodel.Id, runtimemodel.Runtime);
+            if (CheckpointRuntimes.ContainsKey(runtimemodel.CheckPointId))
+                CheckpointRuntimes[runtimemodel.CheckPointId] = RuntimeDic;
+            else
+                CheckpointRuntimes.Add(runtimemodel.CheckPointId, RuntimeDic);
         }
 
         /// <summary>
@@ -237,6 +272,7 @@ namespace ITimeU.Models
         public void DeleteRuntime(RuntimeModel runtime)
         {
             RuntimeDic.Remove(runtime.Id);
+            CheckpointRuntimes[runtime.CheckPointId] = RuntimeDic;
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtime.Id).Single();
@@ -255,6 +291,7 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
+                CheckpointRuntimes[runtimeToDelete.CheckpointID] = RuntimeDic;
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
             }
         }
@@ -264,5 +301,27 @@ namespace ITimeU.Models
             return "[TimerModel, id: " + Id + "]";
         }
 
+
+        internal void ChangeCheckpoint(int checkpointid)
+        {
+            CheckpointId = checkpointid;
+        }
+
+        public int GetFirstCheckpoint()
+        {
+            using (var ctx = new Entities())
+            {
+                if (ctx.Checkpoints.Where(cp => cp.TimerID == Id).Count() == 0) return 0;
+                return ctx.Checkpoints.Where(cp => cp.TimerID == Id).OrderBy(cp => cp.SortOrder).First().CheckpointID;
+            }
+        }
+
+        public List<Checkpoint> GetCheckpoints()
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Checkpoints.Where(cp => cp.TimerID == Id && cp.IsDeleted == false).OrderBy(cp => cp.SortOrder).ToList();
+            }
+        }
     }
 }

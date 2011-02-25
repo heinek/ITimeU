@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Timer), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Timer), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
 
 #endregion
 
@@ -69,22 +69,6 @@ namespace ITimeU.Models
         #endregion
     
         #region ObjectSet Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Checkpoint> Checkpoints
-        {
-            get
-            {
-                if ((_Checkpoints == null))
-                {
-                    _Checkpoints = base.CreateObjectSet<Checkpoint>("Checkpoints");
-                }
-                return _Checkpoints;
-            }
-        }
-        private ObjectSet<Checkpoint> _Checkpoints;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -153,22 +137,6 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Timer> Timers
-        {
-            get
-            {
-                if ((_Timers == null))
-                {
-                    _Timers = base.CreateObjectSet<Timer>("Timers");
-                }
-                return _Timers;
-            }
-        }
-        private ObjectSet<Timer> _Timers;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<RaceIntermediate> RaceIntermediates
         {
             get
@@ -197,17 +165,41 @@ namespace ITimeU.Models
             }
         }
         private ObjectSet<CheckpointOrder> _CheckpointOrders;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Checkpoint> Checkpoints
+        {
+            get
+            {
+                if ((_Checkpoints == null))
+                {
+                    _Checkpoints = base.CreateObjectSet<Checkpoint>("Checkpoints");
+                }
+                return _Checkpoints;
+            }
+        }
+        private ObjectSet<Checkpoint> _Checkpoints;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Timer> Timers
+        {
+            get
+            {
+                if ((_Timers == null))
+                {
+                    _Timers = base.CreateObjectSet<Timer>("Timers");
+                }
+                return _Timers;
+            }
+        }
+        private ObjectSet<Timer> _Timers;
 
         #endregion
         #region AddTo Methods
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Checkpoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToCheckpoints(Checkpoint checkpoint)
-        {
-            base.AddObject("Checkpoints", checkpoint);
-        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the Clubs EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -242,14 +234,6 @@ namespace ITimeU.Models
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToTimers(Timer timer)
-        {
-            base.AddObject("Timers", timer);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the RaceIntermediates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToRaceIntermediates(RaceIntermediate raceIntermediate)
@@ -263,6 +247,22 @@ namespace ITimeU.Models
         public void AddToCheckpointOrders(CheckpointOrder checkpointOrder)
         {
             base.AddObject("CheckpointOrders", checkpointOrder);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Checkpoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToCheckpoints(Checkpoint checkpoint)
+        {
+            base.AddObject("Checkpoints", checkpoint);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToTimers(Timer timer)
+        {
+            base.AddObject("Timers", timer);
         }
 
         #endregion
@@ -287,10 +287,16 @@ namespace ITimeU.Models
         /// Create a new Checkpoint object.
         /// </summary>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
-        public static Checkpoint CreateCheckpoint(global::System.Int32 checkpointID)
+        /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
+        /// <param name="timerID">Initial value of the TimerID property.</param>
+        /// <param name="sortOrder">Initial value of the SortOrder property.</param>
+        public static Checkpoint CreateCheckpoint(global::System.Int32 checkpointID, global::System.Boolean isDeleted, global::System.Int32 timerID, global::System.Int32 sortOrder)
         {
             Checkpoint checkpoint = new Checkpoint();
             checkpoint.CheckpointID = checkpointID;
+            checkpoint.IsDeleted = isDeleted;
+            checkpoint.TimerID = timerID;
+            checkpoint.SortOrder = sortOrder;
             return checkpoint;
         }
 
@@ -375,9 +381,9 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> IsDeleted
+        public global::System.Boolean IsDeleted
         {
             get
             {
@@ -392,16 +398,16 @@ namespace ITimeU.Models
                 OnIsDeletedChanged();
             }
         }
-        private Nullable<global::System.Boolean> _IsDeleted;
-        partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
+        private global::System.Boolean _IsDeleted;
+        partial void OnIsDeletedChanging(global::System.Boolean value);
         partial void OnIsDeletedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> TimerID
+        public global::System.Int32 TimerID
         {
             get
             {
@@ -416,9 +422,33 @@ namespace ITimeU.Models
                 OnTimerIDChanged();
             }
         }
-        private Nullable<global::System.Int32> _TimerID;
-        partial void OnTimerIDChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _TimerID;
+        partial void OnTimerIDChanging(global::System.Int32 value);
         partial void OnTimerIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 SortOrder
+        {
+            get
+            {
+                return _SortOrder;
+            }
+            set
+            {
+                OnSortOrderChanging(value);
+                ReportPropertyChanging("SortOrder");
+                _SortOrder = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("SortOrder");
+                OnSortOrderChanged();
+            }
+        }
+        private global::System.Int32 _SortOrder;
+        partial void OnSortOrderChanging(global::System.Int32 value);
+        partial void OnSortOrderChanged();
 
         #endregion
     

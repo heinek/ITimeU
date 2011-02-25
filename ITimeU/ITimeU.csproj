@@ -94,7 +94,11 @@
     <Content Include="Content\images\bg.jpg" />
     <Content Include="Content\images\button_bg.jpg" />
     <Content Include="Content\images\button_bg_over.jpg" />
+    <Content Include="Content\images\CheckpointBg.png" />
+    <Content Include="Content\images\CheckpointBgSmall.png" />
     <Content Include="Content\images\DefaultBG.png" />
+    <Content Include="Content\images\down.png" />
+    <Content Include="Content\images\downOver.png" />
     <Content Include="Content\images\Image1.png" />
     <Content Include="Content\images\Logo2.png" />
     <Content Include="Content\images\Logo3.png" />
