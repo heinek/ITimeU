@@ -77,6 +77,8 @@
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
+    <Compile Include="Library\FriResImporter.cs" />
+    <Compile Include="Library\FriResImporterTest.cs" />
     <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
@@ -93,6 +95,9 @@
   <ItemGroup>
     <Content Include="App.config">
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Library\Import\ImporterTest.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
