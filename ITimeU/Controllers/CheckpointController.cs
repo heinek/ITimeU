@@ -15,9 +15,7 @@ namespace ITimeU.Controllers
         public ActionResult Index(int? id)
         {
             if (id != null)
-            {
                 return RedirectToAction("Index", "Timer", new { checkpoint_id = id });
-            }
 
             return View(CheckpointModel.getAll());
         }

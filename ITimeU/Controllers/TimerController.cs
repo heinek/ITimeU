@@ -5,6 +5,7 @@ namespace ITimeU.Controllers
 {
     public class TimerController : Controller
     {
+
         //
         // GET: /Timer/
 
@@ -16,9 +17,11 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int Id)
         {
+            Logging.LogWriter.getInstance().Write("yoyoyo");
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
+                checkpoint.Timer = timer;
             return View("Index", timer);
         }
 

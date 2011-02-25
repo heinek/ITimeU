@@ -53,33 +53,33 @@ namespace ITimeU.Controllers
            return View("Index");
         }
 
-        
         //
         // GET: /CheckpointOrder/Edit/5
  
         public ActionResult Edit(int id)
         {
-            return View(GetCheckpointOrder(id));
+            return Content("id = " + id);
+            //return View(GetCheckpointOrder(id));
         }
 
         //
         // POST: /CheckpointOrder/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(CheckpointOrder co)
+        public ActionResult Edit(int ID, string value)
         {
-            try
+            using (var ctx = new Entities())
             {
-                Entities ent = new Entities();
-                CheckpointOrder origCheckpointOrder = GetCheckpointOrder((int)co.CheckpointID);
-                ent.CheckpointOrders.Attach(co);
-                ent.ApplyOriginalValues("CheckpointOrders", origCheckpointOrder);
-                ent.SaveChanges();
-                
-                return RedirectToAction("Index");
-            }
-            catch
-            {
+                CheckpointOrderModel model = new CheckpointOrderModel();
+ 
+                int tmpValue = 0;
+                if (!int.TryParse(value, out tmpValue))
+                {
+                    return null;
+                }
+                tmpValue = int.Parse(value);
+                CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);
+
                 return View();
             }
         }
@@ -96,13 +96,15 @@ namespace ITimeU.Controllers
         // POST: /CheckpointOrder/Delete/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult DeleteCheckpointOrder(string id)
         {
             try
             {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
+                CheckpointOrderModel model = new CheckpointOrderModel();
+                int idToDelete;
+                int.TryParse(id, out idToDelete);
+                model.DeleteCheckpointOrderDB(idToDelete);
+                return Content(model.CheckpointOrderDic.ToListboxvalues(true));
             }
             catch
             {
@@ -110,7 +112,6 @@ namespace ITimeU.Controllers
             }
         }
 
-        [NonAction]
         private CheckpointOrder GetCheckpointOrder(int id)
         {
             Entities ent = new Entities();
@@ -121,27 +122,30 @@ namespace ITimeU.Controllers
             return co;
         }
 
-        public ActionResult AddStartingNumber(string checkpointID, string startingNumber)
+        public ActionResult AddCheckpointOrder(string checkpointID, string startingNumber)
         {
-            using (var entities = new Entities())
-            {
-                CheckpointOrder CheckpointOrderToInsert = new CheckpointOrder();
+            CheckpointOrderModel model = new CheckpointOrderModel();
+            int chkpntID;
+            int startNmb;
 
-                int nextOrderNumber = 1;
-                if (entities.CheckpointOrders.Count() > 0)
-                {
-                    nextOrderNumber = (int)(entities.CheckpointOrders.OrderByDescending(m => m.OrderNumber).First()).OrderNumber + 1;
-                }
+            int.TryParse(checkpointID, out chkpntID);
+            int.TryParse(startingNumber, out startNmb);
 
-                CheckpointOrderToInsert.OrderNumber = nextOrderNumber;
-                CheckpointOrderToInsert.CheckpointID = int.Parse(checkpointID);
-                CheckpointOrderToInsert.StartingNumber = int.Parse(startingNumber);
+            model.AddCheckpointOrderDB(chkpntID, startNmb);
 
-                entities.AddToCheckpointOrders(CheckpointOrderToInsert);
-                entities.SaveChanges();
+            return Content(model.CheckpointOrderDic.ToListboxvalues(true));           
+        }
+       
 
-                return null;
-            }
+        public ActionResult UpdateCheckpointOrder(int ID, string startingNumber)
+        {
+            CheckpointOrderModel model = new CheckpointOrderModel();
+            int StartNmb;
+
+            int.TryParse(startingNumber, out StartNmb);
+
+            model.UpdateCheckpointOrderDB(ID, StartNmb);
+            return Content(model.CheckpointOrderDic.ToListboxvalues(true));
         }
 
     }

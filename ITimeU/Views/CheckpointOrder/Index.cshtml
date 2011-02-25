@@ -3,9 +3,50 @@
 @{
     ViewBag.Title = "CheckpointOrder";
 }
+
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/CheckpointOrderHandler.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var listCheckpointOrderID = "lstCheckpointOrders"; //must be same as html below
+        var tbEditID = "txtStartingNumber" //must be same as html below
+        var btnEditID = "btnChange"; //must be same as html below
+        var btnDeleteID = "btnDelete"; //must be same as html below
+        var lblStatusID = "lblStatus"; //must be same as html below
+
+        var listCheckpointOrders = Tools.selectById(listCheckpointOrderID);
+        var tbEdit = Tools.selectById(tbEditID);
+        var btnEdit = Tools.selectById(btnEditID);
+        var btnDelete = Tools.selectById(btnDeleteID);
+        var lblStatus = Tools.selectById(lblStatusID);
+
+        var handler = new CheckpointOrderHandler();
+
+        handler.setEditAction(
+            listCheckpointOrders,
+            btnEdit,
+            tbEdit
+        );
+
+        handler.setDeleteAction(
+            listCheckpointOrders,
+            btnDelete
+        );
+
+        handler.setChangeAction(
+            listCheckpointOrders,
+            tbEdit
+        );
+    });
+</script>
+
 <script language="javascript" type="text/javascript">
     var checkpointOrders = [];
-
 </script>
 
 <h2>CheckpointOrder</h2>
@@ -14,35 +55,39 @@
     @Html.ValidationSummary(true) *@
     <fieldset> 
         <legend>CheckpointOrder</legend> 
- 
-        <div class="editor-label"> 
+
+       <div class="editor-label"> 
             @Html.Label("lblCheckpoint", "Checkpoint") 
         </div> 
         <div class="editor-field"> 
-            @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
+            @Html.ListBox("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))                        
         </div> 
 
         <div class="editor-label"> 
-            @Html.Label("lblStartingNumber", "Starting number") 
+            @Html.Label("lblStartingNumber", "Starting number")             
         </div> 
         <div class="editor-field">
-            @Html.TextBox("txtStartingNumber")
+            @Html.TextBox("txtStartingNumber", null, new { @class = "textbox" })
             <script type="text/javascript">
                 $(document).ready(function () {
                     $('#txtStartingNumber').keypress(function (e) {
                         if (e.keyCode == 13) {
-                            $.get("/CheckpointOrder/AddStartingNumber/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val());
-                            var tmpOrder = checkpointOrders;
-                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
-                            $('#lstCheckpointOrders').html(checkpointOrders);
+                            $.get("/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val());
+//                            var tmpOrder = checkpointOrders;
+//                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
+//                            $('#lstCheckpointOrders').html(checkpointOrders);
+//                            $('#txtStartingNumber').val("");
                         }
                     });
                 }); 
             </script>
+            @Html.ValidationMessage("txtStartingNumber", "*")
+            <input type="button" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
+            <input type="button" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
         </div> 
 
         <div>
-            @Html.ListBox("lstCheckpointOrders", Model.CheckpointOrders())
+            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"), new { @class = "listbox" })            
         </div>
 
     </fieldset>

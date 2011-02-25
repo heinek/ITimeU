@@ -41,7 +41,7 @@ namespace ITimeU.Tests.Models
         /// 
         /// - Checkpoint names should be unique
 
-        // TODO: [TestMethod]
+        [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
         {
             int previousSize = CheckpointModel.getAll().Count;
@@ -49,9 +49,9 @@ namespace ITimeU.Tests.Models
 
             Given("we insert three checkpoints in the datbase", () =>
             {
-                CheckpointModel.Create("First checkpoint");
-                CheckpointModel.Create("Second checkpoint");
-                CheckpointModel.Create("Third checkpoint");
+                new CheckpointModel("1st checkpoint");
+                new CheckpointModel("2nd checkpoint");
+                new CheckpointModel("3rd checkpoint");
             });
 
             When("we fetch all checkpoints", () =>
@@ -77,7 +77,7 @@ namespace ITimeU.Tests.Models
 
             When("we create the checkpoint", () =>
             {
-                newCheckpoint = CheckpointModel.Create(checkpointName);
+                newCheckpoint = new CheckpointModel(checkpointName);
             });
 
             Then("it should exist in the database", () =>
@@ -87,7 +87,7 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        // TODO: [TestMethod]
+        [TestMethod]
         public void The_Checkpoint_Should_Have_A_Timer_With_Correct_Start_Time_When_Starting_The_Timer()
         {
             TimerModel timer = null;
@@ -95,7 +95,7 @@ namespace ITimeU.Tests.Models
             Given("we have a timer which is associated with a checkpoint", () =>
             {
                 timer = new TimerModel();
-                checkpoint = CheckpointModel.Create("Supercheckpoint", timer);
+                checkpoint = new CheckpointModel("RelationToTimerCheckpoint", timer);
             }); 
 
             When("we start the timer", () => timer.Start());
@@ -125,29 +125,6 @@ namespace ITimeU.Tests.Models
 
             Then("the checkpoint should have the correct timer associated with it", () =>
             {
-                checkpoint.Timer.ShouldBe(timer);
-            });
-
-        }
-
-        // TODO: [TestMethod]
-        public void A_Checkpoint_Should_Be_Able_To_Have_A_Timer_Db()
-        {
-            TimerModel timer = null;
-            CheckpointModel checkpoint = null;
-
-            Given("we have a timer", () =>
-            {
-                timer = new TimerModel();
-            });
-
-            When("when we create a checkpoint and associate it with a timer", () =>
-            {
-                checkpoint = CheckpointModel.Create("Supercheckpoint", timer);
-            });
-
-            Then("the checkpoint should have the correct timer associated with it", () =>
-            {
                 CheckpointModel checkpointDb = CheckpointModel.getById(checkpoint.Id);
                 checkpointDb.Timer.ShouldBe(timer);
             });
@@ -161,7 +138,7 @@ namespace ITimeU.Tests.Models
 
             Given("we have a checkpoint", () =>
             {
-                checkpoint = CheckpointModel.Create("MyCheckpoint");
+                checkpoint = new CheckpointModel("MyCheckpoint");
             });
 
             When("we fetch the same checkpoint from database", () =>
