@@ -1,0 +1,14 @@
+Sprint 2 Retrospective
+
+
+What went well during the sprint?
+- Completed some user stories
+- Imported information from FriRes
+- GUI looking nice
+- Estimation more realistic
+ 
+
+What could be improved in the next sprint?
+- Better knowledge over MVC, jQuery
+- Better knowledge over GIT
+- Less work on the same code
