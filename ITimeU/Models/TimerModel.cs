@@ -11,26 +11,18 @@ namespace ITimeU.Models
     [Serializable]
     public class TimerModel
     {
-        private int id;
-        public int Id
+        public int Id { get; private set; }
+
+        private bool dbEntryCreated
         {
             get
             {
-                if (dbEntryCreated)
-                    return id;
+                if (Id == 0)
+                    return false;
                 else
-                    return 0;
+                    return true;
             }
-
-            private set
-            {
-                id = value;
-                dbEntryCreated = true;
-            }
-
         }
-
-        private bool dbEntryCreated = false;
 
         private DateTime? startTime;
         public DateTime? StartTime
@@ -80,6 +72,7 @@ namespace ITimeU.Models
         /// </summary>
         public TimerModel()
         {
+            Id = 0;
             StartTime = null;
             IsStarted = false;
             RuntimeDic = new Dictionary<int, int>();
@@ -103,8 +96,6 @@ namespace ITimeU.Models
                 return new TimerModel(timer);
             }
         }
-
-
 
         /// Starts the timer.
         /// </summary>
@@ -142,7 +133,7 @@ namespace ITimeU.Models
             /// <param name="EndTime">The end time.</param>
         }
 
-        private void SaveToDb()
+        internal void SaveToDb()
         {
             if (!dbEntryCreated)
                 Id = CreateDbEntity();
@@ -158,7 +149,6 @@ namespace ITimeU.Models
             context.Timers.AddObject(timer);
             context.SaveChanges();
 
-            dbEntryCreated = true;
             return timer.TimerID;
         }
 

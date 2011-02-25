@@ -58,44 +58,12 @@ TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _list
     });
 }
 
-TimerHandler.prototype.setStartStopActions = function (
-    _btnStartStop, startFunction, stopFunction, restartFunction) {
-    btnStartStop = _btnStartStop;
-    btnStartStop.bind("click", function () {
-        timer.startStop();
-        if (btnStartStop.val() == startBtnText) {
-            // Start is clicked
-            if (btnIntermediate) {
-                Tools.enable(btnIntermediate);
-            }
-            btnStartStop.val(stopBtnText);
-            startFunction();
-        } 
-        else if (btnStartStop.val() == stopBtnText) {
-            // Stop is clicked
-            if (btnIntermediate) {
-                Tools.disable(btnIntermediate);
-                url = "/Timer/SaveRuntime/?runtime=" + runtime + "&checkpointid=" + ddlCheckpoints.val();
-            }
-            btnStartStop.val(restartBtnText);
-            stopFunction();
-        } 
-        else if (btnStartStop.val() == restartBtnText) {
-            // Restart is clicked
-            if (btnIntermediate) {
-                Tools.enable(btnIntermediate);
-            }
-            listIntermediate.html("");
-            if (listIntermediate) {
-                Tools.emptyList(listIntermediate);
-            }
-            timer.resetLap();
-            btnStartStop.val(stopBtnText);
-            restartFunction();
-        }
-        Tools.disable(btnReset);
-    });
-}
+
+
+
+
+
+
 
 TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _tbEditHour, _tbEditMin, _tbEditSek, _tbEditMSek) {
     listIntermediate = _listIntermediates;
@@ -306,21 +274,15 @@ TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunct
     btnStartStop = _btnStartStop;
     btnStartStop.bind("click", function () {
         timer.startStop();
-        if (btnStartStop.val() == startBtnText) {
+        if (btnStartStop.val() == startBtnText || btnStartStop.val() == restartBtnText) {
             btnStartStop.val(stopBtnText);
             if (btnIntermediate) {
                 Tools.enable(btnIntermediate);
             }
-            if (btnReset) {
-                Tools.disable(btnReset);
-            }
             startFunction();
-        }
-        else {
-            btnStartStop.val(startBtnText);
-            if (btnReset) {
-                Tools.enable(btnReset);
-            }
+        } else {
+            btnStartStop.val(restartBtnText);
+
             if (btnIntermediate) {
                 Tools.disable(btnIntermediate);
             }
@@ -328,3 +290,4 @@ TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunct
         }
     });
 }
+
