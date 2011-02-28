@@ -19,7 +19,7 @@
         var tbEditMSek = $("#tbEditMSek");
         var lblTimer = $("#lblRunningTimer");
         var btnIntermediate = $("#btnIntermediate");
-        var listIntermediate = $("#lstIntermediates");
+        var listIntermediate = $("#listIntermediate");
         var btnDelete = $("#btnDelete");
         var ddlCheckpoints = $("#ddlCheckpoints");
         var btnUpHour = $("#btnUpHour");
@@ -30,6 +30,7 @@
         var btnDownMin = $("#btnDownMin");
         var btnDownSek = $("#btnDownSek");
         var btnDownMS = $("#btnDownMS");
+        var btnCheckpoints = $(".btnCheckpoint");
 
         handler.setStartStopActions(
             btnStart,
@@ -40,8 +41,8 @@
 
         handler.setIntermediateAction(
             btnIntermediate,
-            ddlCheckpoints,
-            listIntermediate
+            listIntermediate,
+            ddlCheckpoints
         );
 
         handler.setEditAction(
@@ -113,6 +114,11 @@
             btnDownMS,
             tbEditMSek
         );
+
+        handler.setChangeCheckpoint(
+            btnCheckpoints
+        );
+
         handler.showTimer(lblTimer);
     });
 </script>
@@ -120,12 +126,12 @@
     <div class="containter">
         <div class="row">
             <div class="left">
-                <div class="editor-label" style="vertical-align: top"><b>@Html.Label("lblCheckpoint", "Passeringspunkt:")</b></div>
+                <div class="editor-label" style="vertical-align: top">
+                    <b>@Html.Label("lblCheckpoint", "Passeringspunkt:")</b></div>
             </div>
             <div class="row">
-                <div class="editor-field">
-                    @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
-                </div>
+                <br />
+                @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
             </div>
         </div>
         <div class="row">
@@ -139,16 +145,18 @@
         </div>
         <div class="row">
             <div class="left">
-                @Html.ListBox("lstIntermediates", new SelectList(Model.RuntimeDic, "Key", "Value"), new { @class = "listbox" })
+                @Html.ListBox("listIntermediate", new SelectList(Model.CheckpointRuntimes[Model.CheckpointId], "Key", "Value"), new { @class = "listbox" })
             </div>
             <div class="right">
-                @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button" id="btnUpHour" class="btnUp" value="" disabled="disabled" /><input type="button" id="btnDownHour" class="btnDown"
-                        value="" disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input type="button"
-                    id="btnUpMin" class="btnUp" value="" disabled="disabled" /><input type="button" id="btnDownMin" class="btnDown"
-                        value="" disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input type="button"
-                    id="btnUpSek" class="btnUp" value="" disabled="disabled" /><input type="button" id="btnDownSek" class="btnDown"
-                        value="" disabled="disabled" /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input type="button"
-                    id="btnUpMS" class="btnUp" value="" disabled="disabled" /><input type="button" id="btnDownMS" class="btnDown" value="" disabled="disabled" />
+                @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
+                    id="btnUpHour" class="btnUp" value="" disabled="disabled" /><input type="button"
+                        id="btnDownHour" class="btnDown" value="" disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input
+                            type="button" id="btnUpMin" class="btnUp" value="" disabled="disabled" /><input type="button"
+                                id="btnDownMin" class="btnDown" value="" disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input
+                                    type="button" id="btnUpSek" class="btnUp" value="" disabled="disabled" /><input type="button"
+                                        id="btnDownSek" class="btnDown" value="" disabled="disabled" /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input
+                                            type="button" id="btnUpMS" class="btnUp" value="" disabled="disabled" /><input type="button"
+                                                id="btnDownMS" class="btnDown" value="" disabled="disabled" />
                 <br />
                 <input type="button" id="btnEdit" value="Endre" class="btnRegular" style="width: 100px"
                     disabled="disabled" />
