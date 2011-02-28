@@ -1,0 +1,18 @@
+Sprint 1 Retropective
+
+
+What went well during the sprint?
+- Learned a lot in all areas
+- MVC, tinyBDD
+- main fuctionality up running
+- Setting up the project (DB, Framework, Team City)
+- Progress dispite sickness 
+- Liked the SCRUM process
+
+
+What could be improved in the next sprint?
+- Source Control --> TFS instead of GIT
+- One central DB instead of several local DB
+- Be more efficient
+- Start using MOQ
+- Consider using StyleCop for code formatting/structure (exstension in Visual Studio)
