@@ -7,8 +7,20 @@
 	xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input"
 	x:Class="SilverlightPrototype1Screens.Screen_2"
 	Width="640" Height="480">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ProjectDataSources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate x:Key="ItemTemplate">
+				<StackPanel>
+					<TextBlock Text="{Binding Property1}"/>
+				</StackPanel>
+			</DataTemplate>
+		</ResourceDictionary>
+	</UserControl.Resources>
 
-	<Grid x:Name="LayoutRoot" Background="White">
+	<Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding Source={StaticResource Order}}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="0.451*"/>
 			<RowDefinition Height="0.549*"/>
@@ -16,7 +28,9 @@
 		<dataInput:Label HorizontalAlignment="Left" Margin="91,38,0,0" VerticalAlignment="Top" Content="ITimeU 1.0" FontFamily="Trebuchet MS" FontSize="26.667"/>
 		<TextBlock HorizontalAlignment="Left" Margin="51,99,0,97.667" Style="{StaticResource TextBlock-Sketch}" Text="Startnummer" TextWrapping="Wrap" d:LayoutOverrides="Height"/>
 		<TextBox HorizontalAlignment="Left" Margin="162,95,0,93.667" Style="{StaticResource TextBox-Sketch}" TextWrapping="Wrap" Width="60" d:LayoutOverrides="Height"/>
-		<ListBox HorizontalAlignment="Left" Margin="77,0,0,-34.333" Style="{StaticResource ListBox-Sketch}" Width="300" Height="100" VerticalAlignment="Bottom" d:LayoutOverrides="Height"/>
-		<ListBox Height="0" HorizontalAlignment="Left" Margin="-147,63.333,0,0" Style="{StaticResource ListBox-Sketch}" VerticalAlignment="Top" Width="81" Grid.Row="1"/>
+		<ListBox HorizontalAlignment="Left" Margin="77,0,0,-34.333" Style="{StaticResource ListBox-Sketch}" Width="300" Height="100" VerticalAlignment="Bottom" d:LayoutOverrides="Height" DataContext="{Binding}" ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Collection}"/>
+		<Button x:Name="btnUp" HorizontalAlignment="Right" Margin="0,0,184,36" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Width="75" Content="Opp"/>
+		<Button x:Name="btnDown" HorizontalAlignment="Right" Margin="0,4,184,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="75" Content="Ned" Grid.Row="1"/>
+		<Button x:Name="btnDelete" HorizontalAlignment="Right" Margin="0,0,184,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Width="75" Content="Slett"/>
 	</Grid>
 </UserControl>

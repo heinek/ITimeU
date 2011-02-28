@@ -69,11 +69,19 @@
       <SubType>Designer</SubType>
       <ContainsDataSources>True</ContainsDataSources>
     </Page>
+    <Page Include="SampleData\Order\Order.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SampleData\Participants\Participants.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="SampleData\Races\Races.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SampleData\Timestamps\Timestamps.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -90,11 +98,17 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleData\Order\Order.xaml.cs">
+      <DependentUpon>Order.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SampleData\Participants\Participants.xaml.cs">
       <DependentUpon>Participants.xaml</DependentUpon>
     </Compile>
     <Compile Include="SampleData\Races\Races.xaml.cs">
       <DependentUpon>Races.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SampleData\Timestamps\Timestamps.xaml.cs">
+      <DependentUpon>Timestamps.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen 1.xaml.cs">
       <DependentUpon>Screen 1.xaml</DependentUpon>
@@ -105,6 +119,11 @@
     <Resource Include="Fonts\BuxtonSketch.ttf" />
     <Resource Include="Fonts\SketchFlow Print.ttf" />
     <Resource Include="Fonts\SegoeMarker.ttf" />
+    <Resource Include="SampleData\Timestamps\Timestamps_Files\image01.png" />
+    <Resource Include="SampleData\Timestamps\Timestamps_Files\image02.png" />
+    <Resource Include="SampleData\Timestamps\Timestamps_Files\image03.png" />
+    <Resource Include="SampleData\Timestamps\Timestamps_Files\image04.png" />
+    <Resource Include="SampleData\Timestamps\Timestamps_Files\image05.png" />
     <Resource Include="Sketch.Flow" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +131,12 @@
   </ItemGroup>
   <ItemGroup>
     <DesignTimeOnly Include="SampleData\Participants\Participants.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <DesignTimeOnly Include="SampleData\Timestamps\Timestamps.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <DesignTimeOnly Include="SampleData\Order\Order.xsd" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
 </Project>

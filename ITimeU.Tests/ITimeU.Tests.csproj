@@ -43,6 +43,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -73,9 +74,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\MockControllerTest.cs" />
+    <Compile Include="Controllers\TimerControllerTest.cs" />
+    <Compile Include="Library\DateTimeRounderTest.cs" />
     <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
+    <Compile Include="Models\CheckpointModelTest.cs" />
+    <Compile Include="Models\CheckpointOrderModelTest.cs" />
+    <Compile Include="Models\RuntimeModelTest.cs" />
     <Compile Include="Models\ParticipantModelTest.cs" />
+    <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -95,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Shadow Include="Test References\ITimeU.accessor" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
