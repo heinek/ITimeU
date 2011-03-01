@@ -100,6 +100,7 @@
     <Content Include="Content\images\DefaultBG.png" />
     <Content Include="Content\images\down.png" />
     <Content Include="Content\images\downOver.png" />
+    <Content Include="Content\images\Go.png" />
     <Content Include="Content\images\Image1.png" />
     <Content Include="Content\images\Logo2.png" />
     <Content Include="Content\images\Logo3.png" />

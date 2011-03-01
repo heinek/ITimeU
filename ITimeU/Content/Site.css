@@ -496,6 +496,12 @@ div#title
 	background-image: url("images/downOver.png");
 }
 
+.btnGo
+{
+	background-image: url("images/Go.png");
+	background-repeat: no-repeat;
+	border-width: 0px;
+}
 .btnRegular
 {
 	background-color: #DB6600;

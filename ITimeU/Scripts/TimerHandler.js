@@ -58,13 +58,6 @@ TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _list
     });
 }
 
-
-
-
-
-
-
-
 TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _tbEditHour, _tbEditMin, _tbEditSek, _tbEditMSek) {
     btnEdit = _btnEdit;
     tbEditHour = _tbEditHour;
@@ -133,7 +126,7 @@ TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbEditHo
         var strs = "";
         var strms = "";
         var strid = "";
-        _listIntermediates.each(function () {
+        $("#listIntermediate :selected").each(function () {
             strid = $(this).val();
             strh = $(this).text().substring(0, 1);
             strm = $(this).text().substring(2, 4);
@@ -268,10 +261,9 @@ TimerHandler.prototype.setDecrementMSAction = function (_btnUpMS, _tbEditMS) {
     });
 }
 
-TimerHandler.prototype.setChangeCheckpoint = function (_btnCheckpoint, _listIntermediate) {
-    var btn = _btnCheckpoint;
-    btn.bind("click", function () {
-        checkpointid = btn.attr("Id").substring(5);
+TimerHandler.prototype.setChangeCheckpoint = function (_btnCheckpoint, _listIntermediate, _ddlCheckpoint) {
+    _btnCheckpoint.bind("click", function () {
+        checkpointid = _ddlCheckpoint.val();
         url = "/Timer/ChangeCheckpoint/?checkpointid=" + checkpointid;
         $.get(url, function (data) {
             _listIntermediate.html(data);

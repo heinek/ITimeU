@@ -21,7 +21,6 @@ namespace ITimeU.Controllers
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
-                checkpoint.Timer = timer;
             return View("Index", timer);
         }
 
@@ -32,8 +31,8 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Start();
-            //ViewBag.Checkpoints = timerModel.GetCheckpoints();
             Session["timer"] = timer;
+            ViewBag.Checkpoints = timer.GetCheckpoints();
             return View("Index", timer);
         }
 
@@ -45,6 +44,7 @@ namespace ITimeU.Controllers
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Stop();
             Session["timer"] = timer;
+            ViewBag.Checkpoints = timer.GetCheckpoints();
             return View("Index", timer);
         }
 
@@ -67,8 +67,7 @@ namespace ITimeU.Controllers
             int.TryParse(runtime, out milliseconds);
             int.TryParse(checkpointid, out cpid);
             timer.AddRuntime(milliseconds, cpid);
-            Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
         /// <summary>
@@ -90,8 +89,7 @@ namespace ITimeU.Controllers
             int.TryParse(sek, out s);
             int.TryParse(msek, out ms);
             timer.EditRuntime(orgid, h, m, s, ms);
-            Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
         /// <summary>
@@ -104,16 +102,26 @@ namespace ITimeU.Controllers
             int rtid;
             int.TryParse(runtimeid.Trim(), out rtid);
             timer.DeleteRuntime(rtid);
-            Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
-        public ActionResult ChangeCheckpointId(int checkpointid)
+        /// <summary>
+        /// Changes the checkpoint.
+        /// </summary>
+        /// <param name="checkpointid">The checkpointid.</param>
+        /// <returns></returns>
+        public ActionResult ChangeCheckpoint(int checkpointid)
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.ChangeCheckpoint(checkpointid);
+            return Content(SaveToSessionAndReturnRuntimes(timer));
+        }
+
+        private string SaveToSessionAndReturnRuntimes(TimerModel timer)
+        {
+            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(true, true);
             Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return runtimeDic;
         }
     }
 }

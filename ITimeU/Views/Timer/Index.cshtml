@@ -31,6 +31,7 @@
         var btnDownSek = $("#btnDownSek");
         var btnDownMS = $("#btnDownMS");
         var btnCheckpoints = $(".btnCheckpoint");
+        var btnChangeCP = $("#btnChangeCP");
 
         handler.setStartStopActions(
             btnStart,
@@ -116,7 +117,9 @@
         );
 
         handler.setChangeCheckpoint(
-            btnCheckpoints
+            btnChangeCP,
+            listIntermediate,
+            ddlCheckpoints
         );
 
         handler.showTimer(lblTimer);
@@ -131,7 +134,8 @@
             </div>
             <div class="row">
                 <br />
-                @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
+                @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name")) <input type="button"
+                    id="btnChangeCP" class="btnGo" value=" " />
             </div>
         </div>
         <div class="row">
@@ -145,18 +149,18 @@
         </div>
         <div class="row">
             <div class="left">
-                @Html.ListBox("listIntermediate", new SelectList(Model.CheckpointRuntimes[Model.CheckpointId], "Key", "Value"), new { @class = "listbox" })
+                @Html.ListBox("listIntermediate", new SelectList(Model.CheckpointRuntimes[Model.CurrentCheckpointId], "Key", "Value"), new { @class = "listbox" })
             </div>
             <div class="right">
                 @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
-                    id="btnUpHour" class="btnUp" value="" disabled="disabled" /><input type="button"
-                        id="btnDownHour" class="btnDown" value="" disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input
-                            type="button" id="btnUpMin" class="btnUp" value="" disabled="disabled" /><input type="button"
-                                id="btnDownMin" class="btnDown" value="" disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input
-                                    type="button" id="btnUpSek" class="btnUp" value="" disabled="disabled" /><input type="button"
-                                        id="btnDownSek" class="btnDown" value="" disabled="disabled" /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input
-                                            type="button" id="btnUpMS" class="btnUp" value="" disabled="disabled" /><input type="button"
-                                                id="btnDownMS" class="btnDown" value="" disabled="disabled" />
+                    id="btnUpHour" class="btnUp" value=" " disabled="disabled" /><input type="button"
+                        id="btnDownHour" class="btnDown" value=" " disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input
+                            type="button" id="btnUpMin" class="btnUp" value=" " disabled="disabled" /><input type="button"
+                                id="btnDownMin" class="btnDown" value=" " disabled="disabled" /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input
+                                    type="button" id="btnUpSek" class="btnUp" value=" " disabled="disabled" /><input type="button"
+                                        id="btnDownSek" class="btnDown" value=" " disabled="disabled" /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input
+                                            type="button" id="btnUpMS" class="btnUp" value=" " disabled="disabled" /><input type="button"
+                                                id="btnDownMS" class="btnDown" value=" " disabled="disabled" />
                 <br />
                 <input type="button" id="btnEdit" value="Endre" class="btnRegular" style="width: 100px"
                     disabled="disabled" />

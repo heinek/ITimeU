@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Data;
 
 namespace ITimeU.Models
 {
@@ -29,13 +26,14 @@ namespace ITimeU.Models
         public string Name { get; private set; }
 
         private TimerModel timer;
-        public TimerModel Timer {
+        public TimerModel Timer
+        {
             get
             {
                 return timer;
             }
 
-            internal set
+            set
             {
                 timer = value;
                 // Timer.SaveToDb(): The timer must exist in database so that the database foreign key
@@ -43,8 +41,9 @@ namespace ITimeU.Models
                 timer.SaveToDb();
                 SaveToDb();
             }
-        
         }
+
+        public int Sortorder { get; set; }
 
         public CheckpointModel(Checkpoint checkpoint)
         {
@@ -67,6 +66,14 @@ namespace ITimeU.Models
             SaveToDb();
         }
 
+        public CheckpointModel(string checkpointName, TimerModel timer, int sortorder)
+        {
+            Name = checkpointName;
+            Timer = timer;
+            Sortorder = sortorder;
+            SaveToDb();
+        }
+
         private void SaveToDb()
         {
             var context = new Entities();
@@ -80,6 +87,8 @@ namespace ITimeU.Models
         private int CreateDbEntity(Entities context)
         {
             Checkpoint checkpoint = new Checkpoint();
+            checkpoint.TimerID = timer.Id;
+            checkpoint.SortOrder = Sortorder;
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
@@ -132,14 +141,14 @@ namespace ITimeU.Models
 
             return models;
         }
-       
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
                 return false;
             }
-            CheckpointModel other = (CheckpointModel) obj;
+            CheckpointModel other = (CheckpointModel)obj;
 
             return Id == other.Id && Name == other.Name;
         }
@@ -155,6 +164,6 @@ namespace ITimeU.Models
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
         }
 
-       
+
     }
 }
