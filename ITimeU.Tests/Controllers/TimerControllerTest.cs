@@ -28,18 +28,19 @@ namespace ITimeU.Tests.Controllers
         {
             TimerController timerCtrl = null;
             CheckpointModel checkpoint = null;
-            TimerModel timerInView = null;
+            TimerModel timerInView = new TimerModel(447);
 
             Given("the user has selected a checkpoint", () =>
             {
-                checkpoint = new CheckpointModel("Hemsedal"); // Create a new checkpoint for this test.
+                //checkpoint = new CheckpointModel("Hemsedal"); // Create a new checkpoint for this test.
+                checkpoint = new CheckpointModel("Hemsedal", timerInView, 1);
                 timerCtrl = new TimerController();
                 setMockSessionFor(timerCtrl);
             });
 
             When("the user selects a checkpoint and clicks OK", () =>
             {
-                ViewResult ctrlResult = (ViewResult)timerCtrl.Index(checkpoint.Id);
+                ViewResult ctrlResult = (ViewResult)timerCtrl.Index(timerInView.Id);
                 timerInView = (TimerModel)ctrlResult.Model;
             });
 

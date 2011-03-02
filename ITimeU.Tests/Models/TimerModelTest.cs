@@ -5,6 +5,7 @@ using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
+using System.Collections.Generic;
 
 /*
     Given("", () =>
@@ -525,12 +526,14 @@ namespace ITimeU.Tests.Models
         {
             var runtime = new RuntimeModel();
             var listcount = 0;
+            var checkpointid = 0;
             Given("we have a runtimelist", () =>
             {
-                timer = new TimerModel();
+                timer = new TimerModel(447);
                 timer.Start();
-                runtime = timer.AddRuntime(300, 1);
-                listcount = timer.RuntimeDic.Count;
+                checkpointid = timer.GetFirstCheckpoint();
+                runtime = timer.AddRuntime(300, checkpointid);
+                listcount = timer.CheckpointRuntimes[checkpointid].Count;
             });
 
             When("we want to delete a runtime", () =>
@@ -540,7 +543,7 @@ namespace ITimeU.Tests.Models
 
             Then("the runtime list should be rduced with 1", () =>
             {
-                timer.RuntimeDic.Count.ShouldBe(listcount - 1);
+                timer.CheckpointRuntimes[checkpointid].Count.ShouldBe(listcount - 1);
             });
         }
 
@@ -549,22 +552,111 @@ namespace ITimeU.Tests.Models
         {
             var runtimemodel = new RuntimeModel();
             var newValue = 0;
+            var checkpointid = 0;
             Given("we have a runtime", () =>
             {
-                timer = new TimerModel();
+                timer = new TimerModel(447);
                 timer.Start();
-                runtimemodel = timer.AddRuntime(500, 1);
+                checkpointid = timer.GetFirstCheckpoint();
+                runtimemodel = timer.AddRuntime(500, checkpointid);
             });
 
             When("we want to change the runtime", () =>
             {
                 timer.EditRuntime(runtimemodel.Id, 0, 1, 32, 20);
-                newValue = Convert.ToInt32(timer.RuntimeDic.First().Value);
+                newValue = Convert.ToInt32(timer.CheckpointRuntimes[checkpointid].First().Value);
             });
 
             Then("the new runtime shouldn't be equal to the previous", () => newValue.ShouldNotBe(runtimemodel.Runtime));
         }
 
+        [TestMethod]
+        public void Changing_A_Checkpoint_Should_Give_A_New_CheckpointId()
+        {
+            var timer = new TimerModel(447);
+            var initialCheckpointId = 0;
+            Given("we have started a timer", () =>
+            {
+                timer.Start();
+                initialCheckpointId = timer.GetFirstCheckpoint();
+            });
+            When("we want to change the checkpoint", () =>
+            {
+                timer.ChangeCheckpoint(timer.GetCheckpoints()[1].CheckpointID);
+            });
+            Then("the checkpointid should be different", () =>
+            {
+                timer.CurrentCheckpointId.ShouldNotBe(initialCheckpointId);
+            });
+        }
+
+        [TestMethod]
+        public void Changing_A_Checkpoint_Should_Give_A_New_CheckpointList()
+        {
+            var timer = new TimerModel(447);
+            Dictionary<int, int> initialruntimes = new Dictionary<int, int>();
+            Given("we have started a timer", () =>
+            {
+                timer.Start();
+                initialruntimes = timer.CheckpointRuntimes[timer.CurrentCheckpointId];
+            });
+            When("we want to change the checkpoint", () =>
+            {
+                timer.ChangeCheckpoint(timer.GetCheckpoints()[1].CheckpointID);
+            });
+            Then("the checkpointlist should be different", () =>
+            {
+                timer.CheckpointRuntimes[timer.CurrentCheckpointId].ShouldNotBe(initialruntimes);
+            });
+        }
+
+        [TestMethod]
+        public void Adding_A_Runtime_To_A_Checkpoint_Then_Changing_To_New_Checkpoint_Then_Going_Back_To_First_Checkpoint_Should_Give_Same_Runtimelist_As_Before()
+        {
+            var timer = new TimerModel(447);
+            var initialruntimes = new Dictionary<int, int>();
+            Given("we have started a timer and added a runtime", () =>
+            {
+                timer.Start();
+                timer.AddRuntime(400, timer.GetFirstCheckpoint());
+                initialruntimes = timer.CheckpointRuntimes[timer.CurrentCheckpointId];
+            });
+            When("we want to change the checkpoint and add a new runtime, and change back to first checkpoint", () =>
+            {
+                timer.ChangeCheckpoint(timer.GetCheckpoints()[1].CheckpointID);
+                timer.AddRuntime(600, timer.GetCheckpoints()[1].CheckpointID);
+                timer.ChangeCheckpoint(timer.GetFirstCheckpoint());
+            });
+            Then("the runtimelist should be the same", () =>
+            {
+                initialruntimes.ShouldBeSameAs(timer.CheckpointRuntimes[timer.GetFirstCheckpoint()]);
+            });
+        }
+
+        [TestMethod]
+        public void Adding_A_Runtime_To_A_Checkpoint_Then_Changing_To_New_Checkpoint_Then_Going_Back_To_First_Checkpoint_Then_Going_Back_To_Second_Checkpoint_Should_Give_Same_Runtimelist_As_Before()
+        {
+            var timer = new TimerModel(447);
+            var initialruntimes = new Dictionary<int, int>();
+            Given("we have started a timer and added a runtime and then change", () =>
+            {
+                timer.Start();
+                timer.AddRuntime(400, timer.GetFirstCheckpoint());
+                timer.ChangeCheckpoint(timer.GetCheckpoints()[1].CheckpointID);
+                timer.AddRuntime(600, timer.CurrentCheckpointId);
+                initialruntimes = timer.CheckpointRuntimes[timer.CurrentCheckpointId];
+            });
+            When("we want to change the checkpoint and add a new runtime, and change back to first checkpoint, add a new runtime and then go back to second checkpoint", () =>
+            {
+                timer.ChangeCheckpoint(timer.GetFirstCheckpoint());
+                timer.AddRuntime(800, timer.CurrentCheckpointId);
+                timer.ChangeCheckpoint(timer.GetCheckpoints()[1].CheckpointID);
+            });
+            Then("the runtimelist should be the same", () =>
+            {
+                initialruntimes.ShouldBeSameAs(timer.GetCheckpoints()[1].CheckpointID);
+            });
+        }
         [TestCleanup]
         public void TestCleanup()
         {

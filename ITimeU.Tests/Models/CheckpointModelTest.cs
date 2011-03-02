@@ -46,12 +46,12 @@ namespace ITimeU.Tests.Models
         {
             int previousSize = CheckpointModel.getAll().Count;
             List<CheckpointModel> checkpointsDb = null;
-
+            var timer = TimerModel.GetTimerById(447);
             Given("we insert three checkpoints in the datbase", () =>
             {
-                new CheckpointModel("1st checkpoint");
-                new CheckpointModel("2nd checkpoint");
-                new CheckpointModel("3rd checkpoint");
+                new CheckpointModel("1st checkpoint", timer, 1);
+                new CheckpointModel("2nd checkpoint", timer, 2);
+                new CheckpointModel("3rd checkpoint", timer, 3);
             });
 
             When("we fetch all checkpoints", () =>
@@ -72,12 +72,12 @@ namespace ITimeU.Tests.Models
         {
             string checkpointName = "MyCheckpoint";
             CheckpointModel newCheckpoint = null;
-
+            TimerModel timer = TimerModel.GetTimerById(1);
             Given("we want to insert a new checkpoint to the database");
 
             When("we create the checkpoint", () =>
             {
-                newCheckpoint = new CheckpointModel(checkpointName);
+                newCheckpoint = new CheckpointModel(checkpointName, timer, 1);
             });
 
             Then("it should exist in the database", () =>
@@ -135,10 +135,10 @@ namespace ITimeU.Tests.Models
         {
             CheckpointModel checkpoint = null;
             CheckpointModel checkpointDb = null;
-
+            TimerModel timer = TimerModel.GetTimerById(447);
             Given("we have a checkpoint", () =>
             {
-                checkpoint = new CheckpointModel("MyCheckpoint");
+                checkpoint = new CheckpointModel("MyCheckpoint", timer, 1);
             });
 
             When("we fetch the same checkpoint from database", () =>

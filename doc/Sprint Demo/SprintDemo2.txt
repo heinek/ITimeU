@@ -1,0 +1,16 @@
+Tema for neste sprint
+- Lage startliste basert på importerte data fra FriRes (Navn, Klasse, StartNr, Heatinfo)
+- Lagre løpet og kunne hente opp igjen for editering før det endelig er godkjent
+- Kunne godkjenne endelige resultater i ITimeU
+- God utskriftsmulighet (enten vha. eksport til FriRes eller lage egen utskriftsfunksjon)
+ 
+
+Utfordringer:
+- Hvordan håndtere etteranmeldte (som ikke blir importert fra FriRes, men kommer senere), skal det f.eks. være validering på de startnr som registreres i ITimeU
+- "Reimport" fra FriRes: Slett og importer på nytt
+- Hvordan bekrefte at riktige personer er på startstreken
+- Eksportere resultatliste til FriRes
+- Tider og startnr rekkefølge i samme "View" på samme PC
+
+Arbeidsflyt:
+Påmelding i FriRes --> Importere løpere til ITimeU --> Opprop --> Starte løpet --> Starte timer --> ta mellomtid og sluttid --> plotte inn startnr --> Endre tid og startnr rekkefølge --> Merge tider og startnr --> Lage resultatliste med Navn, klasse, startnr, tid --> Ferdigstille løpet --> Lagre løpet og lukke --> Gå tilbake og endre resultatlisten --> Godkjenne resultatlisten --> Arkivere og skrive løpet til fil --> Eksportere resultater til FriRes
