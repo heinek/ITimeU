@@ -219,7 +219,7 @@
     <Content Include="Views\CheckpointOrder\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Timer\Testing.cshtml" />
+    <Content Include="Views\ImportAthletes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TimeMerger\Index.cshtml" />
