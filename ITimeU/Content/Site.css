@@ -394,6 +394,16 @@ table th
 	width: 195px;
 	margin-bottom: 10px;
 }
+
+.textboxLarge
+{
+	width: 300px;
+	padding: 3px 3px;
+	height: 15px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
+}
+
 .textboxsmall
 {
 	width: 15px;
