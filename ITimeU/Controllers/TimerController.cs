@@ -17,7 +17,6 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int Id)
         {
-            Logging.LogWriter.getInstance().Write("yoyoyo");
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
