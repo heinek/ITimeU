@@ -73,46 +73,56 @@
             $.get(url, function (data) {
                 listIntermediate.html(data);
             });
-            Tools.ResetEditFields();
+            ResetEditFields();
         });
 
         btnUpHour.click(function () {
-            Tools.increaseHour(tbEditHour);
+            var time = parse(tbEditHour.val(), 24, true);
+            tbEditHour.val(time);
         });
 
         btnUpMin.click(function () {
-            Tools.increaseMinutes(tbEditMin);
+            var time = parse(tbEditMin.val(), 60, true);
+            tbEditMin.val(time);
         });
 
         btnUpSek.click(function () {
-            Tools.increaseSeconds(tbEditSek);
+            var time = parse(tbEditSek.val(), 60, true);
+            tbEditSek.val(time);
         });
 
         btnUpMS.click(function () {
-            Tools.increaseMilliseconds(tbEditMSek);
+            var time = parse(tbEditMSek.val(), 10, true);
+            tbEditMSek.val(time);
         });
 
         btnDownHour.click(function () {
-            Tools.decreaseHour(tbEditHour);
+            var time = parse(tbEditHour.val(), 24, false);
+            tbEditHour.val(time);
         });
 
         btnDownMin.click(function () {
-            Tools.decreaseMinutes(tbEditMin);
+            var time = parse(tbEditMin.val(), 60, false);
+            tbEditMin.val(time);
         });
 
         btnDownSek.click(function () {
-            Tools.decreaseSeconds(tbEditSek);
+            var time = parse(tbEditSek.val(), 60, false);
+            tbEditSek.val(time);
         });
 
         btnDownMS.click(function () {
-            Tools.decreaseMilliseconds(tbEditMSek);
+            var time = parse(tbEditMSek.val(), 10, false);
+            tbEditMSek.val(time);
         });
 
         btnDelete.click(function () {
             url = "/Timer/DeleteRuntime/?runtimeid=" + initialRuntimeId;
-            Tools.deleteFromList(listIntermediate, url);
-            Tools.ResetEditFields();
-            Tools.DisableControls();
+            $.get(url, function (data) {
+                listIntermediate.html(data);
+            });
+            ResetEditFields();
+            DisableControls();
         });
 
         listIntermediate.change(function () {
@@ -133,7 +143,7 @@
             tbEditMin.val(strm);
             tbEditSek.val(strs);
             tbEditMSek.val(strms);
-            Tools.EnableControls();
+            EnableControls();
         });
 
         btnChangeCP.click(function () {
@@ -143,9 +153,55 @@
         });
     });
 
+    function DisableControls() {
+        $("#btnEdit").attr('disabled', 'disabled');
+        $("#btnDelete").attr('disabled', 'disabled');
+        $("#btnUpHour").attr('disabled', 'disabled');
+        $("#btnUpMin").attr('disabled', 'disabled');
+        $("#btnUpSek").attr('disabled', 'disabled');
+        $("#btnUpMS").attr('disabled', 'disabled');
+        $("#btnDownHour").attr('disabled', 'disabled');
+        $("#btnDownMin").attr('disabled', 'disabled');
+        $("#btnDownSek").attr('disabled', 'disabled');
+        $("#btnDownMS").attr('disabled', 'disabled');
+    }
 
+    function EnableControls() {
+        $("#btnEdit").removeAttr('disabled');
+        $("#btnDelete").removeAttr('disabled');
+        $("#btnUpHour").removeAttr('disabled');
+        $("#btnUpMin").removeAttr('disabled');
+        $("#btnUpSek").removeAttr('disabled');
+        $("#btnUpMS").removeAttr('disabled');
+        $("#btnDownHour").removeAttr('disabled');
+        $("#btnDownMin").removeAttr('disabled');
+        $("#btnDownSek").removeAttr('disabled');
+        $("#btnDownMS").removeAttr('disabled');
+    }
 
+    function ResetEditFields() {
+        $("#tbEditHour").val("");
+        $("#tbEditMin").val("");
+        $("#tbEditSek").val("");
+        $("#tbEditMSek").val("");
+    }
 
+    function parse(integer, modulus, add) {
+        var time = parseInt(integer, 10);
+        if(add){
+            time = time + 1;
+            time = time % modulus;
+            }
+        else{
+            time = time - 1;
+            if (time == -1) {
+                time = modulus -1;
+            }
+        }
+        if (time < 10 && modulus != 10 && modulus != 24)
+            time = "0" + time;
+        return time;
+    }
 
 </script>
 <div class="contentmargin">

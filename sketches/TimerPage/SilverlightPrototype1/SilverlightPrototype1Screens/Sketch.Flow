@@ -35,19 +35,7 @@
       <Annotations />
       <Position>
         <X>152</X>
-        <Y>-46</Y>
-      </Position>
-      <VisualTag>0</VisualTag>
-    </Screen>
-    <Screen>
-      <Type>Navigation</Type>
-      <ClassName>SilverlightPrototype1Screens.Screen_1_2</ClassName>
-      <DisplayName>TimeMerger</DisplayName>
-      <FileName>Screen 1_2.xaml</FileName>
-      <Annotations />
-      <Position>
-        <X>150</X>
-        <Y>-8</Y>
+        <Y>-46</Y>      
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>

@@ -19,8 +19,7 @@ namespace ITimeU.Controllers
 
             var entities = new Entities();
             ViewBag.Checkpoints = entities.Checkpoints.ToList();
-            
-
+          
             return View(checkpoint);
         }
 
@@ -151,9 +150,9 @@ namespace ITimeU.Controllers
             int.TryParse(startingNumber, out startNmb);
 
             model.AddCheckpointOrderDB(chkpntID, startNmb);
-            //Session["checkpoint"] = model; //TODO change this session if does not work
-
-            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+            Session["checkpoint"] = model;
+            
+            return Content(model.CheckpointOrderDic.ToListboxvalues(true));
         }
 
         public ActionResult AddCheckpointByOrder(string checkpointID, string startingNumber, string orderNumber)
@@ -182,7 +181,7 @@ namespace ITimeU.Controllers
 
             model.UpdateCheckpointOrderDB(ID, StartNmb);
             //Session["checkpoint"] = model;
-            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+            return Content(model.CheckpointOrderDic.ToListboxvalues(true));
         }
 
         public ActionResult GetStartingNumbersForCheckpoint(int checkpointID)
