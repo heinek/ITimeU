@@ -21,6 +21,7 @@ var btnDownMin;
 var btnDownSek;
 var btnDownMS;
 var btnIntermediate;
+var btnCheckpoint;
 var initialid;
 var runtimeid;
 var startBtnText = "Start";
@@ -31,7 +32,7 @@ var tbEditMin;
 var tbEditSek;
 var tbEditMSek;
 var ddlCheckpoints
-var listIntermediate;
+var checkpointid = 0;
 
 
 // Initialises a Stopwatch instance that displays its time nicely formatted.
@@ -45,28 +46,19 @@ TimerHandler.prototype.showTimer = function (lblTimer) {
 
 TimerHandler.prototype.setIntermediateAction = function (_btnIntermediate, _listIntermediate, _ddlCheckpoints) {
     btnIntermediate = _btnIntermediate;
-    listIntermediate = _listIntermediate;
     ddlCheckpoints = _ddlCheckpoints;
     Tools.disable(btnIntermediate);
     btnIntermediate.click(function () {
         timer.addIntermediate(function (runtime) {
             url = "/Timer/SaveRuntime/?runtime=" + runtime + "&checkpointid=" + ddlCheckpoints.val();
             $.get(url, function (data) {
-                listIntermediate.html(data);
+                _listIntermediate.html(data);
             });
         });
     });
 }
 
-
-
-
-
-
-
-
 TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _tbEditHour, _tbEditMin, _tbEditSek, _tbEditMSek) {
-    listIntermediate = _listIntermediates;
     btnEdit = _btnEdit;
     tbEditHour = _tbEditHour;
     tbEditMin = _tbEditMin;
@@ -75,7 +67,7 @@ TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _
     btnEdit.bind("click", function () {
         url = "/Timer/EditRuntime/?orginalruntimeid=" + initialid + "&hour=" + tbEditHour.val() + "&min=" + tbEditMin.val() + "&sek=" + tbEditSek.val() + "&msek=" + tbEditMSek.val();
         $.get(url, function (data) {
-            listIntermediate.html(data);
+            _listIntermediates.html(data);
         });
         tbEditHour.val("");
         tbEditMin.val("");
@@ -95,12 +87,11 @@ TimerHandler.prototype.setEditAction = function (_listIntermediates, _btnEdit, _
 }
 
 TimerHandler.prototype.setDeleteAction = function (_listIntermediates, _btnDelete) {
-    listIntermediate = _listIntermediates;
     btnDelete = _btnDelete;
     btnDelete.bind("click", function () {
         url = "/Timer/DeleteRuntime/?runtimeid=" + initialid;
         $.get(url, function (data) {
-            listIntermediate.html(data);
+            _listIntermediates.html(data);
         });
         tbEditHour.val("");
         Tools.disable(btnEdit);
@@ -117,7 +108,6 @@ TimerHandler.prototype.setDeleteAction = function (_listIntermediates, _btnDelet
 }
 
 TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbEditHour, _tbEditMin, _tbEditSek, _tbEditMSek, _btnDownHour, _btnDownMin, _btnDownSek, _btnDownMS, _btnUpHour, _btnUpMin, _btnUpSek, _btnUpMS) {
-    listIntermediate = _listIntermediates;
     tbEditHour = _tbEditHour;
     tbEditMin = _tbEditMin;
     tbEditSek = _tbEditSek;
@@ -130,13 +120,13 @@ TimerHandler.prototype.setChangeAction = function (_listIntermediates, _tbEditHo
     btnUpMin = _btnUpMin;
     btnUpSek = _btnUpSek;
     btnUpMS = _btnUpMS;
-    listIntermediate.bind("change", function () {
+    _listIntermediates.bind("change", function () {
         var strh = "";
         var strm = "";
         var strs = "";
         var strms = "";
         var strid = "";
-        $("#lstIntermediates :selected").each(function () {
+        $("#listIntermediate :selected").each(function () {
             strid = $(this).val();
             strh = $(this).text().substring(0, 1);
             strm = $(this).text().substring(2, 4);
@@ -270,6 +260,17 @@ TimerHandler.prototype.setDecrementMSAction = function (_btnUpMS, _tbEditMS) {
         tbEditMS.val(time);
     });
 }
+
+TimerHandler.prototype.setChangeCheckpoint = function (_btnCheckpoint, _listIntermediate, _ddlCheckpoint) {
+    _btnCheckpoint.bind("click", function () {
+        checkpointid = _ddlCheckpoint.val();
+        url = "/Timer/ChangeCheckpoint/?checkpointid=" + checkpointid;
+        $.get(url, function (data) {
+            _listIntermediate.html(data);
+        });
+    });
+}
+
 TimerHandler.prototype.setStartStopActions = function (_btnStartStop, startFunction, stopFunction) {
     btnStartStop = _btnStartStop;
     btnStartStop.bind("click", function () {

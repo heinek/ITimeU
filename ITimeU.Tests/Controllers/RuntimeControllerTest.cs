@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
 using System.Net;
-using System.Web.Mvc;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using System.IO;
-using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
 {
@@ -32,12 +28,15 @@ namespace ITimeU.Tests.Models
             String requestUrl = null;
             String webResponse = null;
 
-            Given("the time keeper wants to save a runtime", () =>
+            Given("we have a timer and the time keeper wants to save a runtime", () =>
             {
+                TimerModel timer = new TimerModel();
                 CheckpointModel checkpoint = new CheckpointModel("TheRuntimeCheckpoint");
                 requestUrl = @"http://localhost:54197/Runtime/Save/" +
                     "?runtime=" + runtime +
                     "&checkpointId=" + checkpoint.Id;
+                checkpoint.Timer = timer;
+                checkpoint.Sortorder = 1;
             });
 
             When("the time keeper saves the runtime", () =>

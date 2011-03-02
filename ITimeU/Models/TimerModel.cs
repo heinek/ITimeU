@@ -11,18 +11,26 @@ namespace ITimeU.Models
     [Serializable]
     public class TimerModel
     {
-        public int Id { get; private set; }
-
-        private bool dbEntryCreated
+        private int id;
+        public int Id
         {
             get
             {
-                if (Id == 0)
-                    return false;
+                if (dbEntryCreated)
+                    return id;
                 else
-                    return true;
+                    return 0;
             }
+
+            private set
+            {
+                id = value;
+                dbEntryCreated = true;
+            }
+
         }
+
+        private bool dbEntryCreated = false;
 
         private DateTime? startTime;
         public DateTime? StartTime
@@ -65,19 +73,41 @@ namespace ITimeU.Models
         }
 
         public bool IsStarted { get; private set; }
-        public Dictionary<int, int> RuntimeDic { get; set; }
+        public Dictionary<int, Dictionary<int, int>> CheckpointRuntimes { get; set; }
+        public int CurrentCheckpointId { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerModel"/> class.
         /// </summary>
         public TimerModel()
         {
-            Id = 0;
             StartTime = null;
             IsStarted = false;
-            RuntimeDic = new Dictionary<int, int>();
+            CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerModel"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        public TimerModel(int id)
+        {
+            using (var context = new Entities())
+            {
+                var timer = context.Timers.Single(tmr => tmr.TimerID == id);
+            }
+            Id = id;
+            StartTime = null;
+            IsStarted = false;
+            CurrentCheckpointId = GetFirstCheckpoint();
+            CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
+            CheckpointRuntimes.Add(CurrentCheckpointId, new Dictionary<int, int>());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TimerModel"/> class.
+        /// </summary>
+        /// <param name="timer">The timer.</param>
         public TimerModel(Timer timer)
         {
             Id = timer.TimerID;
@@ -88,6 +118,11 @@ namespace ITimeU.Models
                 IsStarted = true;
         }
 
+        /// <summary>
+        /// Gets the timer by id.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <returns></returns>
         public static TimerModel GetTimerById(int id)
         {
             using (var context = new Entities())
@@ -127,13 +162,13 @@ namespace ITimeU.Models
             IsStarted = false;
 
             SaveToDb();
-            /// <summary>
-            /// Saves the stop time stamp to db.
-            /// </summary>
-            /// <param name="EndTime">The end time.</param>
         }
 
-        internal void SaveToDb()
+        /// <summary>
+        /// Saves the stop time stamp to db.
+        /// </summary>
+        /// <param name="EndTime">The end time.</param>
+        public void SaveToDb()
         {
             if (!dbEntryCreated)
                 Id = CreateDbEntity();
@@ -141,6 +176,10 @@ namespace ITimeU.Models
             updateDbEntry();
         }
 
+        /// <summary>
+        /// Creates the db entity.
+        /// </summary>
+        /// <returns></returns>
         private int CreateDbEntity()
         {
             var context = new Entities();
@@ -149,9 +188,13 @@ namespace ITimeU.Models
             context.Timers.AddObject(timer);
             context.SaveChanges();
 
+            dbEntryCreated = true;
             return timer.TimerID;
         }
 
+        /// <summary>
+        /// Updates the db entry.
+        /// </summary>
         private void updateDbEntry()
         {
             var context = new Entities();
@@ -192,7 +235,12 @@ namespace ITimeU.Models
         public RuntimeModel AddRuntime(int milliseconds, int checkpointid)
         {
             var newRuntime = RuntimeModel.Create(milliseconds, checkpointid);
-            RuntimeDic.Add(newRuntime.Id, newRuntime.Runtime);
+            var checkpointRuntimeDic = CheckpointRuntimes[checkpointid];
+            checkpointRuntimeDic.Add(newRuntime.Id, newRuntime.Runtime);
+            if (CheckpointRuntimes.ContainsKey(checkpointid))
+                CheckpointRuntimes[checkpointid] = checkpointRuntimeDic;
+            else
+                CheckpointRuntimes.Add(checkpointid, checkpointRuntimeDic);
             return newRuntime;
         }
 
@@ -203,7 +251,12 @@ namespace ITimeU.Models
         public void AddRuntime(RuntimeModel runtimemodel)
         {
             RuntimeModel.Create(runtimemodel.Runtime, runtimemodel.CheckPointId);
-            RuntimeDic.Add(runtimemodel.Id, runtimemodel.Runtime);
+            var checkpointRuntimeDic = CheckpointRuntimes[CurrentCheckpointId];
+            checkpointRuntimeDic.Add(runtimemodel.Id, runtimemodel.Runtime);
+            if (CheckpointRuntimes.ContainsKey(CurrentCheckpointId))
+                CheckpointRuntimes[CurrentCheckpointId] = checkpointRuntimeDic;
+            else
+                CheckpointRuntimes.Add(CurrentCheckpointId, checkpointRuntimeDic);
         }
 
         /// <summary>
@@ -216,7 +269,7 @@ namespace ITimeU.Models
         public void EditRuntime(int runtimeId, int h, int m, int s, int ms)
         {
             TimeSpan ts = new TimeSpan(0, h, m, s, ms);
-            RuntimeDic[runtimeId] = (int)ts.TotalMilliseconds;
+            CheckpointRuntimes[CurrentCheckpointId][runtimeId] = (int)ts.TotalMilliseconds;
             RuntimeModel.EditRuntime(runtimeId, (int)ts.TotalMilliseconds);
         }
 
@@ -226,7 +279,8 @@ namespace ITimeU.Models
         /// <param name="runtime">The runtime.</param>
         public void DeleteRuntime(RuntimeModel runtime)
         {
-            RuntimeDic.Remove(runtime.Id);
+            CheckpointRuntimes[CurrentCheckpointId].Remove(runtime.Id);
+            //CheckpointRuntimes[runtime.CheckPointId] = RuntimeDic;
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtime.Id).Single();
@@ -241,10 +295,11 @@ namespace ITimeU.Models
         /// <param name="runtimeid">The runtimeid.</param>
         public void DeleteRuntime(int runtimeid)
         {
-            RuntimeDic.Remove(runtimeid);
+            CheckpointRuntimes[CurrentCheckpointId].Remove(runtimeid);
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
+                //CheckpointRuntimes[runtimeToDelete.CheckpointID] = RuntimeDic;
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
             }
         }
@@ -254,5 +309,31 @@ namespace ITimeU.Models
             return "[TimerModel, id: " + Id + "]";
         }
 
+
+        public void ChangeCheckpoint(int checkpointid)
+        {
+            CurrentCheckpointId = checkpointid;
+            if (!CheckpointRuntimes.ContainsKey(checkpointid))
+            {
+                CheckpointRuntimes.Add(checkpointid, new Dictionary<int, int>());
+            }
+        }
+
+        public int GetFirstCheckpoint()
+        {
+            using (var ctx = new Entities())
+            {
+                if (ctx.Checkpoints.Where(cp => cp.TimerID == Id).Count() == 0) return 0;
+                return ctx.Checkpoints.Where(cp => cp.TimerID == Id).OrderBy(cp => cp.SortOrder).First().CheckpointID;
+            }
+        }
+
+        public List<Checkpoint> GetCheckpoints()
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Checkpoints.Where(cp => cp.TimerID == Id && cp.IsDeleted == false).OrderBy(cp => cp.SortOrder).ToList();
+            }
+        }
     }
 }
