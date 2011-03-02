@@ -99,6 +99,8 @@ namespace ITimeU.Models
         {
             checkpoint.Name = Name;
             checkpoint.SortOrder = Sortorder;
+            if (Timer != null)
+                checkpoint.TimerID = Timer.Id;
         }
 
         private void updateDbEntry(Entities context)

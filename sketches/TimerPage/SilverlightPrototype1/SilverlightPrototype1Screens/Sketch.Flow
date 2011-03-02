@@ -10,8 +10,8 @@
       <FileName>Screen 1.xaml</FileName>
       <Annotations />
       <Position>
-        <X>0</X>
-        <Y>0</Y>
+        <X>-126</X>
+        <Y>-50</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
@@ -22,8 +22,20 @@
       <FileName>Screen 2.xaml</FileName>
       <Annotations />
       <Position>
-        <X>150</X>
-        <Y>32</Y>
+        <X>2</X>
+        <Y>-50</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_1</ClassName>
+      <DisplayName>Import_Atlethes</DisplayName>
+      <FileName>Screen 1_1.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>152</X>
+        <Y>-46</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>

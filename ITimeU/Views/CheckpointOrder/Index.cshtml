@@ -13,23 +13,18 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        var listCheckpointOrderID = "lstCheckpointOrders"; //must be same as html below
-        var tbEditID = "txtStartingNumber" //must be same as html below
-        var btnEditID = "btnChange"; //must be same as html below
-        var btnDeleteID = "btnDelete"; //must be same as html below
-        var lblStatusID = "lblStatus"; //must be same as html below
-
-        var listCheckpointOrders = Tools.selectById(listCheckpointOrderID);
-        var tbEdit = Tools.selectById(tbEditID);
-        var btnEdit = Tools.selectById(btnEditID);
-        var btnDelete = Tools.selectById(btnDeleteID);
-        var lblStatus = Tools.selectById(lblStatusID);
+        var listCheckpointOrders = $("#lstCheckpointOrders");
+        var ddCheckpoints = $("#ddCheckpoint");
+        var tbEdit = $("#txtStartingNumber");
+        var btnChange = $("#btnChange");
+        var btnDelete = $("#btnDelete");
+        var lblStatus = $("#lblStatus");
 
         var handler = new CheckpointOrderHandler();
 
         handler.setEditAction(
             listCheckpointOrders,
-            btnEdit,
+            btnChange,
             tbEdit
         );
 
@@ -42,6 +37,7 @@
             listCheckpointOrders,
             tbEdit
         );
+        
     });
 </script>
 
@@ -49,42 +45,64 @@
     var checkpointOrders = [];
 </script>
 
-<h2>CheckpointOrder</h2>
+<h2>Startnummer</h2>
 
 @*@using (Html.BeginForm()) { 
     @Html.ValidationSummary(true) *@
     <fieldset> 
-        <legend>CheckpointOrder</legend> 
-
-       <div class="editor-label"> 
+        <div class="editor-label"> 
             @Html.Label("lblCheckpoint", "Checkpoint") 
         </div> 
         <div class="editor-field"> 
-            @Html.ListBox("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))                        
+            @Html.ListBox("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))  
+            <script type="text/javascript">
+                $(document).change(function () {
+                    var url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + $('#ddCheckpoint').val();
+                    $.get(url, function (data) {
+                        $('#lstCheckpointOrders').html(data);
+                    });
+                });
+            </script>                     
         </div> 
 
         <div class="editor-label"> 
-            @Html.Label("lblStartingNumber", "Starting number")             
+            @Html.Label("lblStartingNumber", "Startnummer")             
         </div> 
         <div class="editor-field">
             @Html.TextBox("txtStartingNumber", null, new { @class = "textbox" })
             <script type="text/javascript">
                 $(document).ready(function () {
-                    $('#txtStartingNumber').keypress(function (e) {
+                    var StartNumber = $('#txtStartingNumber');
+                    var checkNumber = true;
+
+                    StartNumber.keypress(function (e) {
+                        if (String.fromCharCode(e.keyCode).match(/[^0-9\r]/g))
+                            checkNumber = false;
                         if (e.keyCode == 13) {
-                            $.get("/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val());
-//                            var tmpOrder = checkpointOrders;
-//                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
-//                            $('#lstCheckpointOrders').html(checkpointOrders);
-//                            $('#txtStartingNumber').val("");
+                            if (checkNumber == true && StartNumber.val() != '') {
+                                var url = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val();
+                                $.get(url, function (data) {
+                                    $('#lstCheckpointOrders').html(data);
+                                    $('#ErrorMessage').hide();
+                                    StartNumber.select();
+                                });
+                            }
+                            else {
+                                $('#ErrorMessage').show();
+                                StartNumber.val('');
+                                checkNumber = true;
+                            }
                         }
                     });
                 }); 
-            </script>
-            @Html.ValidationMessage("txtStartingNumber", "*")
+            </script>            
             <input type="button" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
             <input type="button" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
         </div> 
+
+         <div id="ErrorMessage" style="color:Red; display:none" > 
+           ** Start Number Should be a Number (0-9)
+       </div> 
 
         <div>
             @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"), new { @class = "listbox" })            
