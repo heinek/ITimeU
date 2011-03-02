@@ -47,18 +47,6 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void Delete_This_Test()
-        {
-            Given("we want to create a timer");
-
-            When("we instantiate the timer",
-                () => timer = new TimerModel()
-            );
-
-            Then("we have a timer", () => timer.EndTime.ShouldBe(2));
-        }
-
-        [TestMethod]
         public void Timer_Id_Should_Be_Zero_Before_Timer_Has_Saved_Data()
         {
             When("we create a new timer", () =>
