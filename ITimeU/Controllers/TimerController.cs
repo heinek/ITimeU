@@ -29,11 +29,11 @@ namespace ITimeU.Controllers
                 timer = (TimerModel)Session["timer"];
             */
 
-            if (checkpoint_id != null)
-            {
-                CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
-                checkpoint.Timer = timer;
-            }
+            //if (checkpoint_id != null)
+            //{
+            //    CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+            //    checkpoint = timer;
+            //}
 
             var entities = new Entities();
             ViewBag.Checkpoints = entities.Checkpoints.ToList();

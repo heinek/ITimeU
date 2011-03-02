@@ -8,7 +8,7 @@ function CheckpointOrderHandler() { }
 * Comment
 */
 
-var btnEdit;
+var btnChange;
 var btnDelete;
 var listCheckpointOrders;
 var initialid;
@@ -17,15 +17,15 @@ var lblStatus;
 
 CheckpointOrderHandler.prototype.setEditAction = function (_listCheckpointOrders, _btnEdit, _tbedit) {
     listCheckpointOrders = _listCheckpointOrders;
-    btnEdit = _btnEdit;
+    btnChange = _btnEdit;
     tbedit = _tbedit;
-    btnEdit.bind("click", function () {
+    btnChange.bind("click", function () {
         url = "/CheckpointOrder/UpdateCheckpointOrder/?ID=" + initialid + "&startingNumber=" + tbedit.val();
         $.get(url, function (data) {
             listCheckpointOrders.html(data);
         });
         tbedit.val("");
-        Tools.disable(btnEdit);
+        Tools.disable(btnChange);
         Tools.disable(btnDelete);
     });
 }
@@ -43,7 +43,8 @@ CheckpointOrderHandler.prototype.setChangeAction = function (_listCheckpointOrde
         });
         initialid = strid;
         tbedit.val(str);
-        Tools.enable(btnEdit);
+
+        Tools.enable(btnChange);
         Tools.enable(btnDelete);
     });
 }
@@ -52,15 +53,30 @@ CheckpointOrderHandler.prototype.setDeleteAction = function (_listCheckpointOrde
     listCheckpointOrders = _listCheckpointOrders;
     btnDelete = _btnDelete;
     btnDelete.bind("click", function () {
-        url = "/CheckpointOrder/Delete/?id=" + initialid;
+        url = "/CheckpointOrder/DeleteCheckpointOrder/?id=" + initialid;
         $.get(url, function (data) {
-            listCheckpoints.html(data);
+            listCheckpointOrders.html(data);
         });
         tbedit.val("");
-        Tools.disable(btnEdit);
+        Tools.disable(btnChange);
         Tools.disable(btnDelete);
     });
 }
+
+//CheckpointOrderHandler.prototype.setEdit2Action = function (_listCheckpointOrders, _listCheckpoints) {
+//    listCheckpoints = _listCheckpoints;
+
+//    listCheckpoints.bind("change", function () {
+//        listCheckpointOrders.html("");
+//        url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?id=" + initialid;
+//        $.get(url, function (data) {
+//            listCheckpointOrders.html(data);
+//        });
+//        tbedit.val("");
+//        Tools.disable(btnChange);
+//        Tools.disable(btnDelete);
+//    });
+//}
 
 
 

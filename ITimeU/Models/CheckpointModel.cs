@@ -90,8 +90,6 @@ namespace ITimeU.Models
         private void updateDbEntry(Checkpoint checkpoint)
         {
             checkpoint.Name = Name;
-            if (Timer != null)
-                checkpoint.TimerID = Timer.Id;
         }
 
         private void updateDbEntry(Entities context)
