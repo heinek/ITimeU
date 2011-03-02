@@ -42,8 +42,14 @@ namespace ITimeU.Models
 
         public void SaveToDb()
         {
-            
+            var context = new Entities();
+
+            if (!dbEntryCreated)
+                Id = CreateDbEntity(context);
+            else
+                updateDbEntry(context);
         }
+
 
     }
 }
