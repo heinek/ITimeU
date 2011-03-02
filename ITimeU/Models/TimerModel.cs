@@ -204,6 +204,13 @@ namespace ITimeU.Models
             context.SaveChanges();
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -280,7 +287,6 @@ namespace ITimeU.Models
         public void DeleteRuntime(RuntimeModel runtime)
         {
             CheckpointRuntimes[CurrentCheckpointId].Remove(runtime.Id);
-            //CheckpointRuntimes[runtime.CheckPointId] = RuntimeDic;
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtime.Id).Single();
@@ -299,17 +305,25 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
-                //CheckpointRuntimes[runtimeToDelete.CheckpointID] = RuntimeDic;
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return "[TimerModel, id: " + Id + "]";
         }
 
-
+        /// <summary>
+        /// Changes the checkpoint.
+        /// </summary>
+        /// <param name="checkpointid">The checkpointid.</param>
         public void ChangeCheckpoint(int checkpointid)
         {
             CurrentCheckpointId = checkpointid;
@@ -319,6 +333,10 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Gets the first checkpoint.
+        /// </summary>
+        /// <returns></returns>
         public int GetFirstCheckpoint()
         {
             using (var ctx = new Entities())
@@ -328,6 +346,10 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Gets all the checkpoints for .
+        /// </summary>
+        /// <returns></returns>
         public List<Checkpoint> GetCheckpoints()
         {
             using (var ctx = new Entities())
