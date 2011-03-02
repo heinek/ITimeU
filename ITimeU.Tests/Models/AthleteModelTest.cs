@@ -19,7 +19,33 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void It_Should_Be_Possible_To_Save_An_Athlete_To_Database()
+        public void It_Should_Be_Possible_To_Save_A_List_Of_Athletes_To_Database()
+        {
+            List<AthleteModel> athletes = null;
+            int? previousAthleteDbCount = AthleteModel.GetAll().Count;
+
+            Given("we have a list of athletes", () =>
+            {
+                athletes = new List<AthleteModel>();
+                athletes.Add(new AthleteModel("Arne", "Hansen"));
+                athletes.Add(new AthleteModel("Geir", "Olsen"));
+                athletes.Add(new AthleteModel("Per", "Iversen"));
+            });
+
+            When("we save the list to the database", () =>
+            {
+                AthleteModel.SaveToDb(athletes);
+            });
+
+            Then("the athletes in the list should be saved in the database", () =>
+            {
+                int athleteDbCount = AthleteModel.GetAll().Count;
+                athleteDbCount.ShouldBe(previousAthleteDbCount + 3);
+            });
+        }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Save_An_Athlete_To_The_Database()
         {
             AthleteModel athlete = null;
 
@@ -28,16 +54,17 @@ namespace ITimeU.Tests.Models
                 athlete = new AthleteModel("Arne", "Hansen");
             });
 
-            When("we save it to the database", () =>
+            When("we save the athlete to the database", () =>
             {
                 athlete.SaveToDb();
             });
 
-            Then("it should be saved to the database", () =>
+            Then("the athlete should exist in the database", () =>
             {
                 AthleteModel athleteDb = AthleteModel.GetById(athlete.Id);
-                athleteDb.FirstName.ShouldBe("Arne");
-                athleteDb.LastName.ShouldBe("Hansen");
+                athleteDb.Id.ShouldBe(athlete.Id);
+                athleteDb.FirstName.ShouldBe(athlete.FirstName);
+                athleteDb.LastName.ShouldBe(athlete.LastName);
             });
         }
     }
