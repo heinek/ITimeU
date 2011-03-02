@@ -56,7 +56,9 @@
   <ItemGroup>
     <Reference Include="System.ComponentModel.DataAnnotations, Version=2.0.5.0, Culture=neutral, PublicKeyToken=ddd0da4d3e678217" />
     <Reference Include="System.Windows.Controls" />
+    <Reference Include="System.Windows.Controls.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Windows.Controls.Data.Input, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Windows.Data, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="System.Windows.Interactivity" />
     <Reference Include="Microsoft.Expression.Interactions" />
     <Reference Include="Microsoft.Expression.Prototyping.Interactivity" />
@@ -89,6 +91,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screen 1_1.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screen 2.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +118,9 @@
     </Compile>
     <Compile Include="Screen 1.xaml.cs">
       <DependentUpon>Screen 1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screen 1_1.xaml.cs">
+      <DependentUpon>Screen 1_1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen 2.xaml.cs">
       <DependentUpon>Screen 2.xaml</DependentUpon>
