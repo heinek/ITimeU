@@ -11,7 +11,7 @@
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/CheckpointOrderHandler.js")" type="text/javascript"></script>
 
-<script type="text/javascript">
+@*<script type="text/javascript">
     $(document).ready(function () {
         var listCheckpointOrders = $("#lstCheckpointOrders");
         var ddCheckpoints = $("#ddCheckpoint");
@@ -43,7 +43,7 @@
 
 <script language="javascript" type="text/javascript">
     var checkpointOrders = [];
-</script>
+</script>*@
 
 <h2>Startnummer</h2>
 
@@ -77,21 +77,26 @@
 
                     StartNumber.keypress(function (e) {
                         if (String.fromCharCode(e.keyCode).match(/[^0-9\r]/g))
-                            checkNumber = false;
+                        { checkNumber = false; }
+
                         if (e.keyCode == 13) {
+                            //alert("Enter Pressed");
                             if (checkNumber == true && StartNumber.val() != '') {
-                                var url = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val();
-                                $.get(url, function (data) {
+
                                     $('#lstCheckpointOrders').html(data);
-                                    $('#ErrorMessage').hide();
-                                    StartNumber.select();
-                                });
-                            }
-                            else {
-                                $('#ErrorMessage').show();
-                                StartNumber.val('');
-                                checkNumber = true;
-                            }
+                            //                            var tmpOrder = checkpointOrders;
+                            //                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
+                            //                            $('#lstCheckpointOrders').html(checkpointOrders);
+                            //                            $('#txtStartingNumber').val("");
+                            $('#ErrorMessage').hide();
+                            StartNumber.select();
+                        }
+                        else {
+                            $('#ErrorMessage').show();
+                            StartNumber.val('');
+                            checkNumber = true;
+                        }
+
                         }
                     });
                 }); 
@@ -143,6 +148,7 @@
         <div class="editor-field">
             @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"),new { @class = "listbox" })    
         </div>
-
+        
+             
     </fieldset>
 @*}*@
