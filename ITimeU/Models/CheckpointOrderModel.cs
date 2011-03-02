@@ -81,7 +81,7 @@ namespace ITimeU.Models
 
                 if (ctx.CheckpointOrders.Count() > 0)
                 {
-                    checkpointOrder.OrderNumber = (ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.CheckpointID).First().CheckpointID) + 1;
+                    checkpointOrder.OrderNumber = (ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.OrderNumber).First().OrderNumber) + 1;
                 }
                 else
                 {
@@ -98,32 +98,6 @@ namespace ITimeU.Models
             return checkpointOrderModel;
         }
 
-        //public CheckpointOrderModel Create(CheckpointOrder cpo)
-        //{
-        //    int checkpointId = (int)cpo.CheckpointID;
-        //    int startingNumber = (int)cpo.StartingNumber;
-        //    int orderNumber = (int)cpo.OrderNumber;
-
-        //    CheckpointOrderModel checkpointOrderModel = new CheckpointOrderModel();
-
-        //    using (var ctx = new Entities())
-        //    {
-        //        CheckpointOrder checkpointOrder = new CheckpointOrder();
-        //        checkpointOrder.CheckpointID = checkpointId;
-        //        checkpointOrder.StartingNumber = startingNumber;
-        //        checkpointOrder.OrderNumber = orderNumber;
-        //        checkpointOrder.IsDeleted = false;
-
-        //        ctx.CheckpointOrders.AddObject(checkpointOrder);
-        //        ctx.SaveChanges();
-        //        checkpointOrder.ID = (int)ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.CheckpointID).First().CheckpointID;
-
-        //        CheckpointOrderDic.Add((int)cpo.ID, orderNumber);
-        //    }
-
-        //    return checkpointOrderModel;
-        //}
-
         public void UpdateCheckpointOrderDB(int ID, int StartingNumber)
         {
             using (var ctx = new Entities())
@@ -132,6 +106,7 @@ namespace ITimeU.Models
                 checkpointOrder.StartingNumber = StartingNumber;
                 ctx.SaveChanges();
 
+                CheckpointOrderDic.Remove(ID);
                 CheckpointOrderDic.Add(ID, StartingNumber);
             }
         }
@@ -152,8 +127,8 @@ namespace ITimeU.Models
         {
             using (var ctx = new Entities())
             {
-                var checkpointOrder = ctx.CheckpointOrders.Single(chkpnt => chkpnt.ID == id);
-                return checkpointOrder;
+                CheckpointOrder checkpointToReturn = (CheckpointOrder)ctx.CheckpointOrders.Where(chkpnt => chkpnt.ID == id);
+                return checkpointToReturn;
             }
         }
 
@@ -170,6 +145,18 @@ namespace ITimeU.Models
                 }
 
                 return checkpointOrders;
+            }
+        }
+
+        public void GetStartingNumbersForCheckpoint(int checkpointID)
+        {
+            using (var ctx = new Entities())
+            {
+                CheckpointOrderDic.Clear();
+                foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID))
+                {
+                    CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
+                }
             }
         }
 

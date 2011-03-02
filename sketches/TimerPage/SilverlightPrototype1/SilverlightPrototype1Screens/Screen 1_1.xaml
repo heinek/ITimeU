@@ -1,0 +1,44 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input" xmlns:data="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data"
+	x:Class="SilverlightPrototype1Screens.Screen_1_1"
+	Width="640" Height="480">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ProjectDataSources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding Source={StaticResource Participants}}">
+		<dataInput:Label HorizontalAlignment="Left" Margin="36,23,0,0" VerticalAlignment="Top" Content="ITimeU 1.0" FontFamily="Trebuchet MS" FontSize="26.667"/>
+		<TextBox FontSize="18.667" Height="29" HorizontalAlignment="Left" Margin="40,111,0,0" Style="{StaticResource TextBox-Sketch}" VerticalAlignment="Top" Width="250" Text="C:\Frires\demo\demo.mdb" TextWrapping="Wrap"/>
+		<Button FontSize="18.667" Height="29" HorizontalAlignment="Right" Margin="0,111,160,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="135" Content="Velg database"/>
+		<Button Height="29" HorizontalAlignment="Right" Margin="0,111,21,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="135" Content="Importer deltakere" FontSize="18.667"/>
+		<TextBlock HorizontalAlignment="Left" Margin="36,75,0,0" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="21.333"><Run Text="Velg database for "/><Run Text="import av deltakere fra FriRes"/></TextBlock>
+		<TextBlock HorizontalAlignment="Left" Margin="36,0,0,179" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="21.333" Text="Navn" FontWeight="Bold"/>
+		<TextBlock HorizontalAlignment="Left" Margin="200,0,0,179" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="21.333" Text="Klubb" FontWeight="Bold"/>
+		<TextBlock HorizontalAlignment="Left" Margin="383,0,0,179" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="21.333" Text="Klasse" FontWeight="Bold"/>
+		<TextBlock HorizontalAlignment="Left" Margin="471,0,0,179" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="21.333" Text="Start nr" RenderTransformOrigin="2.269,0.462" FontWeight="Bold"/>
+		<TextBlock HorizontalAlignment="Left" Margin="36,0,0,149" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="Otto Tullseth"/>
+		<TextBlock HorizontalAlignment="Left" Margin="200,0,0,149" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="Ranheim"/>
+		<TextBlock HorizontalAlignment="Right" Margin="0,0,217,149" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="G 10"/>
+		<TextBlock HorizontalAlignment="Right" Margin="0,0,141,152" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="1"/>
+		<TextBlock HorizontalAlignment="Left" Margin="36,0,0,122" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="Ola Nordmann"/>
+		<TextBlock HorizontalAlignment="Left" Margin="200,0,0,122" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="Ranheim"/>
+		<TextBlock HorizontalAlignment="Right" Margin="0,0,217,122" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="G 10"/>
+		<TextBlock HorizontalAlignment="Right" Margin="0,0,136,125" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="2"/>
+		<TextBlock HorizontalAlignment="Left" Margin="36,0,0,95" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="Kari Nordmann"/>
+		<TextBlock HorizontalAlignment="Left" Margin="200,0,0,95" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="Malvik"/>
+		<TextBlock HorizontalAlignment="Right" Margin="0,0,217,95" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667"><Run Text="J "/><Run Text="10"/></TextBlock>
+		<TextBlock HorizontalAlignment="Right" Margin="0,0,136,98" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom" FontSize="18.667" Text="3"/>
+		<Button FontSize="18.667" Height="29" HorizontalAlignment="Right" Margin="0,0,111,28" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Width="200" Content="Lagre deltakere til ITimeU"/>
+		<ProgressBar Height="20" Margin="200,196,271,0" Style="{StaticResource ProgressBar-Sketch}" VerticalAlignment="Top" Value="65" Width="150"/>
+		<TextBlock HorizontalAlignment="Left" Margin="111,196,0,0" Style="{StaticResource TextBlock-Sketch}" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18.667" Text="Import pågår"/>
+	</Grid>
+</UserControl>

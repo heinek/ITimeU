@@ -1,12 +1,10 @@
-﻿using ITimeU.Models;
+﻿using System.Web.Mvc;
+using ITimeU.Controllers;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
-using System;
-using System.Net;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Controllers;
-using System.Web.Routing;
-using System.Web.Mvc;
+using System.Collections.Generic;
 
 namespace ITimeU.Tests.Controllers
 {
@@ -28,7 +26,7 @@ namespace ITimeU.Tests.Controllers
         {
             TimerController timerCtrl = null;
             CheckpointModel checkpoint = null;
-            TimerModel timerInView = new TimerModel(447);
+            var timerInView = CreateNewTimerModelWithCheckpoints();
 
             Given("the user has selected a checkpoint", () =>
             {
@@ -52,6 +50,16 @@ namespace ITimeU.Tests.Controllers
                 CheckpointModel checkpointDb = CheckpointModel.getById(checkpoint.Id);
                 timerInView.ShouldBe(checkpointDb.Timer);
             });
+        }
+
+        private TimerModel CreateNewTimerModelWithCheckpoints()
+        {
+            var timer = new TimerModel();
+            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
+            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
+            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+            return timer;
         }
 
         private static void setMockSessionFor(TimerController timerCtrl)
