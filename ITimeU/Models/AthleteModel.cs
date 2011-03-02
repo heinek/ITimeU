@@ -16,10 +16,21 @@ namespace ITimeU.Models
             {
                 if (Id == 0)
                     return false;
-                return true;
+                else
+                    return true;
             }
         }
 
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string PostalAddress { get; private set; }
+        public string PostalCode { get; private set; }
+        public string PostalPlace { get; private set; }
+        public string Phone { get; private set; }
+        public string EMail { get; private set; }
+        public int Club { get; private set; }
+        public DateTime Birthday { get; private set; }
+        public string Gender { get; private set; }
         public static AthleteModel GetById(int idToGet)
         {
             var entities = new Entities();

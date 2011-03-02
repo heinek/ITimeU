@@ -77,8 +77,8 @@
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
-    <Compile Include="Library\FriResImporter.cs" />
-    <Compile Include="Library\FriResImporterTest.cs" />
+    <Compile Include="Library\Import\FriResExporterTest.cs" />
+    <Compile Include="Library\Import\FriResImporterTest.cs" />
     <Compile Include="Library\NameParserTest.cs" />
     <Compile Include="Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />

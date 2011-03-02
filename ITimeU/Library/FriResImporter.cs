@@ -77,5 +77,22 @@ namespace ITimeU.Library
             return athletes;
         }
 
+
+        private List<AthleteModel> fetchAthletesFrom(DataTable table)
+        {
+            List<AthleteModel> athletes = new List<AthleteModel>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                string firstName = NameParser.FirstName((String)row["Navn"]);
+                string surName = NameParser.LastName((String)row["Navn"]);
+                string fullName = firstName + " " + surName;
+                AthleteModel pm = new AthleteModel(firstName, surName);
+                athletes.Add(pm);
+            }
+
+            return athletes;
+        }
+
     }
 }
