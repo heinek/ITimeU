@@ -18,8 +18,7 @@ namespace ITimeU.Models
             {
                 if (Id == 0)
                     return false;
-                else
-                    return true;
+                return true;
             }
         }
 
@@ -99,6 +98,7 @@ namespace ITimeU.Models
         private void updateDbEntry(Checkpoint checkpoint)
         {
             checkpoint.Name = Name;
+            checkpoint.SortOrder = Sortorder;
             if (Timer != null)
                 checkpoint.TimerID = Timer.Id;
         }
@@ -106,6 +106,7 @@ namespace ITimeU.Models
         private void updateDbEntry(Entities context)
         {
             Checkpoint checkpoint = context.Checkpoints.Single(tmr => tmr.CheckpointID == Id);
+            checkpoint.SortOrder = Sortorder;
             updateDbEntry(checkpoint);
             context.SaveChanges();
         }
