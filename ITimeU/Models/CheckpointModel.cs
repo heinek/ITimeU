@@ -98,7 +98,6 @@ namespace ITimeU.Models
         private void updateDbEntry(Checkpoint checkpoint)
         {
             checkpoint.Name = Name;
-            checkpoint.SortOrder = Sortorder;
         }
 
         private void updateDbEntry(Entities context)
