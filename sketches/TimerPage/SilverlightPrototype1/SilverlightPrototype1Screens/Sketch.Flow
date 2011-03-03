@@ -39,6 +39,18 @@
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_2</ClassName>
+      <DisplayName>TimeMerger</DisplayName>
+      <FileName>Screen 1_2.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>150</X>
+        <Y>-8</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
   </Screens>
   <Connections />
   <BrandingText>Microsoft SketchFlow Prototype</BrandingText>
@@ -87,7 +99,7 @@
     <Zoom>1</Zoom>
     <Center>
       <X>150</X>
-      <Y>32.185</Y>
+      <Y>-23.185000000000002</Y>
     </Center>
   </ViewState>
 </Data>

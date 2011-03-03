@@ -18,3 +18,20 @@ Tools.enable = function (element) {
 Tools.disable = function (element) {
     element.attr("disabled", true);
 }
+
+Tools.parse = function (integer, modulus, add) {
+    var time = parseInt(integer, 10);
+    if (add) {
+        time = time + 1;
+        time = time % modulus;
+    }
+    else {
+        time = time - 1;
+        if (time == -1) {
+            time = modulus - 1;
+        }
+    }
+    if (time < 10 && modulus != 10 && modulus != 24)
+        time = "0" + time;
+    return time;
+}

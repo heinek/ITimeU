@@ -1,0 +1,56 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightPrototype1Screens.Screen_1_2"
+	Width="640" Height="480">
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ProjectDataSources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate x:Key="ItemTemplate">
+				<StackPanel>
+					<TextBlock Text="{Binding Property1}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate1">
+				<StackPanel>
+					<TextBlock Text="{Binding Property1}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate2">
+				<StackPanel>
+					<TextBlock Text="{Binding Name}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate3">
+				<StackPanel>
+					<TextBlock Text="{Binding Name}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate4">
+				<StackPanel>
+					<TextBlock Text="{Binding StartNumber}"/>
+					<TextBlock Text="{Binding Timestamps}"/>
+				</StackPanel>
+			</DataTemplate>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding Source={StaticResource Timestamps}}">
+		<ComboBox Margin="149,39,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120" DataContext="{Binding Source={StaticResource Races}}" ItemTemplate="{StaticResource ItemTemplate3}" ItemsSource="{Binding Collection}"/>
+		<ComboBox Margin="149,72,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="120"/>
+		<TextBlock HorizontalAlignment="Left" Margin="41,48,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Løp:" TextWrapping="Wrap"/>
+		<TextBlock HorizontalAlignment="Left" Margin="41,81,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Passeringspunkt:" TextWrapping="Wrap"/>
+		<TextBlock HorizontalAlignment="Left" Margin="41,115,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Startnummer:" TextWrapping="Wrap"/>
+		<TextBlock HorizontalAlignment="Left" Margin="169,115,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Tid:" TextWrapping="Wrap"/>
+		<ListBox HorizontalAlignment="Left" Margin="41,137,0,0" Style="{StaticResource ListBox-Sketch}" Width="100" DataContext="{Binding Source={StaticResource Order}}" ItemsSource="{Binding Collection, Source={StaticResource Participants}}" ItemTemplate="{StaticResource ItemTemplate1}" Height="100" VerticalAlignment="Top"/>
+		<ListBox Margin="169,137,0,0" Style="{StaticResource ListBox-Sketch}" HorizontalAlignment="Left" Width="100" DataContext="{Binding}" ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Collection}" Height="100" VerticalAlignment="Top"/>
+		<Button HorizontalAlignment="Left" Margin="105,0,0,197" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Width="100" Content="Sett sammen"/>
+		<ListBox Height="100" HorizontalAlignment="Left" Margin="41,0,0,79" Style="{StaticResource ListBox-Sketch}" VerticalAlignment="Bottom" Width="228" DataContext="{Binding Source={StaticResource ResultList}}" ItemTemplate="{StaticResource ItemTemplate4}" ItemsSource="{Binding Collection}"/>
+		<Button HorizontalAlignment="Left" Margin="105,0,0,35" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Width="100" Content="Godkjenn"/>
+	</Grid>
+</UserControl>

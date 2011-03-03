@@ -84,6 +84,7 @@
     <Compile Include="Models\RuntimeModelTest.cs" />
     <Compile Include="Models\ParticipantModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
+    <Compile Include="Models\TimeMergerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

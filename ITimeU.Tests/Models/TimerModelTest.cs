@@ -658,6 +658,7 @@ namespace ITimeU.Tests.Models
                 initialruntimes.ShouldBeSameAs(timer.CheckpointRuntimes[timer.GetCheckpoints()[1].CheckpointID]);
             });
         }
+
         [TestCleanup]
         public void TestCleanup()
         {

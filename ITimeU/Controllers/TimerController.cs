@@ -21,6 +21,11 @@ namespace ITimeU.Controllers
             return View("Index", timer);
         }
 
+        [HttpGet]
+        public ActionResult Testing()
+        {
+            return View("Testing");
+        }
         /// <summary>
         /// Starts this instance.
         /// </summary>

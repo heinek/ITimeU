@@ -77,42 +77,42 @@
         });
 
         btnUpHour.click(function () {
-            var time = parse(tbEditHour.val(), 24, true);
+            var time = Tools.parse(tbEditHour.val(), 24, true);
             tbEditHour.val(time);
         });
 
         btnUpMin.click(function () {
-            var time = parse(tbEditMin.val(), 60, true);
+            var time = Tools.parse(tbEditMin.val(), 60, true);
             tbEditMin.val(time);
         });
 
         btnUpSek.click(function () {
-            var time = parse(tbEditSek.val(), 60, true);
+            var time = Tools.parse(tbEditSek.val(), 60, true);
             tbEditSek.val(time);
         });
 
         btnUpMS.click(function () {
-            var time = parse(tbEditMSek.val(), 10, true);
+            var time = Tools.parse(tbEditMSek.val(), 10, true);
             tbEditMSek.val(time);
         });
 
         btnDownHour.click(function () {
-            var time = parse(tbEditHour.val(), 24, false);
+            var time = Tools.parse(tbEditHour.val(), 24, false);
             tbEditHour.val(time);
         });
 
         btnDownMin.click(function () {
-            var time = parse(tbEditMin.val(), 60, false);
+            var time = Tools.parse(tbEditMin.val(), 60, false);
             tbEditMin.val(time);
         });
 
         btnDownSek.click(function () {
-            var time = parse(tbEditSek.val(), 60, false);
+            var time = Tools.parse(tbEditSek.val(), 60, false);
             tbEditSek.val(time);
         });
 
         btnDownMS.click(function () {
-            var time = parse(tbEditMSek.val(), 10, false);
+            var time = Tools.parse(tbEditMSek.val(), 10, false);
             tbEditMSek.val(time);
         });
 
@@ -186,22 +186,7 @@
         $("#tbEditMSek").val("");
     }
 
-    function parse(integer, modulus, add) {
-        var time = parseInt(integer, 10);
-        if(add){
-            time = time + 1;
-            time = time % modulus;
-            }
-        else{
-            time = time - 1;
-            if (time == -1) {
-                time = modulus -1;
-            }
-        }
-        if (time < 10 && modulus != 10 && modulus != 24)
-            time = "0" + time;
-        return time;
-    }
+
 
 </script>
 <div class="contentmargin">
