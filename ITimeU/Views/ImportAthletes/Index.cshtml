@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Importer deltakere fra FriRes</h2>
+<div id="ImportAthletes">
+    <p>Velg database for import av deltakere fra FriRes:</p>
+    @Html.TextBox("tbDatabasePath", null, new { @class = "textboxLarge" }) 
+    <input type="button" id="btnChooseDatabase" value="Velg database" class="btnRegular" style="width: 150px" />
+    <input type="button" id="btnImportFromDatabase" value="Importer deltakere" class="btnRegular" style="width: 150px"/>
+</div>
+<div id="ListImportedAthletes">
+    <p>
+    Her kommer listen med importerte deltakere.......
+    </p>
+</div>
+<div id="SaveImportedAthletes">
+    <input type="button" id="btnSaveImportedAthletesToITimeU" value="Lagre deltakere til ITimeU" class="btnRegular" style="width: 175px"/>
+</div>
+
