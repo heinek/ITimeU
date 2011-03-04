@@ -67,5 +67,28 @@ namespace ITimeU.Tests.Models
                 athleteDb.LastName.ShouldBe(athlete.LastName);
             });
         }
+
+        [TestMethod]
+        public void ToString_Should_Return_Firstname_And_Lastname()
+        {
+            string toString = null; 
+            AthleteModel athlete = null;
+
+            Given("we have an athlete", () =>
+            {
+                athlete = new AthleteModel("Arne", "Hansen");
+            });
+
+            When("we call ToString", () =>
+            {
+                toString = athlete.ToString();
+            });
+
+            Then("we should get firstname and lastname", () =>
+            {
+                toString.ShouldBe("Arne Hansen");
+            });
+        }
+
     }
 }
