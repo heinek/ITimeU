@@ -81,6 +81,7 @@
     <Compile Include="Library\DateTimeRounder.cs" />
     <Compile Include="Library\Logging\LogWriter.cs" />
     <Compile Include="Library\FriResExporter.cs" />
+    <Compile Include="Library\Logging\LogWriter.cs" />
     <Compile Include="Library\FriResImporter.cs" />
     <Compile Include="Library\NameParser.cs" />
     <Compile Include="Models\AccountModels.cs" />

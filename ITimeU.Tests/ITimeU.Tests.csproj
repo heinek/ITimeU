@@ -81,7 +81,6 @@
     <Compile Include="Library\Logging\LogWriterTest.cs" />
     <Compile Include="Library\Import\FriResImporterTest.cs" />
     <Compile Include="Library\NameParserTest.cs" />
-    <Compile Include="Library\NameParserTest.cs" />
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\AthleteModelTest.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
