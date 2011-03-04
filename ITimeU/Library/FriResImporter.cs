@@ -70,9 +70,8 @@ namespace ITimeU.Library
             {
                 string firstName = NameParser.FirstName((String)row["Navn"]);
                 string surName = NameParser.LastName((String)row["Navn"]);
-                string fullName = firstName + " " + surName;
-                AthleteModel pm = new AthleteModel(firstName, surName);
-                athletes.Add(pm);
+                AthleteModel athlete = new AthleteModel(firstName, surName);
+                athletes.Add(athlete);
             }
 
             return athletes;

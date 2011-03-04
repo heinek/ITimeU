@@ -162,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Timer\Index.cshtml" />
