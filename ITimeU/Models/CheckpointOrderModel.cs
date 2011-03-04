@@ -163,6 +163,7 @@ namespace ITimeU.Models
                         //context2.CheckpointOrders.(insertRecord);
                         context2.SaveChanges();
                     }
+            //return checkpointOrderModel;
                 }
 
                 //checkpointOrder.IsDeleted = false;
@@ -239,13 +240,14 @@ namespace ITimeU.Models
 
         public void GetStartingNumbersForCheckpoint(int checkpointID)
         {
+            
             using (var ctx = new Entities())
             {
-                CheckpointOrderDic.Clear();
-                foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID))
+                CheckpointOrderDic.Clear();                
+                foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID).OrderByDescending(ordernum=>ordernum.OrderNumber))
                 {
                     CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
-                }
+                }                
             }
         }
 
