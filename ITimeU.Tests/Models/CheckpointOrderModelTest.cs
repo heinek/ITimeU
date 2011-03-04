@@ -84,6 +84,28 @@ namespace ITimeU.Tests.Models
             });
         }
 
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Delete_A_CheckpointOrder_From_The_Database()
+        {
+            CheckpointOrder origCheckpointOrder = null;
+            
+            Given("We have a CheckpointOrder", () => 
+            {
+                origCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1);                
+            });
+
+            When("We delete the CheckpointOrder", () =>
+            {
+                origCheckpointOrder.IsDeleted = true;
+            });
+
+            Then("The CheckpointOrder should not exist", () =>
+            {
+                origCheckpointOrder.IsDeleted.ShouldBe(true);
+            });
+
+
+        }
 
     }
 }

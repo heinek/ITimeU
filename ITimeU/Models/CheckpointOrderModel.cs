@@ -79,9 +79,9 @@ namespace ITimeU.Models
                 checkpointOrder.CheckpointID = checkpointId;
                 checkpointOrder.StartingNumber = startingNumber;
 
-                if (ctx.CheckpointOrders.Count() > 0)
+                if (ctx.CheckpointOrders.Where(ordnmb => ordnmb.CheckpointID == checkpointId).Count() > 0)
                 {
-                    checkpointOrder.OrderNumber = (ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.OrderNumber).First().OrderNumber) + 1;
+                    checkpointOrder.OrderNumber = (ctx.CheckpointOrders.Where(ordnmb => ordnmb.CheckpointID == checkpointId).OrderByDescending(chkpnt => chkpnt.OrderNumber).First().OrderNumber) + 1;
                 }
                 else
                 {
@@ -153,7 +153,10 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 CheckpointOrderDic.Clear();
-                foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID))
+                List<CheckpointOrder> checkpoints = new List<CheckpointOrder>();
+                checkpoints = ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID).OrderByDescending(ordnmb => ordnmb.OrderNumber).ToList();
+
+                foreach (CheckpointOrder chkpntOrder in checkpoints)
                 {
                     CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
                 }
@@ -169,13 +172,13 @@ namespace ITimeU.Models
             }
         }
 
-        public IEnumerable<SelectListItem> CheckpointOrders()
-        {
-            using (var ctx = new Entities())
-            {
-                return new SelectList(ctx.CheckpointOrders.ToList(), "ID", "OrderNumber");
-            }
-        }
+        //public IEnumerable<SelectListItem> CheckpointOrders()
+        //{
+        //    using (var ctx = new Entities())
+        //    {
+        //        return new SelectList(ctx.CheckpointOrders.ToList(), "ID", "OrderNumber");
+        //    }
+        //}
 
         
     }
