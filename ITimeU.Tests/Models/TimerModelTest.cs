@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using System.Collections.Generic;
 
 /*
     Given("", () =>
@@ -527,9 +527,9 @@ namespace ITimeU.Tests.Models
             var runtime = new RuntimeModel();
             var listcount = 0;
             var checkpointid = 0;
+            var timer = CreateNewTimerModelWithCheckpoints();
             Given("we have a runtimelist", () =>
             {
-                timer = new TimerModel(447);
                 timer.Start();
                 checkpointid = timer.GetFirstCheckpoint();
                 runtime = timer.AddRuntime(300, checkpointid);
@@ -553,9 +553,9 @@ namespace ITimeU.Tests.Models
             var runtimemodel = new RuntimeModel();
             var newValue = 0;
             var checkpointid = 0;
+            var timer = CreateNewTimerModelWithCheckpoints();
             Given("we have a runtime", () =>
             {
-                timer = new TimerModel(447);
                 timer.Start();
                 checkpointid = timer.GetFirstCheckpoint();
                 runtimemodel = timer.AddRuntime(500, checkpointid);
@@ -573,7 +573,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Changing_A_Checkpoint_Should_Give_A_New_CheckpointId()
         {
-            var timer = new TimerModel(447);
+            var timer = CreateNewTimerModelWithCheckpoints();
             var initialCheckpointId = 0;
             Given("we have started a timer", () =>
             {
@@ -593,16 +593,17 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Changing_A_Checkpoint_Should_Give_A_New_CheckpointList()
         {
-            var timer = new TimerModel(447);
+            var timer = CreateNewTimerModelWithCheckpoints();
             Dictionary<int, int> initialruntimes = new Dictionary<int, int>();
             Given("we have started a timer", () =>
             {
                 timer.Start();
-                initialruntimes = timer.CheckpointRuntimes[timer.CurrentCheckpointId];
+                initialruntimes = timer.CheckpointRuntimes[timer.GetFirstCheckpoint()];
             });
             When("we want to change the checkpoint", () =>
             {
                 timer.ChangeCheckpoint(timer.GetCheckpoints()[1].CheckpointID);
+                timer.AddRuntime(400, timer.GetCheckpoints()[1].CheckpointID);
             });
             Then("the checkpointlist should be different", () =>
             {
@@ -613,7 +614,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Adding_A_Runtime_To_A_Checkpoint_Then_Changing_To_New_Checkpoint_Then_Going_Back_To_First_Checkpoint_Should_Give_Same_Runtimelist_As_Before()
         {
-            var timer = new TimerModel(447);
+            var timer = CreateNewTimerModelWithCheckpoints();
             var initialruntimes = new Dictionary<int, int>();
             Given("we have started a timer and added a runtime", () =>
             {
@@ -636,7 +637,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Adding_A_Runtime_To_A_Checkpoint_Then_Changing_To_New_Checkpoint_Then_Going_Back_To_First_Checkpoint_Then_Going_Back_To_Second_Checkpoint_Should_Give_Same_Runtimelist_As_Before()
         {
-            var timer = new TimerModel(447);
+            var timer = CreateNewTimerModelWithCheckpoints();
             var initialruntimes = new Dictionary<int, int>();
             Given("we have started a timer and added a runtime and then change", () =>
             {
@@ -654,7 +655,7 @@ namespace ITimeU.Tests.Models
             });
             Then("the runtimelist should be the same", () =>
             {
-                initialruntimes.ShouldBeSameAs(timer.GetCheckpoints()[1].CheckpointID);
+                initialruntimes.ShouldBeSameAs(timer.CheckpointRuntimes[timer.GetCheckpoints()[1].CheckpointID]);
             });
         }
         [TestCleanup]
@@ -663,5 +664,18 @@ namespace ITimeU.Tests.Models
             StartScenario();
         }
 
+        /// <summary>
+        /// Creates the new timer model with checkpoints.
+        /// </summary>
+        /// <returns></returns>
+        private TimerModel CreateNewTimerModelWithCheckpoints()
+        {
+            var timer = new TimerModel();
+            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
+            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
+            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+            return timer;
+        }
     }
 }
