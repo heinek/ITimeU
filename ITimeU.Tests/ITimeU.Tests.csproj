@@ -77,10 +77,14 @@
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
+<<<<<<< HEAD
     <Compile Include="Library\Import\FriResExporterTest.cs" />
     <Compile Include="Library\Logging\LogWriterTest.cs" />
     <Compile Include="Library\Import\FriResImporterTest.cs" />
     <Compile Include="Library\NameParserTest.cs" />
+=======
+    <Compile Include="Library\Logging\LogWriterTest.cs" />
+>>>>>>> Moved and refactored logging library.
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\AthleteModelTest.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
