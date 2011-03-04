@@ -8,9 +8,9 @@ using System.Data;
 using ITimeU.Logging;
 using System.Web;
 
-namespace ITimeU.Tests.Library
+namespace ITimeU.Library
 {
-    class FriResImporter
+    /// <summary>
     /// Imports data from an Access database file from the FriRes system.
     /// </summary>
     public class FriResImporter

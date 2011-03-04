@@ -11,7 +11,7 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var participantModel = new ParticipantModel();
+            var participantModel = new AthleteModel("Test", "Person");
             return View("Index", participantModel);
         }
     }
