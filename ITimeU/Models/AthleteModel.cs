@@ -116,5 +116,10 @@ namespace ITimeU.Models
             updateProperties(athlete);
             context.SaveChanges();
         }
+
+        public override string ToString()
+        {
+            return FirstName + " " + LastName ;
+        }
     }
 }
