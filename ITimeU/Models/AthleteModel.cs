@@ -94,6 +94,7 @@ namespace ITimeU.Models
                 updateDbEntity(context);
         }
 
+
         private int CreateDbEntity(Entities context)
         {
             Athlete athlete = new Athlete();
@@ -121,5 +122,6 @@ namespace ITimeU.Models
         {
             return FirstName + " " + LastName ;
         }
+
     }
 }

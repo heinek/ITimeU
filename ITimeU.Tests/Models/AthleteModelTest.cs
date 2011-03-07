@@ -59,7 +59,7 @@ namespace ITimeU.Tests.Models
                 athlete.SaveToDb();
             });
 
-            Then("the athlete should exist in the database", () =>
+            Then("it should be saved to the database", () =>
             {
                 AthleteModel athleteDb = AthleteModel.GetById(athlete.Id);
                 athleteDb.Id.ShouldBe(athlete.Id);
