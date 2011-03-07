@@ -19,10 +19,8 @@ using System.Runtime.Serialization;
 #region EDM Relationship Metadata
 
 [assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Timer), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Timer_Race", "Race", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Race), "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Timer), true)]
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_RaceIntermediate_Checkpoint", "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Checkpoint), "RaceIntermediate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.RaceIntermediate), true)]
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_RaceIntermediate_Runtime", "Runtime", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Runtime), "RaceIntermediate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.RaceIntermediate), true)]
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_RaceIntermediate_CheckpointOrder", "CheckpointOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.CheckpointOrder), "RaceIntermediate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.RaceIntermediate), true)]
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Athlete_AthleteClass", "AthleteClass", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.AthleteClass), "Athlete", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Athlete), true)]
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Athlete_Club", "Club", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Club), "Athlete", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Athlete), true)]
 
 #endregion
 
@@ -77,6 +75,54 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        public ObjectSet<AthleteClass> AthleteClasses
+        {
+            get
+            {
+                if ((_AthleteClasses == null))
+                {
+                    _AthleteClasses = base.CreateObjectSet<AthleteClass>("AthleteClasses");
+                }
+                return _AthleteClasses;
+            }
+        }
+        private ObjectSet<AthleteClass> _AthleteClasses;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Checkpoint> Checkpoints
+        {
+            get
+            {
+                if ((_Checkpoints == null))
+                {
+                    _Checkpoints = base.CreateObjectSet<Checkpoint>("Checkpoints");
+                }
+                return _Checkpoints;
+            }
+        }
+        private ObjectSet<Checkpoint> _Checkpoints;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<CheckpointOrder> CheckpointOrders
+        {
+            get
+            {
+                if ((_CheckpointOrders == null))
+                {
+                    _CheckpointOrders = base.CreateObjectSet<CheckpointOrder>("CheckpointOrders");
+                }
+                return _CheckpointOrders;
+            }
+        }
+        private ObjectSet<CheckpointOrder> _CheckpointOrders;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         public ObjectSet<Club> Clubs
         {
             get
@@ -109,38 +155,6 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Runtime> Runtimes
-        {
-            get
-            {
-                if ((_Runtimes == null))
-                {
-                    _Runtimes = base.CreateObjectSet<Runtime>("Runtimes");
-                }
-                return _Runtimes;
-            }
-        }
-        private ObjectSet<Runtime> _Runtimes;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<Checkpoint> Checkpoints
-        {
-            get
-            {
-                if ((_Checkpoints == null))
-                {
-                    _Checkpoints = base.CreateObjectSet<Checkpoint>("Checkpoints");
-                }
-                return _Checkpoints;
-            }
-        }
-        private ObjectSet<Checkpoint> _Checkpoints;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Timer> Timers
         {
             get
@@ -157,34 +171,18 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<RaceIntermediate> RaceIntermediates
+        public ObjectSet<Runtime> Runtimes
         {
             get
             {
-                if ((_RaceIntermediates == null))
+                if ((_Runtimes == null))
                 {
-                    _RaceIntermediates = base.CreateObjectSet<RaceIntermediate>("RaceIntermediates");
+                    _Runtimes = base.CreateObjectSet<Runtime>("Runtimes");
                 }
-                return _RaceIntermediates;
+                return _Runtimes;
             }
         }
-        private ObjectSet<RaceIntermediate> _RaceIntermediates;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<CheckpointOrder> CheckpointOrders
-        {
-            get
-            {
-                if ((_CheckpointOrders == null))
-                {
-                    _CheckpointOrders = base.CreateObjectSet<CheckpointOrder>("CheckpointOrders");
-                }
-                return _CheckpointOrders;
-            }
-        }
-        private ObjectSet<CheckpointOrder> _CheckpointOrders;
+        private ObjectSet<Runtime> _Runtimes;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -206,6 +204,30 @@ namespace ITimeU.Models
         #region AddTo Methods
     
         /// <summary>
+        /// Deprecated Method for adding a new object to the AthleteClasses EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToAthleteClasses(AthleteClass athleteClass)
+        {
+            base.AddObject("AthleteClasses", athleteClass);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Checkpoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToCheckpoints(Checkpoint checkpoint)
+        {
+            base.AddObject("Checkpoints", checkpoint);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the CheckpointOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToCheckpointOrders(CheckpointOrder checkpointOrder)
+        {
+            base.AddObject("CheckpointOrders", checkpointOrder);
+        }
+    
+        /// <summary>
         /// Deprecated Method for adding a new object to the Clubs EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToClubs(Club club)
@@ -222,22 +244,6 @@ namespace ITimeU.Models
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Runtimes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToRuntimes(Runtime runtime)
-        {
-            base.AddObject("Runtimes", runtime);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Checkpoints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToCheckpoints(Checkpoint checkpoint)
-        {
-            base.AddObject("Checkpoints", checkpoint);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToTimers(Timer timer)
@@ -246,11 +252,11 @@ namespace ITimeU.Models
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the RaceIntermediates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Runtimes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToRaceIntermediates(RaceIntermediate raceIntermediate)
+        public void AddToRuntimes(Runtime runtime)
         {
-            base.AddObject("RaceIntermediates", raceIntermediate);
+            base.AddObject("Runtimes", runtime);
         }
     
         /// <summary>
@@ -259,14 +265,6 @@ namespace ITimeU.Models
         public void AddToAthletes(Athlete athlete)
         {
             base.AddObject("Athletes", athlete);
-        }
-
-        /// <summary>
-        /// Deprecated Method for adding a new object to the CheckpointOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToCheckpointOrders(CheckpointOrder checkpointOrder)
-        {
-            base.AddObject("CheckpointOrders", checkpointOrder);
         }
 
         #endregion
@@ -501,31 +499,31 @@ namespace ITimeU.Models
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> Club
+        public Nullable<global::System.Int32> ClubID
         {
             get
             {
-                return _Club;
+                return _ClubID;
             }
             set
             {
-                OnClubChanging(value);
-                ReportPropertyChanging("Club");
-                _Club = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Club");
-                OnClubChanged();
+                OnClubIDChanging(value);
+                ReportPropertyChanging("ClubID");
+                _ClubID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ClubID");
+                OnClubIDChanged();
             }
         }
-        private Nullable<global::System.Int32> _Club;
-        partial void OnClubChanging(Nullable<global::System.Int32> value);
-        partial void OnClubChanged();
+        private Nullable<global::System.Int32> _ClubID;
+        partial void OnClubIDChanging(Nullable<global::System.Int32> value);
+        partial void OnClubIDChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> Birthday
+        public Nullable<global::System.Int32> Birthday
         {
             get
             {
@@ -540,9 +538,57 @@ namespace ITimeU.Models
                 OnBirthdayChanged();
             }
         }
-        private Nullable<global::System.DateTime> _Birthday;
-        partial void OnBirthdayChanging(Nullable<global::System.DateTime> value);
+        private Nullable<global::System.Int32> _Birthday;
+        partial void OnBirthdayChanging(Nullable<global::System.Int32> value);
         partial void OnBirthdayChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> ClassID
+        {
+            get
+            {
+                return _ClassID;
+            }
+            set
+            {
+                OnClassIDChanging(value);
+                ReportPropertyChanging("ClassID");
+                _ClassID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ClassID");
+                OnClassIDChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _ClassID;
+        partial void OnClassIDChanging(Nullable<global::System.Int32> value);
+        partial void OnClassIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Startnumber
+        {
+            get
+            {
+                return _Startnumber;
+            }
+            set
+            {
+                OnStartnumberChanging(value);
+                ReportPropertyChanging("Startnumber");
+                _Startnumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Startnumber");
+                OnStartnumberChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Startnumber;
+        partial void OnStartnumberChanging(Nullable<global::System.Int32> value);
+        partial void OnStartnumberChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -594,6 +640,189 @@ namespace ITimeU.Models
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Athlete_AthleteClass", "AthleteClass")]
+        public AthleteClass AthleteClass
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AthleteClass>("ITimeUModel.FK_Athlete_AthleteClass", "AthleteClass").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AthleteClass>("ITimeUModel.FK_Athlete_AthleteClass", "AthleteClass").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<AthleteClass> AthleteClassReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AthleteClass>("ITimeUModel.FK_Athlete_AthleteClass", "AthleteClass");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<AthleteClass>("ITimeUModel.FK_Athlete_AthleteClass", "AthleteClass", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Athlete_Club", "Club")]
+        public Club Club
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Club>("ITimeUModel.FK_Athlete_Club", "Club").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Club>("ITimeUModel.FK_Athlete_Club", "Club").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Club> ClubReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Club>("ITimeUModel.FK_Athlete_Club", "Club");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Club>("ITimeUModel.FK_Athlete_Club", "Club", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="AthleteClass")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class AthleteClass : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new AthleteClass object.
+        /// </summary>
+        /// <param name="id">Initial value of the ID property.</param>
+        public static AthleteClass CreateAthleteClass(global::System.Int32 id)
+        {
+            AthleteClass athleteClass = new AthleteClass();
+            athleteClass.ID = id;
+            return athleteClass;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 ID
+        {
+            get
+            {
+                return _ID;
+            }
+            set
+            {
+                if (_ID != value)
+                {
+                    OnIDChanging(value);
+                    ReportPropertyChanging("ID");
+                    _ID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ID");
+                    OnIDChanged();
+                }
+            }
+        }
+        private global::System.Int32 _ID;
+        partial void OnIDChanging(global::System.Int32 value);
+        partial void OnIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Athlete_AthleteClass", "Athlete")]
+        public EntityCollection<Athlete> Athletes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Athlete>("ITimeUModel.FK_Athlete_AthleteClass", "Athlete");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Athlete>("ITimeUModel.FK_Athlete_AthleteClass", "Athlete", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -814,28 +1043,6 @@ namespace ITimeU.Models
                 }
             }
         }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_RaceIntermediate_Checkpoint", "RaceIntermediate")]
-        public EntityCollection<RaceIntermediate> RaceIntermediates
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_Checkpoint", "RaceIntermediate");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_Checkpoint", "RaceIntermediate", value);
-                }
-            }
-        }
 
         #endregion
     }
@@ -854,14 +1061,10 @@ namespace ITimeU.Models
         /// Create a new CheckpointOrder object.
         /// </summary>
         /// <param name="id">Initial value of the ID property.</param>
-        /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
-        /// <param name="isMerged">Initial value of the IsMerged property.</param>
-        public static CheckpointOrder CreateCheckpointOrder(global::System.Int32 id, global::System.Boolean isDeleted, global::System.Boolean isMerged)
+        public static CheckpointOrder CreateCheckpointOrder(global::System.Int32 id)
         {
             CheckpointOrder checkpointOrder = new CheckpointOrder();
             checkpointOrder.ID = id;
-            checkpointOrder.IsDeleted = isDeleted;
-            checkpointOrder.IsMerged = isMerged;
             return checkpointOrder;
         }
 
@@ -970,9 +1173,9 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Boolean IsDeleted
+        public Nullable<global::System.Boolean> IsDeleted
         {
             get
             {
@@ -987,61 +1190,12 @@ namespace ITimeU.Models
                 OnIsDeletedChanged();
             }
         }
-        private global::System.Boolean _IsDeleted;
-        partial void OnIsDeletedChanging(global::System.Boolean value);
+        private Nullable<global::System.Boolean> _IsDeleted;
+        partial void OnIsDeletedChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDeletedChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsMerged
-        {
-            get
-            {
-                return _IsMerged;
-            }
-            set
-            {
-                OnIsMergedChanging(value);
-                ReportPropertyChanging("IsMerged");
-                _IsMerged = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsMerged");
-                OnIsMergedChanged();
-            }
-        }
-        private global::System.Boolean _IsMerged;
-        partial void OnIsMergedChanging(global::System.Boolean value);
-        partial void OnIsMergedChanged();
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_RaceIntermediate_CheckpointOrder", "RaceIntermediate")]
-        public EntityCollection<RaceIntermediate> RaceIntermediates
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "RaceIntermediate");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "RaceIntermediate", value);
-                }
-            }
-        }
-
-        #endregion
     }
     
     /// <summary>
@@ -1193,6 +1347,31 @@ namespace ITimeU.Models
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Athlete_Club", "Athlete")]
+        public EntityCollection<Athlete> Athletes
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Athlete>("ITimeUModel.FK_Athlete_Club", "Athlete");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Athlete>("ITimeUModel.FK_Athlete_Club", "Athlete", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -1326,287 +1505,6 @@ namespace ITimeU.Models
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Timer_Race", "Timer")]
-        public EntityCollection<Timer> Timers
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Timer>("ITimeUModel.FK_Timer_Race", "Timer");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Timer>("ITimeUModel.FK_Timer_Race", "Timer", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ITimeUModel", Name="RaceIntermediate")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class RaceIntermediate : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new RaceIntermediate object.
-        /// </summary>
-        /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
-        /// <param name="checkpointOrderID">Initial value of the CheckpointOrderID property.</param>
-        /// <param name="runtimeId">Initial value of the RuntimeId property.</param>
-        /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
-        public static RaceIntermediate CreateRaceIntermediate(global::System.Int32 checkpointID, global::System.Int32 checkpointOrderID, global::System.Int32 runtimeId, global::System.Boolean isDeleted)
-        {
-            RaceIntermediate raceIntermediate = new RaceIntermediate();
-            raceIntermediate.CheckpointID = checkpointID;
-            raceIntermediate.CheckpointOrderID = checkpointOrderID;
-            raceIntermediate.RuntimeId = runtimeId;
-            raceIntermediate.IsDeleted = isDeleted;
-            return raceIntermediate;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 CheckpointID
-        {
-            get
-            {
-                return _CheckpointID;
-            }
-            set
-            {
-                if (_CheckpointID != value)
-                {
-                    OnCheckpointIDChanging(value);
-                    ReportPropertyChanging("CheckpointID");
-                    _CheckpointID = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("CheckpointID");
-                    OnCheckpointIDChanged();
-                }
-            }
-        }
-        private global::System.Int32 _CheckpointID;
-        partial void OnCheckpointIDChanging(global::System.Int32 value);
-        partial void OnCheckpointIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 CheckpointOrderID
-        {
-            get
-            {
-                return _CheckpointOrderID;
-            }
-            set
-            {
-                if (_CheckpointOrderID != value)
-                {
-                    OnCheckpointOrderIDChanging(value);
-                    ReportPropertyChanging("CheckpointOrderID");
-                    _CheckpointOrderID = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("CheckpointOrderID");
-                    OnCheckpointOrderIDChanged();
-                }
-            }
-        }
-        private global::System.Int32 _CheckpointOrderID;
-        partial void OnCheckpointOrderIDChanging(global::System.Int32 value);
-        partial void OnCheckpointOrderIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 RuntimeId
-        {
-            get
-            {
-                return _RuntimeId;
-            }
-            set
-            {
-                if (_RuntimeId != value)
-                {
-                    OnRuntimeIdChanging(value);
-                    ReportPropertyChanging("RuntimeId");
-                    _RuntimeId = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("RuntimeId");
-                    OnRuntimeIdChanged();
-                }
-            }
-        }
-        private global::System.Int32 _RuntimeId;
-        partial void OnRuntimeIdChanging(global::System.Int32 value);
-        partial void OnRuntimeIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsDeleted
-        {
-            get
-            {
-                return _IsDeleted;
-            }
-            set
-            {
-                OnIsDeletedChanging(value);
-                ReportPropertyChanging("IsDeleted");
-                _IsDeleted = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsDeleted");
-                OnIsDeletedChanged();
-            }
-        }
-        private global::System.Boolean _IsDeleted;
-        partial void OnIsDeletedChanging(global::System.Boolean value);
-        partial void OnIsDeletedChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_RaceIntermediate_Checkpoint", "Checkpoint")]
-        public Checkpoint Checkpoint
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Checkpoint>("ITimeUModel.FK_RaceIntermediate_Checkpoint", "Checkpoint").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Checkpoint>("ITimeUModel.FK_RaceIntermediate_Checkpoint", "Checkpoint").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Checkpoint> CheckpointReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Checkpoint>("ITimeUModel.FK_RaceIntermediate_Checkpoint", "Checkpoint");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Checkpoint>("ITimeUModel.FK_RaceIntermediate_Checkpoint", "Checkpoint", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_RaceIntermediate_Runtime", "Runtime")]
-        public Runtime Runtime
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Runtime>("ITimeUModel.FK_RaceIntermediate_Runtime", "Runtime").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Runtime>("ITimeUModel.FK_RaceIntermediate_Runtime", "Runtime").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Runtime> RuntimeReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Runtime>("ITimeUModel.FK_RaceIntermediate_Runtime", "Runtime");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Runtime>("ITimeUModel.FK_RaceIntermediate_Runtime", "Runtime", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_RaceIntermediate_CheckpointOrder", "CheckpointOrder")]
-        public CheckpointOrder CheckpointOrder
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CheckpointOrder>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "CheckpointOrder").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CheckpointOrder>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "CheckpointOrder").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<CheckpointOrder> CheckpointOrderReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CheckpointOrder>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "CheckpointOrder");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CheckpointOrder>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "CheckpointOrder", value);
-                }
-            }
-        }
-
-        #endregion
     }
     
     /// <summary>
@@ -1625,14 +1523,12 @@ namespace ITimeU.Models
         /// <param name="runtimeID">Initial value of the RuntimeID property.</param>
         /// <param name="runtime1">Initial value of the Runtime1 property.</param>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
-        /// <param name="isMerged">Initial value of the IsMerged property.</param>
-        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID, global::System.Boolean isMerged)
+        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID)
         {
             Runtime runtime = new Runtime();
             runtime.RuntimeID = runtimeID;
             runtime.Runtime1 = runtime1;
             runtime.CheckpointID = checkpointID;
-            runtime.IsMerged = isMerged;
             return runtime;
         }
 
@@ -1713,58 +1609,9 @@ namespace ITimeU.Models
         private global::System.Int32 _CheckpointID;
         partial void OnCheckpointIDChanging(global::System.Int32 value);
         partial void OnCheckpointIDChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsMerged
-        {
-            get
-            {
-                return _IsMerged;
-            }
-            set
-            {
-                OnIsMergedChanging(value);
-                ReportPropertyChanging("IsMerged");
-                _IsMerged = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsMerged");
-                OnIsMergedChanged();
-            }
-        }
-        private global::System.Boolean _IsMerged;
-        partial void OnIsMergedChanging(global::System.Boolean value);
-        partial void OnIsMergedChanged();
 
         #endregion
     
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_RaceIntermediate_Runtime", "RaceIntermediate")]
-        public EntityCollection<RaceIntermediate> RaceIntermediates
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_Runtime", "RaceIntermediate");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_Runtime", "RaceIntermediate", value);
-                }
-            }
-        }
-
-        #endregion
     }
     
     /// <summary>
@@ -1891,30 +1738,6 @@ namespace ITimeU.Models
         private global::System.Boolean _IsDeleted;
         partial void OnIsDeletedChanging(global::System.Boolean value);
         partial void OnIsDeletedChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> RaceID
-        {
-            get
-            {
-                return _RaceID;
-            }
-            set
-            {
-                OnRaceIDChanging(value);
-                ReportPropertyChanging("RaceID");
-                _RaceID = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("RaceID");
-                OnRaceIDChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _RaceID;
-        partial void OnRaceIDChanging(Nullable<global::System.Int32> value);
-        partial void OnRaceIDChanged();
 
         #endregion
     
@@ -1938,44 +1761,6 @@ namespace ITimeU.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Checkpoint>("ITimeUModel.FK_Checkpoint_Timer", "Checkpoint", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Timer_Race", "Race")]
-        public Race Race
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Race> RaceReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Race>("ITimeUModel.FK_Timer_Race", "Race", value);
                 }
             }
         }
