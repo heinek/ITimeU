@@ -10,6 +10,11 @@ namespace ITimeU.Models
         public int Id { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
+        public int? Birthday { get; private set; }
+        public ClubModel Club { get; private set; }
+        public AthleteClassModel AthleteClass { get; private set; }
+        public int? StartNumber { get; private set; }
+
         private bool dbEntryCreated
         {
             get
@@ -59,6 +64,20 @@ namespace ITimeU.Models
             Id = athleteDb.ID;
             FirstName = athleteDb.FirstName;
             LastName = athleteDb.LastName;
+            Birthday = athleteDb.Birthday;
+            Club = new ClubModel(athleteDb.Club);
+            AthleteClass = new AthleteClassModel(athleteDb.AthleteClass);
+            StartNumber = athleteDb.Startnumber;
+        }
+
+        public AthleteModel(string firstName, string lastName, int birthday, ClubModel club, AthleteClassModel athleteClass, int startNumber)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Birthday = birthday;
+            Club = club;
+            AthleteClass = athleteClass;
+            StartNumber = startNumber;
         }
 
         /// <summary>
@@ -109,6 +128,13 @@ namespace ITimeU.Models
         {
             athlete.FirstName = FirstName;
             athlete.LastName = LastName;
+            athlete.Birthday = Birthday;
+            athlete.ClubID = Club.SaveToDb();
+            athlete.ClassID = AthleteClass.SaveToDb();
+
+           // athlete.AthleteClass = AthleteClass;
+            athlete.Startnumber = StartNumber;
+
         }
 
         private void updateDbEntity(Entities context)

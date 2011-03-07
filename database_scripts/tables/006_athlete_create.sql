@@ -1,7 +1,7 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Athlete]    Script Date: 03/07/2011 10:18:23 ******/
+/****** Object:  Table [dbo].[Athlete]    Script Date: 03/07/2011 13:38:00 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -20,8 +20,10 @@ CREATE TABLE [dbo].[Athlete](
 	[PostalPlace] [nvarchar](50) NULL,
 	[Phone] [nvarchar](50) NULL,
 	[Email] [nvarchar](100) NULL,
-	[Club] [int] NULL,
-	[Birthday] [datetime] NULL,
+	[ClubID] [int] NULL,
+	[Birthday] [int] NULL,
+	[ClassID] [int] NULL,
+	[Startnumber] [int] NULL,
 	[Gender] [char](1) NULL,
 	[IsDeleted] [bit] NULL,
  CONSTRAINT [PK_Participant] PRIMARY KEY CLUSTERED 
@@ -35,4 +37,17 @@ GO
 SET ANSI_PADDING OFF
 GO
 
+ALTER TABLE [dbo].[Athlete]  WITH CHECK ADD  CONSTRAINT [FK_Athlete_AthleteClass] FOREIGN KEY([ClassID])
+REFERENCES [dbo].[AthleteClass] ([ID])
+GO
+
+ALTER TABLE [dbo].[Athlete] CHECK CONSTRAINT [FK_Athlete_AthleteClass]
+GO
+
+ALTER TABLE [dbo].[Athlete]  WITH CHECK ADD  CONSTRAINT [FK_Athlete_Club] FOREIGN KEY([ClubID])
+REFERENCES [dbo].[Club] ([ClubID])
+GO
+
+ALTER TABLE [dbo].[Athlete] CHECK CONSTRAINT [FK_Athlete_Club]
+GO
 
