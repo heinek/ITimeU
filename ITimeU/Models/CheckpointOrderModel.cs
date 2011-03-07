@@ -69,7 +69,7 @@ namespace ITimeU.Models
             }
         }
 
-        public CheckpointOrderModel AddCheckpointOrderDB(int checkpointId, int startingNumber)
+        public void AddCheckpointOrderDB(int checkpointId, int startingNumber)
         {
             CheckpointOrderModel checkpointOrderModel = new CheckpointOrderModel();
 
@@ -94,8 +94,19 @@ namespace ITimeU.Models
                 checkpointOrderModel.ID = (int)ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.ID).First().ID;
                 
                 CheckpointOrderDic.Add(checkpointOrderModel.ID, startingNumber);
+                
+                var dic = CheckpointOrderDic.OrderByDescending(kvp => kvp.Key);
+                
+                CheckpointOrderDic = new Dictionary<int, int>(dic.ToDictionary(x => x.Key, y => y.Value));
+
+
+                //foreach (KeyValuePair<int, int> dic in copy.OrderByDescending(dic => dic.Key))
+                //{
+                //    CheckpointOrderDic.Key = dic.Key;
+                //}
+
             }
-            return checkpointOrderModel;
+            //return checkpointOrderModel;
         }
 
         public void UpdateCheckpointOrderDB(int ID, int StartingNumber)
@@ -150,13 +161,14 @@ namespace ITimeU.Models
 
         public void GetStartingNumbersForCheckpoint(int checkpointID)
         {
+            
             using (var ctx = new Entities())
             {
-                CheckpointOrderDic.Clear();
-                foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID))
+                CheckpointOrderDic.Clear();                
+                foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID).OrderByDescending(ordernum=>ordernum.OrderNumber))
                 {
                     CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
-                }
+                }                
             }
         }
 

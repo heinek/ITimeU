@@ -37,7 +37,7 @@
             listCheckpointOrders,
             tbEdit
         );
-        
+
     });
 </script>
 
@@ -104,8 +104,12 @@
            ** Start Number Should be a Number (0-9)
        </div> 
 
-        <div>
-            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"), new { @class = "listbox" })            
+       <div class="editor-label"> 
+            @Html.Label("lblCheckpointOrders", "CheckpointOrders") 
+       </div>
+
+        <div class="editor-field">
+            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"),new { @class = "listbox" })    
         </div>
 
     </fieldset>
