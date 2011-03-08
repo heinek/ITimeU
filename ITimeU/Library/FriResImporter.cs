@@ -90,7 +90,7 @@ namespace ITimeU.Library
             string club = getStringFrom(row, DB_COL_NAME_CLUB);
             string athleteClass = getStringFrom(row, DB_COL_NAME_ATHLETE_CLASS);
 
-            return new AthleteModel(firstName, lastName, birthday, ClubModel.GetOrCreate(club), AthleteClassModel.GetOrCreate(athleteClass), startNumber);
+            return new AthleteModel(firstName, lastName, birthday, new ClubModel(club), new AthleteClassModel(athleteClass), startNumber);
         }
 
         private int? getIntFrom(DataRow row, string rowIndex)

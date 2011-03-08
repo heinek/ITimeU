@@ -12,6 +12,7 @@ namespace ITimeU.Tests.Models
     [TestClass]
     public class ClubModelTest : ScenarioClass
     {
+        private const string CLUB_BYAASEN = "Byåsen";
 
         [TestCleanup]
         public void TestCleanup()
@@ -32,12 +33,12 @@ namespace ITimeU.Tests.Models
             When("we fetch an existing club Byåsen", () =>
             {
                 previousCount = ClubModel.GetAll().Count;
-                club = ClubModel.GetOrCreate("Byåsen");
+                club = ClubModel.GetOrCreate(CLUB_BYAASEN);
             });
 
             Then("we shold get a club and no new DB rows should have been added", () =>
             {
-                club.Name.ShouldBe("Byåsen");
+                club.Name.ShouldBe(CLUB_BYAASEN);
                 ClubModel.GetAll().Count.ShouldBe(previousCount);
             });
         }
@@ -55,13 +56,13 @@ namespace ITimeU.Tests.Models
             {
                 ClubModel.DeleteIfExists("Byåsen");
                 previousCount = ClubModel.GetAll().Count;
-                club = ClubModel.GetOrCreate("Byåsen");
+                club = ClubModel.GetOrCreate(CLUB_BYAASEN);
             });
 
             Then("we shold get a club and a new DB rows should have been added", () =>
             {
-                club.Name.ShouldBe("Byåsen");
-                ClubModel.GetAll().Count.ShouldBe(previousCount+1);
+                club.Name.ShouldBe(CLUB_BYAASEN);
+                ClubModel.GetAll().Count.ShouldBe(previousCount + 1);
             });
         }
 
