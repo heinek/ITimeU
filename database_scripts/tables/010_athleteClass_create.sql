@@ -1,7 +1,7 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[AthleteClass]    Script Date: 03/07/2011 11:58:26 ******/
+/****** Object:  Table [dbo].[AthleteClass]    Script Date: 03/08/2011 15:24:50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -17,6 +17,10 @@ CREATE TABLE [dbo].[AthleteClass](
  CONSTRAINT [PK_AthleteClass] PRIMARY KEY CLUSTERED 
 (
 	[ID] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY],
+ CONSTRAINT [IX_AthleteClass] UNIQUE NONCLUSTERED 
+(
+	[Name] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 

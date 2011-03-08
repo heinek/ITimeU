@@ -82,9 +82,11 @@
     <Compile Include="Library\Import\FriResImporterTest.cs" />
     <Compile Include="Library\NameParserTest.cs" />
     <Compile Include="MockHttpSession.cs" />
+    <Compile Include="Models\AthleteClassModelTest.cs" />
     <Compile Include="Models\AthleteModelTest.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
+    <Compile Include="Models\ClubModelTest.cs" />
     <Compile Include="Models\RuntimeModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
@@ -96,9 +98,6 @@
   <ItemGroup>
     <Content Include="App.config">
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Library\Import\ImporterTest.mdb">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Library\Import\ImporterTest.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

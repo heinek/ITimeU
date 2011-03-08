@@ -22,11 +22,15 @@
         <table>
             <tr>
                 <th>
-                    FirstName
+                    Fornavn
                 </th>
                 <th>
-                    LastName
+                    Etternavn
                 </th>
+                <th>Klasse</th>
+                <th>Klubb</th>
+                <th>Fødselsår</th>
+                <th>Startnummer</th>
             </tr>
             @foreach (ITimeU.Models.AthleteModel athlete in ViewBag.Athletes)
             {
@@ -37,6 +41,10 @@
                     <td>
                         @athlete.LastName
                     </td>
+                    <td>@athlete.AthleteClass</td>
+                    <td>@athlete.Club</td>
+                    <td>@athlete.Birthday</td>
+                    <td>@athlete.StartNumber</td>
                 </tr>
             }
         </table>
