@@ -10,18 +10,21 @@ namespace ITimeU.Logging
     public class LogWriter
     {
         private static LogWriter instance = null;
-        
-        private string file;
+
+        /// <summary>
+        /// The file used by this log writer.
+        /// </summary>
+        public string LogFile { get; private set; }
 
         public LogWriter()
         {
             string path = System.IO.Path.GetTempPath() + @"\";
-            this.file = path + "Log.txt";
+            LogFile = path + "Log.txt";
         }
 
         public LogWriter(string file)
         {
-            this.file = file;
+            LogFile = file;
         }
 
         public static LogWriter getInstance() {
@@ -34,7 +37,7 @@ namespace ITimeU.Logging
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Write(string content)
         {
-            StreamWriter writer = File.AppendText(file);
+            StreamWriter writer = File.AppendText(LogFile);
             writer.Write(content + "\n");
             writer.Close();
         }
