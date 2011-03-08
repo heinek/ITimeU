@@ -22,7 +22,7 @@ namespace ITimeU.Models
             }
         }
 
-        private ClubModel(string name)
+        public ClubModel(string name)
         {
             this.Name = name;
             Id = 0;

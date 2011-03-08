@@ -22,7 +22,7 @@ namespace ITimeU.Models
             }
         }
 
-        private AthleteClassModel(string name)
+        public AthleteClassModel(string name)
         {
             Name = name;
             Id = 0;

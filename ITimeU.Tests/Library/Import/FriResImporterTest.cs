@@ -36,7 +36,7 @@ namespace ITimeU.Tests.Library
         }
 
         [TestMethod]
-        public void Imported_Participants_Must_Be_A_List()
+        public void Imported_Athletes_Must_Be_A_List()
         {
             FriResImporter importer = null;
             List<AthleteModel> particpants = null;
@@ -46,12 +46,12 @@ namespace ITimeU.Tests.Library
                 importer = createFriResImporter();
             });
 
-            When("we import all participants", () =>
+            When("we import all athletes", () =>
             {
                 particpants = importer.getAthletes();
             });
 
-            Then("we should get a list of participants", () =>
+            Then("we should get a list of athletes", () =>
             {
                 particpants.ShouldBeInstanceOfType<List<AthleteModel>>();
             });
@@ -63,7 +63,7 @@ namespace ITimeU.Tests.Library
         }
 
         [TestMethod]
-        public void The_FriRes_Example_Db_Should_Have_At_Least_Two_Participants()
+        public void The_FriRes_Example_Db_Should_Have_At_Least_Two_Athletes()
         {
             FriResImporter importer = null;
             List<AthleteModel> athletes = null;
@@ -73,12 +73,12 @@ namespace ITimeU.Tests.Library
                 importer = createFriResImporter();
             });
 
-            When("we import all participants", () =>
+            When("we import all athletes", () =>
             {
                 athletes = importer.getAthletes();
             });
 
-            Then("we should get a list of two specific participants", () =>
+            Then("we should get a list of two specific athletes", () =>
             {
                 athletes[0].FirstName.ShouldBe("Bjarne");
                 athletes[0].LastName.ShouldBe("Hansen");
@@ -100,7 +100,7 @@ namespace ITimeU.Tests.Library
                 importer = createFriResImporter();
             });
 
-            When("we import all participants", () =>
+            When("we import all athletes", () =>
             {
                 athletes = importer.getAthletes();
             });
@@ -110,8 +110,8 @@ namespace ITimeU.Tests.Library
                 athletes[2].FirstName.ShouldBe("Test");
                 athletes[2].LastName.ShouldBe("Deltaker");
                 athletes[2].Birthday.ShouldBe(1996);
-                athletes[2].Club.ShouldBe(ClubModel.GetOrCreate("Lade"));
-                athletes[2].AthleteClass.ShouldBe(AthleteClassModel.GetOrCreate("Jenter 15"));
+                athletes[2].Club.ShouldBe(new ClubModel("Lade"));
+                athletes[2].AthleteClass.ShouldBe(new AthleteClassModel("Jenter 15"));
                 athletes[2].StartNumber.ShouldBe(99);
             });
         }
@@ -127,7 +127,7 @@ namespace ITimeU.Tests.Library
                 importer = createFriResImporter();
             });
 
-            When("we import all participants", () =>
+            When("we import all athletes", () =>
             {
                 athletes = importer.getAthletes();
             });
@@ -137,9 +137,39 @@ namespace ITimeU.Tests.Library
                 athletes[3].FirstName.ShouldBe("Ole");
                 athletes[3].LastName.ShouldBe("Hansen");
                 athletes[3].Birthday.ShouldBe(null);
-                athletes[3].Club.ShouldBe(ClubModel.GetOrCreate("Rognan"));
-                athletes[3].AthleteClass.ShouldBe(AthleteClassModel.GetOrCreate("Jenter 30"));
+                athletes[3].Club.ShouldBe(new ClubModel("Rognan"));
+                athletes[3].AthleteClass.ShouldBe(new AthleteClassModel("Jenter 30"));
                 athletes[3].StartNumber.ShouldBe(100);
+            });
+        }
+
+        [TestMethod]
+        public void No_Data_Should_Be_Saved_To_Db_When_Getting_The_List_Of_Athletes()
+        {
+            FriResImporter importer = null;
+            List<AthleteModel> athletes = null;
+            int previousAthleteCount = -1;
+            int previousAthleteClassCount = -1;
+            int previousClubCount = -1;
+
+            Given("we have a importer for the FriRes system", () =>
+            {
+                importer = createFriResImporter();
+            });
+
+            When("we import all participants", () =>
+            {
+                previousAthleteCount = AthleteModel.GetAll().Count;
+                previousAthleteClassCount = AthleteClassModel.GetAll().Count;
+                previousClubCount = ClubModel.GetAll().Count;
+                athletes = importer.getAthletes();
+            });
+
+            Then("the number of rows for the relevant tables should be the same", () =>
+            {
+                AthleteModel.GetAll().Count.ShouldBe(previousAthleteCount);
+                AthleteClassModel.GetAll().Count.ShouldBe(previousAthleteClassCount);
+                ClubModel.GetAll().Count.ShouldBe(previousClubCount);
             });
         }
     }

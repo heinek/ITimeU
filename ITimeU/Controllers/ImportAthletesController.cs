@@ -25,10 +25,6 @@ namespace ITimeU.Controllers
             FriResImporter importer = new FriResImporter(accessDbFile);
             List<AthleteModel> athletes = importer.getAthletes();
 
-            //athletes.Add(new AthleteModel("Arne", "Hansen"));
-            //athletes.Add(new AthleteModel("Geir", "Olsen"));
-            //athletes.Add(new AthleteModel("Per", "Iversen"));
-
             ViewBag.Athletes = athletes;
 
             return View("Index", athletes);
