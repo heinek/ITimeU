@@ -58,7 +58,6 @@ namespace ITimeU.Tests.Models
                 CheckpointOrder checkpointOrderDb = CheckpointOrderModel.GetCheckpointOrderById(newCheckpointOrder.ID);
                 checkpointOrderDb.ShouldBe(newCheckpointOrder);
             });
-
         }
 
         [TestMethod]
@@ -82,6 +81,61 @@ namespace ITimeU.Tests.Models
             {
                 updatedCheckpointOrder.CheckpointID.ShouldNotBeSameAs(origCheckpointOrder.CheckpointID);
             });
+        }
+
+        [TestMethod]
+        public void Get_Next_OrderNumber_In_Ascending_Order_After_Inserting_StartNumber()
+        {
+            CheckpointOrderModel testCheckpointOrder = null;
+            int ordernum1 = 0, ordernum2 = 0;
+            int checkpointId = 1;
+            int startingNumber = 2;
+            Entities context = new Entities();
+            Given("We have a CheckpointOrder", () =>
+                {
+                    testCheckpointOrder = new CheckpointOrderModel();
+                    
+                });
+
+            When("We insert start number", () =>
+                {
+                    testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startingNumber);
+                    ordernum1 = (int)(context.CheckpointOrders.OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
+                });
+
+            Then("We should have next order number in ascending order in database", () =>
+                {
+                    startingNumber = 3;
+                    testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startingNumber);
+                    ordernum2 = (int)(context.CheckpointOrders.OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
+                    ordernum2.ShouldBeSameAs(ordernum1+1);
+                });
+        }
+
+        [TestMethod]
+        public void StartNumber_Should_Be_Added_In_Database()
+        {            
+            CheckpointOrderModel testCheckpointOrder = null;
+            int checkpointId = 1;
+            int startingNumber = 4;
+            Given("We have CheckpointOrder model ", () =>
+            {
+                testCheckpointOrder = new CheckpointOrderModel();
+            });
+
+            When("We insert a new start number", () =>
+                {
+                    testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startingNumber);
+                });
+
+            Then("Start Number should be saved in database", () =>
+                {
+                    Entities contextDB = new Entities();
+                    var startNum = contextDB.CheckpointOrders.Where
+                        (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).
+                        Select(startnum => startnum.StartingNumber);
+                    startNum.ShouldBe(startingNumber);
+                });
         }
 
 

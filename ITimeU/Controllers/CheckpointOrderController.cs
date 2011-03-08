@@ -155,6 +155,22 @@ namespace ITimeU.Controllers
             
             return Content(model.CheckpointOrderDic.ToListboxvalues(false));
         }
+
+        public ActionResult AddCheckpointByOrder(string checkpointID, string startingNumber, string orderNumber)
+        {
+            CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
+            int chkpntID;
+            int startNmb;
+            int orderNmb;
+
+            int.TryParse(checkpointID, out chkpntID);
+            int.TryParse(startingNumber, out startNmb);
+            int.TryParse(orderNumber, out orderNmb);
+
+            model.AddCheckpointByOrderDB(chkpntID, startNmb, orderNmb);
+            
+            return Content(model.CheckpointOrderDic.ToListboxvalues(false));
+        }
        
 
         public ActionResult UpdateCheckpointOrder(int ID, string startingNumber)
