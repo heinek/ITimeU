@@ -37,7 +37,7 @@
             listCheckpointOrders,
             tbEdit
         );
-        
+
     });
 </script>
 
@@ -98,14 +98,50 @@
             </script>            
             <input type="button" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
             <input type="button" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
+
+             <div class="editor-label"> 
+            @Html.Label("lblOrderNumber", "Ordernummer")             
+        </div> 
+        <div class="editor-field">
+            @Html.TextBox("txtOrderNumber", null, new { @class = "textbox" })
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    var OrderNumber = $('#txtOrderNumber');
+                    var checkNumber = true;
+
+                    OrderNumber.keypress(function (e) {
+                        if (String.fromCharCode(e.keyCode).match(/[^0-9\r]/g))
+                            checkNumber = false;
+                        if (e.keyCode == 13) {
+                            if (checkNumber == true && OrderNumber.val() != '') {
+                                var url = "/CheckpointOrder/AddCheckpointByOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val() + "&orderNumber=" + $('#txtOrderNumber').val();
+                                $.get(url, function (data) {
+                                    $('#lstCheckpointOrders').html(data);
+                                    $('#ErrorMessage').hide();
+                                    //StartNumber.select();
+                                });
+                            }
+                            else {
+                                $('#ErrorMessage').show();
+                                //StartNumber.val('');
+                                checkNumber = true;
+                            }
+                        }
+                    });
+                }); 
+            </script> 
         </div> 
 
          <div id="ErrorMessage" style="color:Red; display:none" > 
            ** Start Number Should be a Number (0-9)
        </div> 
 
-        <div>
-            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"), new { @class = "listbox" })            
+       <div class="editor-label"> 
+            @Html.Label("lblCheckpointOrders", "CheckpointOrders") 
+       </div>
+
+        <div class="editor-field">
+            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"),new { @class = "listbox" })    
         </div>
 
     </fieldset>

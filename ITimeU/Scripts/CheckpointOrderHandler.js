@@ -63,20 +63,7 @@ CheckpointOrderHandler.prototype.setDeleteAction = function (_listCheckpointOrde
     });
 }
 
-//CheckpointOrderHandler.prototype.setEdit2Action = function (_listCheckpointOrders, _listCheckpoints) {
-//    listCheckpoints = _listCheckpoints;
 
-//    listCheckpoints.bind("change", function () {
-//        listCheckpointOrders.html("");
-//        url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?id=" + initialid;
-//        $.get(url, function (data) {
-//            listCheckpointOrders.html(data);
-//        });
-//        tbedit.val("");
-//        Tools.disable(btnChange);
-//        Tools.disable(btnDelete);
-//    });
-//}
 
 
 

@@ -77,7 +77,7 @@
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
-    <Compile Include="Logging\LogWriterTest.cs" />
+    <Compile Include="Library\Logging\LogWriterTest.cs" />
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
