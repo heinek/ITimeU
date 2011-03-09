@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
@@ -60,6 +59,17 @@ namespace ITimeU.Tests.Models
             }
         }
 
+        public static void EditRuntime(int runtimeid, int h, int m, int s, int ms)
+        {
+            TimeSpan ts = new TimeSpan(0, h, m, s, ms);
+            using (var ctx = new Entities())
+            {
+                Runtime runtimeDb = ctx.Runtimes.Single(runtimeTemp => runtimeTemp.RuntimeID == runtimeid);
+                runtimeDb.Runtime1 = Convert.ToInt32(ts.TotalMilliseconds);
+                ctx.SaveChanges();
+            }
+        }
+
         private static Runtime CreateDbEntity(int runtime, int checkpointId)
         {
             Runtime runtimeDb = new Runtime();
@@ -73,6 +83,19 @@ namespace ITimeU.Tests.Models
             var ctx = new Entities();
             ctx.Runtimes.AddObject(runtimeDb);
             ctx.SaveChanges();
+        }
+
+        /// <summary>
+        /// Gets the runtimes.
+        /// </summary>
+        /// <param name="checkpointId">The checkpoint id.</param>
+        /// <returns></returns>
+        public static Dictionary<int, int> GetRuntimes(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
+            }
         }
     }
 }

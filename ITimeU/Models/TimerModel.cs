@@ -29,9 +29,6 @@ namespace ITimeU.Models
             }
 
         }
-
-        private bool dbEntryCreated = false;
-
         private DateTime? startTime;
         public DateTime? StartTime
         {
@@ -53,7 +50,6 @@ namespace ITimeU.Models
             }
 
         }
-
         public DateTime? endTime;
         public DateTime? EndTime
         {
@@ -71,10 +67,11 @@ namespace ITimeU.Models
                     endTime = DateTimeRounder.RoundToOneDecimal((DateTime)value);
             }
         }
-
+        public int? RaceID { get; set; }
         public bool IsStarted { get; private set; }
         public Dictionary<int, Dictionary<int, int>> CheckpointRuntimes { get; set; }
         public int CurrentCheckpointId { get; set; }
+        private bool dbEntryCreated = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerModel"/> class.
@@ -201,6 +198,7 @@ namespace ITimeU.Models
             Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
             timer.StartTime = this.StartTime;
             timer.EndTime = this.EndTime;
+            if (RaceID.HasValue) timer.RaceID = this.RaceID.Value;
             context.SaveChanges();
         }
 
@@ -355,6 +353,14 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 return ctx.Checkpoints.Where(cp => cp.TimerID == Id && cp.IsDeleted == false).OrderBy(cp => cp.SortOrder).ToList();
+            }
+        }
+
+        public static List<Timer> GetTimers(int raceId)
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Timers.Where(timer => timer.IsDeleted == false && timer.RaceID == raceId).ToList();
             }
         }
     }

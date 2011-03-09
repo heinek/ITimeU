@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using ITimeU.Logging;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
-using ITimeU.Logging;
 
 namespace ITimeU.Tests.Models
 {
@@ -38,7 +33,7 @@ namespace ITimeU.Tests.Models
             {
                 checkpointOrdersDb.Count.ShouldBe(previousSize + 3);
             });
-            
+
         }
 
         [TestMethod]
@@ -50,7 +45,7 @@ namespace ITimeU.Tests.Models
 
             When("we create the checkpointOrder", () =>
             {
-                newCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1);
+                newCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1, false);
             });
 
             Then("it should exist in the database", () =>
@@ -69,13 +64,13 @@ namespace ITimeU.Tests.Models
 
             Given("we have a checkpointOrder", () =>
             {
-                origCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1);
+                origCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1, false);
                 origCheckpointOrder.CheckpointID = 1;
             });
 
             When("we update the checkpointOrder", () =>
             {
-                updatedCheckpointOrder.CheckpointID = 2;                
+                updatedCheckpointOrder.CheckpointID = 2;
             });
 
             Then("the values should be different", () =>

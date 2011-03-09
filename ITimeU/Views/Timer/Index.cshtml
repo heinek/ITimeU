@@ -73,56 +73,46 @@
             $.get(url, function (data) {
                 listIntermediate.html(data);
             });
-            ResetEditFields();
+            Tools.ResetEditFields();
         });
 
         btnUpHour.click(function () {
-            var time = Tools.parse(tbEditHour.val(), 24, true);
-            tbEditHour.val(time);
+            Tools.increaseHour(tbEditHour);
         });
 
         btnUpMin.click(function () {
-            var time = Tools.parse(tbEditMin.val(), 60, true);
-            tbEditMin.val(time);
+            Tools.increaseMinutes(tbEditMin);
         });
 
         btnUpSek.click(function () {
-            var time = Tools.parse(tbEditSek.val(), 60, true);
-            tbEditSek.val(time);
+            Tools.increaseSeconds(tbEditSek);
         });
 
         btnUpMS.click(function () {
-            var time = Tools.parse(tbEditMSek.val(), 10, true);
-            tbEditMSek.val(time);
+            Tools.increaseMilliseconds(tbEditMSek);
         });
 
         btnDownHour.click(function () {
-            var time = Tools.parse(tbEditHour.val(), 24, false);
-            tbEditHour.val(time);
+            Tools.decreaseHour(tbEditHour);
         });
 
         btnDownMin.click(function () {
-            var time = Tools.parse(tbEditMin.val(), 60, false);
-            tbEditMin.val(time);
+            Tools.decreaseMinutes(tbEditMin);
         });
 
         btnDownSek.click(function () {
-            var time = Tools.parse(tbEditSek.val(), 60, false);
-            tbEditSek.val(time);
+            Tools.decreaseSeconds(tbEditSek);
         });
 
         btnDownMS.click(function () {
-            var time = Tools.parse(tbEditMSek.val(), 10, false);
-            tbEditMSek.val(time);
+            Tools.decreaseMilliseconds(tbEditMSek);
         });
 
         btnDelete.click(function () {
             url = "/Timer/DeleteRuntime/?runtimeid=" + initialRuntimeId;
-            $.get(url, function (data) {
-                listIntermediate.html(data);
-            });
-            ResetEditFields();
-            DisableControls();
+            Tools.deleteFromList(listIntermediate, url);
+            Tools.ResetEditFields();
+            Tools.DisableControls();
         });
 
         listIntermediate.change(function () {
@@ -143,7 +133,7 @@
             tbEditMin.val(strm);
             tbEditSek.val(strs);
             tbEditMSek.val(strms);
-            EnableControls();
+            Tools.EnableControls();
         });
 
         btnChangeCP.click(function () {
@@ -153,38 +143,7 @@
         });
     });
 
-    function DisableControls() {
-        $("#btnEdit").attr('disabled', 'disabled');
-        $("#btnDelete").attr('disabled', 'disabled');
-        $("#btnUpHour").attr('disabled', 'disabled');
-        $("#btnUpMin").attr('disabled', 'disabled');
-        $("#btnUpSek").attr('disabled', 'disabled');
-        $("#btnUpMS").attr('disabled', 'disabled');
-        $("#btnDownHour").attr('disabled', 'disabled');
-        $("#btnDownMin").attr('disabled', 'disabled');
-        $("#btnDownSek").attr('disabled', 'disabled');
-        $("#btnDownMS").attr('disabled', 'disabled');
-    }
 
-    function EnableControls() {
-        $("#btnEdit").removeAttr('disabled');
-        $("#btnDelete").removeAttr('disabled');
-        $("#btnUpHour").removeAttr('disabled');
-        $("#btnUpMin").removeAttr('disabled');
-        $("#btnUpSek").removeAttr('disabled');
-        $("#btnUpMS").removeAttr('disabled');
-        $("#btnDownHour").removeAttr('disabled');
-        $("#btnDownMin").removeAttr('disabled');
-        $("#btnDownSek").removeAttr('disabled');
-        $("#btnDownMS").removeAttr('disabled');
-    }
-
-    function ResetEditFields() {
-        $("#tbEditHour").val("");
-        $("#tbEditMin").val("");
-        $("#tbEditSek").val("");
-        $("#tbEditMSek").val("");
-    }
 
 
 

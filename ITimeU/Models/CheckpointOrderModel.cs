@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using ITimeU.Tests.Models;
 
 namespace ITimeU.Models
 {
@@ -36,8 +34,8 @@ namespace ITimeU.Models
                 _ID = value;
             }
         }
-        public int CheckpointID 
-        { 
+        public int CheckpointID
+        {
             get
             {
                 return _checkpointID;
@@ -47,7 +45,8 @@ namespace ITimeU.Models
                 _checkpointID = value;
             }
         }
-        public int StartingNumber { 
+        public int StartingNumber
+        {
             get
             {
                 return _startingNumber;
@@ -57,7 +56,7 @@ namespace ITimeU.Models
                 _startingNumber = value;
             }
         }
-        public int OrderNumber 
+        public int OrderNumber
         {
             get
             {
@@ -92,7 +91,7 @@ namespace ITimeU.Models
                 ctx.CheckpointOrders.AddObject(checkpointOrder);
                 ctx.SaveChanges();
                 checkpointOrderModel.ID = (int)ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.ID).First().ID;
-                
+
                 CheckpointOrderDic.Add(checkpointOrderModel.ID, startingNumber);
             }
             return checkpointOrderModel;
@@ -114,7 +113,7 @@ namespace ITimeU.Models
         public void DeleteCheckpointOrderDB(int checkpointOrderId)
         {
             CheckpointOrderDic.Remove(checkpointOrderId);
-            
+
             using (var ctx = new Entities())
             {
                 var checkpointOrderToDelete = ctx.CheckpointOrders.Where(checkpointOrder => checkpointOrder.ID == checkpointOrderId).Single();
@@ -129,6 +128,14 @@ namespace ITimeU.Models
             {
                 CheckpointOrder checkpointToReturn = (CheckpointOrder)ctx.CheckpointOrders.Where(chkpnt => chkpnt.ID == id);
                 return checkpointToReturn;
+            }
+        }
+
+        public static List<CheckpointOrder> GetCheckpointOrders(int checkpointId)
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.CheckpointOrders.Where(checkpointorder => checkpointorder.CheckpointID == checkpointId && checkpointorder.IsDeleted == false).OrderBy(checkpoint => checkpoint.OrderNumber).ToList();
             }
         }
 
@@ -177,6 +184,6 @@ namespace ITimeU.Models
             }
         }
 
-        
+
     }
 }

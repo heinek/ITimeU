@@ -25,9 +25,46 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void MyTestMethod()
+        public void It_Should_Be_Possible_To_Get_The_Runtimes_For_A_Race()
         {
-            
+            var timer = new TimerModel();
+            Given("we have a timer", () => timer = CreateNewTimerModelWithCheckpoints());
+
+            When("we add runtimes", ()=> timer.AddRuntime(400, timer.GetFirstCheckpoint()));
+
+            Then("we should be able to get all the runtimes", ()=>
+            {
+                var runtimes = RuntimeModel.GetRuntimes(timer.GetFirstCheckpoint());
+                runtimes.ShouldNotBeNull();
+            });
+        }
+
+        [TestMethod]
+        public void The_List_Of_Runtimes_Sould_Return_A_Runtime_After_It_Has_Been_Saved_To_Db()
+        {
+            var timer = new TimerModel();
+            Given("we have a timer", () => timer = CreateNewTimerModelWithCheckpoints());
+
+            When("we add runtimes", () => timer.AddRuntime(400, timer.GetFirstCheckpoint()));
+
+            Then("we should be able to get back the runtime we added", () =>
+            {
+                var runtimes = RuntimeModel.GetRuntimes(timer.GetFirstCheckpoint());
+                runtimes.First().Value.ShouldBe(400);
+            });
+        }
+        /// <summary>
+        /// Creates the new timer model with checkpoints.
+        /// </summary>
+        /// <returns></returns>
+        private TimerModel CreateNewTimerModelWithCheckpoints()
+        {
+            var timer = new TimerModel();
+            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
+            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
+            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+            return timer;
         }
 
     }
