@@ -52,12 +52,6 @@ namespace ITimeU.Models
                 this.timer = new TimerModel(checkpoint.Timer);
         }
 
-        public CheckpointModel(string checkpointName)
-        {
-            Name = checkpointName;
-            SaveToDb();
-        }
-
         public CheckpointModel(string checkpointName, TimerModel timer)
         {
             Name = checkpointName;
