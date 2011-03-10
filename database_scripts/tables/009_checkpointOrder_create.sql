@@ -1,7 +1,15 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[CheckpointOrder]    Script Date: 02/10/2011 15:09:03 ******/
+/****** Object:  Table [dbo].[CheckpointOrder]    Script Date: 03/09/2011 10:35:01 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CheckpointOrder]') AND type in (N'U'))
+DROP TABLE [dbo].[CheckpointOrder]
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[CheckpointOrder]    Script Date: 03/09/2011 10:35:01 ******/
 SET ANSI_NULLS ON
 GO
 

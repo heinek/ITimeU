@@ -1,7 +1,15 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Runtime]    Script Date: 03/07/2011 12:31:22 ******/
+/****** Object:  Table [dbo].[Runtime]    Script Date: 03/09/2011 10:34:42 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Runtime]') AND type in (N'U'))
+DROP TABLE [dbo].[Runtime]
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[Runtime]    Script Date: 03/09/2011 10:34:43 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,7 +19,7 @@ GO
 CREATE TABLE [dbo].[Runtime](
 	[RuntimeID] [int] IDENTITY(1,1) NOT NULL,
 	[Runtime] [int] NOT NULL,
-	[CheckpointID] [int] NOT NULL,
+	[CheckpointID] [int] NULL,
  CONSTRAINT [PK_Runtime] PRIMARY KEY CLUSTERED 
 (
 	[RuntimeID] ASC

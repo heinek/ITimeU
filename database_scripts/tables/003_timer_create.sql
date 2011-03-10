@@ -1,7 +1,25 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Timer]    Script Date: 02/04/2011 13:39:30 ******/
+IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Timer_IsDeleted]') AND type = 'D')
+BEGIN
+ALTER TABLE [dbo].[Timer] DROP CONSTRAINT [DF_Timer_IsDeleted]
+END
+
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[Timer]    Script Date: 03/09/2011 10:29:34 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Timer]') AND type in (N'U'))
+DROP TABLE [dbo].[Timer]
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[Timer]    Script Date: 03/09/2011 10:29:34 ******/
 SET ANSI_NULLS ON
 GO
 

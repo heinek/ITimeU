@@ -1,7 +1,26 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Athlete]    Script Date: 03/08/2011 15:24:42 ******/
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Athlete_AthleteClass]') AND parent_object_id = OBJECT_ID(N'[dbo].[Athlete]'))
+ALTER TABLE [dbo].[Athlete] DROP CONSTRAINT [FK_Athlete_AthleteClass]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_Athlete_Club]') AND parent_object_id = OBJECT_ID(N'[dbo].[Athlete]'))
+ALTER TABLE [dbo].[Athlete] DROP CONSTRAINT [FK_Athlete_Club]
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[Athlete]    Script Date: 03/09/2011 10:34:31 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Athlete]') AND type in (N'U'))
+DROP TABLE [dbo].[Athlete]
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[Athlete]    Script Date: 03/09/2011 10:34:31 ******/
 SET ANSI_NULLS ON
 GO
 

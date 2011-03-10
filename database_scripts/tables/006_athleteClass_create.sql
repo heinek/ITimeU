@@ -1,7 +1,15 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[AthleteClass]    Script Date: 03/08/2011 15:24:50 ******/
+/****** Object:  Table [dbo].[AthleteClass]    Script Date: 03/09/2011 10:30:22 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AthleteClass]') AND type in (N'U'))
+DROP TABLE [dbo].[AthleteClass]
+GO
+
+USE [ITimeU]
+GO
+
+/****** Object:  Table [dbo].[AthleteClass]    Script Date: 03/09/2011 10:30:22 ******/
 SET ANSI_NULLS ON
 GO
 

@@ -22,7 +22,7 @@ GO
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Checkpoint]    Script Date: 03/01/2011 09:50:50 ******/
+/****** Object:  Table [dbo].[Checkpoint]    Script Date: 03/09/2011 10:35:51 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Checkpoint]') AND type in (N'U'))
 DROP TABLE [dbo].[Checkpoint]
 GO
@@ -30,7 +30,7 @@ GO
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Checkpoint]    Script Date: 03/01/2011 09:50:50 ******/
+/****** Object:  Table [dbo].[Checkpoint]    Script Date: 03/09/2011 10:35:51 ******/
 SET ANSI_NULLS ON
 GO
 
