@@ -30,10 +30,6 @@ namespace ITimeU.Models
         {
             var entities = new Entities();
             Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet);
-        public static AthleteModel GetById(int idToGet)
-        {
-            var entities = new Entities();
-            Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet);
         
             return new AthleteModel(athleteDb);
         }
@@ -142,30 +138,11 @@ namespace ITimeU.Models
 
         }
 
-        private int CreateDbEntity(Entities context)
-        {
-            Athlete athlete = new Athlete();
-            updateProperties(athlete);
-            context.Athletes.AddObject(athlete);
-            context.SaveChanges();
-
-            return athlete.ID;
-        }
-
-        private void updateProperties(Athlete athlete)
-        {
-            athlete.FirstName = FirstName;
-            athlete.LastName = LastName;
-        }
-
         private void updateDbEntity(Entities context)
         {
             Athlete athlete = context.Athletes.Single(enitity => enitity.ID == Id);
             updateProperties(athlete);
             context.SaveChanges();
-        }
-
-            return athlete.ID;
         }
 
         public override string ToString()

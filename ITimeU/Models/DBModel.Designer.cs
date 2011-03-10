@@ -18,9 +18,9 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Timer), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
 [assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Athlete_AthleteClass", "AthleteClass", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.AthleteClass), "Athlete", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Athlete), true)]
 [assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Athlete_Club", "Club", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Club), "Athlete", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Athlete), true)]
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Timer), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
 
 #endregion
 
@@ -71,6 +71,22 @@ namespace ITimeU.Models
         #endregion
     
         #region ObjectSet Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Athlete> Athletes
+        {
+            get
+            {
+                if ((_Athletes == null))
+                {
+                    _Athletes = base.CreateObjectSet<Athlete>("Athletes");
+                }
+                return _Athletes;
+            }
+        }
+        private ObjectSet<Athlete> _Athletes;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -155,22 +171,6 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Timer> Timers
-        {
-            get
-            {
-                if ((_Timers == null))
-                {
-                    _Timers = base.CreateObjectSet<Timer>("Timers");
-                }
-                return _Timers;
-            }
-        }
-        private ObjectSet<Timer> _Timers;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Runtime> Runtimes
         {
             get
@@ -187,21 +187,29 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Athlete> Athletes
+        public ObjectSet<Timer> Timers
         {
             get
             {
-                if ((_Athletes == null))
+                if ((_Timers == null))
                 {
-                    _Athletes = base.CreateObjectSet<Athlete>("Athletes");
+                    _Timers = base.CreateObjectSet<Timer>("Timers");
                 }
-                return _Athletes;
+                return _Timers;
             }
         }
-        private ObjectSet<Athlete> _Athletes;
+        private ObjectSet<Timer> _Timers;
 
         #endregion
         #region AddTo Methods
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Athletes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToAthletes(Athlete athlete)
+        {
+            base.AddObject("Athletes", athlete);
+        }
     
         /// <summary>
         /// Deprecated Method for adding a new object to the AthleteClasses EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
@@ -244,14 +252,6 @@ namespace ITimeU.Models
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToTimers(Timer timer)
-        {
-            base.AddObject("Timers", timer);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the Runtimes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToRuntimes(Runtime runtime)
@@ -260,11 +260,11 @@ namespace ITimeU.Models
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Athletes EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Timers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToAthletes(Athlete athlete)
+        public void AddToTimers(Timer timer)
         {
-            base.AddObject("Athletes", athlete);
+            base.AddObject("Timers", timer);
         }
 
         #endregion
@@ -1522,13 +1522,11 @@ namespace ITimeU.Models
         /// </summary>
         /// <param name="runtimeID">Initial value of the RuntimeID property.</param>
         /// <param name="runtime1">Initial value of the Runtime1 property.</param>
-        /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
-        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID)
+        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1)
         {
             Runtime runtime = new Runtime();
             runtime.RuntimeID = runtimeID;
             runtime.Runtime1 = runtime1;
-            runtime.CheckpointID = checkpointID;
             return runtime;
         }
 
@@ -1589,9 +1587,9 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 CheckpointID
+        public Nullable<global::System.Int32> CheckpointID
         {
             get
             {
@@ -1606,8 +1604,8 @@ namespace ITimeU.Models
                 OnCheckpointIDChanged();
             }
         }
-        private global::System.Int32 _CheckpointID;
-        partial void OnCheckpointIDChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _CheckpointID;
+        partial void OnCheckpointIDChanging(Nullable<global::System.Int32> value);
         partial void OnCheckpointIDChanged();
 
         #endregion
