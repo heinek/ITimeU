@@ -75,7 +75,7 @@ namespace ITimeU.Tests.Models
 
             Given("we have an athlete", () =>
             {
-                athlete = new AthleteModel("Per", "Olsen", 1997, new ClubModel("Malvik"), new AthleteClassModel("G14"), 26);
+                athlete = new AthleteModel("Per", "Olsen", 1997, ClubModel.GetOrCreate("Strindheim"), AthleteClassModel.GetOrCreate("G14"), 26);
             });
 
             When("we save the athlete to the database", () =>
@@ -135,8 +135,8 @@ namespace ITimeU.Tests.Models
 
             When("we create two clubs with the same properties", () =>
             {
-                clubModel1 = new ClubModel(name);
-                clubModel2 = new ClubModel(name);
+                clubModel1 = ClubModel.GetOrCreate(name);
+                clubModel2 = ClubModel.GetOrCreate(name);
             });
 
             Then("the two clubs should equal each other (though not same instance)", () =>
@@ -156,8 +156,8 @@ namespace ITimeU.Tests.Models
 
             When("we create two clubs with different properties", () =>
             {
-                clubModel1 = new ClubModel("Lade");
-                clubModel2 = new ClubModel("lade");
+                clubModel1 = ClubModel.GetOrCreate("Lade");
+                clubModel2 = ClubModel.GetOrCreate("Malvik");
             });
 
             Then("the two clubs should not equal each other", () =>

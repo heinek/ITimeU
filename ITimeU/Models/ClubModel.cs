@@ -7,10 +7,10 @@ namespace ITimeU.Models
 {
     public class ClubModel
     {
-        private Club club;
-
         public int Id { get; private set; }
         public string Name { get; private set; }
+
+        private static Entities entitiesStatic = new Entities();
 
         private bool dbEntryCreated
         {
@@ -22,13 +22,13 @@ namespace ITimeU.Models
             }
         }
 
-        public ClubModel(string name)
+        private ClubModel(string name)
         {
             this.Name = name;
             Id = 0;
         }
 
-        public ClubModel(Club club)
+        private ClubModel(Club club)
         {
             Id = club.ClubID;
             Name = club.Name;
@@ -36,22 +36,21 @@ namespace ITimeU.Models
 
         internal int SaveToDb()
         {
-            var context = new Entities();
-
+            var entities = new Entities();
             if (!dbEntryCreated)
-                Id = CreateDbEntity(context);
+                Id = CreateDbEntity(entities);
             else
-                updateDbEntity(context);
+                updateDbEntity(entities);
 
             return Id;
         }
 
-        private int CreateDbEntity(Entities context)
+        private int CreateDbEntity(Entities entities)
         {
             Club club = new Club();
             updateProperties(club);
-            context.Clubs.AddObject(club);
-            context.SaveChanges();
+            entities.Clubs.AddObject(club);
+            entities.SaveChanges();
 
             return club.ClubID;
         }
@@ -61,11 +60,11 @@ namespace ITimeU.Models
             club.Name = Name;
         }
 
-        private void updateDbEntity(Entities context)
+        private void updateDbEntity(Entities entities)
         {
-            Club club = context.Clubs.Single(enitity => enitity.ClubID == Id);
+            Club club = entities.Clubs.Single(enitity => enitity.ClubID == Id);
             updateProperties(club);
-            context.SaveChanges();
+            entities.SaveChanges();
         }
 
         public override bool Equals(object obj)
@@ -86,7 +85,75 @@ namespace ITimeU.Models
 
         public override string ToString()
         {
-            return "[Club, id: " + Id + ", name: " + Name + "]";
+            return Name;
+        }
+
+        /// <summary>
+        /// Retrieves all clubs in the database.
+        /// </summary>
+        /// <returns></returns>
+        public static List<ClubModel> GetAll()
+        {
+            IEnumerable<Club> clubs = entitiesStatic.Clubs.AsEnumerable<Club>();
+
+            List<ClubModel> clubModels = new List<ClubModel>();
+            foreach (Club clubDb in clubs)
+            {
+                ClubModel clubModel = new ClubModel(clubDb);
+                clubModels.Add(clubModel);
+            }
+
+            return clubModels;
+        }
+
+        public static ClubModel GetOrCreate(string name)
+        {
+            Club clubDb = null;
+
+            try
+            {
+                clubDb = getDbEntry(name);
+            }
+            catch (InvalidOperationException e)
+            {
+                clubDb = createDbEntry(name);
+            }
+          
+            return new ClubModel(clubDb);
+        }
+
+        private static Club getDbEntry(string name)
+        {
+            return entitiesStatic.Clubs.Single(temp => temp.Name == name);
+        }
+
+        private static Club createDbEntry(string name)
+        {
+            Club clubDb = new Club();
+            clubDb.Name = name;
+            saveDbEntry(clubDb);
+
+            return clubDb;
+        }
+
+        private static void saveDbEntry(Club clubDb)
+        {
+            entitiesStatic.Clubs.AddObject(clubDb);
+            entitiesStatic.SaveChanges();
+        }
+
+        public static void DeleteIfExists(string name)
+        {
+            try
+            {
+                Club clubDb = entitiesStatic.Clubs.Single(temp => temp.Name == name);
+                entitiesStatic.Clubs.DeleteObject(clubDb);
+                entitiesStatic.SaveChanges();
+            }
+            catch (InvalidOperationException e)
+            {
+                // No DB entry found, do noting
+            }
         }
     }
 }

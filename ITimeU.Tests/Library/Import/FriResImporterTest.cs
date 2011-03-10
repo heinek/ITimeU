@@ -63,7 +63,7 @@ namespace ITimeU.Tests.Library
         }
 
         [TestMethod]
-        public void The_FriRes_Example_Db_Should_Have_Two_Participants()
+        public void The_FriRes_Example_Db_Should_Have_At_Least_Two_Participants()
         {
             FriResImporter importer = null;
             List<AthleteModel> athletes = null;
@@ -80,7 +80,6 @@ namespace ITimeU.Tests.Library
 
             Then("we should get a list of two specific participants", () =>
             {
-                athletes.Count.ShouldBe(2);
                 athletes[0].FirstName.ShouldBe("Bjarne");
                 athletes[0].LastName.ShouldBe("Hansen");
 
@@ -90,6 +89,59 @@ namespace ITimeU.Tests.Library
         }
 
 
+        [TestMethod]
+        public void The_FriRes_Example_Db_Should_Have_Detailed_Athlete_Information()
+        {
+            FriResImporter importer = null;
+            List<AthleteModel> athletes = null;
+
+            Given("we have a importer for the FriRes system", () =>
+            {
+                importer = createFriResImporter();
+            });
+
+            When("we import all participants", () =>
+            {
+                athletes = importer.getAthletes();
+            });
+
+            Then("we should get an athlete with detailed information", () =>
+            {
+                athletes[2].FirstName.ShouldBe("Test");
+                athletes[2].LastName.ShouldBe("Deltaker");
+                athletes[2].Birthday.ShouldBe(1996);
+                athletes[2].Club.ShouldBe(ClubModel.GetOrCreate("Lade"));
+                athletes[2].AthleteClass.ShouldBe(AthleteClassModel.GetOrCreate("Jenter 15"));
+                athletes[2].StartNumber.ShouldBe(99);
+            });
+        }
+
+        [TestMethod]
+        public void The_FriRes_Example_Db_Should_Have_Detailed_Athlete_Information_With_Nulls()
+        {
+            FriResImporter importer = null;
+            List<AthleteModel> athletes = null;
+
+            Given("we have a importer for the FriRes system", () =>
+            {
+                importer = createFriResImporter();
+            });
+
+            When("we import all participants", () =>
+            {
+                athletes = importer.getAthletes();
+            });
+
+            Then("we should get an athlete with detailed information", () =>
+            {
+                athletes[3].FirstName.ShouldBe("Ole");
+                athletes[3].LastName.ShouldBe("Hansen");
+                athletes[3].Birthday.ShouldBe(null);
+                athletes[3].Club.ShouldBe(ClubModel.GetOrCreate("Rognan"));
+                athletes[3].AthleteClass.ShouldBe(AthleteClassModel.GetOrCreate("Jenter 30"));
+                athletes[3].StartNumber.ShouldBe(100);
+            });
+        }
     }
 
     

@@ -1,7 +1,7 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Athlete]    Script Date: 03/07/2011 13:38:00 ******/
+/****** Object:  Table [dbo].[Athlete]    Script Date: 03/08/2011 15:24:42 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -39,6 +39,8 @@ GO
 
 ALTER TABLE [dbo].[Athlete]  WITH CHECK ADD  CONSTRAINT [FK_Athlete_AthleteClass] FOREIGN KEY([ClassID])
 REFERENCES [dbo].[AthleteClass] ([ID])
+ON UPDATE CASCADE
+ON DELETE SET NULL
 GO
 
 ALTER TABLE [dbo].[Athlete] CHECK CONSTRAINT [FK_Athlete_AthleteClass]
@@ -46,6 +48,8 @@ GO
 
 ALTER TABLE [dbo].[Athlete]  WITH CHECK ADD  CONSTRAINT [FK_Athlete_Club] FOREIGN KEY([ClubID])
 REFERENCES [dbo].[Club] ([ClubID])
+ON UPDATE CASCADE
+ON DELETE SET NULL
 GO
 
 ALTER TABLE [dbo].[Athlete] CHECK CONSTRAINT [FK_Athlete_Club]
