@@ -13,6 +13,7 @@
         var btnChangeCP = $("#btnChangeCP");
         var btnEditTimestamp = $("#btnEditTimestamp");
         var btnMerge = $("#btnMerge");
+        var btnDeleteStartnumber = $("#btnDeleteStartnumber");
         var btnDeleteTimestamp = $("#btnDeleteTimestamp");
         var btnUpHour = $("#btnUpHour");
         var btnUpMin = $("#btnUpMin");
@@ -65,6 +66,28 @@
             $.post(url, function (data) {
                 divStartnumberCount.text(data);
                 startnumberCount = parseInt(data, 10);
+            });
+        });
+
+        btnDeleteStartnumber.click(function () {
+            url = "/TimeMerger/DeleteCheckpointOrder/?checkpointId=" + ddlCheckpoints.val() + "&checkpointOrdreId=" + Tools.selectIdFromStartnumberlist();
+            Tools.postUpdate(listStartnumbers, url);
+            url = "/TimeMerger/GetStartnumbersCount/?checkpointId=" + ddlCheckpoints.val();
+            $.post(url, function (data) {
+                divStartnumberCount.text(data);
+                startnumberCount = parseInt(data, 10);
+            });
+        });
+
+        btnDeleteTimestamp.click(function () {
+            url = "/TimeMerger/DeleteRuntime/?checkpointId=" + ddlCheckpoints.val() + "&runtimeid=" + Tools.selectIdFromTimestamplist();
+            Tools.deleteFromList(listTimestamps, url);
+            Tools.ResetEditFields();
+            Tools.DisableControls();
+            url = "/TimeMerger/GetTimestampCount/?checkpointId=" + ddlCheckpoints.val();
+            $.post(url, function (data) {
+                divTimestampCount.text(data);
+                timestampCount = parseInt(data, 10);
             });
         });
 
@@ -150,13 +173,12 @@
         });
     });
 </script>
-<div id="dialog-message" style="display:none" title="Ulikt antall rader">
-	<p>
-		<span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>
-		Antall mellomtider stemmer ikke med antall startnummer, vennligst rett opp.
-	</p>
+<div id="dialog-message" style="display: none" title="Ulikt antall rader">
+    <p>
+        <span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 50px 0;">
+        </span>Antall mellomtider stemmer ikke med antall startnummer, vennligst rett opp.
+    </p>
 </div>
-
 <div class="contentmargin">
     <div class="containter">
         <div class="row">
@@ -220,9 +242,9 @@
                     <br />
                     <br />
                     <br />
-                    <input type="button" id="btnUpStart" class="btnUp" value=" " /><br />
-                    <input type="button" id="btnDeleteTimestamp" class="btnDelete" value=" " /><br />
-                    <input type="button" id="btnDownStart" class="btnDown" value=" " />
+                    <input type="button" id="btnUpStartnumber" class="btnUp" value=" " /><br />
+                    <input type="button" id="btnDeleteStartnumber" class="btnDelete" value=" " /><br />
+                    <input type="button" id="btnDownStartnumber" class="btnDown" value=" " />
                 </div>
                 <div class="right">
                     @Html.ListBox("listTimestamps", new SelectList(ViewBag.Timestamps, "Key", "Value"), new { @class = "listbox" })
@@ -233,15 +255,17 @@
                     <br />
                     <br />
                     <br />
-                                    @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
-                    id="btnUpHour" class="btnUp" value=" " /><input type="button" id="btnDownHour" class="btnDown"
-                        value=" " /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input
-                            type="button" id="btnUpMin" class="btnUp" value=" " /><input type="button" id="btnDownMin"
-                                class="btnDown" value=" " /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input
-                                    type="button" id="btnUpSek" class="btnUp" value=" " /><input type="button" id="btnDownSek"
-                                        class="btnDown" value=" " /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input
-                                            type="button" id="btnUpMS" class="btnUp" value=" " /><input type="button" id="btnDownMS"
-                                                class="btnDown" value=" " /><input type="button" id="btnEditTimestamp" class="btnRegular" value="Endre" />
+                    @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
+                        id="btnUpHour" class="btnUp" value=" " /><input type="button" id="btnDownHour" class="btnDown"
+                            value=" " /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input
+                                type="button" id="btnUpMin" class="btnUp" value=" " /><input type="button" id="btnDownMin"
+                                    class="btnDown" value=" " /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input
+                                        type="button" id="btnUpSek" class="btnUp" value=" " /><input type="button" id="btnDownSek"
+                                            class="btnDown" value=" " /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input
+                                                type="button" id="btnUpMS" class="btnUp" value=" " /><input type="button" id="btnDownMS"
+                                                    class="btnDown" value=" " /><br />
+                    <input type="button" id="btnEditTimestamp" class="btnRegular" value="Endre" />&nbsp;<input
+                        type="button" id="btnDeleteTimestamp" class="btnRegular" value="Slett" />
                 </div>
             </div>
         </div>

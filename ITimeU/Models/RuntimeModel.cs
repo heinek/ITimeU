@@ -49,6 +49,20 @@ namespace ITimeU.Tests.Models
             return new RuntimeModel(runtimeDb.RuntimeID, runtimeDb.Runtime1, checkpointId);
         }
 
+        /// <summary>
+        /// Deletes the runtime.
+        /// </summary>
+        /// <param name="runtimeid">The runtimeid.</param>
+        public static void DeleteRuntime(int runtimeid)
+        {
+            using (var ctx = new Entities())
+            {
+                var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
+                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                ctx.SaveChanges();
+            }
+        }
+
         public static void EditRuntime(int runtimeid, int newRuntime)
         {
             using (var ctx = new Entities())
@@ -94,7 +108,7 @@ namespace ITimeU.Tests.Models
         {
             using (var context = new Entities())
             {
-                return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
+                return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId && runtime.IsMerged == false).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
             }
         }
     }

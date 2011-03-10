@@ -52,7 +52,7 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult GetTimestamps(int checkpointId)
         {
-            return Content(RuntimeModel.GetRuntimes(checkpointId).ToListboxvalues(toTimer: true));
+            return Content(RuntimeModel.GetRuntimes(checkpointId).ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Ascending, toTimer: true));
         }
 
         [HttpPost]
@@ -94,7 +94,7 @@ namespace ITimeU.Controllers
             int.TryParse(sek, out s);
             int.TryParse(msek, out ms);
             RuntimeModel.EditRuntime(orgid, h, m, s, ms);
-            return Content(RuntimeModel.GetRuntimes(cpid).ToListboxvalues(toTimer: true));
+            return Content(RuntimeModel.GetRuntimes(cpid).ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Ascending, toTimer: true));
         }
 
         //[HttpPost]
@@ -108,6 +108,26 @@ namespace ITimeU.Controllers
         {
             TimeMergerModel.Merge(checkpointId, RuntimeModel.GetRuntimes(checkpointId), CheckpointOrderModel.GetCheckpointOrders(checkpointId));
             return Content(TimeMergerModel.GetMergedList(checkpointId).ToListboxvalues());
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCheckpointOrder(int checkpointId, int checkpointOrdreId)
+        {
+            CheckpointOrderModel.DeleteCheckpointOrder(checkpointOrdreId);
+            return Content(CheckpointOrderModel.GetCheckpointOrders(checkpointId).ToListboxvalues());
+        }
+
+        /// <summary>
+        /// Deletes the runtime.
+        /// </summary>
+        /// <param name="runtimeid">The runtimeid.</param>
+        [HttpPost]
+        public ActionResult DeleteRuntime(int checkpointId, string runtimeid)
+        {
+            int rtid;
+            int.TryParse(runtimeid.Trim(), out rtid);
+            RuntimeModel.DeleteRuntime(rtid);
+            return Content(RuntimeModel.GetRuntimes(checkpointId).ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Ascending, toTimer: true));
         }
     }
 }

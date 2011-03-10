@@ -25,7 +25,7 @@ namespace ITimeU.Tests.Models
             timer = new TimerModel();
             checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
             checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             checkpointOrderModel = new CheckpointOrderModel();
         }

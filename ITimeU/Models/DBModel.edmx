@@ -55,6 +55,7 @@
           <Property Name="StartingNumber" Type="int" />
           <Property Name="OrderNumber" Type="int" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsMerged" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Club">
           <Key>
@@ -110,6 +111,7 @@
           <Property Name="RuntimeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Runtime" Type="int" Nullable="false" />
           <Property Name="CheckpointID" Type="int" Nullable="false" />
+          <Property Name="IsMerged" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
@@ -260,6 +262,7 @@
           <Property Type="Int32" Name="Runtime1" Nullable="false" />
           <Property Type="Int32" Name="CheckpointID" Nullable="false" />
           <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_Runtime" FromRole="Runtime" ToRole="RaceIntermediate" />
+          <Property Type="Boolean" Name="IsMerged" Nullable="false" />
         </EntityType>
         <EntityType Name="Checkpoint">
           <Key>
@@ -358,6 +361,7 @@
           <Property Type="Int32" Name="OrderNumber" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" FromRole="CheckpointOrder" ToRole="RaceIntermediate" />
+          <Property Type="Boolean" Name="IsMerged" Nullable="false" />
         </EntityType>
         <Association Name="FK_RaceIntermediate_CheckpointOrder">
           <End Type="ITimeUModel.CheckpointOrder" Role="CheckpointOrder" Multiplicity="1" />
@@ -419,6 +423,7 @@
           <EntitySetMapping Name="Runtimes">
             <EntityTypeMapping TypeName="ITimeUModel.Runtime">
               <MappingFragment StoreEntitySet="Runtime">
+                <ScalarProperty Name="IsMerged" ColumnName="IsMerged" />
                 <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
                 <ScalarProperty Name="Runtime1" ColumnName="Runtime" />
                 <ScalarProperty Name="RuntimeID" ColumnName="RuntimeID" />
@@ -461,6 +466,7 @@
           <EntitySetMapping Name="CheckpointOrders">
             <EntityTypeMapping TypeName="ITimeUModel.CheckpointOrder">
               <MappingFragment StoreEntitySet="CheckpointOrder">
+                <ScalarProperty Name="IsMerged" ColumnName="IsMerged" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
                 <ScalarProperty Name="StartingNumber" ColumnName="StartingNumber" />

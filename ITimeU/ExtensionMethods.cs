@@ -8,11 +8,18 @@ namespace ITimeU
 {
     public static class ExtensionMethods
     {
-        public static string ToListboxvalues(this Dictionary<int, int> dictionary, bool sortDesc = false, bool toTimer = false)
+        public enum ListboxSorting
+        {
+            None,
+            Ascending,
+            Descending
+        }
+        public static string ToListboxvalues(this Dictionary<int, int> dictionary, ListboxSorting sorting = ListboxSorting.None, bool toTimer = false)
         {
             StringBuilder listboxlist = new StringBuilder();
             var tmpDic = new Dictionary<int, int>();
-            if (sortDesc) tmpDic = dictionary.OrderByDescending(dic => dic.Value).ToDictionary(dic => dic.Key, dic => dic.Value);
+            if (sorting == ListboxSorting.Descending) tmpDic = dictionary.OrderByDescending(dic => dic.Value).ToDictionary(dic => dic.Key, dic => dic.Value);
+            else if (sorting == ListboxSorting.Ascending) tmpDic = dictionary.OrderBy(dic => dic.Value).ToDictionary(dic => dic.Key, dic => dic.Value);
             else tmpDic = dictionary;
             foreach (var kvp in tmpDic)
             {

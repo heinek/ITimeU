@@ -96,7 +96,7 @@ namespace ITimeU.Models
             Id = id;
             StartTime = null;
             IsStarted = false;
-            CurrentCheckpointId = GetFirstCheckpoint();
+            CurrentCheckpointId = GetFirstCheckpointId();
             CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
             CheckpointRuntimes.Add(CurrentCheckpointId, new Dictionary<int, int>());
         }
@@ -304,6 +304,7 @@ namespace ITimeU.Models
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
+                ctx.SaveChanges();
             }
         }
 
@@ -335,7 +336,7 @@ namespace ITimeU.Models
         /// Gets the first checkpoint.
         /// </summary>
         /// <returns></returns>
-        public int GetFirstCheckpoint()
+        public int GetFirstCheckpointId()
         {
             using (var ctx = new Entities())
             {

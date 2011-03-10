@@ -76,7 +76,7 @@ Tools.decreaseMilliseconds = function (tb) {
 }
 
 Tools.deleteFromList = function (list, url) {
-    $.get(url, function (data) {
+    $.post(url, function (data) {
         list.html(data);
     });
 }
@@ -85,6 +85,22 @@ Tools.postUpdate = function (control, url) {
     $.post(url, function (data) {
         control.html(data);
     });
+}
+
+Tools.selectIdFromStartnumberlist = function () {
+    var strid = "";
+    $("#listStartnumbers :selected").each(function () {
+        strid = $(this).val();
+    });
+    return strid;
+}
+
+Tools.selectIdFromTimestamplist = function () {
+    var strid = "";
+    $("#listTimestamps :selected").each(function () {
+        strid = $(this).val();
+    });
+    return strid;
 }
 
 Tools.DisableControls = function () {

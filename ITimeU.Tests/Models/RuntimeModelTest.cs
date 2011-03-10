@@ -30,11 +30,11 @@ namespace ITimeU.Tests.Models
             var timer = new TimerModel();
             Given("we have a timer", () => timer = CreateNewTimerModelWithCheckpoints());
 
-            When("we add runtimes", ()=> timer.AddRuntime(400, timer.GetFirstCheckpoint()));
+            When("we add runtimes", ()=> timer.AddRuntime(400, timer.GetFirstCheckpointId()));
 
             Then("we should be able to get all the runtimes", ()=>
             {
-                var runtimes = RuntimeModel.GetRuntimes(timer.GetFirstCheckpoint());
+                var runtimes = RuntimeModel.GetRuntimes(timer.GetFirstCheckpointId());
                 runtimes.ShouldNotBeNull();
             });
         }
@@ -45,11 +45,11 @@ namespace ITimeU.Tests.Models
             var timer = new TimerModel();
             Given("we have a timer", () => timer = CreateNewTimerModelWithCheckpoints());
 
-            When("we add runtimes", () => timer.AddRuntime(400, timer.GetFirstCheckpoint()));
+            When("we add runtimes", () => timer.AddRuntime(400, timer.GetFirstCheckpointId()));
 
             Then("we should be able to get back the runtime we added", () =>
             {
-                var runtimes = RuntimeModel.GetRuntimes(timer.GetFirstCheckpoint());
+                var runtimes = RuntimeModel.GetRuntimes(timer.GetFirstCheckpointId());
                 runtimes.First().Value.ShouldBe(400);
             });
         }
@@ -62,7 +62,7 @@ namespace ITimeU.Tests.Models
             var timer = new TimerModel();
             var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
             var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             return timer;
         }

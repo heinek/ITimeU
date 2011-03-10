@@ -536,11 +536,13 @@ namespace ITimeU.Models
         /// </summary>
         /// <param name="id">Initial value of the ID property.</param>
         /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
-        public static CheckpointOrder CreateCheckpointOrder(global::System.Int32 id, global::System.Boolean isDeleted)
+        /// <param name="isMerged">Initial value of the IsMerged property.</param>
+        public static CheckpointOrder CreateCheckpointOrder(global::System.Int32 id, global::System.Boolean isDeleted, global::System.Boolean isMerged)
         {
             CheckpointOrder checkpointOrder = new CheckpointOrder();
             checkpointOrder.ID = id;
             checkpointOrder.IsDeleted = isDeleted;
+            checkpointOrder.IsMerged = isMerged;
             return checkpointOrder;
         }
 
@@ -669,6 +671,30 @@ namespace ITimeU.Models
         private global::System.Boolean _IsDeleted;
         partial void OnIsDeletedChanging(global::System.Boolean value);
         partial void OnIsDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsMerged
+        {
+            get
+            {
+                return _IsMerged;
+            }
+            set
+            {
+                OnIsMergedChanging(value);
+                ReportPropertyChanging("IsMerged");
+                _IsMerged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsMerged");
+                OnIsMergedChanged();
+            }
+        }
+        private global::System.Boolean _IsMerged;
+        partial void OnIsMergedChanging(global::System.Boolean value);
+        partial void OnIsMergedChanged();
 
         #endregion
     
@@ -1599,12 +1625,14 @@ namespace ITimeU.Models
         /// <param name="runtimeID">Initial value of the RuntimeID property.</param>
         /// <param name="runtime1">Initial value of the Runtime1 property.</param>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
-        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID)
+        /// <param name="isMerged">Initial value of the IsMerged property.</param>
+        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID, global::System.Boolean isMerged)
         {
             Runtime runtime = new Runtime();
             runtime.RuntimeID = runtimeID;
             runtime.Runtime1 = runtime1;
             runtime.CheckpointID = checkpointID;
+            runtime.IsMerged = isMerged;
             return runtime;
         }
 
@@ -1685,6 +1713,30 @@ namespace ITimeU.Models
         private global::System.Int32 _CheckpointID;
         partial void OnCheckpointIDChanging(global::System.Int32 value);
         partial void OnCheckpointIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsMerged
+        {
+            get
+            {
+                return _IsMerged;
+            }
+            set
+            {
+                OnIsMergedChanging(value);
+                ReportPropertyChanging("IsMerged");
+                _IsMerged = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsMerged");
+                OnIsMergedChanged();
+            }
+        }
+        private global::System.Boolean _IsMerged;
+        partial void OnIsMergedChanging(global::System.Boolean value);
+        partial void OnIsMergedChanged();
 
         #endregion
     
