@@ -101,6 +101,9 @@
     <Content Include="Library\Import\ImporterTest.mdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Library\Import\ImporterTest.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ITimeU\ITimeU.csproj">
