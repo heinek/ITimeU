@@ -51,6 +51,18 @@
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_3</ClassName>
+      <DisplayName>TimeStartnumber</DisplayName>
+      <FileName>Screen 1_3.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>150</X>
+        <Y>32</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
   </Screens>
   <Connections />
   <BrandingText>Microsoft SketchFlow Prototype</BrandingText>
@@ -99,7 +111,7 @@
     <Zoom>1</Zoom>
     <Center>
       <X>150</X>
-      <Y>-23.185000000000002</Y>
+      <Y>16.814999999999998</Y>
     </Center>
   </ViewState>
 </Data>

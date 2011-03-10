@@ -7,6 +7,19 @@ namespace ITimeU.Controllers
     {
 
         /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        //[HttpGet]
+        //public ActionResult Index()
+        //{
+        //    Logging.LogWriter.getInstance().Write("yoyoyo");
+        //    var timer = new TimerModel(1);
+        //    ViewBag.Checkpoints = timer.GetCheckpoints();
+        //    Session["timer"] = timer;
+        //    return View("Index", timer);
+        //}
+
+        /// <summary>
         /// Indexes the specified checkpoint_id.
         /// </summary>
         /// <param name="Id">The timer id.</param>

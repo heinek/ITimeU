@@ -68,7 +68,7 @@ namespace ITimeU.Models
             }
         }
 
-        public void AddCheckpointOrderDB(int checkpointId, int startingNumber)
+        public int AddCheckpointOrderDB(int checkpointId, int startingNumber)
         {
             CheckpointOrderModel checkpointOrderModel = new CheckpointOrderModel();
 
@@ -90,22 +90,16 @@ namespace ITimeU.Models
                 checkpointOrder.IsDeleted = false;
                 ctx.CheckpointOrders.AddObject(checkpointOrder);
                 ctx.SaveChanges();
-                checkpointOrderModel.ID = (int)ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.ID).First().ID;
 
+                //checkpointOrderModel.ID = (int)ctx.CheckpointOrders.OrderByDescending(chkpnt => chkpnt.ID).First().ID;
+                checkpointOrderModel.ID = checkpointOrder.ID;
                 CheckpointOrderDic.Add(checkpointOrderModel.ID, startingNumber);
 
                 var dic = CheckpointOrderDic.OrderByDescending(kvp => kvp.Key);
 
                 CheckpointOrderDic = new Dictionary<int, int>(dic.ToDictionary(x => x.Key, y => y.Value));
-
-
-                //foreach (KeyValuePair<int, int> dic in copy.OrderByDescending(dic => dic.Key))
-                //{
-                //    CheckpointOrderDic.Key = dic.Key;
-                //}
-
+                return checkpointOrder.ID;
             }
-            //return checkpointOrderModel;
         }
 
         public void AddCheckpointByOrderDB(int checkpointId, int startingNumber, int orderNumber)

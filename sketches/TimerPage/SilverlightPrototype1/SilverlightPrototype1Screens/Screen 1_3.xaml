@@ -1,0 +1,54 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:ic="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+	x:Class="SilverlightPrototype1Screens.Screen_1_3"
+	Width="640" Height="480">
+	<UserControl.Resources>
+	
+		<DataTemplate x:Key="ItemTemplate">
+			<StackPanel>
+				<TextBlock Text="{Binding Property1}"/>
+			</StackPanel>
+		</DataTemplate>
+	
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot" Background="White">
+		<ComboBox x:Name="dropDownRace" Margin="171,51,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" Height="39" HorizontalAlignment="Left" Width="134"/>
+		<TextBlock x:Name="txtChooseRace" HorizontalAlignment="Left" Margin="23,56,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Velg løp" TextWrapping="Wrap" FontSize="18.667" Width="75" Height="30"/>
+		<TextBlock x:Name="txtChooseRace_Copy" Height="30" HorizontalAlignment="Left" Margin="23,112,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Width="168" FontSize="18.667" Text="Velg passeringspunkt" TextWrapping="Wrap"/>
+		<ComboBox x:Name="dropDownIntermediateTime" Height="39" Margin="171,107,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" HorizontalAlignment="Left" Width="134"/>
+		<Button x:Name="button_Start" Style="{StaticResource Button-Sketch}" Content="Start" 
+			Grid.Row="0" Height="39" Margin="170,164,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="134" d:LayoutOverrides="Height" >
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="Click" SourceName="button_Start">
+					<ic:ChangePropertyAction TargetName="button_Stop" PropertyName="Visibility">
+						<ic:ChangePropertyAction.Value>
+							<Visibility>Visible</Visibility>
+						</ic:ChangePropertyAction.Value>
+					</ic:ChangePropertyAction>
+					<ic:ChangePropertyAction TargetName="button_Reset" PropertyName="IsEnabled">
+						<ic:ChangePropertyAction.Value>False</ic:ChangePropertyAction.Value>
+					</ic:ChangePropertyAction>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</Button>
+		<TextBlock 
+			Grid.Row="0" Margin="21,169,0,0" Style="{StaticResource TextBlock-Sketch}" FontSize="21.333" Text="00:00:00" TextWrapping="Wrap" Width="75" Height="30" HorizontalAlignment="Left" d:LayoutOverrides="Width, Height" VerticalAlignment="Top"/>
+		<ListBox x:Name="lstTimes" Margin="21,0,0,51" Style="{StaticResource ListBox-Sketch}" ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Collection}" HorizontalAlignment="Left" Width="279" Height="170" VerticalAlignment="Bottom"/>
+		<TextBox x:Name="tbTime" Margin="316,0,163,193" Style="{StaticResource TextBox-Sketch}" TextWrapping="Wrap" VerticalAlignment="Bottom"/>
+		<Button x:Name="btnChange" HorizontalAlignment="Right" Margin="0,0,84,193" Style="{StaticResource Button-Sketch}" Width="75" Content="Endre" VerticalAlignment="Bottom">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="Click">
+					<ic:ChangePropertyAction TargetName="tbTime" PropertyName="Text"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</Button>
+		<TextBlock x:Name="txtChooseRace_Copy1" HorizontalAlignment="Left" Margin="23,217,0,233" Style="{StaticResource TextBlock-Sketch}" Width="124" FontSize="18.667" Text="Startnummer" TextWrapping="Wrap"/>
+		<TextBox x:Name="tbTime_Copy" Margin="171,212,0,0" Style="{StaticResource TextBox-Sketch}" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="134"/>
+	</Grid>
+</UserControl>

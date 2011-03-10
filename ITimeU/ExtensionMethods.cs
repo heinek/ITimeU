@@ -65,7 +65,28 @@ namespace ITimeU
             {
                 using (var context = new Entities())
                 {
-                    listboxlist.Append(string.Format("<option value=\"{0}\">{1}: {2}</option>", raceintermediate.CheckpointOrderID, context.CheckpointOrders.Where(checkpointOrder => checkpointOrder.ID == raceintermediate.CheckpointOrderID).Single().StartingNumber, context.Runtimes.Where(runtime => runtime.RuntimeID == raceintermediate.RuntimeId).Single().Runtime1.ToTimerString()));
+                    listboxlist.Append(string.Format("<option value=\"{0}\">{1}: {2}</option>", raceintermediate.CheckpointOrderID, context.CheckpointOrders.
+                        Where(checkpointOrder => checkpointOrder.ID == raceintermediate.CheckpointOrderID).
+                        Single().StartingNumber, context.Runtimes.
+                        Where(runtime => runtime.RuntimeID == raceintermediate.RuntimeId).
+                        Single().Runtime1.ToTimerString()));
+                }
+            }
+            return listboxlist.ToString();
+        }
+
+        public static string ToListboxvalues(this List<RaceIntermediateModel> lstRaceintermediates)
+        {
+            StringBuilder listboxlist = new StringBuilder();
+            foreach (var raceintermediate in lstRaceintermediates)
+            {
+                using (var context = new Entities())
+                {
+                    listboxlist.Append(string.Format("<option value=\"{0}\">{1}: {2}</option>", raceintermediate.CheckpointOrderID, context.CheckpointOrders.
+                        Where(checkpointOrder => checkpointOrder.ID == raceintermediate.CheckpointOrderID).
+                        Single().StartingNumber, context.Runtimes.
+                        Where(runtime => runtime.RuntimeID == raceintermediate.RuntimeId).
+                        Single().Runtime1.ToTimerString()));
                 }
             }
             return listboxlist.ToString();

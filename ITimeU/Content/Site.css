@@ -403,7 +403,14 @@ table th
 	border: 1px solid #CCC;
 	margin-bottom: 10px;
 }
-
+.textboxmedium
+{
+	width: 24px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
+}
 .textboxsmall
 {
 	width: 15px;

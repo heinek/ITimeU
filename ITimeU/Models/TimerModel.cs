@@ -89,10 +89,6 @@ namespace ITimeU.Models
         /// <param name="id">The id.</param>
         public TimerModel(int id)
         {
-            using (var context = new Entities())
-            {
-                var timer = context.Timers.Single(tmr => tmr.TimerID == id);
-            }
             Id = id;
             StartTime = null;
             IsStarted = false;
