@@ -21,6 +21,11 @@ namespace ITimeU.Controllers
             return View("Index", timer);
         }
 
+        [HttpGet]
+        public ActionResult Testing()
+        {
+            return View("Testing");
+        }
         /// <summary>
         /// Starts this instance.
         /// </summary>
@@ -109,7 +114,7 @@ namespace ITimeU.Controllers
 
         private string SaveToSessionAndReturnRuntimes(TimerModel timer)
         {
-            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(true, true);
+            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Descending, toTimer: true);
             Session["timer"] = timer;
             return runtimeDic;
         }

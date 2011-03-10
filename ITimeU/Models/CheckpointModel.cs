@@ -162,7 +162,5 @@ namespace ITimeU.Models
         {
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
         }
-
-
     }
 }

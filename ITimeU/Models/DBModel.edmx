@@ -11,11 +11,28 @@
           <EntitySet Name="Club" EntityType="ITimeUModel.Store.Club" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Participant" EntityType="ITimeUModel.Store.Participant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Race" EntityType="ITimeUModel.Store.Race" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RaceIntermediate" EntityType="ITimeUModel.Store.RaceIntermediate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Runtime" EntityType="ITimeUModel.Store.Runtime" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Timer" EntityType="ITimeUModel.Store.Timer" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_Checkpoint_Timer" Association="ITimeUModel.Store.FK_Checkpoint_Timer">
             <End Role="Timer" EntitySet="Timer" />
             <End Role="Checkpoint" EntitySet="Checkpoint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceIntermediate_Checkpoint" Association="ITimeUModel.Store.FK_RaceIntermediate_Checkpoint">
+            <End Role="Checkpoint" EntitySet="Checkpoint" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceIntermediate_CheckpointOrder" Association="ITimeUModel.Store.FK_RaceIntermediate_CheckpointOrder">
+            <End Role="CheckpointOrder" EntitySet="CheckpointOrder" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceIntermediate_Runtime" Association="ITimeUModel.Store.FK_RaceIntermediate_Runtime">
+            <End Role="Runtime" EntitySet="Runtime" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Timer_Race" Association="ITimeUModel.Store.FK_Timer_Race">
+            <End Role="Race" EntitySet="Race" />
+            <End Role="Timer" EntitySet="Timer" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Checkpoint">
@@ -37,7 +54,8 @@
           <Property Name="CheckpointID" Type="int" />
           <Property Name="StartingNumber" Type="int" />
           <Property Name="OrderNumber" Type="int" />
-          <Property Name="IsDeleted" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsMerged" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Club">
           <Key>
@@ -75,19 +93,32 @@
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="RaceIntermediate">
+          <Key>
+            <PropertyRef Name="CheckpointID" />
+            <PropertyRef Name="CheckpointOrderID" />
+            <PropertyRef Name="RuntimeId" />
+          </Key>
+          <Property Name="CheckpointID" Type="int" Nullable="false" />
+          <Property Name="CheckpointOrderID" Type="int" Nullable="false" />
+          <Property Name="RuntimeId" Type="int" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Runtime">
           <Key>
             <PropertyRef Name="RuntimeID" />
           </Key>
           <Property Name="RuntimeID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Runtime" Type="int" Nullable="false" />
-          <Property Name="CheckpointID" Type="int" />
+          <Property Name="CheckpointID" Type="int" Nullable="false" />
+          <Property Name="IsMerged" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
             <PropertyRef Name="TimerID" />
           </Key>
           <Property Name="TimerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RaceID" Type="int" />
           <Property Name="StartTime" Type="datetime" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
@@ -104,6 +135,54 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RaceIntermediate_Checkpoint">
+          <End Role="Checkpoint" Type="ITimeUModel.Store.Checkpoint" Multiplicity="1" />
+          <End Role="RaceIntermediate" Type="ITimeUModel.Store.RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checkpoint">
+              <PropertyRef Name="CheckpointID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="CheckpointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceIntermediate_CheckpointOrder">
+          <End Role="CheckpointOrder" Type="ITimeUModel.Store.CheckpointOrder" Multiplicity="1" />
+          <End Role="RaceIntermediate" Type="ITimeUModel.Store.RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CheckpointOrder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="CheckpointOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceIntermediate_Runtime">
+          <End Role="Runtime" Type="ITimeUModel.Store.Runtime" Multiplicity="1" />
+          <End Role="RaceIntermediate" Type="ITimeUModel.Store.RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Runtime">
+              <PropertyRef Name="RuntimeID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="RuntimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Timer_Race">
+          <End Role="Race" Type="ITimeUModel.Store.Race" Multiplicity="0..1" />
+          <End Role="Timer" Type="ITimeUModel.Store.Timer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceID" />
+            </Principal>
+            <Dependent Role="Timer">
+              <PropertyRef Name="RaceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -113,14 +192,31 @@
           <EntitySet Name="Participants" EntityType="ITimeUModel.Participant" />
           <EntitySet Name="Races" EntityType="ITimeUModel.Race" />
           <EntitySet Name="Runtimes" EntityType="ITimeUModel.Runtime" />
-          <EntitySet Name="CheckpointOrders" EntityType="ITimeUModel.CheckpointOrder" />
           <EntitySet Name="Checkpoints" EntityType="ITimeUModel.Checkpoint" />
           <EntitySet Name="Timers" EntityType="ITimeUModel.Timer" />
           <AssociationSet Name="FK_Checkpoint_Timer" Association="ITimeUModel.FK_Checkpoint_Timer">
             <End Role="Timer" EntitySet="Timers" />
             <End Role="Checkpoint" EntitySet="Checkpoints" />
           </AssociationSet>
-        </EntityContainer>
+          <AssociationSet Name="FK_Timer_Race" Association="ITimeUModel.FK_Timer_Race">
+            <End Role="Race" EntitySet="Races" />
+            <End Role="Timer" EntitySet="Timers" />
+          </AssociationSet>
+          <EntitySet Name="RaceIntermediates" EntityType="ITimeUModel.RaceIntermediate" />
+          <AssociationSet Name="FK_RaceIntermediate_Checkpoint" Association="ITimeUModel.FK_RaceIntermediate_Checkpoint">
+            <End Role="Checkpoint" EntitySet="Checkpoints" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceIntermediate_Runtime" Association="ITimeUModel.FK_RaceIntermediate_Runtime">
+            <End Role="Runtime" EntitySet="Runtimes" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediates" />
+          </AssociationSet>
+          <EntitySet Name="CheckpointOrders" EntityType="ITimeUModel.CheckpointOrder" />
+          <AssociationSet Name="FK_RaceIntermediate_CheckpointOrder" Association="ITimeUModel.FK_RaceIntermediate_CheckpointOrder">
+            <End Role="CheckpointOrder" EntitySet="CheckpointOrders" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediates" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="Club">
           <Key>
             <PropertyRef Name="ClubID" />
@@ -156,6 +252,7 @@
           <Property Type="String" Name="Name" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="StartDate" Nullable="false" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="Timers" Relationship="ITimeUModel.FK_Timer_Race" FromRole="Race" ToRole="Timer" />
         </EntityType>
         <EntityType Name="Runtime">
           <Key>
@@ -164,26 +261,8 @@
           <Property Type="Int32" Name="RuntimeID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="Int32" Name="Runtime1" Nullable="false" />
           <Property Type="Int32" Name="CheckpointID" Nullable="false" />
-        </EntityType>
-        <EntityType Name="RaceIntermediate">
-          <Key>
-            <PropertyRef Name="CheckpointID" />
-            <PropertyRef Name="ParticipantID" />
-          </Key>
-          <Property Type="Int32" Name="CheckpointID" Nullable="false" />
-          <Property Type="Int32" Name="ParticipantID" Nullable="false" />
-          <Property Type="DateTime" Name="TimeStamp" />
-          <Property Type="Boolean" Name="IsDeleted" />
-        </EntityType>
-        <EntityType Name="CheckpointOrder">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="CheckpointID" />
-          <Property Type="Int32" Name="StartingNumber" />
-          <Property Type="Int32" Name="OrderNumber" />
-          <Property Type="Boolean" Name="IsDeleted" />
+          <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_Runtime" FromRole="Runtime" ToRole="RaceIntermediate" />
+          <Property Type="Boolean" Name="IsMerged" Nullable="false" />
         </EntityType>
         <EntityType Name="Checkpoint">
           <Key>
@@ -196,6 +275,7 @@
           <Property Type="Int32" Name="TimerID" Nullable="false" />
           <Property Type="Int32" Name="SortOrder" Nullable="false" />
           <NavigationProperty Name="Timer" Relationship="ITimeUModel.FK_Checkpoint_Timer" FromRole="Checkpoint" ToRole="Timer" />
+          <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_Checkpoint" FromRole="Checkpoint" ToRole="RaceIntermediate" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
@@ -206,6 +286,8 @@
           <Property Type="DateTime" Name="EndTime" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <NavigationProperty Name="Checkpoints" Relationship="ITimeUModel.FK_Checkpoint_Timer" FromRole="Timer" ToRole="Checkpoint" />
+          <Property Type="Int32" Name="RaceID" />
+          <NavigationProperty Name="Race" Relationship="ITimeUModel.FK_Timer_Race" FromRole="Timer" ToRole="Race" />
         </EntityType>
         <Association Name="FK_Checkpoint_Timer">
           <End Type="ITimeUModel.Timer" Role="Timer" Multiplicity="1" />
@@ -219,7 +301,80 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        
+        <Association Name="FK_Timer_Race">
+          <End Type="ITimeUModel.Race" Role="Race" Multiplicity="0..1" />
+          <End Type="ITimeUModel.Timer" Role="Timer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceID" />
+            </Principal>
+            <Dependent Role="Timer">
+              <PropertyRef Name="RaceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RaceIntermediate">
+          <Key>
+            <PropertyRef Name="CheckpointID" />
+            <PropertyRef Name="CheckpointOrderID" />
+            <PropertyRef Name="RuntimeId" />
+          </Key>
+          <Property Type="Int32" Name="CheckpointID" Nullable="false" />
+          <Property Type="Int32" Name="CheckpointOrderID" Nullable="false" />
+          <Property Type="Int32" Name="RuntimeId" Nullable="false" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="Checkpoint" Relationship="ITimeUModel.FK_RaceIntermediate_Checkpoint" FromRole="RaceIntermediate" ToRole="Checkpoint" />
+          <NavigationProperty Name="Runtime" Relationship="ITimeUModel.FK_RaceIntermediate_Runtime" FromRole="RaceIntermediate" ToRole="Runtime" />
+          <NavigationProperty Name="CheckpointOrder" Relationship="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" FromRole="RaceIntermediate" ToRole="CheckpointOrder" />
+        </EntityType>
+        <Association Name="FK_RaceIntermediate_Checkpoint">
+          <End Type="ITimeUModel.Checkpoint" Role="Checkpoint" Multiplicity="1" />
+          <End Type="ITimeUModel.RaceIntermediate" Role="RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checkpoint">
+              <PropertyRef Name="CheckpointID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="CheckpointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceIntermediate_Runtime">
+          <End Type="ITimeUModel.Runtime" Role="Runtime" Multiplicity="1" />
+          <End Type="ITimeUModel.RaceIntermediate" Role="RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Runtime">
+              <PropertyRef Name="RuntimeID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="RuntimeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CheckpointOrder">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Type="Int32" Name="ID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="CheckpointID" />
+          <Property Type="Int32" Name="StartingNumber" />
+          <Property Type="Int32" Name="OrderNumber" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" FromRole="CheckpointOrder" ToRole="RaceIntermediate" />
+          <Property Type="Boolean" Name="IsMerged" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_RaceIntermediate_CheckpointOrder">
+          <End Type="ITimeUModel.CheckpointOrder" Role="CheckpointOrder" Multiplicity="1" />
+          <End Type="ITimeUModel.RaceIntermediate" Role="RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CheckpointOrder">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="CheckpointOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
    </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -268,20 +423,10 @@
           <EntitySetMapping Name="Runtimes">
             <EntityTypeMapping TypeName="ITimeUModel.Runtime">
               <MappingFragment StoreEntitySet="Runtime">
+                <ScalarProperty Name="IsMerged" ColumnName="IsMerged" />
                 <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
                 <ScalarProperty Name="Runtime1" ColumnName="Runtime" />
                 <ScalarProperty Name="RuntimeID" ColumnName="RuntimeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CheckpointOrders">
-            <EntityTypeMapping TypeName="ITimeUModel.CheckpointOrder">
-              <MappingFragment StoreEntitySet="CheckpointOrder">
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-                <ScalarProperty Name="StartingNumber" ColumnName="StartingNumber" />
-                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -300,10 +445,33 @@
           <EntitySetMapping Name="Timers">
             <EntityTypeMapping TypeName="ITimeUModel.Timer">
               <MappingFragment StoreEntitySet="Timer">
+                <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="TimerID" ColumnName="TimerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RaceIntermediates">
+            <EntityTypeMapping TypeName="ITimeUModel.RaceIntermediate">
+              <MappingFragment StoreEntitySet="RaceIntermediate">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="RuntimeId" ColumnName="RuntimeId" />
+                <ScalarProperty Name="CheckpointOrderID" ColumnName="CheckpointOrderID" />
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CheckpointOrders">
+            <EntityTypeMapping TypeName="ITimeUModel.CheckpointOrder">
+              <MappingFragment StoreEntitySet="CheckpointOrder">
+                <ScalarProperty Name="IsMerged" ColumnName="IsMerged" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+                <ScalarProperty Name="StartingNumber" ColumnName="StartingNumber" />
+                <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -332,12 +500,35 @@
         <EntityTypeShape EntityType="ITimeUModel.Participant" Width="1.5" PointX="2.75" PointY="3.75" Height="3.3263964843750031" />
         <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="6.75" PointY="3.875" Height="1.7879850260416674" />
         <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="4.875" PointY="0.75" Height="1.4033821614583388" />
-        <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="4.75" PointY="2.625" Height="1.7691861184438067" />
         <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="3.125" PointY="0.75" Height="2.1010138980547595" />
         <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="0.875" PointY="1" Height="1.7691861184438089" />
         <AssociationConnector Association="ITimeUModel.FK_Checkpoint_Timer" >
-          <ConnectorPoint PointX="2.375" PointY="1.8845930592219045" />
-          <ConnectorPoint PointX="3.125" PointY="1.8845930592219045" />
+          <ConnectorPoint PointX="2.375" PointY="2.0084638939301174" />
+          <ConnectorPoint PointX="3.125" PointY="2.0084638939301174" />
+        </AssociationConnector>
+        <AssociationConnector Association="ITimeUModel.FK_Timer_Race" >
+          <ConnectorPoint PointX="6.75" PointY="3.875" />
+          <ConnectorPoint PointX="6.375" PointY="3.5" />
+          <ConnectorPoint PointX="6.375" PointY="3.4760138980547577" />
+          <ConnectorPoint PointX="4.864583333333333" PointY="3.4760138980547572" />
+          <ConnectorPoint PointX="4.697916666666667" PointY="3.4760138980547577" />
+          <ConnectorPoint PointX="2.75" PointY="3.4760138980547577" />
+          <ConnectorPoint PointX="2.3750000000000004" PointY="3.1010138980547581" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="7.125" PointY="0.75" Height="2.1010138980547595" />
+        <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Checkpoint" >
+          <ConnectorPoint PointX="4.625" PointY="2.6333930633465452" />
+          <ConnectorPoint PointX="7.125" PointY="2.6333930633465452" />
+        </AssociationConnector>
+        <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Runtime" >
+          <ConnectorPoint PointX="6.375" PointY="1.5516361143191657" />
+          <ConnectorPoint PointX="7.125" PointY="1.5516361143191657" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="4.75" PointY="3.875" Height="1.9351000082492824" />
+        <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" >
+          <ConnectorPoint PointX="4.78125" PointY="3.875" />
+          <ConnectorPoint PointX="4.78125" PointY="2.7734559807006529" />
+          <ConnectorPoint PointX="7.125" PointY="2.7734559807006529" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

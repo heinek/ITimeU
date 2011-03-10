@@ -1,0 +1,287 @@
+﻿@model ITimeU.Models.TimeMergerModel
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" href="@Url.Content("~/Content/jquery-ui-1.8.10.custom.css")">
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var btnChangeRace = $("#btnChangeRace");
+        var btnChangeTimer = $("#btnChangeTimer");
+        var btnChangeCP = $("#btnChangeCP");
+        var btnEditTimestamp = $("#btnEditTimestamp");
+        var btnMerge = $("#btnMerge");
+        var btnDeleteStartnumber = $("#btnDeleteStartnumber");
+        var btnDeleteTimestamp = $("#btnDeleteTimestamp");
+        var btnUpHour = $("#btnUpHour");
+        var btnUpMin = $("#btnUpMin");
+        var btnUpSek = $("#btnUpSek");
+        var btnUpMS = $("#btnUpMS");
+        var btnDownHour = $("#btnDownHour");
+        var btnDownMin = $("#btnDownMin");
+        var btnDownSek = $("#btnDownSek");
+        var btnDownMS = $("#btnDownMS");
+        var ddlRaces = $("#ddlRaces");
+        var ddlTimers = $("#ddlTimers");
+        var ddlCheckpoints = $("#ddlCheckpoints");
+        var startnumberCount = 0;
+        var timestampCount = 0;
+        var divStartnumberCount = $("#divStartnumberCount");
+        var divTimestampCount = $("#divTimestampCount");
+        var listTimestamps = $("#listTimestamps");
+        var listStartnumbers = $("#listStartnumbers");
+        var listMerged = $("#listMerged");
+        var tbTimestamp = $("#tbTimestamp");
+        var tbEditHour = $("#tbEditHour");
+        var tbEditMin = $("#tbEditMin");
+        var tbEditSek = $("#tbEditSek");
+        var tbEditMSek = $("#tbEditMSek");
+        var initialRuntimeId;
+
+        btnChangeRace.click(function () {
+            url = "/TimeMerger/GetTimers/?raceId=" + ddlRaces.val();
+            Tools.postUpdate(ddlTimers, url);
+        });
+
+        btnChangeTimer.click(function () {
+            url = "/TimeMerger/GetCheckpoints/?timerId=" + ddlTimers.val();
+            Tools.postUpdate(ddlCheckpoints, url);
+        });
+
+        btnChangeCP.click(function () {
+            url = "/TimeMerger/GetTimestamps/?checkpointId=" + ddlCheckpoints.val();
+            Tools.postUpdate(listTimestamps, url);
+
+            url = "/TimeMerger/GetTimestampCount/?checkpointId=" + ddlCheckpoints.val();
+            $.post(url, function (data) {
+                divTimestampCount.text(data);
+                timestampCount = parseInt(data, 10);
+            });
+            url = "/TimeMerger/GetStartnumbers/?checkpointId=" + ddlCheckpoints.val();
+            Tools.postUpdate(listStartnumbers, url);
+
+            url = "/TimeMerger/GetStartnumbersCount/?checkpointId=" + ddlCheckpoints.val();
+            $.post(url, function (data) {
+                divStartnumberCount.text(data);
+                startnumberCount = parseInt(data, 10);
+            });
+        });
+
+        btnDeleteStartnumber.click(function () {
+            url = "/TimeMerger/DeleteCheckpointOrder/?checkpointId=" + ddlCheckpoints.val() + "&checkpointOrdreId=" + Tools.selectIdFromStartnumberlist();
+            Tools.postUpdate(listStartnumbers, url);
+            url = "/TimeMerger/GetStartnumbersCount/?checkpointId=" + ddlCheckpoints.val();
+            $.post(url, function (data) {
+                divStartnumberCount.text(data);
+                startnumberCount = parseInt(data, 10);
+            });
+        });
+
+        btnDeleteTimestamp.click(function () {
+            url = "/TimeMerger/DeleteRuntime/?checkpointId=" + ddlCheckpoints.val() + "&runtimeid=" + Tools.selectIdFromTimestamplist();
+            Tools.deleteFromList(listTimestamps, url);
+            Tools.ResetEditFields();
+            Tools.DisableControls();
+            url = "/TimeMerger/GetTimestampCount/?checkpointId=" + ddlCheckpoints.val();
+            $.post(url, function (data) {
+                divTimestampCount.text(data);
+                timestampCount = parseInt(data, 10);
+            });
+        });
+
+        btnMerge.click(function () {
+            if (timestampCount == startnumberCount) {
+                url = "/TimeMerger/Merge/?checkpointId=" + ddlCheckpoints.val();
+                Tools.postUpdate(listMerged, url);
+                listStartnumbers.html("");
+                listTimestamps.html("");
+                divStartnumberCount.text("0");
+                divTimestampCount.text("0");
+            }
+            else {
+                $("#dialog:ui-dialog").dialog("destroy");
+                $("#dialog-message").dialog({
+                    modal: true,
+                    buttons: {
+                        Ok: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+        });
+
+        btnUpHour.click(function () {
+            Tools.increaseHour(tbEditHour);
+        });
+
+        btnUpMin.click(function () {
+            Tools.increaseMinutes(tbEditMin);
+        });
+
+        btnUpSek.click(function () {
+            Tools.increaseSeconds(tbEditSek);
+        });
+
+        btnUpMS.click(function () {
+            Tools.increaseMilliseconds(tbEditMSek);
+        });
+
+        btnDownHour.click(function () {
+            Tools.decreaseHour(tbEditHour);
+        });
+
+        btnDownMin.click(function () {
+            Tools.decreaseMinutes(tbEditMin);
+        });
+
+        btnDownSek.click(function () {
+            Tools.decreaseSeconds(tbEditSek);
+        });
+
+        btnDownMS.click(function () {
+            Tools.decreaseMilliseconds(tbEditMSek);
+        });
+
+        listTimestamps.change(function () {
+            var strh = "";
+            var strm = "";
+            var strs = "";
+            var strms = "";
+            var strid = "";
+            $("#listTimestamps :selected").each(function () {
+                strid = $(this).val();
+                strh = $(this).text().substring(0, 1);
+                strm = $(this).text().substring(2, 4);
+                strs = $(this).text().substring(5, 7);
+                strms = $(this).text().substring(8, 9);
+            });
+            initialRuntimeId = strid;
+            tbEditHour.val(strh);
+            tbEditMin.val(strm);
+            tbEditSek.val(strs);
+            tbEditMSek.val(strms);
+            Tools.EnableControls();
+        });
+
+        btnEditTimestamp.click(function () {
+            url = "/TimeMerger/EditRuntime/?checkpointId=" + ddlCheckpoints.val() + "&orginalruntimeid=" + initialRuntimeId + "&hour=" + tbEditHour.val() + "&min=" + tbEditMin.val() + "&sek=" + tbEditSek.val() + "&msek=" + tbEditMSek.val();
+            Tools.postUpdate(listTimestamps, url);
+            Tools.ResetEditFields();
+        });
+    });
+</script>
+<div id="dialog-message" style="display: none" title="Ulikt antall rader">
+    <p>
+        <span class="ui-icon ui-icon-circle-check" style="float: left; margin: 0 7px 50px 0;">
+        </span>Antall mellomtider stemmer ikke med antall startnummer, vennligst rett opp.
+    </p>
+</div>
+<div class="contentmargin">
+    <div class="containter">
+        <div class="row">
+            <div class="left">
+                <div class="editor-label" style="vertical-align: top">
+                    <b>@Html.Label("lblRace", "Løp:")</b></div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    <br />
+                    @Html.DropDownList("ddlRaces", new SelectList(ViewBag.Races, "RaceId", "Name"), "Velg løp...")
+                    <input type="button" id="btnChangeRace" class="btnGo" value=" " />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">
+                <div class="editor-label" style="vertical-align: top">
+                    <b>@Html.Label("lblTimer", "Timer:")</b></div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    <br />
+                    @Html.DropDownList("ddlTimers", new SelectList(ViewBag.Timers, "TimerId", "StartTime"), "Velg timer...")
+                    <input type="button" id="btnChangeTimer" class="btnGo" value=" " />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="left">
+                <div class="editor-label" style="vertical-align: top">
+                    <b>@Html.Label("lblCheckpoint", "Passeringspunkt:")</b></div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    <br />
+                    @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"), "Velg passeringspunkt...")
+                    <input type="button" id="btnChangeCP" class="btnGo" value=" " />
+                </div>
+            </div>
+        </div>
+        <div class="containter">
+            <div class="row">
+                <div class="left">
+                    <b>@Html.Label("lblStartnumbers", "Startnummer")</b>
+                </div>
+                <div class="center">
+                    &nbsp;
+                </div>
+                <div class="right">
+                    <b>@Html.Label("lblTimestamps", "Mellomtider")</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    @Html.ListBox("listStartnumbers", new SelectList(ViewBag.Startnumbers, "Key", "Value"), new { @class = "listbox" })
+                    <br />
+                    Antall rader:<span id="divStartnumberCount">0</span>
+                </div>
+                <div class="center">
+                    <br />
+                    <br />
+                    <br />
+                    <input type="button" id="btnUpStartnumber" class="btnUp" value=" " /><br />
+                    <input type="button" id="btnDeleteStartnumber" class="btnDelete" value=" " /><br />
+                    <input type="button" id="btnDownStartnumber" class="btnDown" value=" " />
+                </div>
+                <div class="right">
+                    @Html.ListBox("listTimestamps", new SelectList(ViewBag.Timestamps, "Key", "Value"), new { @class = "listbox" })
+                    <br />
+                    Antall rader:<span id="divTimestampCount">0</span>
+                </div>
+                <div class="rightmost">
+                    <br />
+                    <br />
+                    <br />
+                    @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
+                        id="btnUpHour" class="btnUp" value=" " /><input type="button" id="btnDownHour" class="btnDown"
+                            value=" " /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input
+                                type="button" id="btnUpMin" class="btnUp" value=" " /><input type="button" id="btnDownMin"
+                                    class="btnDown" value=" " /><span class="timer">:</span>@Html.TextBox("tbEditSek", null, new { @class = "textboxsmall" })<input
+                                        type="button" id="btnUpSek" class="btnUp" value=" " /><input type="button" id="btnDownSek"
+                                            class="btnDown" value=" " /><span class="timer">.</span>@Html.TextBox("tbEditMSek", null, new { @class = "textboxxsmall" })<input
+                                                type="button" id="btnUpMS" class="btnUp" value=" " /><input type="button" id="btnDownMS"
+                                                    class="btnDown" value=" " /><br />
+                    <input type="button" id="btnEditTimestamp" class="btnRegular" value="Endre" />&nbsp;<input
+                        type="button" id="btnDeleteTimestamp" class="btnRegular" value="Slett" />
+                </div>
+            </div>
+        </div>
+        <div class="containter">
+            <div class="row">
+                <div class="center">
+                    <input type="button" id="btnMerge" class="btnRegular" value="Slå sammen" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="center">
+                    @Html.ListBox("listMerged", new SelectList(ViewBag.Mergedlist, "Key", "Value"), new { @class = "listboxwide" })
+                    <br />
+                    <input type="button" id="btnApprove" class="btnRegular" value="Godkjenn" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

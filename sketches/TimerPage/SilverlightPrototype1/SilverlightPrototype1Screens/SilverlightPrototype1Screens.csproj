@@ -83,6 +83,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="SampleData\ResultList\ResultList.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SampleData\Timestamps\Timestamps.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +96,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screen 1_1.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screen 1_2.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -113,6 +121,9 @@
     <Compile Include="SampleData\Races\Races.xaml.cs">
       <DependentUpon>Races.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SampleData\ResultList\ResultList.xaml.cs">
+      <DependentUpon>ResultList.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SampleData\Timestamps\Timestamps.xaml.cs">
       <DependentUpon>Timestamps.xaml</DependentUpon>
     </Compile>
@@ -121,6 +132,9 @@
     </Compile>
     <Compile Include="Screen 1_1.xaml.cs">
       <DependentUpon>Screen 1_1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screen 1_2.xaml.cs">
+      <DependentUpon>Screen 1_2.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen 2.xaml.cs">
       <DependentUpon>Screen 2.xaml</DependentUpon>
@@ -146,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <DesignTimeOnly Include="SampleData\Order\Order.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <DesignTimeOnly Include="SampleData\ResultList\ResultList.xsd" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
 </Project>
