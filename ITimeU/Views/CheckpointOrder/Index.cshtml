@@ -19,6 +19,8 @@
         var btnChange = $("#btnChange");
         var btnDelete = $("#btnDelete");
         var lblStatus = $("#lblStatus");
+        var btnUp = $("#btnUp");
+        var btnDown = $("#btnDown");
 
         var handler = new CheckpointOrderHandler();
 
@@ -35,8 +37,26 @@
 
         handler.setChangeAction(
             listCheckpointOrders,
-            tbEdit
+            tbEdit,
+            btnUp,
+            btnDown
         );
+
+        handler.setMoveUpAction(
+            listCheckpointOrders,
+            btnUp
+        );
+
+        handler.setMoveDownAction(
+            listCheckpointOrders,
+            btnDown
+        );
+
+        handler.setddCheckpointChangeAction(
+        ddCheckpoints
+        );
+
+        
 
     });
 </script>
@@ -54,15 +74,7 @@
             @Html.Label("lblCheckpoint", "Checkpoint") 
         </div> 
         <div class="editor-field"> 
-            @Html.ListBox("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))  
-            <script type="text/javascript">
-                $(document).change(function () {
-                    var url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + $('#ddCheckpoint').val();
-                    $.get(url, function (data) {
-                        $('#lstCheckpointOrders').html(data);
-                    });
-                });
-            </script>                     
+            @Html.ListBox("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))                        
         </div> 
 
         <div class="editor-label"> 
@@ -75,23 +87,39 @@
                     var StartNumber = $('#txtStartingNumber');
                     var checkNumber = true;
 
+                    var startNumberList = $('#lstCheckpointOrders');
+
                     StartNumber.keypress(function (e) {
                         if (String.fromCharCode(e.keyCode).match(/[^0-9\r]/g))
                         { checkNumber = false; }
                         if (e.keyCode == 13) {
                             //alert("Enter Pressed");
                             if (checkNumber == true && StartNumber.val() != '') {
-
-                                    $('#lstCheckpointOrders').html(data);
+                                var itemExists = false;                                
+                                $("#lstCheckpointOrders option").each(function () { //Check for duplicate startNumber in List
+                                    if ($(this).text() == StartNumber.val()) {
+                                        itemExists = true;                                        
+                                    }                                    
+                                });
+                                if (itemExists) {
+                                    $('#ErrorMessage').show().html('** Start Number already exist');
+                                    StartNumber.select()
+                                }
+                                else {
+                                    var url = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val();
+                                    $.get(url, function (data) {
+                                        $('#lstCheckpointOrders').html(data);
                             //                            var tmpOrder = checkpointOrders;
                             //                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
                             //                            $('#lstCheckpointOrders').html(checkpointOrders);
                             //                            $('#txtStartingNumber').val("");
-                            $('#ErrorMessage').hide();
-                            StartNumber.select();
-                        }
+                                        $('#ErrorMessage').hide();                                        
+                                        StartNumber.select();
+                                    });
+                                }
+                            }
                         else {
-                            $('#ErrorMessage').show();
+                                $('#ErrorMessage').show().html('** Start Number Should be a Number (0-9)');
                             StartNumber.val('');
                             checkNumber = true;
                         }
@@ -101,50 +129,26 @@
             </script>            
             <input type="button" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
             <input type="button" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
+            </div>
+ 
 
-             <div class="editor-label"> 
-            @Html.Label("lblOrderNumber", "Ordernummer")             
-        </div> 
-        <div class="editor-field">
-            @Html.TextBox("txtOrderNumber", null, new { @class = "textbox" })
-            <script type="text/javascript">
-                $(document).ready(function () {
-                    var OrderNumber = $('#txtOrderNumber');
-                    var checkNumber = true;
+         <div id="ErrorMessage" style="color:Red; display:none" >            
+       </div>       
 
-                    OrderNumber.keypress(function (e) {
-                        if (String.fromCharCode(e.keyCode).match(/[^0-9\r]/g))
-                            checkNumber = false;
-                        if (e.keyCode == 13) {
-                            if (checkNumber == true && OrderNumber.val() != '') {
-                                var url = "/CheckpointOrder/AddCheckpointByOrder/?checkpointID=" + $('#ddCheckpoint').val() + "&startingNumber=" + $('#txtStartingNumber').val() + "&orderNumber=" + $('#txtOrderNumber').val();
-                                $.get(url, function (data) {
-                                    $('#lstCheckpointOrders').html(data);
-                                    $('#ErrorMessage').hide();
-                                    //StartNumber.select();
-                                });
-                            }
-                            else {
-                                $('#ErrorMessage').show();
-                                //StartNumber.val('');
-                                checkNumber = true;
-                            }
-                        }
-                    });
-                }); 
-            </script> 
-        </div> 
-
-         <div id="ErrorMessage" style="color:Red; display:none" > 
-           ** Start Number Should be a Number (0-9)
-       </div> 
-
-       <div class="editor-label"> 
+       <div class="editor-label" > 
             @Html.Label("lblCheckpointOrders", "CheckpointOrders") 
        </div>
 
-        <div class="editor-field">
-            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"),new { @class = "listbox" })    
+        <div class="editor-field" style="position:relative">
+            @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"),new { @class = "listbox" })  
+        
+        
+        <div style="position:absolute; top:100px; left:100px; width:100px"> 
+
+            <input type="button" class="btnUp" id="btnUp" value="" style="width:25px; height:25px" disabled="disabled" />
+            </br></br>
+            <input type="button" class="btnDown" id="btnDown" value="" style="width:25px; height:25px" disabled="disabled" />
+        </div>
         </div>
 
     </fieldset>

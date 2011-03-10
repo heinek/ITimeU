@@ -99,6 +99,7 @@
                 listTimestamps.html("");
                 divStartnumberCount.text("0");
                 divTimestampCount.text("0");
+                Tools.ResetEditFields();
             }
             else {
                 $("#dialog:ui-dialog").dialog("destroy");
@@ -170,6 +171,7 @@
             url = "/TimeMerger/EditRuntime/?checkpointId=" + ddlCheckpoints.val() + "&orginalruntimeid=" + initialRuntimeId + "&hour=" + tbEditHour.val() + "&min=" + tbEditMin.val() + "&sek=" + tbEditSek.val() + "&msek=" + tbEditMSek.val();
             Tools.postUpdate(listTimestamps, url);
             Tools.ResetEditFields();
+            Tools.DisableControls();
         });
     });
 </script>

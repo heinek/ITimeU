@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 namespace ITimeU.Models
 {
     public class RaceIntermediateModel
@@ -30,6 +31,10 @@ namespace ITimeU.Models
                     RuntimeId = RuntimeId
                 };
                 ctx.RaceIntermediates.AddObject(raceIntermediate);
+                var checkpointOrder = ctx.CheckpointOrders.Where(cpOrder => cpOrder.ID == CheckpointID).Single();
+                checkpointOrder.IsMerged = true;
+                var runtime = ctx.Runtimes.Where(rt => rt.RuntimeID == RuntimeId).Single();
+                runtime.IsMerged = true;
                 try
                 {
                     ctx.SaveChanges();
