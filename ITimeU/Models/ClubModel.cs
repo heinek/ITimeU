@@ -28,7 +28,7 @@ namespace ITimeU.Models
             Id = 0;
         }
 
-        private ClubModel(Club club)
+        public ClubModel(Club club)
         {
             Id = club.ClubID;
             Name = club.Name;
@@ -114,7 +114,7 @@ namespace ITimeU.Models
             {
                 clubDb = getDbEntry(name);
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 clubDb = createDbEntry(name);
             }
@@ -150,7 +150,7 @@ namespace ITimeU.Models
                 entitiesStatic.Clubs.DeleteObject(clubDb);
                 entitiesStatic.SaveChanges();
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 // No DB entry found, do noting
             }

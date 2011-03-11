@@ -598,7 +598,7 @@ namespace ITimeU.Tests.Models
             Given("we have started a timer", () =>
             {
                 timer.Start();
-                initialruntimes = timer.CheckpointRuntimes[timer.GetFirstCheckpoint()];
+                initialruntimes = timer.CheckpointRuntimes[timer.GetFirstCheckpointId()];
             });
             When("we want to change the checkpoint", () =>
             {
@@ -674,7 +674,7 @@ namespace ITimeU.Tests.Models
             var timer = new TimerModel();
             var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
             var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             return timer;
         }

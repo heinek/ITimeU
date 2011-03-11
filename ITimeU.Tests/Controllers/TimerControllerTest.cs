@@ -56,7 +56,7 @@ namespace ITimeU.Tests.Controllers
             var timer = new TimerModel();
             var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
             var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpoint();
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             return timer;
         }

@@ -11,6 +11,7 @@ namespace ITimeU.Models
         public string Name { get; private set; }
 
         private static Entities entitiesStatic = new Entities();
+        private AthleteClass athleteClass;
 
         private bool dbEntryCreated
         {
@@ -28,7 +29,7 @@ namespace ITimeU.Models
             Id = 0;
         }
 
-        private AthleteClassModel(AthleteClass athleteClass)
+        public AthleteClassModel(AthleteClass athleteClass)
         {
             Id = athleteClass.ID;
             Name = athleteClass.Name;
@@ -116,7 +117,7 @@ namespace ITimeU.Models
             {
                 athleteClassDb = getDbEntry(name);
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 athleteClassDb = createDbEntry(name);
             }
@@ -152,7 +153,7 @@ namespace ITimeU.Models
                 entitiesStatic.AthleteClasses.DeleteObject(athleteClassDb);
                 entitiesStatic.SaveChanges();
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 // No DB entry found, do noting
             }

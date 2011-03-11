@@ -90,7 +90,7 @@ namespace ITimeU.Controllers
             {               
                 CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
                 model.DeleteCheckpointOrderDB(id);
-                return Content(model.CheckpointOrderDic.ToListboxvalues(false));
+                return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
             }
             catch
             {
@@ -116,9 +116,9 @@ namespace ITimeU.Controllers
 
             int.TryParse(checkpointID, out chkpntID);
             int.TryParse(startingNumber, out startNmb);
-            model.AddCheckpointOrderDB(chkpntID, startNmb);       
-            
-            return Content(model.CheckpointOrderDic.ToListboxvalues(false));
+            model.AddCheckpointOrderDB(chkpntID, startNmb);
+
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }        
 
         public ActionResult MoveCheckpointUp(string checkpointID, string startingNumber, string checkpointOrderId)
@@ -132,7 +132,7 @@ namespace ITimeU.Controllers
             int.TryParse(startingNumber, out startNmb);
             int.TryParse(checkpointOrderId, out Id);
             model.MoveCheckpointUp(chkpntID, startNmb, Id);
-            return Content(model.CheckpointOrderDic.ToListboxvalues(false));
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
         public ActionResult MoveCheckpointDown(string checkpointID, string startingNumber, string checkpointOrderId)
@@ -158,14 +158,14 @@ namespace ITimeU.Controllers
             int StartNmb;
             int.TryParse(startingNumber, out StartNmb);
             model.UpdateCheckpointOrderDB(ID, StartNmb);            
-            return Content(model.CheckpointOrderDic.ToListboxvalues(false));
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
         public ActionResult GetStartingNumbersForCheckpoint(int checkpointID)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
             model.GetStartingNumbersForCheckpoint(checkpointID);            
-            return Content(model.CheckpointOrderDic.ToListboxvalues(false));
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
     }

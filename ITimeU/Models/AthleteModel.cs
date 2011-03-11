@@ -71,7 +71,7 @@ namespace ITimeU.Models
             StartNumber = athleteDb.Startnumber;
         }
 
-        public AthleteModel(string firstName, string lastName, int birthday, ClubModel club, AthleteClassModel athleteClass, int startNumber)
+        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber)
         {
             FirstName = firstName;
             LastName = lastName;
