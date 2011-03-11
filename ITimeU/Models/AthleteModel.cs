@@ -66,9 +66,12 @@ namespace ITimeU.Models
             FirstName = athleteDb.FirstName;
             LastName = athleteDb.LastName;
             Birthday = athleteDb.Birthday;
-            Club = new ClubModel(athleteDb.Club);
-            AthleteClass = new AthleteClassModel(athleteDb.AthleteClass);
-            StartNumber = athleteDb.Startnumber;
+            if (athleteDb.Club != null)
+                Club = ClubModel.GetOrCreate(athleteDb.Club.Name);
+            if (athleteDb.AthleteClass != null)
+                AthleteClass = AthleteClassModel.GetOrCreate(athleteDb.AthleteClass.Name);
+            if (athleteDb.Startnumber != null)
+                StartNumber = athleteDb.Startnumber;
         }
 
         public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber)
@@ -130,8 +133,10 @@ namespace ITimeU.Models
             athlete.FirstName = FirstName;
             athlete.LastName = LastName;
             athlete.Birthday = Birthday;
-            athlete.ClubID = Club.SaveToDb();
-            athlete.ClassID = AthleteClass.SaveToDb();
+            if (Club != null)
+                athlete.ClubID = Club.SaveToDb();
+            if (AthleteClass != null)
+                athlete.ClassID = AthleteClass.SaveToDb();
 
            // athlete.AthleteClass = AthleteClass;
             athlete.Startnumber = StartNumber;
