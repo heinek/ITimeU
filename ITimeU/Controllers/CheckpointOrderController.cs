@@ -19,6 +19,7 @@ namespace ITimeU.Controllers
 
             var entities = new Entities();
             ViewBag.Checkpoints = entities.Checkpoints.ToList();
+          
 
             return View(checkpoint);
         }
@@ -38,13 +39,7 @@ namespace ITimeU.Controllers
         public ActionResult Create()
         {
             var entities = new Entities();
-            ViewBag.Checkpoints = entities.Checkpoints.ToList();
-
-            //CheckpointOrderModel checkpointOrderModel = new CheckpointOrderModel();
-            //checkpointOrderModel.OrderNumber = (int)(entities.CheckpointOrders.OrderByDescending(m => m.OrderNumber).First()).OrderNumber + 1;
-
-            
-            //return View(checkpointOrderModel);
+            ViewBag.Checkpoints = entities.Checkpoints.ToList();            
             return View("Create", new CheckpointOrderModel());
         } 
 
@@ -62,8 +57,7 @@ namespace ITimeU.Controllers
  
         public ActionResult Edit(int id)
         {
-            return Content("id = " + id);
-            //return View(GetCheckpointOrder(id));
+            return Content("id = " + id);            
         }
 
         //
@@ -73,8 +67,7 @@ namespace ITimeU.Controllers
         public ActionResult Edit(int ID, string value)
         {
             using (var ctx = new Entities())
-            {
-                //CheckpointOrderModel model = new CheckpointOrderModel();
+            {                
                 CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
 
                 int tmpValue = 0;
@@ -83,9 +76,7 @@ namespace ITimeU.Controllers
                     return null;
                 }
                 tmpValue = int.Parse(value);
-                CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);
-
-                //return View();
+                CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);                
                 return View("Index", model);
             }
         }
@@ -96,38 +87,16 @@ namespace ITimeU.Controllers
         public ActionResult DeleteCheckpointOrder(int id)
         {
             try
-            {
-                //CheckpointOrderModel model = new CheckpointOrderModel();
+            {               
                 CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
                 model.DeleteCheckpointOrderDB(id);
-                return Content(model.CheckpointOrderDic.ToListboxvalues(true));
+                return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
             }
             catch
             {
                 return View();
             }
-        }
-
-        //
-        // POST: /CheckpointOrder/Delete/5
-
-        //[HttpPost]
-        //public ActionResult DeleteCheckpointOrder(string id)
-        //{
-        //    try
-        //    {
-        //        CheckpointOrderModel model = new CheckpointOrderModel();
-        //        //CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-        //        int idToDelete;
-        //        int.TryParse(id, out idToDelete);
-        //        model.DeleteCheckpointOrderDB(idToDelete);
-        //        return Content(model.CheckpointOrderDic.ToListboxvalues(true));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        }       
 
         private CheckpointOrder GetCheckpointOrder(int id)
         {
@@ -140,19 +109,46 @@ namespace ITimeU.Controllers
         }
 
         public ActionResult AddCheckpointOrder(string checkpointID, string startingNumber)
-        {
-            //CheckpointOrderModel model = new CheckpointOrderModel();
+        {            
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
             int chkpntID;
             int startNmb;
 
             int.TryParse(checkpointID, out chkpntID);
             int.TryParse(startingNumber, out startNmb);
-
             model.AddCheckpointOrderDB(chkpntID, startNmb);
-            Session["checkpoint"] = model;
+
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+        }        
+
+        public ActionResult MoveCheckpointUp(string checkpointID, string startingNumber, string checkpointOrderId)
+        {
+            CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
+            int chkpntID;
+            int startNmb;
+            int Id;
+
+            int.TryParse(checkpointID, out chkpntID);
+            int.TryParse(startingNumber, out startNmb);
+            int.TryParse(checkpointOrderId, out Id);
+            model.MoveCheckpointUp(chkpntID, startNmb, Id);
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+        }
+
+        public ActionResult MoveCheckpointDown(string checkpointID, string startingNumber, string checkpointOrderId)
+        {
+            CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
+            int chkpntID;
+            int startNmb;
+            int Id;
+
+            int.TryParse(checkpointID, out chkpntID);
             
-            return Content(model.CheckpointOrderDic.ToListboxvalues(true));
+            int.TryParse(startingNumber, out startNmb);
+            int.TryParse(checkpointOrderId, out Id);
+            model.MoveCheckpointDown(chkpntID, startNmb, Id);
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+
         }
        
 
@@ -160,20 +156,16 @@ namespace ITimeU.Controllers
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
             int StartNmb;
-
             int.TryParse(startingNumber, out StartNmb);
-
-            model.UpdateCheckpointOrderDB(ID, StartNmb);
-            //Session["checkpoint"] = model;
-            return Content(model.CheckpointOrderDic.ToListboxvalues(true));
+            model.UpdateCheckpointOrderDB(ID, StartNmb);            
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
         public ActionResult GetStartingNumbersForCheckpoint(int checkpointID)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-            model.GetStartingNumbersForCheckpoint(checkpointID);
-            //Session["checkpoint"] = model;
-            return Content(model.CheckpointOrderDic.ToListboxvalues(true));
+            model.GetStartingNumbersForCheckpoint(checkpointID);            
+            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
     }

@@ -7,6 +7,19 @@ namespace ITimeU.Controllers
     {
 
         /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        //[HttpGet]
+        //public ActionResult Index()
+        //{
+        //    Logging.LogWriter.getInstance().Write("yoyoyo");
+        //    var timer = new TimerModel(1);
+        //    ViewBag.Checkpoints = timer.GetCheckpoints();
+        //    Session["timer"] = timer;
+        //    return View("Index", timer);
+        //}
+
+        /// <summary>
         /// Indexes the specified checkpoint_id.
         /// </summary>
         /// <param name="Id">The timer id.</param>
@@ -14,13 +27,22 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int Id)
         {
-            Logging.LogWriter.getInstance().Write("yoyoyo");
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
+            //if (checkpoint_id != null)
+            //{
+            //    CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+            //    checkpoint = timer;
+            //}
             return View("Index", timer);
         }
 
+        [HttpGet]
+        public ActionResult Testing()
+        {
+            return View("Testing");
+        }
         /// <summary>
         /// Starts this instance.
         /// </summary>
@@ -109,7 +131,7 @@ namespace ITimeU.Controllers
 
         private string SaveToSessionAndReturnRuntimes(TimerModel timer)
         {
-            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(true, true);
+            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Descending, toTimer: true);
             Session["timer"] = timer;
             return runtimeDic;
         }

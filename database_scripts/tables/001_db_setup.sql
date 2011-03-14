@@ -1,11 +1,19 @@
 USE [master]
 GO
 
-/****** Object:  Database [ITimeU]    Script Date: 02/01/2011 12:06:01 ******/
+/****** Object:  Database [ITimeU]    Script Date: 03/10/2011 10:14:52 ******/
+IF  EXISTS (SELECT name FROM sys.databases WHERE name = N'ITimeU')
+DROP DATABASE [ITimeU]
+GO
+
+USE [master]
+GO
+
+/****** Object:  Database [ITimeU]    Script Date: 03/10/2011 10:14:53 ******/
 CREATE DATABASE [ITimeU] ON  PRIMARY 
-( NAME = N'ITimeU2', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\DATA\ITimeU2.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 10%)
+( NAME = N'ITimeU', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\DATA\ITimeU.mdf' , SIZE = 3072KB , MAXSIZE = UNLIMITED, FILEGROWTH = 10%)
  LOG ON 
-( NAME = N'ITimeU2_log', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\DATA\ITimeU2_log.ldf' , SIZE = 2048KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
+( NAME = N'ITimeU_log', FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL.1\MSSQL\DATA\ITimeU_log.ldf' , SIZE = 2048KB , MAXSIZE = 2048GB , FILEGROWTH = 10%)
 GO
 
 ALTER DATABASE [ITimeU] SET COMPATIBILITY_LEVEL = 100

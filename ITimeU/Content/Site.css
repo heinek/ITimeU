@@ -301,7 +301,7 @@ table th
 {
 	display: table-row;
 }
-.left, .right, .middle
+.left, .right, .middle, .rightmost
 {
 	display: table-cell;
 	padding: 5px 5px 5px 5px;
@@ -403,7 +403,14 @@ table th
 	border: 1px solid #CCC;
 	margin-bottom: 10px;
 }
-
+.textboxmedium
+{
+	width: 24px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
+}
 .textboxsmall
 {
 	width: 15px;
@@ -437,9 +444,14 @@ table th
 .listbox
 {
 	width: 100px;
-	height: 300px;
+	height: 200px;
 }
-
+.listboxwide
+{
+	padding-top: 4px;
+	width: 220px;
+	height: 200px;
+}
 .timer
 {
 	font-weight: bold;
@@ -504,6 +516,19 @@ div#title
 .btnDown:hover
 {
 	background-image: url("images/downOver.png");
+}
+
+.btnDelete
+{
+	background-image: url("images/btnDelete.png");
+	border: 1px solid #CCC;
+	background-repeat: no-repeat;
+	margin: 0px;
+}
+
+.btnDelete:hover
+{
+	background-image: url("images/btnDeleteOver.png");
 }
 
 .btnGo

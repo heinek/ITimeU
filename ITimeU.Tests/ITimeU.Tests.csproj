@@ -77,13 +77,18 @@
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
-    <Compile Include="Logging\LogWriterTest.cs" />
+    <Compile Include="Library\Import\FriResExporterTest.cs" />
+    <Compile Include="Library\Import\FriResImporterTest.cs" />
+    <Compile Include="Library\NameParserTest.cs" />
     <Compile Include="MockHttpSession.cs" />
+    <Compile Include="Models\AthleteClassModelTest.cs" />
+    <Compile Include="Models\AthleteModelTest.cs" />
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
+    <Compile Include="Models\ClubModelTest.cs" />
     <Compile Include="Models\RuntimeModelTest.cs" />
-    <Compile Include="Models\ParticipantModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
+    <Compile Include="Models\TimeMergerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -93,6 +98,9 @@
   <ItemGroup>
     <Content Include="App.config">
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Library\Import\ImporterTest.mdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -105,7 +113,6 @@
     <None Include="packages.config" />
     <Shadow Include="Test References\ITimeU.accessor" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
