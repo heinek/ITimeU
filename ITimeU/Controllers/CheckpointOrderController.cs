@@ -19,7 +19,7 @@ namespace ITimeU.Controllers
 
             var entities = new Entities();
             ViewBag.Checkpoints = entities.Checkpoints.ToList();
-            
+          
 
             return View(checkpoint);
         }
@@ -96,7 +96,8 @@ namespace ITimeU.Controllers
             {
                 return View();
             }
-        }       
+        }
+
 
         private CheckpointOrder GetCheckpointOrder(int id)
         {
@@ -116,7 +117,7 @@ namespace ITimeU.Controllers
 
             int.TryParse(checkpointID, out chkpntID);
             int.TryParse(startingNumber, out startNmb);
-            model.AddCheckpointOrderDB(chkpntID, startNmb);       
+            model.AddCheckpointOrderDB(chkpntID, startNmb);
 
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }        

@@ -137,6 +137,9 @@
     <Compile Include="Screen 1_1.xaml.cs">
       <DependentUpon>Screen 1_1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screen 1_1.xaml.cs">
+      <DependentUpon>Screen 1_1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screen 1_2.xaml.cs">
       <DependentUpon>Screen 1_2.xaml</DependentUpon>
     </Compile>

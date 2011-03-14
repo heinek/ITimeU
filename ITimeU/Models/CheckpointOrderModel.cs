@@ -116,10 +116,8 @@ namespace ITimeU.Models
 
         public void MoveCheckpointUp(int checkpointId, int startingNumber, int Id)
         {
-
             using (var ctx = new Entities())
             {
-
                 int orderNumber = 0;
                 int nextId = 0;
                 int nextOrderNumber = 0;
@@ -159,7 +157,6 @@ namespace ITimeU.Models
 
         public void MoveCheckpointDown(int checkpointId, int startingNumber, int Id)
         {
-
             using (var ctx = new Entities())
             {
 
@@ -190,6 +187,7 @@ namespace ITimeU.Models
                     {
                         // TODO alert for not moving Down
                     }
+            //return checkpointOrderModel;
                 }
 
 
@@ -203,7 +201,6 @@ namespace ITimeU.Models
                 }
             }
         }
-
         public void UpdateCheckpointOrderDB(int ID, int StartingNumber)
         {
             using (var ctx = new Entities())
@@ -318,5 +315,18 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
+
+        public void DeleteAllCheckpointOrdersOnCheckpoint(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                foreach (CheckpointOrder co in context.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointId))
+                {
+                    co.IsDeleted = true;
+                }
+                context.SaveChanges();
+            }
+        }
+
     }
 }

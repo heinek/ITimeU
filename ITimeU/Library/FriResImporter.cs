@@ -8,15 +8,21 @@ using System.Data;
 using ITimeU.Logging;
 using System.Web;
 
-namespace ITimeU.Tests.Library
+namespace ITimeU.Library
 {
-    class FriResImporter
+    /// <summary>
     /// Imports data from an Access database file from the FriRes system.
     /// </summary>
     public class FriResImporter
     {
+        private const string DB_COL_NAME_BIRTHDAY = "Fødselsår";
+        private const string DB_COL_NAME_STARTNUMBER = "Startnr";
+        private const string DB_COL_NAME_NAME = "Navn";
+        private const string DB_COL_NAME_CLUB = "KlubbNavn";
+        private const string DB_COL_NAME_ATHLETE_CLASS = "Klasse";
+
         private string accessDatabaseFile;
-        OleDbConnection connection;
+        private OleDbConnection connection;
 
         public FriResImporter(string accessDatabaseFile)
         {
@@ -45,7 +51,7 @@ namespace ITimeU.Tests.Library
 
         private OleDbDataAdapter selectAllAthletes()
         {
-            string query = "SELECT * FROM [Deltaker]";
+            string query = "SELECT Navn, Fødselsår, KlubbNavn, Klasse, Startnr  FROM [Deltaker]";
             return new OleDbDataAdapter(query, connection);
         }
 
@@ -68,14 +74,44 @@ namespace ITimeU.Tests.Library
 
             foreach (DataRow row in table.Rows)
             {
-                string firstName = NameParser.FirstName((String)row["Navn"]);
-                string surName = NameParser.LastName((String)row["Navn"]);
-                string fullName = firstName + " " + surName;
-                AthleteModel pm = new AthleteModel(firstName, surName);
-                athletes.Add(pm);
+                AthleteModel athlete = createAthleteFrom(row);
+                athletes.Add(athlete);
             }
 
             return athletes;
+        }
+
+        private AthleteModel createAthleteFrom(DataRow row)
+        {
+            string firstName = NameParser.FirstName((String)row[DB_COL_NAME_NAME]);
+            string lastName = NameParser.LastName((String)row[DB_COL_NAME_NAME]);
+            int? birthday = getIntFrom(row, DB_COL_NAME_BIRTHDAY);
+            int? startNumber = getIntFrom(row, DB_COL_NAME_STARTNUMBER);
+            string club = getStringFrom(row, DB_COL_NAME_CLUB);
+            string athleteClass = getStringFrom(row, DB_COL_NAME_ATHLETE_CLASS);
+
+            return new AthleteModel(firstName, lastName, birthday, new ClubModel(club), new AthleteClassModel(athleteClass), startNumber);
+        }
+
+        private int? getIntFrom(DataRow row, string rowIndex)
+        {
+            if (rowHasIndex(row, rowIndex))
+                return (Int16)row[rowIndex];
+            else
+                return null;
+        }
+
+        private bool rowHasIndex(DataRow row, string rowIndex)
+        {
+            return row[rowIndex] != DBNull.Value;
+        }
+
+        private string getStringFrom(DataRow row, string rowIndex)
+        {
+            if (rowHasIndex(row, rowIndex))
+                return (String)row[rowIndex];
+            else
+                return null;
         }
 
     }

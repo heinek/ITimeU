@@ -30,3 +30,6 @@ ITimeU/localSettings.config
 [Tt]est[Rr]esult*
 ITimeU/localSettings.config
 *.orig
+*.BASE
+*.LOCAL
+*.REMOTE

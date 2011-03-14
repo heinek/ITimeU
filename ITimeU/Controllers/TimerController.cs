@@ -27,10 +27,14 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int Id)
         {
-            Logging.LogWriter.getInstance().Write("yoyoyo");
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
+            //if (checkpoint_id != null)
+            //{
+            //    CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+            //    checkpoint = timer;
+            //}
             return View("Index", timer);
         }
 

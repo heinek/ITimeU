@@ -17,14 +17,11 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int Id)
         {
-<<<<<<< HEAD
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
+<<<<<<< HEAD
 =======
-            Logging.LogWriter.getInstance().Write("yoyoyo");
-            var timer = new TimerModel();
-            Session["timer"] = timer;
 
             /*
              * // We don't need this?
@@ -34,15 +31,15 @@ namespace ITimeU.Controllers
                 timer = (TimerModel)Session["timer"];
             */
 
-            if (checkpoint_id != null)
-            {
-                CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
-                checkpoint.Timer = timer;
-            }
+            //if (checkpoint_id != null)
+            //{
+            //    CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+            //    checkpoint = timer;
+            //}
 
             var entities = new Entities();
             ViewBag.Checkpoints = entities.Checkpoints.ToList();
->>>>>>> 59a8fe39d2186a1445302a27835d0d5e952a86e9
+>>>>>>> CheckpointOrder updated with edit and delete functionality
             return View("Index", timer);
         }
 
@@ -53,8 +50,8 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Start();
-            //ViewBag.Checkpoints = timerModel.GetCheckpoints();
             Session["timer"] = timer;
+            ViewBag.Checkpoints = timer.GetCheckpoints();
             return View("Index", timer);
         }
 
@@ -66,6 +63,7 @@ namespace ITimeU.Controllers
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Stop();
             Session["timer"] = timer;
+            ViewBag.Checkpoints = timer.GetCheckpoints();
             return View("Index", timer);
         }
 
@@ -88,8 +86,7 @@ namespace ITimeU.Controllers
             int.TryParse(runtime, out milliseconds);
             int.TryParse(checkpointid, out cpid);
             timer.AddRuntime(milliseconds, cpid);
-            Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
         /// <summary>
@@ -111,8 +108,7 @@ namespace ITimeU.Controllers
             int.TryParse(sek, out s);
             int.TryParse(msek, out ms);
             timer.EditRuntime(orgid, h, m, s, ms);
-            Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
         /// <summary>
@@ -125,16 +121,26 @@ namespace ITimeU.Controllers
             int rtid;
             int.TryParse(runtimeid.Trim(), out rtid);
             timer.DeleteRuntime(rtid);
-            Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
-        public ActionResult ChangeCheckpointId(int checkpointid)
+        /// <summary>
+        /// Changes the checkpoint.
+        /// </summary>
+        /// <param name="checkpointid">The checkpointid.</param>
+        /// <returns></returns>
+        public ActionResult ChangeCheckpoint(int checkpointid)
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.ChangeCheckpoint(checkpointid);
+            return Content(SaveToSessionAndReturnRuntimes(timer));
+        }
+
+        private string SaveToSessionAndReturnRuntimes(TimerModel timer)
+        {
+            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(true, true);
             Session["timer"] = timer;
-            return Content(timer.CheckpointRuntimes[timer.CheckpointId].ToListboxvalues(true, true));
+            return runtimeDic;
         }
     }
 }
