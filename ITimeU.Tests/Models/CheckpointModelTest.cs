@@ -65,14 +65,13 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Insert_A_New_Checkpoint_To_The_Database()
         {
-            string checkpointName = "MyCheckpoint";
             CheckpointModel newCheckpoint = null;
-            TimerModel timer = TimerModel.GetTimerById(1);
+
             Given("we want to insert a new checkpoint to the database");
 
             When("we create the checkpoint", () =>
             {
-                newCheckpoint = new CheckpointModel(checkpointName, timer, 1);
+                newCheckpoint = new CheckpointModel("MyCheckpoint", new TimerModel(), 1);
             });
 
             Then("it should exist in the database", () =>

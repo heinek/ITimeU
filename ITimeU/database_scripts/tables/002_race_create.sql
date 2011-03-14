@@ -1,25 +1,7 @@
 USE [ITimeU]
 GO
 
-IF  EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID(N'[DF_Race_IsDeleted]') AND type = 'D')
-BEGIN
-ALTER TABLE [dbo].[Race] DROP CONSTRAINT [DF_Race_IsDeleted]
-END
-
-GO
-
-USE [ITimeU]
-GO
-
-/****** Object:  Table [dbo].[Race]    Script Date: 03/09/2011 10:29:19 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Race]') AND type in (N'U'))
-DROP TABLE [dbo].[Race]
-GO
-
-USE [ITimeU]
-GO
-
-/****** Object:  Table [dbo].[Race]    Script Date: 03/09/2011 10:29:19 ******/
+/****** Object:  Table [dbo].[Race]    Script Date: 02/04/2011 13:39:00 ******/
 SET ANSI_NULLS ON
 GO
 

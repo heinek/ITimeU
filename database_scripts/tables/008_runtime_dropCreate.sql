@@ -1,3 +1,4 @@
+
 USE [ITimeU]
 GO
 
@@ -42,3 +43,4 @@ GO
 ALTER TABLE [dbo].[Runtime] ADD  CONSTRAINT [DF_Runtime_IsMerged]  DEFAULT ((0)) FOR [IsMerged]
 GO
 
+EXEC sp_MSForEachTable 'ALTER TABLE ? CHECK CONSTRAINT ALL'

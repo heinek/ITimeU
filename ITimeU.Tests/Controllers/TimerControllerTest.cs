@@ -26,11 +26,10 @@ namespace ITimeU.Tests.Controllers
         {
             TimerController timerCtrl = null;
             CheckpointModel checkpoint = null;
-            var timerInView = CreateNewTimerModelWithCheckpoints();
+            var timerInView = CreateTimerWithCheckpoints();
 
             Given("the user has selected a checkpoint", () =>
             {
-                //checkpoint = new CheckpointModel("Hemsedal"); // Create a new checkpoint for this test.
                 checkpoint = new CheckpointModel("Hemsedal", timerInView, 1);
                 timerCtrl = new TimerController();
                 setMockSessionFor(timerCtrl);
@@ -52,7 +51,7 @@ namespace ITimeU.Tests.Controllers
             });
         }
 
-        private TimerModel CreateNewTimerModelWithCheckpoints()
+        private TimerModel CreateTimerWithCheckpoints()
         {
             var timer = new TimerModel();
             var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);

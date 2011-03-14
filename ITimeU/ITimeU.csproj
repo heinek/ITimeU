@@ -80,16 +80,21 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Library\DateTimeRounder.cs" />
+    <Compile Include="Library\FriResExporter.cs" />
     <Compile Include="Library\Logging\LogWriter.cs" />
+    <Compile Include="Library\FriResImporter.cs" />
+    <Compile Include="Library\NameParser.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AthleteClassModel.cs" />
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />
+    <Compile Include="Models\ClubModel.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\ParticipantModel.cs" />
+    <Compile Include="Models\AthleteModel.cs" />
     <Compile Include="Models\RaceIntermediateModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
     <Compile Include="Models\RuntimeModel.cs" />
@@ -185,6 +190,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Timer\Index.cshtml" />
@@ -218,7 +224,7 @@
     <Content Include="Views\CheckpointOrder\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Timer\Testing.cshtml" />
+    <Content Include="Views\ImportAthletes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TimeMerger\Index.cshtml" />
