@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Web.Mvc;
 using ITimeU.Models;
-using ITimeU.Tests.Models;
 
 namespace ITimeU.Controllers
 {
@@ -86,14 +85,14 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult EditRuntime(string checkpointId, string orginalruntimeid, string hour, string min, string sek, string msek)
         {
-            int cpid, orgid, h, m, s, ms;
+            int cpid, runtimeId, h, m, s, ms;
             int.TryParse(checkpointId, out cpid);
-            int.TryParse(orginalruntimeid.Trim(), out orgid);
+            int.TryParse(orginalruntimeid.Trim(), out runtimeId);
             int.TryParse(hour, out h);
             int.TryParse(min, out m);
             int.TryParse(sek, out s);
             int.TryParse(msek, out ms);
-            RuntimeModel.EditRuntime(orgid, h, m, s, ms);
+            RuntimeModel.EditRuntime(runtimeId, h, m, s, ms);
             return Content(RuntimeModel.GetRuntimes(cpid).ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Ascending, toTimer: true));
         }
 

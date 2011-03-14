@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using ITimeU.Tests.Models;
+using ITimeU.Models;
 
 namespace ITimeU.Controllers
 {
