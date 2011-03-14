@@ -6,15 +6,18 @@
     Importer deltakere fra FriRes</h2>
 @{ Html.BeginForm("ImportFromFriRes", "ImportAthletes", FormMethod.Post, new { enctype = "multipart/form-data"} ); }
 <div id="ImportAthletes">
-    <p>
-        Velg database for import av deltakere fra FriRes:</p>
-    <!--@Html.TextBox("accessDbFile", null, new { @class = "textboxLarge" })-->
-    <input type="file" id="accessDbFile" name="accessDbFile" value="Velg database"
-        style="width: 300px" />
+    <p>Velg database for import av deltakere fra FriRes:</p>
+    <input type="file" name="file" value="Velg database" style="width: 300px" />
     <input type="submit" id="btnImportFromDatabase" value="Importer deltakere" class="btnRegular"
         style="width: 150px" />
 </div>
 @{ Html.EndForm(); }
+
+@if (ViewBag.Error != null)
+{
+    <p class="input-validation-error">@ViewBag.Error</p>
+}
+
 <div id="ListImportedAthletes">
     @if (ViewBag.Athletes != null)
     {

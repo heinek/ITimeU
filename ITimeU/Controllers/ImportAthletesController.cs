@@ -10,7 +10,7 @@ namespace ITimeU.Controllers
 {
     public class ImportAthletesController : Controller
     {
-        public const string ERROR_NO_FILE_UPLOADED = "No file was uploaded. Please select a file to upload.";
+        public const string ERROR_NO_FILE_UPLOADED = "Feil: Ingen fil valgt. Velg en fil før du laster opp.";
 
         public ActionResult Index()
         {
@@ -53,15 +53,19 @@ namespace ITimeU.Controllers
                 throw new HttpException(ERROR_NO_FILE_UPLOADED);
 
             HttpPostedFileBase file = Request.Files[0];
-            if (file.ContentLength < 0)
+            if (file.ContentLength <= 0)
                 throw new HttpException(ERROR_NO_FILE_UPLOADED);
 
             return file;
         }
 
+        private string GetFullFileNameFromRequestFile(HttpPostedFileBase file) {
+            return Server.MapPath("~" + "/upload/" + System.IO.Path.GetFileName(file.FileName));;
+        }
+
         private string SaveFile(HttpPostedFileBase file)
         {
-            string filename = Server.MapPath("~" + "/upload/" + System.IO.Path.GetFileName(file.FileName));
+            string filename = GetFullFileNameFromRequestFile(file);
             file.SaveAs(filename);
             return filename;
         }
