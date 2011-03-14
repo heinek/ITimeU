@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ITimeU.Library;
-using ITimeU.Tests.Models;
 
 // TODO: Write class summary.
 

@@ -91,6 +91,7 @@
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimeMergerTest.cs" />
     <Compile Include="Models\TimerModelTest.cs" />
+    <Compile Include="Models\TimeStartnumberModelTest.cs" />
     <Compile Include="MvcMockHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\HomeControllerTest.cs" />

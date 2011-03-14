@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ITimeU.Models;
 
-namespace ITimeU.Tests.Models
+namespace ITimeU.Models
 {
     public class RuntimeModel
     {

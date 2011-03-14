@@ -6,19 +6,36 @@
 <script src="@Url.Content("~/Scripts/Stopwatch.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         var btnChangeCP = $("#btnChangeCP");
+        var btnDelete = $("#btnDelete");
+        var btnEdit = $("#btnEdit");
         var btnStart = $("#btnStart");
+        var btnUpHour = $("#btnUpHour");
+        var btnUpMin = $("#btnUpMin");
+        var btnUpSek = $("#btnUpSek");
+        var btnUpMS = $("#btnUpMS");
+        var btnDownHour = $("#btnDownHour");
+        var btnDownMin = $("#btnDownMin");
+        var btnDownSek = $("#btnDownSek");
+        var btnDownMS = $("#btnDownMS");
         var ddlCheckpoints = $("#ddlCheckpoints");
         var lblTimer = $("#lblRunningTimer");
         var listIntermediate = $("#listIntermediate");
+        var tbEditHour = $("#tbEditHour");
+        var tbEditMin = $("#tbEditMin");
+        var tbEditSek = $("#tbEditSek");
+        var tbEditMSek = $("#tbEditMSek");
+        var tbEditStartnumber = $("#tbEditStartnumber");
+        var initialChecpointOrderId;
         var timer;
         var timeFormatFactory = new TimeFormatFactory();
         var startBtnText = "Start";
         var stopBtnText = "Stop";
         var restartBtnText = "Restart";
+        var StartNumber = $('#tbStartnumber');
+        var checkNumber = true;
 
         timer = new Stopwatch(function (runtime) {
             var displayText = timeFormatFactory.MSSDFormat(runtime);
@@ -44,14 +61,85 @@
             });
         });
 
-        var StartNumber = $('#tbStartnumber');
-        var checkNumber = true;
+        btnEdit.click(function () {
+            url = "/TimeStartnumber/EditRuntime/?checkpointid=" + ddlCheckpoints.val() + "&checkpointOrderId=" + initialChecpointOrderId + "&hour=" + tbEditHour.val() + "&min=" + tbEditMin.val() + "&sek=" + tbEditSek.val() + "&msek=" + tbEditMSek.val() + "&startnumber=" + tbEditStartnumber.val();
+            $.post(url, function (data) {
+                listIntermediate.html(data);
+            });
+            Tools.ResetEditFields();
+            tbEditStartnumber.val("");
+        });
+
+        btnDelete.click(function () {
+            url = "/TimeStartnumber/DeleteRaceintermediate/?checkpointid=" + ddlCheckpoints.val() + "&checkpointOrderId=" + initialChecpointOrderId;
+            Tools.deleteFromList(listIntermediate, url);
+            Tools.ResetEditFields();
+            Tools.DisableControls();
+        });
+
+        btnUpHour.click(function () {
+            Tools.increaseHour(tbEditHour);
+        });
+
+        btnUpMin.click(function () {
+            Tools.increaseMinutes(tbEditMin);
+        });
+
+        btnUpSek.click(function () {
+            Tools.increaseSeconds(tbEditSek);
+        });
+
+        btnUpMS.click(function () {
+            Tools.increaseMilliseconds(tbEditMSek);
+        });
+
+        btnDownHour.click(function () {
+            Tools.decreaseHour(tbEditHour);
+        });
+
+        btnDownMin.click(function () {
+            Tools.decreaseMinutes(tbEditMin);
+        });
+
+        btnDownSek.click(function () {
+            Tools.decreaseSeconds(tbEditSek);
+        });
+
+        btnDownMS.click(function () {
+            Tools.decreaseMilliseconds(tbEditMSek);
+        });
+
+        listIntermediate.change(function () {
+            var strid = "";
+            var strstart = "";
+            var strh = "";
+            var strm = "";
+            var strs = "";
+            var strms = "";
+            var startposition = 0;
+            $("#listIntermediate :selected").each(function () {
+                startposition = $(this).text().length - 9;
+                strid = $(this).val();
+                strstart = $(this).text().substring(0, startposition - 2);
+                strh = $(this).text().substring(startposition, startposition + 1);
+                strm = $(this).text().substring(startposition + 2, startposition + 4);
+                strs = $(this).text().substring(startposition + 5, startposition + 7);
+                strms = $(this).text().substring(startposition + 8, startposition + 9);
+            });
+            initialChecpointOrderId = strid;
+            tbEditStartnumber.val(strstart);
+            tbEditHour.val(strh);
+            tbEditMin.val(strm);
+            tbEditSek.val(strs);
+            tbEditMSek.val(strms);
+            Tools.EnableControls();
+        });
 
         StartNumber.keypress(function (e) {
             //            if (String.fromCharCode(StartNumber.val()).match(/[^1-999\r]/g))
             //                checkNumber = false;
             if (e.keyCode == 13) {
-                if (checkNumber == true && StartNumber.val() != '') {
+                if (checkNumber == true) {
                     timer.addIntermediate(function (runtime) {
                         var url = "/TimeStartnumber/AddStartnumber/?checkpointId=" + ddlCheckpoints.val() + "&startnumber=" + StartNumber.val() + "&runtime=" + runtime;
                         $.post(url, function (data) {
@@ -68,7 +156,7 @@
             }
         });
     }); 
-            </script>
+</script>
 <div class="contentmargin">
     <div class="containter">
         <div class="row">
@@ -90,13 +178,15 @@
                 <input type="button" id="btnStart" value="Start" class="btnRegular" style="width: 100px" />
             </div>
         </div>
-                <div class="row">
+        <div class="row">
             <div class="left">
                 <div class="editor-label" style="vertical-align: top">
                     <b>@Html.Label("lblStartnumber", "Startnummer:")</b></div>
             </div>
             <div class="right">
-                @Html.TextBox("tbStartnumber", null, new { @class = "textboxmedium"})
+                <div class="editor-label" style="vertical-align: top">
+                    @Html.TextBox("tbStartnumber", null, new { @class = "textboxmedium" })
+                </div>
             </div>
         </div>
         <div class="row">
@@ -104,6 +194,8 @@
                 @Html.ListBox("listIntermediate", new SelectList(Model.Intermediates, "CheckpointOrderId", "RuntimeId"), new { @class = "listbox" })
             </div>
             <div class="right">
+                Startnummer: @Html.TextBox("tbEditStartnumber", null, new { @class = "textboxmedium" })<br />
+                Mellomtid:<br />
                 @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
                     id="btnUpHour" class="btnUp" value=" " /><input type="button" id="btnDownHour" class="btnDown"
                         value=" " /><span class="timer">:</span>@Html.TextBox("tbEditMin", null, new { @class = "textboxsmall" })<input

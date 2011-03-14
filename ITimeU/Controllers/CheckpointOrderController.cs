@@ -96,7 +96,8 @@ namespace ITimeU.Controllers
             {
                 return View();
             }
-        }       
+        }
+
 
         private CheckpointOrder GetCheckpointOrder(int id)
         {
@@ -132,7 +133,7 @@ namespace ITimeU.Controllers
             int.TryParse(startingNumber, out startNmb);
             int.TryParse(checkpointOrderId, out Id);
             model.MoveCheckpointUp(chkpntID, startNmb, Id);
-            return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+            return Content(model.CheckpointOrderDic.ToListboxvalues());
         }
 
         public ActionResult MoveCheckpointDown(string checkpointID, string startingNumber, string checkpointOrderId)
