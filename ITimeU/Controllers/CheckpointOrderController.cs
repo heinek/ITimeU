@@ -96,7 +96,8 @@ namespace ITimeU.Controllers
             {
                 return View();
             }
-        }       
+        }
+
 
         private CheckpointOrder GetCheckpointOrder(int id)
         {

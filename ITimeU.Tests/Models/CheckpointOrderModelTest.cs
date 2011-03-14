@@ -32,68 +32,71 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_CheckpointOrders_From_The_DB()
         {
-            int previousSize = CheckpointOrderModel.GetAllCheckpointOrders().Count;
+            int previousSize = CheckpointOrderModel.GetCheckpointOrders(-1).Count;
             List<CheckpointOrder> checkpointOrdersDb = null;
 
             Given("we insert three checkpointOrders in the database", () =>
             {
-                //CheckpointOrderModel.Create(1, 1, 1);
-                //CheckpointOrderModel.Create(1, 2, 3);
-                //CheckpointOrderModel.Create(1, 3, 2);
+                checkpointOrderModel.AddCheckpointOrderDB(-1, 1);
+                checkpointOrderModel.AddCheckpointOrderDB(-1, 2);
+                checkpointOrderModel.AddCheckpointOrderDB(-1, 3);
             });
 
             When("we fetch all checkpointOrders", () =>
             {
-                checkpointOrdersDb = CheckpointOrderModel.GetAllCheckpointOrders();
+                checkpointOrdersDb = CheckpointOrderModel.GetCheckpointOrders(-1);
                 LogWriter.getInstance().Write("Received checkpointsDb2: " + checkpointOrdersDb);
             });
 
             Then("we should have a list of checkpoints", () =>
             {
-                checkpointOrdersDb.Count.ShouldBe(previousSize + 3);
+                CheckpointOrderModel.GetCheckpointOrders(-1).Count().ShouldNotBe(0);
             });
-
+           
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Insert_A_New_CheckpointOrder_To_The_Database()
         {
-            CheckpointOrder newCheckpointOrder = null;
-
+            int previousSize = CheckpointOrderModel.GetCheckpointOrders(-1).Count;
+            
             Given("we want to insert a new checkpointOrder to the database");
 
             When("we create the checkpointOrder", () =>
             {
-                newCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1, false, false);
+                checkpointOrderModel.AddCheckpointOrderDB(-1, 1);                
             });
 
             Then("it should exist in the database", () =>
             {
-                CheckpointOrder checkpointOrderDb = CheckpointOrderModel.GetCheckpointOrderById(newCheckpointOrder.ID);
-                checkpointOrderDb.ShouldBe(newCheckpointOrder);
+                CheckpointOrderModel.GetCheckpointOrders(-1).Count.ShouldNotBe(0);
             });
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Update_A_CheckpointOrder_To_The_Database()
         {
-            CheckpointOrder origCheckpointOrder = null;
+            CheckpointOrder origCheckpointOrder = new CheckpointOrder();
+            origCheckpointOrder.CheckpointID = 1;
+            origCheckpointOrder.StartingNumber = 1;
+
             CheckpointOrder updatedCheckpointOrder = origCheckpointOrder;
 
             Given("we have a checkpointOrder", () =>
             {
-                origCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1, false, false);
-                origCheckpointOrder.CheckpointID = 1;
+                checkpointOrderModel.AddCheckpointOrderDB((int)origCheckpointOrder.CheckpointID, (int)origCheckpointOrder.StartingNumber);
             });
 
             When("we update the checkpointOrder", () =>
             {
-                updatedCheckpointOrder.CheckpointID = 2;
+                updatedCheckpointOrder.CheckpointID = 1;
+                updatedCheckpointOrder.StartingNumber = 2;
+                checkpointOrderModel.UpdateCheckpointOrderDB((int)updatedCheckpointOrder.CheckpointID, (int)updatedCheckpointOrder.StartingNumber);
             });
 
             Then("the values should be different", () =>
             {
-                updatedCheckpointOrder.CheckpointID.ShouldNotBeSameAs(origCheckpointOrder.CheckpointID);
+                updatedCheckpointOrder.StartingNumber.ShouldNotBe(origCheckpointOrder.StartingNumber);
             });
         }
 
@@ -103,7 +106,6 @@ namespace ITimeU.Tests.Models
             CheckpointOrderModel testCheckpointOrder = null;
             int ordernum1 = 0, ordernum2 = 0;
             int checkpointId = 1;
-            int startingNumber = 2;
             Entities context = new Entities();
             Given("We have a CheckpointOrder", () =>
             {
@@ -113,16 +115,15 @@ namespace ITimeU.Tests.Models
 
             When("We insert start number", () =>
             {
-                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startingNumber);
+                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, 2);
                 ordernum1 = (int)(context.CheckpointOrders.OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
             });
 
             Then("We should have next order number in ascending order in database", () =>
             {
-                startingNumber = 3;
-                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startingNumber);
+                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, 3);
                 ordernum2 = (int)(context.CheckpointOrders.OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
-                ordernum2.ShouldBeSameAs(ordernum1 + 1);
+                ordernum2.ShouldBe(ordernum1 + 1);
             });
         }
 
@@ -179,6 +180,7 @@ namespace ITimeU.Tests.Models
         public void TestCleanup()
         {
             StartScenario();
+            CheckpointOrderModel.DeleteCheckpointOrder(45);
         }
     }
 }

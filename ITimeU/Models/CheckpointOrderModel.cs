@@ -296,5 +296,18 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
+
+        public void DeleteAllCheckpointOrdersOnCheckpoint(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                foreach (CheckpointOrder co in context.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointId))
+                {
+                    co.IsDeleted = true;
+                }
+                context.SaveChanges();
+            }
+        }
+
     }
 }
