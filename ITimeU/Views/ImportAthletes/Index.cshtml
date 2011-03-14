@@ -1,0 +1,56 @@
+﻿@model List<ITimeU.Models.AthleteModel>
+@{
+    ViewBag.Title = "Index";
+}
+<h2>
+    Importer deltakere fra FriRes</h2>
+@{ Html.BeginForm("ImportFromFriRes", "ImportAthletes", FormMethod.Post, new { enctype = "multipart/form-data"} ); }
+<div id="ImportAthletes">
+    <p>
+        Velg database for import av deltakere fra FriRes:</p>
+    <!--@Html.TextBox("accessDbFile", null, new { @class = "textboxLarge" })-->
+    <input type="file" id="accessDbFile" name="accessDbFile" value="Velg database"
+        style="width: 300px" />
+    <input type="submit" id="btnImportFromDatabase" value="Importer deltakere" class="btnRegular"
+        style="width: 150px" />
+</div>
+@{ Html.EndForm(); }
+<div id="ListImportedAthletes">
+    <p>Importere deltakere fra FriRes:</p>
+    @if (ViewBag.Athletes != null)
+    {
+        <table>
+            <tr>
+                <th>
+                    Fornavn
+                </th>
+                <th>
+                    Etternavn
+                </th>
+                <th>Klasse</th>
+                <th>Klubb</th>
+                <th>Fødselsår</th>
+                <th>Startnummer</th>
+            </tr>
+            @foreach (ITimeU.Models.AthleteModel athlete in ViewBag.Athletes)
+            {
+                <tr>
+                    <td>
+                        @athlete.FirstName
+                    </td>
+                    <td>
+                        @athlete.LastName
+                    </td>
+                    <td>@athlete.AthleteClass</td>
+                    <td>@athlete.Club</td>
+                    <td>@athlete.Birthday</td>
+                    <td>@athlete.StartNumber</td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+<div id="SaveImportedAthletes">
+    <input type="button" id="btnSaveImportedAthletesToITimeU" value="Lagre deltakere til ITimeU"
+        class="btnRegular" style="width: 175px" />
+</div>

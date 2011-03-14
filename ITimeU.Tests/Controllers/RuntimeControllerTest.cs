@@ -5,6 +5,8 @@ using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
+using ITimeU.Controllers;
+using System.Web.Mvc;
 
 namespace ITimeU.Tests.Models
 {
@@ -18,65 +20,34 @@ namespace ITimeU.Tests.Models
             StartScenario();
         }
 
-        /// <summary>
-        /// NOTE: The web server must be started in order for this test to run correctly.
-        /// </summary>
         [TestMethod]
-        public void The_Runtime_Should_Be_Saved_To_Database_On_Http_Request()
+        public void The_Controller_Should_Be_Able_To_Save_The_Runtime_To_Db()
         {
+            RuntimeController runtimeCtrl = null;
+            CheckpointModel checkpoint = null;
+
             int runtime = 360000000; // Runtime, in milliseconds. Equals 100 hours.
-            String requestUrl = null;
-            String webResponse = null;
+            ContentResult webResponse = null;
 
             Given("we have a timer and the time keeper wants to save a runtime", () =>
             {
                 TimerModel timer = new TimerModel();
-                CheckpointModel checkpoint = new CheckpointModel("TheRuntimeCheckpoint");
-                requestUrl = @"http://localhost:54197/Runtime/Save/" +
-                    "?runtime=" + runtime +
-                    "&checkpointId=" + checkpoint.Id;
-                checkpoint.Timer = timer;
+                checkpoint = new CheckpointModel("TheRuntimeCheckpoint", timer);
                 checkpoint.Sortorder = 1;
             });
 
             When("the time keeper saves the runtime", () =>
             {
-                webResponse = visit(requestUrl); ;
+                runtimeCtrl = new RuntimeController();
+                webResponse = (ContentResult)runtimeCtrl.Save(runtime.ToString(), checkpoint.Id.ToString());
             });
 
             Then("the runtime should be saved in the database", () =>
             {
-                int runtimeId = Int32.Parse(webResponse);
+                int runtimeId = Int32.Parse(webResponse.Content);
                 RuntimeModel runtimeStoredInDb = RuntimeModel.getById(runtimeId);
                 runtimeStoredInDb.Runtime.ShouldBe(runtime);
             });
         }
-
-        private string visit(string requestUrl)
-        {
-            HttpWebResponse httpResponse = doHttpRequest(requestUrl);
-            string response = readHttpResponse(httpResponse);
-            httpResponse.Close();
-
-            return response;
-        }
-
-        private static HttpWebResponse doHttpRequest(string requestUrl)
-        {
-            HttpWebRequest httpRequest = (HttpWebRequest)WebRequest.Create(requestUrl);
-            HttpWebResponse httpResponse = (HttpWebResponse)httpRequest.GetResponse();
-            return httpResponse;
-        }
-
-        private static string readHttpResponse(HttpWebResponse httpResponse)
-        {
-            StreamReader responseStream = new StreamReader(httpResponse.GetResponseStream());
-            string response = responseStream.ReadToEnd();
-            responseStream.Close();
-
-            return response;
-        }
-
-
     }
 }

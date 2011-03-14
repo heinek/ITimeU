@@ -18,8 +18,7 @@ namespace ITimeU.Models
             {
                 if (Id == 0)
                     return false;
-                else
-                    return true;
+                return true;
             }
         }
 
@@ -51,12 +50,6 @@ namespace ITimeU.Models
             Name = checkpoint.Name;
             if (checkpoint.Timer != null)
                 this.timer = new TimerModel(checkpoint.Timer);
-        }
-
-        public CheckpointModel(string checkpointName)
-        {
-            Name = checkpointName;
-            SaveToDb();
         }
 
         public CheckpointModel(string checkpointName, TimerModel timer)
@@ -99,11 +92,13 @@ namespace ITimeU.Models
         private void updateDbEntry(Checkpoint checkpoint)
         {
             checkpoint.Name = Name;
+            checkpoint.SortOrder = Sortorder;
         }
 
         private void updateDbEntry(Entities context)
         {
             Checkpoint checkpoint = context.Checkpoints.Single(tmr => tmr.CheckpointID == Id);
+            checkpoint.SortOrder = Sortorder;
             updateDbEntry(checkpoint);
             context.SaveChanges();
         }
@@ -161,7 +156,5 @@ namespace ITimeU.Models
         {
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
         }
-
-
     }
 }

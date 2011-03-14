@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ITimeU.Library;
-using ITimeU.Tests.Models;
 
 // TODO: Write class summary.
 
@@ -29,9 +28,6 @@ namespace ITimeU.Models
             }
 
         }
-
-        private bool dbEntryCreated = false;
-
         private DateTime? startTime;
         public DateTime? StartTime
         {
@@ -53,7 +49,6 @@ namespace ITimeU.Models
             }
 
         }
-
         public DateTime? endTime;
         public DateTime? EndTime
         {
@@ -71,10 +66,11 @@ namespace ITimeU.Models
                     endTime = DateTimeRounder.RoundToOneDecimal((DateTime)value);
             }
         }
-
+        public int? RaceID { get; set; }
         public bool IsStarted { get; private set; }
         public Dictionary<int, Dictionary<int, int>> CheckpointRuntimes { get; set; }
         public int CurrentCheckpointId { get; set; }
+        private bool dbEntryCreated = false;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerModel"/> class.
@@ -92,14 +88,10 @@ namespace ITimeU.Models
         /// <param name="id">The id.</param>
         public TimerModel(int id)
         {
-            using (var context = new Entities())
-            {
-                var timer = context.Timers.Single(tmr => tmr.TimerID == id);
-            }
             Id = id;
             StartTime = null;
             IsStarted = false;
-            CurrentCheckpointId = GetFirstCheckpoint();
+            CurrentCheckpointId = GetFirstCheckpointId();
             CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
             CheckpointRuntimes.Add(CurrentCheckpointId, new Dictionary<int, int>());
         }
@@ -201,9 +193,17 @@ namespace ITimeU.Models
             Timer timer = context.Timers.Single(tmr => tmr.TimerID == Id);
             timer.StartTime = this.StartTime;
             timer.EndTime = this.EndTime;
+            if (RaceID.HasValue) timer.RaceID = this.RaceID.Value;
             context.SaveChanges();
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -280,7 +280,6 @@ namespace ITimeU.Models
         public void DeleteRuntime(RuntimeModel runtime)
         {
             CheckpointRuntimes[CurrentCheckpointId].Remove(runtime.Id);
-            //CheckpointRuntimes[runtime.CheckPointId] = RuntimeDic;
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtime.Id).Single();
@@ -299,17 +298,26 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
-                //CheckpointRuntimes[runtimeToDelete.CheckpointID] = RuntimeDic;
                 ctx.Runtimes.DeleteObject(runtimeToDelete);
+                ctx.SaveChanges();
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return "[TimerModel, id: " + Id + "]";
         }
 
-
+        /// <summary>
+        /// Changes the checkpoint.
+        /// </summary>
+        /// <param name="checkpointid">The checkpointid.</param>
         public void ChangeCheckpoint(int checkpointid)
         {
             CurrentCheckpointId = checkpointid;
@@ -319,7 +327,11 @@ namespace ITimeU.Models
             }
         }
 
-        public int GetFirstCheckpoint()
+        /// <summary>
+        /// Gets the first checkpoint.
+        /// </summary>
+        /// <returns></returns>
+        public int GetFirstCheckpointId()
         {
             using (var ctx = new Entities())
             {
@@ -328,11 +340,23 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Gets all the checkpoints for .
+        /// </summary>
+        /// <returns></returns>
         public List<Checkpoint> GetCheckpoints()
         {
             using (var ctx = new Entities())
             {
                 return ctx.Checkpoints.Where(cp => cp.TimerID == Id && cp.IsDeleted == false).OrderBy(cp => cp.SortOrder).ToList();
+            }
+        }
+
+        public static List<Timer> GetTimers(int raceId)
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Timers.Where(timer => timer.IsDeleted == false && timer.RaceID == raceId).ToList();
             }
         }
     }

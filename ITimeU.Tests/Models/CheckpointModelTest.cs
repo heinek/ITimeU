@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
-using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using ITimeU.Logging;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
-using ITimeU.Logging;
 
 namespace ITimeU.Tests.Models
 {
@@ -44,9 +39,9 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
         {
-            int previousSize = CheckpointModel.getAll().Count;
             List<CheckpointModel> checkpointsDb = null;
-            var timer = TimerModel.GetTimerById(447);
+            var timer = CreateNewTimerModelWithCheckpoints();
+            int previousSize = CheckpointModel.getAll().Count;
             Given("we insert three checkpoints in the datbase", () =>
             {
                 new CheckpointModel("1st checkpoint", timer, 1);
@@ -70,14 +65,13 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Insert_A_New_Checkpoint_To_The_Database()
         {
-            string checkpointName = "MyCheckpoint";
             CheckpointModel newCheckpoint = null;
-            TimerModel timer = TimerModel.GetTimerById(1);
+
             Given("we want to insert a new checkpoint to the database");
 
             When("we create the checkpoint", () =>
             {
-                newCheckpoint = new CheckpointModel(checkpointName, timer, 1);
+                newCheckpoint = new CheckpointModel("MyCheckpoint", new TimerModel(), 1);
             });
 
             Then("it should exist in the database", () =>
@@ -96,7 +90,7 @@ namespace ITimeU.Tests.Models
             {
                 timer = new TimerModel();
                 checkpoint = new CheckpointModel("RelationToTimerCheckpoint", timer);
-            }); 
+            });
 
             When("we start the timer", () => timer.Start());
 
@@ -135,7 +129,7 @@ namespace ITimeU.Tests.Models
         {
             CheckpointModel checkpoint = null;
             CheckpointModel checkpointDb = null;
-            TimerModel timer = TimerModel.GetTimerById(447);
+            var timer = CreateNewTimerModelWithCheckpoints();
             Given("we have a checkpoint", () =>
             {
                 checkpoint = new CheckpointModel("MyCheckpoint", timer, 1);
@@ -152,6 +146,15 @@ namespace ITimeU.Tests.Models
             });
         }
 
+        private TimerModel CreateNewTimerModelWithCheckpoints()
+        {
+            var timer = new TimerModel();
+            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
+            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+            return timer;
+        }
 
     }
 }

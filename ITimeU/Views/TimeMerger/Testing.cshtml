@@ -1,0 +1,95 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+      "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head title="Testing">
+    <link rel="stylesheet" href="../../Content/qunit.css" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Stopwatch.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/qunit.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var tbTest = $("#tbTest");
+            QUnit.log = function (result, message) {
+                if (window.console && window.console.log) {
+                    window.console.log(result + ' :: ' + message);
+                }
+            }
+            module("Unit tests");
+            test("We_Should_Get_A_Result_Of_2_When_Increasing_From_1_Hour", function () {
+                tbTest.val("1");
+                Tools.increaseHour(tbTest);
+                expect(1);
+                equals(tbTest.val(), "2", 'Expected result 2, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_23_When_Decreasing_From_0_Hour", function () {
+                tbTest.val("0");
+                Tools.decreaseHour(tbTest);
+                expect(1);
+                equals(tbTest.val(), "23", 'Expected result 23, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_02_When_Increasing_From_01_Minutes", function () {
+                tbTest.val("01");
+                Tools.increaseMinutes(tbTest);
+                expect(1);
+                equals(tbTest.val(), "02", 'Expected result 02, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_59_When_Decreasing_From_00_Minutes", function () {
+                tbTest.val("00");
+                Tools.decreaseMinutes(tbTest);
+                expect(1);
+                equals(tbTest.val(), "59", 'Expected result 59, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_02_When_Increasing_From_01_Seconds", function () {
+                tbTest.val("01");
+                Tools.increaseSeconds(tbTest);
+                expect(1);
+                equals(tbTest.val(), "02", 'Expected result 02, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_59_When_Decreasing_From_00_Seconds", function () {
+                tbTest.val("00");
+                Tools.decreaseSeconds(tbTest);
+                expect(1);
+                equals(tbTest.val(), "59", 'Expected result 59, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_2_When_Increasing_From_1_Milliseconds", function () {
+                tbTest.val("1");
+                Tools.increaseMilliseconds(tbTest);
+                expect(1);
+                equals(tbTest.val(), "2", 'Expected result 2, result was ' + tbTest.val());
+            });
+            test("We_Should_Get_A_Result_Of_9_When_Decreasing_From_0_Milliseconds", function () {
+                tbTest.val("0");
+                Tools.decreaseMilliseconds(tbTest);
+                expect(1);
+                equals(tbTest.val(), "9", 'Expected result 9, result was ' + tbTest.val());
+            });
+            test("Deleting_A_Startnumber_From_The_List_Should_Remove_It_From_The_List", function () {
+                tbTest.val("0");
+                Tools.decreaseMilliseconds(tbTest);
+                expect(1);
+                equals(tbTest.val(), "9", 'Expected result 9, result was ' + tbTest.val());
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1 id="qunit-header">
+        TimeMerger Test</h1>
+    <h2 id="qunit-banner">
+    </h2>
+    <h2 id="qunit-userAgent">
+    </h2>
+    <ol id="qunit-tests">
+    </ol>
+    <input type="text" id="tbTest" value="1" />
+    <select id="listTest" name="listTest">
+    <option value="1">1</option><option value="2">2</option>
+    </select>
+
+</body>
+</html>

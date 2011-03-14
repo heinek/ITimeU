@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ITimeU.Models;
 
-namespace ITimeU.Tests.Models
+namespace ITimeU.Models
 {
     public class RuntimeModel
     {
@@ -50,12 +49,37 @@ namespace ITimeU.Tests.Models
             return new RuntimeModel(runtimeDb.RuntimeID, runtimeDb.Runtime1, checkpointId);
         }
 
+        /// <summary>
+        /// Deletes the runtime.
+        /// </summary>
+        /// <param name="runtimeid">The runtimeid.</param>
+        public static void DeleteRuntime(int runtimeid)
+        {
+            using (var ctx = new Entities())
+            {
+                var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
+                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                ctx.SaveChanges();
+            }
+        }
+
         public static void EditRuntime(int runtimeid, int newRuntime)
         {
             using (var ctx = new Entities())
             {
                 Runtime runtimeDb = ctx.Runtimes.Single(runtimeTemp => runtimeTemp.RuntimeID == runtimeid);
                 runtimeDb.Runtime1 = newRuntime;
+                ctx.SaveChanges();
+            }
+        }
+
+        public static void EditRuntime(int runtimeid, int h, int m, int s, int ms)
+        {
+            TimeSpan ts = new TimeSpan(0, h, m, s, ms);
+            using (var ctx = new Entities())
+            {
+                Runtime runtimeDb = ctx.Runtimes.Single(runtimeTemp => runtimeTemp.RuntimeID == runtimeid);
+                runtimeDb.Runtime1 = Convert.ToInt32(ts.TotalMilliseconds);
                 ctx.SaveChanges();
             }
         }
@@ -73,6 +97,19 @@ namespace ITimeU.Tests.Models
             var ctx = new Entities();
             ctx.Runtimes.AddObject(runtimeDb);
             ctx.SaveChanges();
+        }
+
+        /// <summary>
+        /// Gets the runtimes.
+        /// </summary>
+        /// <param name="checkpointId">The checkpoint id.</param>
+        /// <returns></returns>
+        public static Dictionary<int, int> GetRuntimes(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId && runtime.IsMerged == false).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
+            }
         }
     }
 }

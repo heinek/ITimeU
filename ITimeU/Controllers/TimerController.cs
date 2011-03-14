@@ -6,8 +6,18 @@ namespace ITimeU.Controllers
     public class TimerController : Controller
     {
 
-        //
-        // GET: /Timer/
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        //[HttpGet]
+        //public ActionResult Index()
+        //{
+        //    Logging.LogWriter.getInstance().Write("yoyoyo");
+        //    var timer = new TimerModel(1);
+        //    ViewBag.Checkpoints = timer.GetCheckpoints();
+        //    Session["timer"] = timer;
+        //    return View("Index", timer);
+        //}
 
         /// <summary>
         /// Indexes the specified checkpoint_id.
@@ -17,13 +27,22 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int Id)
         {
-            Logging.LogWriter.getInstance().Write("yoyoyo");
             var timer = new TimerModel(Id);
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
+            //if (checkpoint_id != null)
+            //{
+            //    CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
+            //    checkpoint = timer;
+            //}
             return View("Index", timer);
         }
 
+        [HttpGet]
+        public ActionResult Testing()
+        {
+            return View("Testing");
+        }
         /// <summary>
         /// Starts this instance.
         /// </summary>
@@ -31,8 +50,8 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Start();
-            Session["timer"] = timer;
             ViewBag.Checkpoints = timer.GetCheckpoints();
+            Session["timer"] = timer;
             return View("Index", timer);
         }
 
@@ -43,19 +62,11 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Stop();
-            Session["timer"] = timer;
             ViewBag.Checkpoints = timer.GetCheckpoints();
+            Session["timer"] = timer;
             return View("Index", timer);
         }
 
-        /// <summary>
-        /// Resets this instance.
-        /// </summary>
-        public ActionResult Restart()
-        {
-            // TODO: Update javascript to call start instead of restart.
-            return Start();
-        }
         /// <summary>
         /// Saves the runtime.
         /// </summary>
@@ -110,6 +121,7 @@ namespace ITimeU.Controllers
         /// </summary>
         /// <param name="checkpointid">The checkpointid.</param>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult ChangeCheckpoint(int checkpointid)
         {
             TimerModel timer = (TimerModel)Session["timer"];
@@ -119,7 +131,7 @@ namespace ITimeU.Controllers
 
         private string SaveToSessionAndReturnRuntimes(TimerModel timer)
         {
-            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(true, true);
+            var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Descending, toTimer: true);
             Session["timer"] = timer;
             return runtimeDic;
         }

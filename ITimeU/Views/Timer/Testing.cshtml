@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+      "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head title="Testing">
+    <link rel="stylesheet" href="../../Content/qunit.css" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Stopwatch.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/qunit.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            QUnit.log = function (result, message) {
+                if (window.console && window.console.log) {
+                    window.console.log(result + ' :: ' + message);
+                }
+            }
+            module("Unit tests");
+            test("We_Should_Get_A_Result_Of_02_When_Incrementing_1_Seconds_And_Minutes", function () {
+                expect(1);
+                equals(Tools.parse("1", 60, true), "02", 'Expected result 02, result was ' + Tools.parse("1", 60, true));
+            });
+            test("We_Should_Get_A_Result_Of_2_When_Incrementing_1_Milliseconds_And_Hours", function () {
+                expect(1);
+                equals(Tools.parse("1", 10, true), "2", 'Expected result 2, result was ' + Tools.parse("1", 10, true));
+            });
+            test("We_Should_Get_A_Result_Of_09_When_Decrementing_0_Seconds_And_Minutes", function () {
+                expect(1);
+                equals(Tools.parse("0", 10, false), "9", 'Expected result 9, result was ' + Tools.parse("0", 10, false));
+            });
+            test("We_Should_Get_A_Result_Of_9_When_Decrementing_0_Milliseconds_And_Hours", function () {
+                expect(1);
+                equals(Tools.parse("0", 10, false), "9", 'Expected result 9, result was ' + Tools.parse("0", 10, false));
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1 id="qunit-header">
+        Timer Test</h1>
+    <h2 id="qunit-banner">
+    </h2>
+    <h2 id="qunit-userAgent">
+    </h2>
+    <ol id="qunit-tests">
+    </ol>
+</body>
+</html>
