@@ -78,7 +78,7 @@ namespace ITimeU.Models
                 checkpointOrder.CheckpointID = checkpointId;
                 checkpointOrder.StartingNumber = startingNumber;
                 if (ctx.CheckpointOrders.Any(chkpnt => (chkpnt.StartingNumber == startingNumber && chkpnt.CheckpointID == checkpointId)))
-                    return;
+                    return 0;
                     if ((ctx.CheckpointOrders.Count() > 0) && (ctx.CheckpointOrders.Any(chkpnt => chkpnt.CheckpointID == checkpointId)))
                     {
                         checkpointOrder.OrderNumber = (ctx.CheckpointOrders.Where(chkpntid => chkpntid.CheckpointID == checkpointId).OrderByDescending(chkpnt => chkpnt.OrderNumber).First().OrderNumber) + 1;
@@ -103,7 +103,7 @@ namespace ITimeU.Models
                         }
                     }
                 }            
-                return checkpointOrder.ID;
+                return 0;
 
         }
 
@@ -299,5 +299,18 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
+
+        public void DeleteAllCheckpointOrdersOnCheckpoint(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                foreach (CheckpointOrder co in context.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointId))
+                {
+                    co.IsDeleted = true;
+                }
+                context.SaveChanges();
+            }
+        }
+
     }
 }
