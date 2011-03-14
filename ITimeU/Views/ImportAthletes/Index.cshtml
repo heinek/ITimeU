@@ -1,6 +1,6 @@
 ﻿@model List<ITimeU.Models.AthleteModel>
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Importer atleter";
 }
 <h2>
     Importer deltakere fra FriRes</h2>
@@ -16,9 +16,9 @@
 </div>
 @{ Html.EndForm(); }
 <div id="ListImportedAthletes">
-    <p>Importere deltakere fra FriRes:</p>
     @if (ViewBag.Athletes != null)
     {
+        <h4>Deltakere funnet databasefil:</h4>
         <table>
             <tr>
                 <th>
@@ -50,6 +50,7 @@
         </table>
     }
 </div>
+<p></p>
 <div id="SaveImportedAthletes">
     <input type="button" id="btnSaveImportedAthletesToITimeU" value="Lagre deltakere til ITimeU"
         class="btnRegular" style="width: 175px" />

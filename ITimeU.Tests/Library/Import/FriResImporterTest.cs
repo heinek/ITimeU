@@ -9,6 +9,7 @@ using ITimeU.Models;
 using ITimeU.Library;
 using System.Web;
 using ITimeU.Logging;
+using System.IO;
 
 namespace ITimeU.Tests.Library
 {
@@ -171,6 +172,32 @@ namespace ITimeU.Tests.Library
                 AthleteClassModel.GetAll().Count.ShouldBe(previousAthleteClassCount);
                 ClubModel.GetAll().Count.ShouldBe(previousClubCount);
             });
+        }
+
+        [TestMethod]
+        public void Importing_A_Non_Existing_File_Should_Give_An_Error()
+        {
+            FriResImporter importer = null;
+            List<AthleteModel> athletes = null;
+
+            Given("we have a FriRes importer pointing to a non existing database file", () =>
+            {
+                importer = new FriResImporter("nonexstingfile.ext");
+            });
+
+            When("we attempt import all athletes from the file", () =>
+            {
+                try
+                {
+                    athletes = importer.getAthletes();
+                    false.ShouldBeTrue();
+                }
+                catch (FileNotFoundException) {
+                    // The call above should throw this exception.
+                }
+            });
+
+            Then("we should have got an exception");
         }
     }
 

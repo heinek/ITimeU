@@ -7,6 +7,7 @@ using System.Data.OleDb;
 using System.Data;
 using ITimeU.Logging;
 using System.Web;
+using System.IO;
 
 namespace ITimeU.Library
 {
@@ -34,6 +35,14 @@ namespace ITimeU.Library
         /// </summary>
         /// <returns></returns>
         public List<AthleteModel> getAthletes()
+        {
+            if (!File.Exists(accessDatabaseFile))
+                throw new FileNotFoundException("No database file found at " + accessDatabaseFile);
+
+            return doGetAthletes();
+        }
+
+        private List<AthleteModel> doGetAthletes()
         {
             connection = connectToDb();
             OleDbDataAdapter adapterWithAthletes = selectAllAthletes();

@@ -48,7 +48,6 @@ namespace ITimeU.Tests.Models
             Given("we have a mock controller with a fake session", () =>
             {
                 controller = new MockController();
-                var sessionItems = new System.Web.SessionState.SessionStateItemCollection();
                 controller.SetFakeControllerContext();
             });
 
