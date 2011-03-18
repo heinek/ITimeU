@@ -33,3 +33,4 @@ ITimeU/localSettings.config
 *.BASE
 *.LOCAL
 *.REMOTE
+ITimeU/upload/*
