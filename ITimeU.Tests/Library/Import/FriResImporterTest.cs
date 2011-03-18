@@ -40,7 +40,7 @@ namespace ITimeU.Tests.Library
         public void Imported_Athletes_Must_Be_A_List()
         {
             FriResImporter importer = null;
-            List<AthleteModel> particpants = null;
+            List<AthleteModel> athletes = null;
 
             Given("we have a importer for the FriRes system", () =>
             {
@@ -52,12 +52,12 @@ namespace ITimeU.Tests.Library
                 LogWriter.getInstance().Write(
                      "Imported_Athletes_Must_Be_A_List, getAthletes()");
 
-                particpants = importer.getAthletes();
+                athletes = importer.getAthletes();
             });
 
             Then("we should get a list of athletes", () =>
             {
-                particpants.ShouldBeInstanceOfType<List<AthleteModel>>();
+                athletes.ShouldBeInstanceOfType<List<AthleteModel>>();
             });
         }
 
