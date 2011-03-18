@@ -71,6 +71,7 @@
     <Compile Include="Controllers\MockController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RaceController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />
     <Compile Include="Controllers\TimeMergerController.cs" />
     <Compile Include="Controllers\TimerController.cs" />
@@ -110,6 +111,7 @@
     <Content Include="Content\images\btnDeleteOver.png" />
     <Content Include="Content\images\button_bg.jpg" />
     <Content Include="Content\images\button_bg_over.jpg" />
+    <Content Include="Content\images\Calendar.png" />
     <Content Include="Content\images\CheckpointBg.png" />
     <Content Include="Content\images\CheckpointBgSmall.png" />
     <Content Include="Content\images\DefaultBG.png" />
@@ -143,6 +145,7 @@
     <Content Include="Content\qunit.css" />
     <Content Include="Scripts\jquery-ui-1.8.10.custom.min.js" />
     <Content Include="Scripts\qunit.js" />
+    <Content Include="Scripts\RaceHandler.js" />
     <Content Include="Scripts\TimeFormatFactory.js" />
     <Content Include="Scripts\TimerHandler.js" />
     <Content Include="Scripts\Stopwatch.js" />
@@ -239,6 +242,10 @@
   <ItemGroup>
     <Content Include="Views\ImportAthletes\ImportCompleted.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Race\Index.cshtml" />
+  </ItemGroup>
+
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
