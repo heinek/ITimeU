@@ -8,6 +8,7 @@ using System.Data;
 using ITimeU.Logging;
 using System.Web;
 using System.IO;
+using System.Threading;
 
 namespace ITimeU.Library
 {
@@ -46,10 +47,10 @@ namespace ITimeU.Library
         {
             connection = connectToDb();
             OleDbDataAdapter adapterWithAthletes = selectAllAthletes();
-            List<AthleteModel> participants = fetchAthletes(adapterWithAthletes);
+            List<AthleteModel> athletes = fetchAthletes(adapterWithAthletes);
             connection.Close();
 
-            return participants;
+            return athletes;
         }
 
         private OleDbConnection connectToDb()
@@ -60,7 +61,7 @@ namespace ITimeU.Library
 
         private OleDbDataAdapter selectAllAthletes()
         {
-            string query = "SELECT Navn, Fødselsår, KlubbNavn, Klasse, Startnr  FROM [Deltaker]";
+            string query = "SELECT Navn, Fødselsår, KlubbNavn, Klasse, Startnr FROM [Deltaker]";
             return new OleDbDataAdapter(query, connection);
         }
 
@@ -123,5 +124,10 @@ namespace ITimeU.Library
                 return null;
         }
 
+        public static void SaveAthletesToDatabase(List<AthleteModel> athletes)
+        {
+            foreach (AthleteModel athlete in athletes)
+                athlete.SaveToDb();
+        }
     }
 }

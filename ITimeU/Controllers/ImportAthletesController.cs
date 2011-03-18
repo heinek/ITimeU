@@ -11,6 +11,7 @@ namespace ITimeU.Controllers
     public class ImportAthletesController : Controller
     {
         public const string ERROR_NO_FILE_UPLOADED = "Feil: Ingen fil valgt. Velg en fil før du laster opp.";
+        public const string TEMPDATA_KEY_UPLOADED_FILE = "uploadedDbFile";
 
         public ActionResult Index()
         {
@@ -22,7 +23,13 @@ namespace ITimeU.Controllers
         {
             try
             {
-                return TryToImportFromFrires();
+                string accessDbFile = UploadDbFileFromPost();
+                TempData[TEMPDATA_KEY_UPLOADED_FILE] = accessDbFile;
+                List<AthleteModel> athletes = TryToImportFrom(accessDbFile);
+                ViewBag.Athletes = athletes;
+
+                return View("Index", athletes);
+
             }
             catch (HttpException e)
             {
@@ -30,13 +37,10 @@ namespace ITimeU.Controllers
             }
         }
 
-        private ActionResult TryToImportFromFrires()
+        private List<AthleteModel> TryToImportFrom(string accessDbFile)
         {
-            string accessDbFile = UploadDbFileFromPost();
             List<AthleteModel> athletes = ImportAthletesFrom(accessDbFile);
-            ViewBag.Athletes = athletes;
-
-            return View("Index", athletes);
+            return athletes;
         }
 
         private string UploadDbFileFromPost()
@@ -53,7 +57,7 @@ namespace ITimeU.Controllers
                 throw new HttpException(ERROR_NO_FILE_UPLOADED);
 
             HttpPostedFileBase file = Request.Files[0];
-            if (file.ContentLength <= 0)
+            if (file.ContentLength < 0)
                 throw new HttpException(ERROR_NO_FILE_UPLOADED);
 
             return file;
@@ -81,6 +85,20 @@ namespace ITimeU.Controllers
         {
             ViewBag.Error = e.Message;
             return View("Index");
+        }
+
+        public ActionResult ImportUploadedAthletes()
+        {
+            string accessDbFile = (String) TempData[TEMPDATA_KEY_UPLOADED_FILE];
+            List<AthleteModel> athletes = TryToImportFrom(accessDbFile);
+            AthleteModel.SaveToDb(athletes);
+
+            return RedirectToAction("ImportCompleted");
+        }
+
+        public ActionResult ImportCompleted()
+        {
+            return View("ImportCompleted");
         }
 
     }

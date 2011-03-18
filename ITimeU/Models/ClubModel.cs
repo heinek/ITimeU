@@ -12,7 +12,7 @@ namespace ITimeU.Models
 
         private static Entities entitiesStatic = new Entities();
 
-        private bool dbEntryCreated
+        private bool instanceSaved
         {
             get
             {
@@ -37,22 +37,26 @@ namespace ITimeU.Models
         internal int SaveToDb()
         {
             var entities = new Entities();
-            if (!dbEntryCreated)
-                Id = CreateDbEntity(entities);
+            if (!instanceSaved)
+                Id = GetOrCreateDbEntity(entities);
             else
                 updateDbEntity(entities);
 
             return Id;
         }
 
-        private int CreateDbEntity(Entities entities)
+        private int GetOrCreateDbEntity(Entities entities)
         {
+            ClubModel clubDb = ClubModel.GetOrCreate(Name);
+            return clubDb.Id;
+            /*
             Club club = new Club();
             updateProperties(club);
             entities.Clubs.AddObject(club);
             entities.SaveChanges();
 
             return club.ClubID;
+            */
         }
 
         private void updateProperties(Club club)

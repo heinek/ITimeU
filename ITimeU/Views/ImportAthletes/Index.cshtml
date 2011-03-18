@@ -53,8 +53,11 @@
         </table>
     }
 </div>
-<p></p>
-<div id="SaveImportedAthletes">
-    <input type="button" id="btnSaveImportedAthletesToITimeU" value="Lagre deltakere til ITimeU"
+ 
+@if (ViewBag.Athletes != null) {
+    <p></p>
+    Html.BeginForm("ImportUploadedAthletes", "ImportAthletes", FormMethod.Post);
+    <input type="submit" id="btnSaveImportedAthletesToITimeU" value="Lagre deltakere til ITimeU"
         class="btnRegular" style="width: 175px" />
-</div>
+    Html.EndForm();
+}

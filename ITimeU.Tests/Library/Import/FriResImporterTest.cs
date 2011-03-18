@@ -49,6 +49,9 @@ namespace ITimeU.Tests.Library
 
             When("we import all athletes", () =>
             {
+                LogWriter.getInstance().Write(
+                     "Imported_Athletes_Must_Be_A_List, getAthletes()");
+
                 particpants = importer.getAthletes();
             });
 
@@ -76,6 +79,8 @@ namespace ITimeU.Tests.Library
 
             When("we import all athletes", () =>
             {
+                LogWriter.getInstance().Write(
+                  "The_FriRes_Example_Db_Should_Have_At_Least_Two_Athletes, getAthletes()");
                 athletes = importer.getAthletes();
             });
 
@@ -103,6 +108,8 @@ namespace ITimeU.Tests.Library
 
             When("we import all athletes", () =>
             {
+                LogWriter.getInstance().Write(
+                    "The_FriRes_Example_Db_Should_Have_Detailed_Athlete_Information, getAthletes()");
                 athletes = importer.getAthletes();
             });
 
@@ -130,6 +137,9 @@ namespace ITimeU.Tests.Library
 
             When("we import all athletes", () =>
             {
+                LogWriter.getInstance().Write(
+                   "The_FriRes_Example_Db_Should_Have_Detailed_Athlete_Information_With_Nulls, getAthletes()");
+
                 athletes = importer.getAthletes();
             });
 
@@ -158,11 +168,15 @@ namespace ITimeU.Tests.Library
                 importer = createFriResImporter();
             });
 
-            When("we import all participants", () =>
+            When("we import all athletes", () =>
             {
                 previousAthleteCount = AthleteModel.GetAll().Count;
                 previousAthleteClassCount = AthleteClassModel.GetAll().Count;
                 previousClubCount = ClubModel.GetAll().Count;
+
+                LogWriter.getInstance().Write(
+                     "No_Data_Should_Be_Saved_To_Db_When_Getting_The_List_Of_Athletes, getAthletes()");
+
                 athletes = importer.getAthletes();
             });
 
@@ -189,6 +203,9 @@ namespace ITimeU.Tests.Library
             {
                 try
                 {
+                    LogWriter.getInstance().Write(
+                         "Importing_A_Non_Existing_File_Should_Give_An_Error, getAthletes()");
+
                     athletes = importer.getAthletes();
                     false.ShouldBeTrue();
                 }
@@ -199,6 +216,31 @@ namespace ITimeU.Tests.Library
 
             Then("we should have got an exception");
         }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Save_A_List_Of_Athletes_To_Database()
+        {
+            FriResImporter importer = null;
+            List<AthleteModel> athletes = null;
+
+            Given("we have an importer for the FriRes system", () =>
+            {
+                importer = createFriResImporter();
+            });
+
+            When("we import all athletes and save them to the database", () =>
+            {
+                athletes = importer.getAthletes();
+                FriResImporter.SaveAthletesToDatabase(athletes);
+            });
+
+            Then("the database should contain the saved athletes", () =>
+            {
+                foreach (AthleteModel athlete in athletes)
+                    AthleteModel.GetById(athlete.Id); // Should not throw an exception.
+            });
+        }
+
     }
 
     
