@@ -1,7 +1,12 @@
-﻿@{
+﻿@model int
+@{
     ViewBag.Title = "Importering fullført!";
 }
 
 <h2>Importering fullført!</h2>
+
+<p>
+    @Model deltagere importert!
+</p>
 
 @Html.ActionLink("Importer en annen fil", "Index")
