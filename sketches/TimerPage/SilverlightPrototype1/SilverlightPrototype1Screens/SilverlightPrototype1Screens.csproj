@@ -87,6 +87,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="SampleData\Results\Results.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SampleData\Timestamps\Timestamps.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
@@ -104,6 +108,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Screen 1_3.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screen 1_4.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screen 1_5.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -128,6 +140,9 @@
     <Compile Include="SampleData\ResultList\ResultList.xaml.cs">
       <DependentUpon>ResultList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SampleData\Results\Results.xaml.cs">
+      <DependentUpon>Results.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SampleData\Timestamps\Timestamps.xaml.cs">
       <DependentUpon>Timestamps.xaml</DependentUpon>
     </Compile>
@@ -145,6 +160,12 @@
     </Compile>
     <Compile Include="Screen 1_3.xaml.cs">
       <DependentUpon>Screen 1_3.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screen 1_4.xaml.cs">
+      <DependentUpon>Screen 1_4.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screen 1_5.xaml.cs">
+      <DependentUpon>Screen 1_5.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen 2.xaml.cs">
       <DependentUpon>Screen 2.xaml</DependentUpon>
@@ -173,6 +194,9 @@
   </ItemGroup>
   <ItemGroup>
     <DesignTimeOnly Include="SampleData\ResultList\ResultList.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <DesignTimeOnly Include="SampleData\Results\Results.xsd" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
 </Project>

@@ -155,6 +155,12 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Moves the checkpoint down.
+        /// </summary>
+        /// <param name="checkpointId">The checkpoint id.</param>
+        /// <param name="startingNumber">The starting number.</param>
+        /// <param name="Id">The id.</param>
         public void MoveCheckpointDown(int checkpointId, int startingNumber, int Id)
         {
             using (var ctx = new Entities())
@@ -187,7 +193,7 @@ namespace ITimeU.Models
                     {
                         // TODO alert for not moving Down
                     }
-            //return checkpointOrderModel;
+                    //return checkpointOrderModel;
                 }
 
 
@@ -231,6 +237,23 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 return ctx.CheckpointOrders.Where(chkpnt => chkpnt.ID == id).SingleOrDefault();
+            }
+        }
+
+        public static CheckpointOrderModel GetById(int id)
+        {
+            using (var ctx = new Entities())
+            {
+                var checkpointorder = ctx.CheckpointOrders.Where(chkpnt => chkpnt.ID == id).SingleOrDefault();
+                var checkpointordermodel = new CheckpointOrderModel()
+                {
+                    CheckpointID = checkpointorder.CheckpointID.HasValue ? checkpointorder.CheckpointID.Value : 0,
+                    ID = checkpointorder.ID,
+                    OrderNumber = checkpointorder.OrderNumber.HasValue ? checkpointorder.OrderNumber.Value : 0,
+                    StartingNumber = checkpointorder.StartingNumber.HasValue ? checkpointorder.StartingNumber.Value : 0,
+                    CheckpointOrderDic = new Dictionary<int, int>()
+                };
+                return checkpointordermodel;
             }
         }
 

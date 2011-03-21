@@ -96,21 +96,12 @@ namespace ITimeU.Controllers
         /// <param name="msek">Milliseconds.</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult EditRuntime(string checkpointid, string checkpointOrderId, string hour, string min, string sek, string msek, string startnumber)
+        public ActionResult EditRuntime(int checkpointid, int checkpointOrderId, int hour, int min, int sek, int msek, int startnumber)
         {
             var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
-            int cpid, cporderid, h, m, s, ms, startnum;
-            int.TryParse(checkpointid.Trim(), out cpid);
-            int.TryParse(checkpointOrderId.Trim(), out cporderid);
-            int.TryParse(hour, out h);
-            int.TryParse(min, out m);
-            int.TryParse(sek, out s);
-            int.TryParse(msek, out ms);
-            int.TryParse(startnumber, out startnum);
-
-            var runtimeId = RaceIntermediateModel.GetRaceintermediate(cpid, cporderid).RuntimeId;
-            timeStartnumberModel.EditRuntime(runtimeId, h, m, s, ms);
-            timeStartnumberModel.EditStartnumber(cpid, cporderid, startnum);
+            var runtimeId = RaceIntermediateModel.GetRaceintermediate(checkpointid, checkpointOrderId).RuntimeId;
+            RuntimeModel.EditRuntime(runtimeId, hour, min, sek, msek);
+            timeStartnumberModel.EditStartnumber(checkpointid, checkpointOrderId, startnumber);
 
             Session["TimeStartnumber"] = timeStartnumberModel;
             return Content(timeStartnumberModel.CheckpointIntermediates[timeStartnumberModel.CurrentCheckpointId].ToListboxvalues());

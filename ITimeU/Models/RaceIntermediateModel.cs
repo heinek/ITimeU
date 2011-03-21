@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using System.Linq;
 namespace ITimeU.Models
 {
@@ -7,6 +8,9 @@ namespace ITimeU.Models
         public int CheckpointID { get; set; }
         public int CheckpointOrderID { get; set; }
         public int RuntimeId { get; set; }
+        public CheckpointModel CheckpointModel { get; set; }
+        public CheckpointOrderModel CheckpointorderModel { get; set; }
+        public RuntimeModel RuntimeModel { get; set; }
 
         public RaceIntermediateModel()
         {
@@ -16,8 +20,11 @@ namespace ITimeU.Models
         public RaceIntermediateModel(int checkpointId, int checkpointOrderId, int runtimeId)
         {
             CheckpointID = checkpointId;
+            this.CheckpointModel = CheckpointModel.getById(checkpointId);
             CheckpointOrderID = checkpointOrderId;
+            this.CheckpointorderModel = CheckpointOrderModel.GetById(checkpointOrderId);
             RuntimeId = runtimeId;
+            this.RuntimeModel = RuntimeModel.getById(runtimeId);
         }
 
         /// <summary>
@@ -77,6 +84,27 @@ namespace ITimeU.Models
                 var raceintermediateToDelete = context.RaceIntermediates.Where(raceintermediate => raceintermediate.CheckpointID == cpid && raceintermediate.CheckpointOrderID == cpOrderid).SingleOrDefault();
                 raceintermediateToDelete.IsDeleted = true;
                 context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Gets the raceintermediate for race.
+        /// </summary>
+        /// <param name="checkpointId">The checkpoint id.</param>
+        /// <returns></returns>
+        public static List<RaceIntermediateModel> GetRaceintermediateForRace(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                var list = context.RaceIntermediates.
+                    Where(raceintermediate => raceintermediate.CheckpointID == checkpointId && !raceintermediate.IsDeleted).
+                    Select(raceintermediate => new RaceIntermediateModel()
+                    {
+                        CheckpointID = raceintermediate.CheckpointID,
+                        CheckpointOrderID = raceintermediate.CheckpointOrderID,
+                        RuntimeId = raceintermediate.RuntimeId
+                    }).ToList();
+                return list;
             }
         }
     }
