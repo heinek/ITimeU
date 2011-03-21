@@ -7,6 +7,8 @@ namespace ITimeU.Models
 {
     public class RaceModel
     {
+        
+
         public int RaceId { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
@@ -14,7 +16,7 @@ namespace ITimeU.Models
 
         public RaceModel()
         {
-
+            
         }
 
         public static List<RaceModel> GetRaces()

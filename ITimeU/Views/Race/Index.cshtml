@@ -24,63 +24,105 @@
         var btnCreate = $("#btnCreate");
         var tbName = $("#txtRaceName");
         var tbDistance = $("#txtRaceDistance");
-        var tbStartDate = $("#txtRaceDate");
+        var tbStartDate = $("#StartDate");
         var divErrorMessage = $("#ErrorMessage");
 
         tbStartDate.datepicker({
+            dateFormat: "dd/mm/yy",
             showOn: "button",
             buttonImage: "/Content/images/Calendar.png",
             buttonImageOnly: true
         });
 
-        tbStartDate.datepicker("option", "dateFormat", "dd/mm/yy");
+//        tbStartDate.datepicker("option", "dateFormat", "dd/mm/yy");
 
 
 
         var handler = new RaceHandler();
 
-        handler.setInsertAction(
-        btnCreate,
-        tbName,
-        tbDistance,
-        tbStartDate,
-        divErrorMessage
-        );
+//        handler.setInsertAction(
+//        btnCreate,
+//        tbName,
+//        tbDistance,
+//        tbStartDate,
+//        divErrorMessage
+//        );
 
     });
 </script>
 
 
+@using (Html.BeginForm("Create","Race"))
+{
+    @Html.ValidationSummary(true)
     <fieldset>
         <legend>RaceModel</legend>
         
-        <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>
+        @if (ViewBag.Error)
+        {
+            <div class="errormessagearea"> @ViewBag.Message </div>
+        }        
+        
+        
+       @* <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>*@
 
-        <div class="editor-label">
+        @*<div class="editor-label">
             @Html.Label("lblRaceName", "Name")
         </div>
         <div class="editor-field">
-            @Html.TextBox("txtRaceName", null, new {@class = "textbox"})            
+            @Html.TextBox("txtRaceName", null, new { @class = "textbox" })            
         </div>
 
         <div class="editor-label">
             @Html.Label("lblRaceDistance", "Distance")
         </div>
         <div class="editor-field">
-            @Html.TextBox("txtRaceDistance", null, new {@class = "textbox"})            
+            @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })            
         </div>
 
         <div class="editor-label">
             @Html.Label("lblRaceDate", "Start Date")
         </div>
         <div class="editor-field">
-            @Html.TextBox("txtRaceDate", null, new {@class = "textbox"})            
+            @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })            
         </div>        
 
         <p>
-            <input type="button" class="btnRegular" id="btnCreate" runat="server" value="Lag" style="width: 100px" />
+            <input type="submit" class="btnRegular" id="btnCreate" value="Lag" style="width: 100px" />
+        </p>*@
+            
+            <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Distance)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Distance)
+            @Html.ValidationMessageFor(model => model.Distance)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            
+            @Html.EditorFor(model => model.StartDate)
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
+
+        <p>
+            <input type="submit" class="btnRegular" value="Create" />
         </p>
     </fieldset>
+}
 
 
 

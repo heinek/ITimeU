@@ -86,6 +86,7 @@
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
     <Compile Include="Models\ClubModelTest.cs" />
+    <Compile Include="Models\RaceModelTest.cs" />
     <Compile Include="Models\RuntimeModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimeMergerTest.cs" />
