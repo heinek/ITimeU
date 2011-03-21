@@ -90,12 +90,15 @@
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />
     <Compile Include="Models\ClubModel.cs" />
+    <Compile Include="Models\ClubModel2.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AthleteModel.cs" />
+    <Compile Include="Models\Model.cs" />
+    <Compile Include="Models\Instantiatable.cs" />
     <Compile Include="Models\ModelNotFoundException.cs" />
     <Compile Include="Models\RaceIntermediateModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
@@ -245,7 +248,6 @@
   <ItemGroup>
     <Content Include="Views\Race\Index.cshtml" />
   </ItemGroup>
-
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

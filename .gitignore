@@ -34,3 +34,4 @@ ITimeU/localSettings.config
 *.LOCAL
 *.REMOTE
 ITimeU/upload/*
+ITimeU/web.config.backup

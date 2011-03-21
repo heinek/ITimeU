@@ -7,16 +7,17 @@ namespace ITimeU.Models
 {
     public class ClubModel
     {
+        private static Entities entitiesStatic = new Entities();
+        private static int ID_WHEN_NOT_CREATED_IN_DB = -1;
+
         public int Id { get; private set; }
         public string Name { get; private set; }
-
-        private static Entities entitiesStatic = new Entities();
 
         private bool instanceSaved
         {
             get
             {
-                if (Id == 0)
+                if (Id == ID_WHEN_NOT_CREATED_IN_DB)
                     return false;
                 return true;
             }
@@ -25,7 +26,7 @@ namespace ITimeU.Models
         public ClubModel(string name)
         {
             this.Name = name;
-            Id = 0;
+            Id = ID_WHEN_NOT_CREATED_IN_DB;
         }
 
         public ClubModel(Club club)
