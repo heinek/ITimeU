@@ -66,5 +66,52 @@ namespace ITimeU.Tests.Models
             });
         }
 
+        [TestMethod]
+        public void Two_ClubModels_With_Same_Properties_Should_Equal_Each_Other()
+        {
+            string name = null;
+            ClubModel clubModel1 = null;
+            ClubModel clubModel2 = null;
+
+            Given("we have some common properties of two clubs", () =>
+            {
+                // Common properties...
+                name = "Trondheim";
+
+            });
+
+            When("we create two clubs with the same properties", () =>
+            {
+                clubModel1 = ClubModel.GetOrCreate(name);
+                clubModel2 = ClubModel.GetOrCreate(name);
+            });
+
+            Then("the two clubs should equal each other (though not same instance)", () =>
+            {
+                clubModel1.ShouldBe(clubModel2);
+            });
+
+        }
+
+        [TestMethod]
+        public void Two_ClubModels_With_Different_Properties_Should_Not_Equal_Each_Other()
+        {
+            ClubModel clubModel1 = null;
+            ClubModel clubModel2 = null;
+
+            Given("we want to create two clubs with different names");
+
+            When("we create two clubs with different properties", () =>
+            {
+                clubModel1 = ClubModel.GetOrCreate("Lade");
+                clubModel2 = ClubModel.GetOrCreate("Malvik");
+            });
+
+            Then("the two clubs should not equal each other", () =>
+            {
+                clubModel1.ShouldNotBe(clubModel2);
+            });
+        }
+
     }
 }

@@ -1,0 +1,87 @@
+﻿@model ITimeU.Models.RaceModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Race</h2>
+
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/RaceHandler.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
+<link href="/Content/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css"/>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var btnCreate = $("#btnCreate");
+        var tbName = $("#txtRaceName");
+        var tbDistance = $("#txtRaceDistance");
+        var tbStartDate = $("#txtRaceDate");
+        var divErrorMessage = $("#ErrorMessage");
+
+        tbStartDate.datepicker({
+            showOn: "button",
+            buttonImage: "/Content/images/Calendar.png",
+            buttonImageOnly: true
+        });
+
+        tbStartDate.datepicker("option", "dateFormat", "dd/mm/yy");
+
+
+
+        var handler = new RaceHandler();
+
+        handler.setInsertAction(
+        btnCreate,
+        tbName,
+        tbDistance,
+        tbStartDate,
+        divErrorMessage
+        );
+
+    });
+</script>
+
+
+    <fieldset>
+        <legend>RaceModel</legend>
+        
+        <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>
+
+        <div class="editor-label">
+            @Html.Label("lblRaceName", "Name")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("txtRaceName", null, new {@class = "textbox"})            
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("lblRaceDistance", "Distance")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("txtRaceDistance", null, new {@class = "textbox"})            
+        </div>
+
+        <div class="editor-label">
+            @Html.Label("lblRaceDate", "Start Date")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("txtRaceDate", null, new {@class = "textbox"})            
+        </div>        
+
+        <p>
+            <input type="button" class="btnRegular" id="btnCreate" runat="server" value="Lag" style="width: 100px" />
+        </p>
+    </fieldset>
+
+
+
+

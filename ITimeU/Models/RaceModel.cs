@@ -9,6 +9,7 @@ namespace ITimeU.Models
         public int RaceId { get; private set; }
         public string Name { get; private set; }
         public DateTime StartDate { get; private set; }
+        public int Distance { get; set; }
 
         public RaceModel()
         {
@@ -54,6 +55,18 @@ namespace ITimeU.Models
                         StartDate = race.StartDate
                     }).ToList();
             }
+        }
+
+        public void InsertRace(Race races)
+        {
+            
+            using (var ctxDB = new Entities())
+            {                                
+                races.IsDeleted = false;
+                ctxDB.Races.AddObject(races);
+                ctxDB.SaveChanges();
+            }
+
         }
 
     }

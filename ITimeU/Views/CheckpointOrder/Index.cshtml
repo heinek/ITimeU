@@ -22,6 +22,7 @@
         var btnUp = $("#btnUp");
         var btnDown = $("#btnDown");
         var divErrorMessage = $('#ErrorMessage');
+        var btnChangeCP = $("#btnChangeCP");
 
         var handler = new CheckpointOrderHandler();
 
@@ -54,14 +55,15 @@
         );
 
         handler.setddCheckpointChangeAction(
-        ddCheckpoints
+        ddCheckpoints,
+        btnChangeCP
         );
 
         handler.setInsertAction(
         listCheckpointOrders,
         tbEdit,
-        divErrorMessage  
-        );
+        divErrorMessage
+        );        
 
     });
 </script>
@@ -79,7 +81,8 @@
             @Html.Label("lblCheckpoint", "Checkpoint") 
         </div> 
         <div class="editor-field"> 
-            @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))                        
+            @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))   
+            <input type="button" id="btnChangeCP" class="btnGo" value=" " />                     
         </div> 
 
         <div class="editor-label"> 
@@ -89,12 +92,7 @@
             @Html.TextBox("txtStartingNumber", null, new { @class = "textbox" })
                   
             <input type="button" class="btnRegular" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
-            <input type="button" class="btnRegular" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />
-                            //alert("Enter Pressed");
-                            //                            var tmpOrder = checkpointOrders;
-                            //                            checkpointOrders = '<option value="' + $('#txtStartingNumber').val() + '">' + $('#txtStartingNumber').val() + '</option>' + tmpOrder;
-                            //                            $('#lstCheckpointOrders').html(checkpointOrders);
-                            //                            $('#txtStartingNumber').val("");
+            <input type="button" class="btnRegular" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />                            
             </div>
  
 
