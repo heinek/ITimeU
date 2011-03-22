@@ -11,7 +11,6 @@ namespace ITimeU.Models
         public string Name { get; private set; }
 
         private static Entities entitiesStatic = new Entities();
-        private AthleteClass athleteClass;
 
         private bool instanceSaved
         {
