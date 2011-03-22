@@ -7,6 +7,6 @@ namespace ITimeU.Models
 {
     public interface Instantiatable<E>
     {
-        void Instantiate(E dbEntity);
+        void InstantiateFrom(E dbEntity);
     }
 }

@@ -90,7 +90,6 @@
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />
     <Compile Include="Models\ClubModel.cs" />
-    <Compile Include="Models\ClubModel2.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -99,6 +98,7 @@
     <Compile Include="Models\AthleteModel.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\Instantiatable.cs" />
+    <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Models\ModelNotFoundException.cs" />
     <Compile Include="Models\RaceIntermediateModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
