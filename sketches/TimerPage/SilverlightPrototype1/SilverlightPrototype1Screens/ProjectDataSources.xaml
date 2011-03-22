@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.Participants" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData1="clr-namespace:Expression.Blend.SampleData.Races" mc:Ignorable="d" xmlns:SampleData2="clr-namespace:Expression.Blend.SampleData.Order" xmlns:SampleData3="clr-namespace:Expression.Blend.SampleData.Timestamps" xmlns:SampleData4="clr-namespace:Expression.Blend.SampleData.ResultList">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.Participants" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:SampleData1="clr-namespace:Expression.Blend.SampleData.Races" mc:Ignorable="d" xmlns:SampleData2="clr-namespace:Expression.Blend.SampleData.Order" xmlns:SampleData3="clr-namespace:Expression.Blend.SampleData.Timestamps" xmlns:SampleData4="clr-namespace:Expression.Blend.SampleData.ResultList" xmlns:SampleData5="clr-namespace:Expression.Blend.SampleData.Results">
+	<SampleData5:Results x:Key="Results" d:IsDataSource="True"/>
 	<SampleData4:ResultList x:Key="ResultList" d:IsDataSource="True"/>
 	<SampleData2:Order x:Key="Order" d:IsDataSource="True"/>
 	<SampleData3:Timestamps x:Key="Timestamps" d:IsDataSource="True"/>

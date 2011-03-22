@@ -1,0 +1,74 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:pb="clr-namespace:Microsoft.Expression.Prototyping.Behavior;assembly=Microsoft.Expression.Prototyping.Interactivity"
+	x:Class="SilverlightPrototype1Screens.Screen_1_4"
+	Width="640" Height="480">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ProjectDataSources.xaml"/>
+			</ResourceDictionary.MergedDictionaries>
+			<DataTemplate x:Key="ItemTemplate">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Startnumber}"/> 
+					<TextBlock Text="{Binding Name}" /> 
+					<TextBlock Text="{Binding Time}" Margin="2,0"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate1">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Startnumber}"/> 
+					<TextBlock Text="{Binding Name}"/> 
+					<TextBlock Text="{Binding Time}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate2">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Startnumber}"/> 
+					<TextBlock Text="{Binding Name}"/> 
+					<TextBlock Text="{Binding Time}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate3">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Startnumber}"/> 
+					<TextBlock Text="{Binding Name}"/> 
+					<TextBlock Text="{Binding Time}"/>
+				</StackPanel>
+			</DataTemplate>
+			<DataTemplate x:Key="ItemTemplate4">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{Binding Startnumber}"/> 
+					<TextBlock Text="{Binding Name}"/> 
+					<TextBlock Text="{Binding Time}"/>
+				</StackPanel>
+			</DataTemplate>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding Source={StaticResource Results}}">
+		<TextBlock HorizontalAlignment="Left" Margin="20,59,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Velg løp:" TextWrapping="Wrap"/>
+		<ComboBox HorizontalAlignment="Left" Margin="155,50,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" Width="120"/>
+		<TextBlock HorizontalAlignment="Left" Margin="20,97,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Velg klasse:" TextWrapping="Wrap"/>
+		<ComboBox HorizontalAlignment="Left" Margin="155,88,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" Width="120"/>
+		<TextBlock HorizontalAlignment="Left" Margin="20,135,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Velg passeringspunkt:" TextWrapping="Wrap"/>
+		<ComboBox HorizontalAlignment="Left" Margin="155,126,0,0" Style="{StaticResource ComboBox-Sketch}" VerticalAlignment="Top" Width="120"/>
+		<Button HorizontalAlignment="Left" Margin="279,49,0,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="30" Content="&gt;"/>
+		<Button HorizontalAlignment="Left" Margin="279,87,0,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="30" Content="&gt;"/>
+		<Button HorizontalAlignment="Left" Margin="279,125,0,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="30" Content="&gt;"/>
+		<TextBlock HorizontalAlignment="Left" Margin="20,13,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" FontSize="29.333" Text="Resultatliste" TextWrapping="Wrap"/>
+		<ListBox Margin="20,195,112,20" Style="{StaticResource ListBox-Sketch}" ItemTemplate="{StaticResource ItemTemplate4}" ItemsSource="{Binding Collection}"/>
+		<Button x:Name="button" HorizontalAlignment="Right" Margin="0,195,33,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="75" Content="Endre">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="Click" SourceName="button">
+					<pb:NavigateToScreenAction TargetScreen="EditResult"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</Button>
+	</Grid>
+</UserControl>

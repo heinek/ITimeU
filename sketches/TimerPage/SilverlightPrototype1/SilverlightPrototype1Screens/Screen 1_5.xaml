@@ -1,0 +1,27 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:pb="clr-namespace:Microsoft.Expression.Prototyping.Behavior;assembly=Microsoft.Expression.Prototyping.Interactivity"
+	x:Class="SilverlightPrototype1Screens.Screen_1_5"
+	Width="640" Height="480">
+
+	<Grid x:Name="LayoutRoot" Background="White">
+		<TextBlock HorizontalAlignment="Left" Margin="56,92,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Navn:" TextWrapping="Wrap"/>
+		<TextBox HorizontalAlignment="Left" Margin="148,123,0,0" Style="{StaticResource TextBox-Sketch}" VerticalAlignment="Top" Width="110" Text="46" TextWrapping="Wrap"/>
+		<TextBox HorizontalAlignment="Left" Margin="148,155,0,0" Style="{StaticResource TextBox-Sketch}" VerticalAlignment="Top" Width="110" Text="1:21:31.8" TextWrapping="Wrap"/>
+		<TextBlock HorizontalAlignment="Left" Margin="148,92,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="{}{Navn}" TextWrapping="Wrap"/>
+		<Button HorizontalAlignment="Left" Margin="227,200,0,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="75" Content="Avbryt"/>
+		<Button HorizontalAlignment="Left" Margin="148,200,0,0" Style="{StaticResource Button-Sketch}" VerticalAlignment="Top" Width="75" Content="Lagre">
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="Click">
+					<pb:NavigateToScreenAction TargetScreen="ResultList"/>
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
+		</Button>
+		<TextBlock HorizontalAlignment="Left" Margin="56,131,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Startnummer:" TextWrapping="Wrap"/>
+		<TextBlock HorizontalAlignment="Left" Margin="56,163,0,0" Style="{StaticResource TextBlock-Sketch}" VerticalAlignment="Top" Text="Tid:" TextWrapping="Wrap"/>
+	</Grid>
+</UserControl>

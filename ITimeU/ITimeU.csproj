@@ -71,6 +71,7 @@
     <Compile Include="Controllers\MockController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ResultsController.cs" />
     <Compile Include="Controllers\RaceController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />
     <Compile Include="Controllers\TimeMergerController.cs" />
@@ -239,6 +240,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\TimeStartnumber\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\ImportAthletes\ImportCompleted.cshtml" />

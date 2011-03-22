@@ -97,7 +97,7 @@ namespace ITimeU.Tests.Models
 
             When("we want to edit that runtime", () =>
             {
-                timestartnumberModel.EditRuntime(timestartnumberModel.CheckpointIntermediates[timestartnumberModel.CurrentCheckpointId].First().RuntimeId, newvalue.Hours, newvalue.Minutes, newvalue.Seconds, newvalue.Milliseconds);
+                RuntimeModel.EditRuntime(timestartnumberModel.CheckpointIntermediates[timestartnumberModel.CurrentCheckpointId].First().RuntimeId, newvalue.Hours, newvalue.Minutes, newvalue.Seconds, newvalue.Milliseconds);
             });
 
             Then("the timestamp should have changed to the new value", () =>
