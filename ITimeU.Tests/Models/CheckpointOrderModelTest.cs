@@ -110,7 +110,6 @@ namespace ITimeU.Tests.Models
             Given("We have a CheckpointOrder", () =>
             {
                 testCheckpointOrder = new CheckpointOrderModel();
-
             });
 
             When("We insert start number", () =>
@@ -146,9 +145,9 @@ namespace ITimeU.Tests.Models
             Then("Start Number should be saved in database", () =>
             {
                 Entities contextDB = new Entities();
-                var startNum = contextDB.CheckpointOrders.Where
+                int startNum = contextDB.CheckpointOrders.Where
                     (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).
-                    Select(startnum => startnum.StartingNumber);
+                    Select(startnum => startnum.StartingNumber).First().Value;
                 startNum.ShouldBe(startingNumber);
             });
         }
