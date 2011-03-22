@@ -2,73 +2,75 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Data.Objects;
 
 namespace ITimeU.Models
 {
-    public class ClubModel : Model<Club>
+    public class ClubModel
     {
         private static Entities entitiesStatic = new Entities();
-        private static ModelFactory<Club, ClubModel> modelFactory = new ModelFactory<Club, ClubModel>(entitiesStatic, entitiesStatic.Clubs);
-        
+        private static int ID_WHEN_NOT_CREATED_IN_DB = -1;
+
+        public int Id { get; private set; }
         public string Name { get; private set; }
 
-        public ClubModel() {
-            this.Name = null;
+        private bool instanceSaved
+        {
+            get
+            {
+                if (Id == ID_WHEN_NOT_CREATED_IN_DB)
+                    return false;
+                return true;
+            }
         }
 
         public ClubModel(string name)
         {
             this.Name = name;
+            SetDefaultId();
         }
 
         public ClubModel(Club club)
-        {
-            InstantiateFrom(club);
-        }
-
-        public override void InstantiateFrom(Club club)
         {
             Id = club.ClubID;
             Name = club.Name;
         }
 
-        protected override ObjectSet<Club> GetModelObjectSetFrom(Entities entities)
+        internal int SaveToDb()
         {
-            return entities.Clubs;
+            var entities = new Entities();
+            if (!instanceSaved)
+                Id = GetOrCreateDbEntity(entities);
+            else
+                updateDbEntity(entities);
+
+            return Id;
         }
 
-        protected override Club GetMeIn(ObjectSet<Club> dbObjectSet)
-        {
-            return dbObjectSet.Where(club => club.ClubID == Id).Single();
-        }
-
-        // TODO: Move to NamedModel
-        protected override int GetOrCreateDbEntity()
+        private int GetOrCreateDbEntity(Entities entities)
         {
             Club clubDb;
             try
             {
-                clubDb = ClubModel.GetDbEntityBy(Name);
+                clubDb = ClubModel.GetDbEntry(Name);
             }
             catch (InvalidOperationException)
             {
-                clubDb = ClubModel.CreateDbEntity(Name);
+                clubDb = ClubModel.CreateDbEntry(Name);
             }
 
-            return ClubModel.GetIdFrom(clubDb);
-        }
-
-        protected override void updateDbEntity()
-        {
-            Club club = entitiesStatic.Clubs.Single(enitity => enitity.ClubID == Id);
-            updateProperties(club);
-            entitiesStatic.SaveChanges();
+            return clubDb.ClubID;
         }
 
         private void updateProperties(Club club)
         {
             club.Name = Name;
+        }
+
+        private void updateDbEntity(Entities entities)
+        {
+            Club club = entities.Clubs.Single(enitity => enitity.ClubID == Id);
+            updateProperties(club);
+            entities.SaveChanges();
         }
 
         public override bool Equals(object obj)
@@ -92,69 +94,111 @@ namespace ITimeU.Models
             return Name;
         }
 
-        public static int GetIdFrom(Club club) {
-            return club.ClubID;
-        }
-
+        /// <summary>
+        /// Retrieves all clubs in the database.
+        /// </summary>
+        /// <returns></returns>
         public static List<ClubModel> GetAll()
         {
-            return modelFactory.GetAll();
+            IEnumerable<Club> clubs = entitiesStatic.Clubs.AsEnumerable<Club>();
+
+            List<ClubModel> clubModels = new List<ClubModel>();
+            foreach (Club clubDb in clubs)
+            {
+                ClubModel clubModel = new ClubModel(clubDb);
+                clubModels.Add(clubModel);
+            }
+
+            return clubModels;
         }
 
-        /// <summary>
-        /// Returns the club with the given name, or creates a new one
-        /// if none is found in the database.
-        /// </summary>
-        /// <param name="name">The name of the club to get/create.</param>
-        /// <returns>The existing or newly created club.</returns>
-        // TODO: Move to NamedModel
         public static ClubModel GetOrCreate(string name)
         {
             Club clubDb = null;
 
             try
             {
-                clubDb = GetDbEntityBy(name);
+                clubDb = GetDbEntry(name);
             }
             catch (InvalidOperationException)
             {
-                clubDb = CreateDbEntity(name);
+                clubDb = CreateDbEntry(name);
             }
           
             return new ClubModel(clubDb);
         }
 
-        private static Club GetDbEntityBy(string name)
+        private static Club GetDbEntry(string name)
         {
-            return entitiesStatic.Clubs.Single(club => club.Name == name);
+            return entitiesStatic.Clubs.Single(temp => temp.Name == name);
         }
 
-        private static Club CreateDbEntity(string name)
+        private static Club CreateDbEntry(string name)
         {
             Club clubDb = new Club();
             clubDb.Name = name;
-            modelFactory.SaveEntityToDb(clubDb);
-            
+            saveDbEntry(clubDb);
+
             return clubDb;
         }
-        
-        public static ClubModel GetByName(string name)
+
+        private static void saveDbEntry(Club clubDb)
+        {
+            entitiesStatic.Clubs.AddObject(clubDb);
+            entitiesStatic.SaveChanges();
+        }
+
+        public static void DeleteIfExists(string name)
         {
             try
             {
-                return TryToGetByName(name);
+                Club clubDb = entitiesStatic.Clubs.Single(temp => temp.Name == name);
+                entitiesStatic.Clubs.DeleteObject(clubDb);
+                entitiesStatic.SaveChanges();
             }
             catch (InvalidOperationException)
             {
-                throw new ModelNotFoundException(typeof(ClubModel).Name + " with name " + name + " not found in database.");
+                // No DB entry found, do noting
             }
         }
 
-        private static ClubModel TryToGetByName(string name)
+        public static ClubModel GetByName(string name)
         {
-            Club dbEntity = entitiesStatic.Clubs.Single(temp => temp.Name == name);
-            return new ClubModel(dbEntity);
+            var entities = new Entities();
+            try
+            {
+                return TryToGetByName(name, entities);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ModelNotFoundException("ClubModel with name " + name + " not found in database.");
+            }
         }
 
+        private static ClubModel TryToGetByName(string name, Entities entities)
+        {
+            Club athleteDb = entities.Clubs.Single(temp => temp.Name == name);
+            return new ClubModel(athleteDb);
+        }
+
+        /// <summary>
+        /// Deletes this club from database.
+        /// </summary>
+        public void DeleteFromDb()
+        {
+            using (var ctx = new Entities())
+            {
+                Club rowToDelete = ctx.Clubs.Where(runt => runt.ClubID == Id).Single();
+                ctx.Clubs.DeleteObject(rowToDelete);
+                ctx.SaveChanges();
+            }
+
+            SetDefaultId();
+        }
+
+        private void SetDefaultId()
+        {
+            Id = ID_WHEN_NOT_CREATED_IN_DB;
+        }
     }
 }
