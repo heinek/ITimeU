@@ -17,6 +17,12 @@ namespace ITimeU.Tests.Models
         private CheckpointModel checkpoint1;
         private CheckpointModel checkpoint2;
 
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            StartScenario();
+        }
+
         [TestInitialize]
         public void TestSetup()
         {
@@ -175,11 +181,5 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            StartScenario();
-            CheckpointOrderModel.DeleteCheckpointOrder(45);
-        }
     }
 }

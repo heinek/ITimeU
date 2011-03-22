@@ -70,50 +70,81 @@ namespace ITimeU.Models
 
         public int AddCheckpointOrderDB(int checkpointId, int startingNumber)
         {
-            var checkpointOrderModel = new CheckpointOrderModel();
-            int chekpointorderId;
-            using (var ctx = new Entities())
-            {   
-                var checkpointOrder = new CheckpointOrder();
-                checkpointOrder.CheckpointID = checkpointId;
-                checkpointOrder.StartingNumber = startingNumber;
-                if (ctx.CheckpointOrders.Any(chkpnt => (chkpnt.StartingNumber == startingNumber && chkpnt.CheckpointID == checkpointId)))
-                    return 0;
+            var entities = new Entities();
 
-                    if ((ctx.CheckpointOrders.Count() > 0) && (ctx.CheckpointOrders.Any(chkpnt => chkpnt.CheckpointID == checkpointId)))
-                    {
-                        checkpointOrder.OrderNumber = (ctx.CheckpointOrders.Where(chkpntid => chkpntid.CheckpointID == checkpointId).OrderByDescending(chkpnt => chkpnt.OrderNumber).First().OrderNumber) + 1;
-                    }
-                    else
-                    {
-                        checkpointOrder.OrderNumber = 1;
-                    }
-
-                    checkpointOrder.IsDeleted = false;
-                    ctx.CheckpointOrders.AddObject(checkpointOrder);
-                    ctx.SaveChanges();
-                    chekpointorderId = checkpointOrder.ID;
-                    checkpointOrderModel.ID = chekpointorderId;
-
-                    AddToCheckpointOrderDic(checkpointId);                
-            }
-            return chekpointorderId;
-
+            if (CheckpointWithStartNumberExists(checkpointId, startingNumber, entities))
+                return 0;
+            else
+                return CreateCheckpointWithStartNumber(checkpointId, startingNumber, entities);
         }
 
-        private void AddToCheckpointOrderDic(int checkpointId)
+        private static bool CheckpointWithStartNumberExists(int checkpointId, int startingNumber, Entities entities)
         {
-            using (var ctxGetDic = new Entities())
-            {
-                CheckpointOrderDic.Clear();
-                foreach (CheckpointOrder chkpntOrder in ctxGetDic.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointId).OrderByDescending(ordernum => ordernum.OrderNumber))
-                {
-                    CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
-                }
-            }
+            return entities.CheckpointOrders.Any(
+                chkpnt =>
+                    (chkpnt.StartingNumber == startingNumber &&
+                    chkpnt.CheckpointID == checkpointId));
         }
 
+        private int CreateCheckpointWithStartNumber(int checkpointId, int startingNumber, Entities entities)
+        {
+            var checkpointOrder = CreateCheckpointOrder(checkpointId, startingNumber, entities);
+            SaveCheckpointOrder(checkpointOrder, entities);
+            AddToCheckpointOrderDic(checkpointId, entities);
 
+            return checkpointOrder.ID;
+        }
+
+        private static CheckpointOrder CreateCheckpointOrder(int checkpointId, int startingNumber, Entities entities)
+        {
+            var checkpointOrder = new CheckpointOrder();
+            checkpointOrder.CheckpointID = checkpointId;
+            checkpointOrder.StartingNumber = startingNumber;
+
+            if ((ExistsAnyCheckpointInDb(entities)) && (CheckpointExistsInDb(checkpointId, entities)))
+                checkpointOrder.OrderNumber = GetHighestExistingOrderNumberForCheckpoint(checkpointId, entities) + 1;
+            else
+                checkpointOrder.OrderNumber = 1;
+
+            checkpointOrder.IsDeleted = false;
+            return checkpointOrder;
+        }
+
+        private static bool ExistsAnyCheckpointInDb(Entities entities)
+        {
+            return entities.CheckpointOrders.Count() > 0;
+        }
+
+        private static bool CheckpointExistsInDb(int checkpointId, Entities entities)
+        {
+            return entities.CheckpointOrders.Any(chkpnt => chkpnt.CheckpointID == checkpointId);
+        }
+
+        private static int? GetHighestExistingOrderNumberForCheckpoint(int checkpointId, Entities entities)
+        {
+            return entities.CheckpointOrders.Where(
+                chkpntid => chkpntid.CheckpointID == checkpointId).
+                OrderByDescending(chkpnt => chkpnt.OrderNumber).
+                First().OrderNumber;
+        }
+
+        private static void SaveCheckpointOrder(CheckpointOrder checkpointOrder, Entities entities)
+        {
+            entities.CheckpointOrders.AddObject(checkpointOrder);
+            entities.SaveChanges();
+        }
+
+        private void AddToCheckpointOrderDic(int checkpointId, Entities entities)
+        {
+            CheckpointOrderDic.Clear();
+            IOrderedQueryable<CheckpointOrder> checkpointOrders =
+                entities.CheckpointOrders.
+                Where(chkpnt => chkpnt.CheckpointID == checkpointId).
+                OrderByDescending(ordernum => ordernum.OrderNumber);
+
+            foreach (CheckpointOrder chkpntOrder in checkpointOrders)
+                CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
+        }
 
         public void MoveCheckpointUp(int checkpointId, int startingNumber, int Id)
         {
@@ -145,7 +176,7 @@ namespace ITimeU.Models
                     }
                 }
 
-                AddToCheckpointOrderDic(checkpointId);                
+                AddToCheckpointOrderDic(checkpointId, ctx);
             }
         }
 
@@ -190,7 +221,7 @@ namespace ITimeU.Models
                     //return checkpointOrderModel;
                 }
 
-                AddToCheckpointOrderDic(checkpointId);                
+                AddToCheckpointOrderDic(checkpointId, ctx);
             }
         }
         public void UpdateCheckpointOrderDB(int ID, int StartingNumber)
