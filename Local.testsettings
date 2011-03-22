@@ -28,7 +28,7 @@
           <Configuration>
             <CodeCoverage xmlns="">
               <Regular>
-                <CodeCoverageItem binaryFile="ITimeU.Tests\bin\Debug\ITimeU.Tests.dll" pdbFile="ITimeU.Tests\bin\Debug\ITimeU.Tests.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="ITimeU.Tests\bin\Release\ITimeU.Tests.dll" pdbFile="ITimeU.Tests\bin\Release\ITimeU.Tests.pdb" instrumentInPlace="true" />
               </Regular>
               <AspNet>
                 <AspNetCodeCoverageItem id="3c31cbe1-3b08-48ee-bdfb-f06769861ed4" name="ITimeU" applicationRoot="/" url="http://localhost:0/" />

@@ -7,13 +7,6 @@ using TinyBDD.Specification.MSTest;
 
 namespace ITimeU.Tests.Models
 {
-    /// <summary>
-    /// TODO:
-    /// - It should be possible to fetch a list of checkpoints from the database
-    /// - Insert checkpoint to database
-    /// - Gethashcode
-    /// - Equals
-    /// </summary>
     [TestClass]
     public class CheckpointModelTest : ScenarioClass
     {
@@ -22,19 +15,6 @@ namespace ITimeU.Tests.Models
         {
             StartScenario();
         }
-
-        /// TODO:
-        /// - When starting a timer with a given checkpoints, its timings should be associated with that
-        /// checkpoint. I.e. when calling checkpoint.timings, we should get the start time, runtimes and
-        /// end time for that checkpoint. Splittng, we test for the following:
-        ///     - When starting the timer, the checkpoint should have a timer with the correct start time.
-        ///     - When stopping the timer, the checkpoint should have a timer with the correct end time.
-        ///     - When recording runtimes, the checkpoint should have a timer with the correct runtimes.
-        /// - The timer's checkpoint should be saved to the DB
-        /// - When clicking "Mellomtid", the runtime should be stored for that timer.
-        /// - I.e.: Different timers should have different
-        /// 
-        /// - Checkpoint names should be unique
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
