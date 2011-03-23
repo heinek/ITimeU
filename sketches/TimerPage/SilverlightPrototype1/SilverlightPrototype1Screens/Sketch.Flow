@@ -75,6 +75,18 @@
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_6</ClassName>
+      <DisplayName>Race</DisplayName>
+      <FileName>Screen 1_6.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>292</X>
+        <Y>-44</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
   </Screens>
   <Connections />
   <BrandingText>Microsoft SketchFlow Prototype</BrandingText>
@@ -123,7 +135,7 @@
     <Zoom>1</Zoom>
     <Center>
       <X>241.7374242424242</X>
-      <Y>84.4067957740258</Y>
+      <Y>34.406795774025795</Y>
     </Center>
   </ViewState>
 </Data>

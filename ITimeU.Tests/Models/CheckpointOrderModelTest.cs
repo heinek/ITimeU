@@ -85,24 +85,40 @@ namespace ITimeU.Tests.Models
             CheckpointOrder origCheckpointOrder = new CheckpointOrder();
             origCheckpointOrder.CheckpointID = 1;
             origCheckpointOrder.StartingNumber = 1;
+            var id = 0;
+            var startnumber = 0;
+
+            using (var ctxTest = new Entities())
+            {
+                if (ctxTest.CheckpointOrders.Any(chkpnt => (chkpnt.StartingNumber == origCheckpointOrder.StartingNumber && chkpnt.CheckpointID == origCheckpointOrder.CheckpointID)))
+                {
+                    var checkpointOrderToDelete = ctxTest.CheckpointOrders.Where(checkpointOrder => (checkpointOrder.StartingNumber == origCheckpointOrder.StartingNumber && checkpointOrder.CheckpointID == origCheckpointOrder.CheckpointID)).Single();
+                    ctxTest.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
+                    ctxTest.SaveChanges();
+                }
+            }
 
             CheckpointOrder updatedCheckpointOrder = origCheckpointOrder;
 
             Given("we have a checkpointOrder", () =>
             {
                 checkpointOrderModel.AddCheckpointOrderDB((int)origCheckpointOrder.CheckpointID, (int)origCheckpointOrder.StartingNumber);
+                var ctxTest = new Entities();                        
+                id = ctxTest.CheckpointOrders.Where(checkpointOrder => (checkpointOrder.StartingNumber == origCheckpointOrder.StartingNumber && checkpointOrder.CheckpointID == origCheckpointOrder.CheckpointID)).Single().ID;                  
             });
 
             When("we update the checkpointOrder", () =>
             {
                 updatedCheckpointOrder.CheckpointID = 1;
                 updatedCheckpointOrder.StartingNumber = 2;
-                checkpointOrderModel.UpdateCheckpointOrderDB((int)updatedCheckpointOrder.CheckpointID, (int)updatedCheckpointOrder.StartingNumber);
+                checkpointOrderModel.UpdateCheckpointOrderDB((int)id, (int)updatedCheckpointOrder.StartingNumber);
+                var ctxTest = new Entities();
+                 startnumber = (int)(ctxTest.CheckpointOrders.Where(checkpointOrder => (checkpointOrder.StartingNumber == origCheckpointOrder.StartingNumber && checkpointOrder.ID == id)).Single().StartingNumber);
             });
 
             Then("the values should be different", () =>
             {
-                updatedCheckpointOrder.StartingNumber.ShouldNotBe(origCheckpointOrder.StartingNumber);
+                updatedCheckpointOrder.StartingNumber.ShouldBe(startnumber);
             });
         }
 
@@ -112,6 +128,7 @@ namespace ITimeU.Tests.Models
             CheckpointOrderModel testCheckpointOrder = null;
             int ordernum1 = 0, ordernum2 = 0;
             int checkpointId = 1;
+            int startnum1 = 4, startnum2 = 5;
             Entities context = new Entities();
             Given("We have a CheckpointOrder", () =>
             {
@@ -120,14 +137,32 @@ namespace ITimeU.Tests.Models
 
             When("We insert start number", () =>
             {
-                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, 2);
-                ordernum1 = (int)(context.CheckpointOrders.OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
+                using (var ctxTest = new Entities())
+                {
+                    if (ctxTest.CheckpointOrders.Any(chkpnt => (chkpnt.StartingNumber == startnum1 && chkpnt.CheckpointID == checkpointId)))
+                    {
+                        var checkpointOrderToDelete = ctxTest.CheckpointOrders.Where(checkpointOrder => (checkpointOrder.StartingNumber == startnum1 && checkpointOrder.CheckpointID == checkpointId)).Single();
+                        ctxTest.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
+                        ctxTest.SaveChanges();
+                    }
+                }
+                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startnum1);
+                ordernum1 = (int)(context.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointId).OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
             });
 
             Then("We should have next order number in ascending order in database", () =>
             {
-                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, 3);
-                ordernum2 = (int)(context.CheckpointOrders.OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
+                using (var ctxTest = new Entities())
+                {
+                    if (ctxTest.CheckpointOrders.Any(chkpnt => (chkpnt.StartingNumber == startnum2 && chkpnt.CheckpointID == checkpointId)))
+                    {
+                        var checkpointOrderToDelete = ctxTest.CheckpointOrders.Where(checkpointOrder => (checkpointOrder.StartingNumber == startnum2 && checkpointOrder.CheckpointID == checkpointId)).Single();
+                        ctxTest.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
+                        ctxTest.SaveChanges();
+                    }
+                }
+                testCheckpointOrder.AddCheckpointOrderDB(checkpointId, startnum2);
+                ordernum2 = (int)(context.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointId).OrderByDescending(ordnum => ordnum.OrderNumber).First().OrderNumber);
                 ordernum2.ShouldBe(ordernum1 + 1);
             });
         }
@@ -137,7 +172,16 @@ namespace ITimeU.Tests.Models
         {
             CheckpointOrderModel testCheckpointOrder = null;
             int checkpointId = 1;
-            int startingNumber = 4;
+            int startingNumber = 100;
+            using (var ctxTest = new Entities())
+            {
+                if (ctxTest.CheckpointOrders.Any(chkpnt => (chkpnt.StartingNumber == startingNumber && chkpnt.CheckpointID == checkpointId)))
+                {
+                    var checkpointOrderToDelete = ctxTest.CheckpointOrders.Where(checkpointOrder => (checkpointOrder.StartingNumber == startingNumber && checkpointOrder.CheckpointID == checkpointId)).Single();
+                    ctxTest.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
+                    ctxTest.SaveChanges();
+                }
+            }
             Given("We have CheckpointOrder model ", () =>
             {
                 testCheckpointOrder = new CheckpointOrderModel();
@@ -150,10 +194,15 @@ namespace ITimeU.Tests.Models
 
             Then("Start Number should be saved in database", () =>
             {
+                //Entities contextDB = new Entities();
+                //var startNum = contextDB.CheckpointOrders.Where
+                //    (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).
+                //    Select(startnum => startnum.StartingNumber);
+                //startNum.ShouldBe(startingNumber);
+
                 Entities contextDB = new Entities();
                 int startNum = contextDB.CheckpointOrders.Where
-                    (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).
-                    Select(startnum => startnum.StartingNumber).First().Value;
+                    (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).Single().StartingNumber;                    
                 startNum.ShouldBe(startingNumber);
             });
         }

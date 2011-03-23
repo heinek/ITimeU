@@ -13,7 +13,7 @@ namespace ITimeU.Models
 
         public RaceModel()
         {
-
+            
         }
 
         public RaceModel(string name, DateTime startDate)
