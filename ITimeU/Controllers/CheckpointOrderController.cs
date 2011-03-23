@@ -127,12 +127,12 @@ namespace ITimeU.Controllers
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
             int chkpntID;
             int startNmb;
-            int Id;
+            int checkpointOrderIdInt;
 
             int.TryParse(checkpointID, out chkpntID);
             int.TryParse(startingNumber, out startNmb);
-            int.TryParse(checkpointOrderId, out Id);
-            model.MoveCheckpointUp(chkpntID, startNmb, Id);
+            int.TryParse(checkpointOrderId, out checkpointOrderIdInt);
+            model.MoveCheckpointUp(chkpntID, startNmb, checkpointOrderIdInt);
             return Content(model.CheckpointOrderDic.ToListboxvalues());
         }
 
