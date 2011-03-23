@@ -8,64 +8,19 @@ namespace ITimeU.Models
     [Serializable]
     public class CheckpointOrderModel
     {
-        private int _ID;
-        private int _checkpointID;
-        private int _startingNumber;
-        private int _orderNumber;
+        public int ID { get; private set; }
+        public int CheckpointID { get; private set; }
+        public int StartingNumber { get; private set; }
+        public int OrderNumber { get; private set; }
         public Dictionary<int, int> CheckpointOrderDic { get; set; }
 
         public CheckpointOrderModel()
         {
-            _ID = -1;
-            _checkpointID = -1;
-            _startingNumber = -1;
-            _orderNumber = -1;
+            ID = -1;
+            CheckpointID = -1;
+            StartingNumber = -1;
+            OrderNumber = -1;
             CheckpointOrderDic = new Dictionary<int, int>();
-        }
-
-        public int ID
-        {
-            get
-            {
-                return _ID;
-            }
-            set
-            {
-                _ID = value;
-            }
-        }
-        public int CheckpointID
-        {
-            get
-            {
-                return _checkpointID;
-            }
-            set
-            {
-                _checkpointID = value;
-            }
-        }
-        public int StartingNumber
-        {
-            get
-            {
-                return _startingNumber;
-            }
-            set
-            {
-                _startingNumber = value;
-            }
-        }
-        public int OrderNumber
-        {
-            get
-            {
-                return _orderNumber;
-            }
-            set
-            {
-                _orderNumber = value;
-            }
         }
 
         public int AddCheckpointOrderDB(int checkpointId, int startingNumber)
