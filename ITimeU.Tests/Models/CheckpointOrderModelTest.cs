@@ -201,8 +201,10 @@ namespace ITimeU.Tests.Models
                 //startNum.ShouldBe(startingNumber);
 
                 Entities contextDB = new Entities();
-                int startNum = contextDB.CheckpointOrders.Where
-                    (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).Single().StartingNumber;                    
+                int startNum = (int) (contextDB.CheckpointOrders.
+                    Where(chkpntid =>
+                        (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).
+                        Single().StartingNumber);
                 startNum.ShouldBe(startingNumber);
             });
         }
