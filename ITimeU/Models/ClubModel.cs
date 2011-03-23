@@ -7,16 +7,17 @@ namespace ITimeU.Models
 {
     public class ClubModel
     {
+        private static Entities entitiesStatic = new Entities();
+        private static int ID_WHEN_NOT_CREATED_IN_DB = -1;
+
         public int Id { get; private set; }
         public string Name { get; private set; }
-
-        private static Entities entitiesStatic = new Entities();
 
         private bool instanceSaved
         {
             get
             {
-                if (Id == 0)
+                if (Id == ID_WHEN_NOT_CREATED_IN_DB)
                     return false;
                 return true;
             }
@@ -25,7 +26,7 @@ namespace ITimeU.Models
         public ClubModel(string name)
         {
             this.Name = name;
-            Id = 0;
+            SetDefaultId();
         }
 
         public ClubModel(Club club)
@@ -47,16 +48,17 @@ namespace ITimeU.Models
 
         private int GetOrCreateDbEntity(Entities entities)
         {
-            ClubModel clubDb = ClubModel.GetOrCreate(Name);
-            return clubDb.Id;
-            /*
-            Club club = new Club();
-            updateProperties(club);
-            entities.Clubs.AddObject(club);
-            entities.SaveChanges();
+            Club clubDb;
+            try
+            {
+                clubDb = ClubModel.GetDbEntry(Name);
+            }
+            catch (InvalidOperationException)
+            {
+                clubDb = ClubModel.CreateDbEntry(Name);
+            }
 
-            return club.ClubID;
-            */
+            return clubDb.ClubID;
         }
 
         private void updateProperties(Club club)
@@ -116,22 +118,22 @@ namespace ITimeU.Models
 
             try
             {
-                clubDb = getDbEntry(name);
+                clubDb = GetDbEntry(name);
             }
             catch (InvalidOperationException)
             {
-                clubDb = createDbEntry(name);
+                clubDb = CreateDbEntry(name);
             }
           
             return new ClubModel(clubDb);
         }
 
-        private static Club getDbEntry(string name)
+        private static Club GetDbEntry(string name)
         {
             return entitiesStatic.Clubs.Single(temp => temp.Name == name);
         }
 
-        private static Club createDbEntry(string name)
+        private static Club CreateDbEntry(string name)
         {
             Club clubDb = new Club();
             clubDb.Name = name;
@@ -158,6 +160,45 @@ namespace ITimeU.Models
             {
                 // No DB entry found, do noting
             }
+        }
+
+        public static ClubModel GetByName(string name)
+        {
+            var entities = new Entities();
+            try
+            {
+                return TryToGetByName(name, entities);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ModelNotFoundException("ClubModel with name " + name + " not found in database.");
+            }
+        }
+
+        private static ClubModel TryToGetByName(string name, Entities entities)
+        {
+            Club athleteDb = entities.Clubs.Single(temp => temp.Name == name);
+            return new ClubModel(athleteDb);
+        }
+
+        /// <summary>
+        /// Deletes this club from database.
+        /// </summary>
+        public void DeleteFromDb()
+        {
+            using (var ctx = new Entities())
+            {
+                Club rowToDelete = ctx.Clubs.Where(runt => runt.ClubID == Id).Single();
+                ctx.Clubs.DeleteObject(rowToDelete);
+                ctx.SaveChanges();
+            }
+
+            SetDefaultId();
+        }
+
+        private void SetDefaultId()
+        {
+            Id = ID_WHEN_NOT_CREATED_IN_DB;
         }
     }
 }

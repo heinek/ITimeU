@@ -137,8 +137,8 @@ namespace ITimeU.Tests.Models
                 try {
                     AthleteModel.GetById(athleteIdThatDoesNotExist);
                     false.ShouldBe(true); // Fail test if exception is not thrown.
-                } catch (ModelNotFoundException) {
-
+                } catch (ModelNotFoundException e) {
+                    Assert.IsTrue(e.Message.Length > 0);
                 }
             });
 

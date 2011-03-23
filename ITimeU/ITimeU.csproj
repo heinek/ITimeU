@@ -97,6 +97,7 @@
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AthleteModel.cs" />
+    <Compile Include="Models\Instantiatable.cs" />
     <Compile Include="Models\ModelNotFoundException.cs" />
     <Compile Include="Models\RaceIntermediateModel.cs" />
     <Compile Include="Models\RaceModel.cs" />

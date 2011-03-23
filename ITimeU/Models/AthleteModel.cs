@@ -34,7 +34,7 @@ namespace ITimeU.Models
             {
                 return TryToGetById(idToGet, entities);
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 throw new ModelNotFoundException("Athlete with ID " + idToGet + " not found in database.");
             }

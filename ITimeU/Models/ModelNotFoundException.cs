@@ -5,13 +5,11 @@ using System.Web;
 
 namespace ITimeU.Models
 {
-    public class ModelNotFoundException : ApplicationException
+    public class ModelNotFoundException : Exception
     {
-        public readonly string Message;
-
         public ModelNotFoundException(string message)
+            : base(message)
         {
-            Message = message;
         }
     }
 }
