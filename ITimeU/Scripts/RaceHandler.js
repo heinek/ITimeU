@@ -18,19 +18,29 @@ RaceHandler.prototype.setInsertAction = function (_btnCreate, _tbName, _tbDistan
     divErrorMessage = _divErrorMessage;
 
     btnCreate.bind("click", function () {
-//        if (tbName.val().length == 0 || tbDistance.val().length == 0 || tbStartDate.val().length == 0) {
-//            divErrorMessage.show().html('Input fields must not be empty');
-//        }
-//        else {
-//            divErrorMessage.hide();
+        if (tbName.val().length == 0 || tbDistance.val().length == 0 || tbStartDate.val().length == 0) {
+            divErrorMessage.show().html('Input fields must not be empty');
+        }
+        else if (!IsNumber(tbDistance.val())) {
+            divErrorMessage.show().html('Distance must be number');
+        }
+        else {
+            divErrorMessage.hide();
             url = "/Race/Create/?name=" + tbName.val() + "&distance=" + tbDistance.val() + "&startDate=" + tbStartDate.val();
             $.post(url);
             
             tbName.val("");
             tbDistance.val("");
             tbStartDate.val("");
-        //}
+            }
     });
+}
 
-
+function IsNumber(startNum) {
+    var check = true;    
+    for (var i = 0; i < startNum.length; i++) {
+        if (String.fromCharCode(startNum.charAt(i).charCodeAt(0)).match(/[^0-9]/g))
+            check = false;
+    }
+    return check;
 }

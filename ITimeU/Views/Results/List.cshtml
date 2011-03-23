@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ITimeU.Models.RaceIntermediateModel>
+
+@{
+    ViewBag.Title = "Restultatliste";
+}
+
+<h2>Resultatliste</h2>
+
+<table>
+    <tr>
+        <th>
+            Tid
+        </th>
+        <th>
+            Startnummer
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @item.RuntimeId
+        </td>
+        <td>
+            @item.CheckpointOrderID
+        </td>
+    </tr>
+}
+
+</table>
+

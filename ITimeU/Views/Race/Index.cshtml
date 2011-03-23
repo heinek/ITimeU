@@ -17,6 +17,9 @@
 <script src="@Url.Content("/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
 <link href="/Content/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css"/>
 
+<script src="@Url.Content("/Scripts/date.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.maskedinput-1.2.2.js")" type="text/javascript"></script>
+
 
 
 <script type="text/javascript">
@@ -24,14 +27,28 @@
         var btnCreate = $("#btnCreate");
         var tbName = $("#txtRaceName");
         var tbDistance = $("#txtRaceDistance");
-        var tbStartDate = $("#StartDate");
+        var tbStartDate = $("#txtRaceDate");
         var divErrorMessage = $("#ErrorMessage");
+
+//        jQuery.validator.addMethod("australianDate", function (value, element) {
+//            return Date.parseExact(value, "d/M/yyyy");
+//        });
+
+//        tbStartDate.validate({
+//            rules: {
+//                birth_date: { australianDate: true }
+//            }
+//        });
+
+        tbStartDate.mask("99/99/9999");
 
         tbStartDate.datepicker({
             dateFormat: "dd/mm/yy",
             showOn: "button",
             buttonImage: "/Content/images/Calendar.png",
-            buttonImageOnly: true
+            buttonImageOnly: true,
+            buttonText: "Choose Date",
+            showOn: "both"
         });
 
 //        tbStartDate.datepicker("option", "dateFormat", "dd/mm/yy");
@@ -40,62 +57,61 @@
 
         var handler = new RaceHandler();
 
-//        handler.setInsertAction(
-//        btnCreate,
-//        tbName,
-//        tbDistance,
-//        tbStartDate,
-//        divErrorMessage
-//        );
-
+        handler.setInsertAction(
+        btnCreate,
+        tbName,
+        tbDistance,
+        tbStartDate,
+        divErrorMessage
+        );
     });
 </script>
 
 
-@using (Html.BeginForm("Create","Race"))
+@using (Html.BeginForm())
 {
-    @Html.ValidationSummary(true)
+    
     <fieldset>
-        <legend>RaceModel</legend>
+        <legend>New Race</legend>
         
-        @if (ViewBag.Error)
+       @* @if (ViewBag.Error)
         {
             <div class="errormessagearea"> @ViewBag.Message </div>
-        }        
+        }     *@   
         
         
-       @* <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>*@
+        <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>
 
-        @*<div class="editor-label">
-            @Html.Label("lblRaceName", "Name")
+        <div class="editor-label">
+            @Html.Label("lblRaceName", "Navn")
         </div>
         <div class="editor-field">
             @Html.TextBox("txtRaceName", null, new { @class = "textbox" })            
         </div>
 
         <div class="editor-label">
-            @Html.Label("lblRaceDistance", "Distance")
+            @Html.Label("lblRaceDistance", "Avstand")
         </div>
         <div class="editor-field">
             @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })            
         </div>
 
         <div class="editor-label">
-            @Html.Label("lblRaceDate", "Start Date")
+            @Html.Label("lblRaceDate", "Start Dato")
         </div>
         <div class="editor-field">
             @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })            
         </div>        
 
         <p>
-            <input type="submit" class="btnRegular" id="btnCreate" value="Lag" style="width: 100px" />
-        </p>*@
+            <input type="button" class="btnRegular" id="btnCreate" value="Lag" style="width: 100px" />
+        </p>
             
-            <div class="editor-label">
+            @*<div class="editor-label">
             @Html.LabelFor(model => model.Name)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
+            @Html.TextBox("txtRaceName", null, new { @class = "textbox" })
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 
@@ -105,7 +121,7 @@
             @Html.LabelFor(model => model.Distance)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Distance)
+            @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })
             @Html.ValidationMessageFor(model => model.Distance)
         </div>
 
@@ -114,13 +130,13 @@
         </div>
         <div class="editor-field">
             
-            @Html.EditorFor(model => model.StartDate)
+           @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })
             @Html.ValidationMessageFor(model => model.StartDate)
         </div>
 
         <p>
             <input type="submit" class="btnRegular" value="Create" />
-        </p>
+        </p>*@
     </fieldset>
 }
 

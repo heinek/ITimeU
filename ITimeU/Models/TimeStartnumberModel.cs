@@ -51,20 +51,6 @@ namespace ITimeU.Models
         }
 
         /// <summary>
-        /// Edits the runtime.
-        /// </summary>
-        /// <param name="runtimeId">The runtimeId.</param>
-        /// <param name="h">The hours.</param>
-        /// <param name="m">The minutes.</param>
-        /// <param name="s">The seconds.</param>
-        /// <param name="ms">The millisecounds.</param>
-        public void EditRuntime(int runtimeId, int h, int m, int s, int ms)
-        {
-            TimeSpan ts = new TimeSpan(0, h, m, s, ms);
-            RuntimeModel.EditRuntime(runtimeId, (int)ts.TotalMilliseconds);
-        }
-
-        /// <summary>
         /// Deletes the raceintermediate.
         /// </summary>
         /// <param name="cpid">The cpid.</param>

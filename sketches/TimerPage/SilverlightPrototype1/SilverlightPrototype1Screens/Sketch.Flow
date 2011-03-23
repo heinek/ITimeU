@@ -35,7 +35,7 @@
       <Annotations />
       <Position>
         <X>152</X>
-        <Y>-46</Y>      
+        <Y>-46</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
@@ -48,6 +48,42 @@
       <Position>
         <X>150</X>
         <Y>32</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_4</ClassName>
+      <DisplayName>ResultList</DisplayName>
+      <FileName>Screen 1_4.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>5</X>
+        <Y>34</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_5</ClassName>
+      <DisplayName>EditResult</DisplayName>
+      <FileName>Screen 1_5.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>-126</X>
+        <Y>37</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_6</ClassName>
+      <DisplayName>Race</DisplayName>
+      <FileName>Screen 1_6.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>292</X>
+        <Y>-44</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
@@ -98,8 +134,8 @@
   <ViewState>
     <Zoom>1</Zoom>
     <Center>
-      <X>150</X>
-      <Y>16.814999999999998</Y>
+      <X>241.7374242424242</X>
+      <Y>34.406795774025795</Y>
     </Center>
   </ViewState>
 </Data>

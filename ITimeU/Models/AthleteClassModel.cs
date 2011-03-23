@@ -13,7 +13,7 @@ namespace ITimeU.Models
         private static Entities entitiesStatic = new Entities();
         private AthleteClass athleteClass;
 
-        private bool dbEntryCreated
+        private bool instanceSaved
         {
             get
             {
@@ -39,22 +39,26 @@ namespace ITimeU.Models
         {
             var context = new Entities();
 
-            if (!dbEntryCreated)
-                Id = CreateDbEntity(context);
+            if (!instanceSaved)
+                Id = GetOrCreateDbEntity(context);
             else
                 updateDbEntity(context);
 
             return Id;
         }
 
-        private int CreateDbEntity(Entities context)
+        private int GetOrCreateDbEntity(Entities context)
         {
+            AthleteClassModel clubDb = AthleteClassModel.GetOrCreate(Name);
+            return clubDb.Id;
+            /*
             AthleteClass athleteClass = new AthleteClass();
             updateProperties(athleteClass);
             context.AthleteClasses.AddObject(athleteClass);
             context.SaveChanges();
 
             return athleteClass.ID;
+            */
         }
 
         private void updateProperties(AthleteClass athleteClass)

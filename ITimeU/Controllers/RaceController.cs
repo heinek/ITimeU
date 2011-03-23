@@ -18,27 +18,29 @@ namespace ITimeU.Controllers
             return View();            
         }
         
-        public ActionResult Create(Race newRace)      //string name, string distance, string startDate)
+        public ActionResult Create(string name, string distance, string startDate)      //string name, string distance, string startDate)
         {
+            int intDistance;
+            int.TryParse(distance, out intDistance);
+            Race newRace = new Race();
+            newRace.Name = name;
+            newRace.Distance = intDistance;
+            newRace.StartDate = Convert.ToDateTime(startDate);
             RaceModel race = new RaceModel();
-            if (IsValidInput(newRace))
-            {
-                ViewBag.Error = false;
-                //race.InsertRace(newRace);
-            }
-            else
-            {
-                ViewBag.Error = true;
-                ViewBag.Message = "All fields must not be empty";
-            }
+            race.InsertRace(newRace);
+            //if (IsValidInput(newRace))
+            //{
+            //    ViewBag.Error = false;
+            //    race.InsertRace(newRace);
+            //}
+            //else
+            //{
+            //    ViewBag.Error = true;
+            //    ViewBag.Message = "All fields must not be empty";
+            //}
             return View("Index");
 
-                //int intDistance;            
-                //int.TryParse(distance, out intDistance);
-                //Race newRace = new Race();
-                //newRace.Name = name;
-                //newRace.Distance = intDistance;
-                //newRace.StartDate = Convert.ToDateTime(startDate);                
+                               
                        
         }
 
