@@ -87,6 +87,18 @@
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_7</ClassName>
+      <DisplayName>Screen 1</DisplayName>
+      <FileName>Screen 1_7.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>282</X>
+        <Y>32</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
   </Screens>
   <Connections />
   <BrandingText>Microsoft SketchFlow Prototype</BrandingText>
