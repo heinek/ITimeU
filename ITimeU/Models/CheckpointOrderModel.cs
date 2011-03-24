@@ -265,9 +265,6 @@ namespace ITimeU.Models
             {
                 CheckpointOrderDic.Clear();
                 foreach (CheckpointOrder chkpntOrder in ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID && !chkpnt.IsDeleted && !chkpnt.IsMerged).OrderByDescending(ordernum => ordernum.OrderNumber))
-                checkpoints = ctx.CheckpointOrders.Where(chkpnt => chkpnt.CheckpointID == checkpointID).OrderByDescending(ordnmb => ordnmb.OrderNumber).ToList();
-
-                foreach (CheckpointOrder chkpntOrder in checkpoints)
                 {
                     CheckpointOrderDic.Add((int)chkpntOrder.ID, (int)chkpntOrder.StartingNumber);
                 }

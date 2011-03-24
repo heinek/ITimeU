@@ -52,19 +52,19 @@ namespace ITimeU.Tests.Models
             {
                 CheckpointOrderModel.GetCheckpointOrders(-1).Count().ShouldNotBe(0);
             });
-
+           
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Insert_A_New_CheckpointOrder_To_The_Database()
         {
             int previousSize = CheckpointOrderModel.GetCheckpointOrders(-1).Count;
-
+            
             Given("we want to insert a new checkpointOrder to the database");
 
             When("we create the checkpointOrder", () =>
             {
-                checkpointOrderModel.AddCheckpointOrderDB(-1, 1);
+                checkpointOrderModel.AddCheckpointOrderDB(-1, 1);                
             });
 
             Then("it should exist in the database", () =>
@@ -128,6 +128,29 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
+<<<<<<< HEAD
+        public void It_Should_Be_Possible_To_Delete_A_CheckpointOrder_From_The_Database()
+        {
+            CheckpointOrder origCheckpointOrder = null;
+            
+            Given("We have a CheckpointOrder", () => 
+            {
+                origCheckpointOrder = CheckpointOrder.CreateCheckpointOrder(1);                
+            });
+
+            When("We delete the CheckpointOrder", () =>
+            {
+                origCheckpointOrder.IsDeleted = true;
+            });
+
+            Then("The CheckpointOrder should not exist", () =>
+            {
+                origCheckpointOrder.IsDeleted.ShouldBe(true);
+            });
+
+
+        }
+=======
         public void StartNumber_Should_Be_Added_In_Database()
         {
             CheckpointOrderModel testCheckpointOrder = null;
@@ -169,6 +192,7 @@ namespace ITimeU.Tests.Models
             {
                 CheckpointOrderModel.DeleteCheckpointOrder(CheckpointOrderModel.GetCheckpointOrders(timer.GetFirstCheckpointId()).First().ID);
             });
+>>>>>>> b69b3c5d91eb87b70022f4291165e6c4622df7f0
 
             Then("the checkpointorderlist should be reduced with 1", () =>
             {
