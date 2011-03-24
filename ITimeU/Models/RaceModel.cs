@@ -69,5 +69,45 @@ namespace ITimeU.Models
 
         }
 
+        public void UpdateRaceName(int id, string name)
+        {
+            using (var ctxDB = new Entities())
+            {
+                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                select.Name = name;
+                ctxDB.SaveChanges();
+            }
+        }
+
+
+        public void UpdateRaceDistance(int id, int distance)
+        {
+            using (var ctxDB = new Entities())
+            {
+                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                select.Distance = distance;
+                ctxDB.SaveChanges();
+            }
+        }
+
+        public void UpdateRaceDate(int id, DateTime date)
+        {
+            using (var ctxDB = new Entities())
+            {
+                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                select.StartDate = date;
+                ctxDB.SaveChanges();
+            }
+        }
+
+        public Race GetRace(int id)
+        {
+            Race select;
+            using (var ctxDB = new Entities())
+            {
+                select = ctxDB.Races.Where(race => race.RaceID == id).Single();                
+            }
+            return select;
+        }
     }
 }
