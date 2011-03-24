@@ -17,6 +17,12 @@ namespace ITimeU.Tests.Models
         private CheckpointModel checkpoint1;
         private CheckpointModel checkpoint2;
 
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            StartScenario();
+        }
+
         [TestInitialize]
         public void TestSetup()
         {
@@ -127,7 +133,6 @@ namespace ITimeU.Tests.Models
             Given("We have a CheckpointOrder", () =>
             {
                 testCheckpointOrder = new CheckpointOrderModel();
-
             });
 
             When("We insert start number", () =>
@@ -196,8 +201,10 @@ namespace ITimeU.Tests.Models
                 //startNum.ShouldBe(startingNumber);
 
                 Entities contextDB = new Entities();
-                var startNum = contextDB.CheckpointOrders.Where
-                    (chkpntid => (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).Single().StartingNumber;                    
+                int startNum = (int) (contextDB.CheckpointOrders.
+                    Where(chkpntid =>
+                        (chkpntid.CheckpointID == checkpointId && chkpntid.StartingNumber == startingNumber)).
+                        Single().StartingNumber);
                 startNum.ShouldBe(startingNumber);
             });
         }
@@ -225,11 +232,5 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        [TestCleanup]
-        public void TestCleanup()
-        {
-            StartScenario();
-           // CheckpointOrderModel.DeleteCheckpointOrder(45);
-        }
     }
 }

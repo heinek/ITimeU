@@ -60,9 +60,8 @@ namespace ITimeU.Models
         }
 
         public CheckpointModel(string checkpointName, TimerModel timer, int sortorder)
+            : this(checkpointName, timer)
         {
-            Name = checkpointName;
-            Timer = timer;
             Sortorder = sortorder;
             SaveToDb();
         }

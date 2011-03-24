@@ -30,7 +30,7 @@ namespace ITimeU.Tests.Models
 
             When("we fetch a club that does not exists (Byåsen)", () =>
             {
-                ClubModel.GetByName("Byåsen").DeleteFromDb();
+                ClubModel.DeleteIfExists("Byåsen");
                 previousCount = ClubModel.GetAll().Count;
                 club = ClubModel.GetOrCreate(CLUB_BYAASEN);
             });
