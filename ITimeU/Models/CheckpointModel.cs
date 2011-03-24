@@ -43,13 +43,25 @@ namespace ITimeU.Models
         }
 
         public int Sortorder { get; set; }
+        public RaceModel Race { get; private set; }
 
         public CheckpointModel(Checkpoint checkpoint)
         {
             Id = checkpoint.CheckpointID;
             Name = checkpoint.Name;
-            if (checkpoint.Timer != null)
-                this.timer = new TimerModel(checkpoint.Timer);
+            if (checkpoint.TimerID != null)
+                this.timer = new TimerModel((int)checkpoint.TimerID);
+        }
+
+        /// <summary>
+        /// Creates a CheckpointModel.
+        /// </summary>
+        /// <param name="name">The name of the checkpoint.</param>
+        /// <param name="raceId">The identifier of the race to connect this checkpoint to.</param>
+        public CheckpointModel(string name, int raceId)
+        {
+            Name = name;
+            Race = RaceModel.GetById(raceId);
         }
 
         public CheckpointModel(string checkpointName, TimerModel timer)
@@ -66,7 +78,7 @@ namespace ITimeU.Models
             SaveToDb();
         }
 
-        private void SaveToDb()
+        public void SaveToDb()
         {
             var context = new Entities();
 
@@ -79,8 +91,9 @@ namespace ITimeU.Models
         private int CreateDbEntity(Entities context)
         {
             Checkpoint checkpoint = new Checkpoint();
-            checkpoint.TimerID = timer.Id;
-            checkpoint.SortOrder = Sortorder;
+            if (timer != null)
+                checkpoint.TimerID = timer.Id;
+
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
@@ -88,16 +101,21 @@ namespace ITimeU.Models
             return checkpoint.CheckpointID;
         }
 
+        /// <summary>
+        /// Updates a checkpoint database entity based on the properties of this model.
+        /// </summary>
+        /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
             checkpoint.Name = Name;
             checkpoint.SortOrder = Sortorder;
+            if (Race != null)
+                checkpoint.RaceID = Race.RaceId;
         }
 
         private void updateDbEntry(Entities context)
         {
             Checkpoint checkpoint = context.Checkpoints.Single(tmr => tmr.CheckpointID == Id);
-            checkpoint.SortOrder = Sortorder;
             updateDbEntry(checkpoint);
             context.SaveChanges();
         }

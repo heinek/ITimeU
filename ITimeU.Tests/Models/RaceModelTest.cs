@@ -199,6 +199,24 @@ namespace ITimeU.Tests.Models
                     ctxDel.SaveChanges();
                 }
             }        
-        }        
+        }
+
+        [TestMethod]
+        public void It_Should_Possible_To_Get_A_List_Of_Races_From_The_Database()
+        {
+            List<RaceModel> races = null;
+
+            Given("we want to get a list of races");
+
+            When("we fetch all races from the database", () =>
+            {
+                races = RaceModel.GetRaces();
+            });
+
+            Then("we should get a list of races", () =>
+            {
+                races.ShouldBeInstanceOfType<List<RaceModel>>();
+            });
+        }
     }
 }

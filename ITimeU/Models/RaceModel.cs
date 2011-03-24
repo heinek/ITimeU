@@ -9,7 +9,7 @@ namespace ITimeU.Models
         public int RaceId { get; private set; }
         public string Name { get; private set; }
         public DateTime StartDate { get; private set; }
-        public int Distance { get; set; }
+        public int? Distance { get; set; }
 
         public RaceModel()
         {
@@ -20,6 +20,14 @@ namespace ITimeU.Models
         {
             this.Name = name;
             this.StartDate = startDate;
+        }
+
+        public RaceModel(Race raceDb)
+        {
+            RaceId = raceDb.RaceID;
+            Name = raceDb.Name;
+            StartDate = raceDb.StartDate;
+            Distance = raceDb.Distance;
         }
 
         public bool Save()
@@ -108,6 +116,25 @@ namespace ITimeU.Models
                 select = ctxDB.Races.Where(race => race.RaceID == id).Single();                
             }
             return select;
+        }
+
+        public static RaceModel GetById(int idToGet)
+        {
+            var entities = new Entities();
+            try
+            {
+                return TryToGetById(idToGet, entities);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ModelNotFoundException(typeof(RaceModel).Name + " with ID " + idToGet + " not found in database.");
+            }
+        }
+
+        private static RaceModel TryToGetById(int idToGet, Entities entities)
+        {
+            Race raceDb = entities.Races.Single(temp => temp.RaceID == idToGet);
+            return new RaceModel(raceDb);
         }
     }
 }

@@ -87,6 +87,7 @@
     <Compile Include="Library\FriResImporter.cs" />
     <Compile Include="Library\NameParser.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AddCheckpointModel.cs" />
     <Compile Include="Models\AthleteClassModel.cs" />
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />
@@ -253,6 +254,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Race\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Checkpoint\Create.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ITimeU.Models.RaceModel>
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>
+    Create
+</h2>
+
+@{ Html.BeginForm("Create", "Checkpoint", FormMethod.Post); }
+
+<fieldset>
+    <div class="editor-label">
+        @Html.Label("lblRace", "Race")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("raceId", new SelectList(Model, "RaceID", "Name"))
+    </div>
+
+    <div class="editor-label">
+        @Html.Label("lblCheckpointName", "Checkpoint Navn")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtCheckpointName", null, new { @class = "textbox" })
+    </div>
+    <p>
+        <input type="submit" class="btnRegular" id="btnCreate" value="Opprett" style="width: 100px" />
+    </p>
+</fieldset>
+@{ Html.EndForm(); }

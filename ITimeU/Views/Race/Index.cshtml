@@ -30,16 +30,6 @@
         var tbStartDate = $("#txtRaceDate");
         var divErrorMessage = $("#ErrorMessage");
 
-//        jQuery.validator.addMethod("australianDate", function (value, element) {
-//            return Date.parseExact(value, "d/M/yyyy");
-//        });
-
-//        tbStartDate.validate({
-//            rules: {
-//                birth_date: { australianDate: true }
-//            }
-//        });
-
         tbStartDate.mask("99/99/9999");
 
         tbStartDate.datepicker({
@@ -50,9 +40,6 @@
             buttonText: "Choose Date",
             showOn: "both"
         });
-
-//        tbStartDate.datepicker("option", "dateFormat", "dd/mm/yy");
-
 
 
         var handler = new RaceHandler();
@@ -74,12 +61,7 @@
     <fieldset>
         <legend>New Race</legend>
         
-       @* @if (ViewBag.Error)
-        {
-            <div class="errormessagearea"> @ViewBag.Message </div>
-        }     *@   
-        
-        
+              
         <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>
 
         <div class="editor-label">
@@ -107,36 +89,7 @@
             <input type="button" class="btnRegular" id="btnCreate" value="Lag" style="width: 100px" />
         </p>
             
-            @*<div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.TextBox("txtRaceName", null, new { @class = "textbox" })
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-
-        
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Distance)
-        </div>
-        <div class="editor-field">
-            @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })
-            @Html.ValidationMessageFor(model => model.Distance)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.StartDate)
-        </div>
-        <div class="editor-field">
-            
-           @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })
-            @Html.ValidationMessageFor(model => model.StartDate)
-        </div>
-
-        <p>
-            <input type="submit" class="btnRegular" value="Create" />
-        </p>*@
+           
     </fieldset>
 }
 
