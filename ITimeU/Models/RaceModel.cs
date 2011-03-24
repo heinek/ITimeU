@@ -1,19 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace ITimeU.Models
 {
     public class RaceModel
     {
-        public int RaceId { get; set; }
-        public string Name { get; set; }
-        public DateTime StartDate { get; set; }
+        public int RaceId { get; private set; }
+        public string Name { get; private set; }
+        public DateTime StartDate { get; private set; }
+        public int Distance { get; set; }
 
         public RaceModel()
         {
+            
+        }
 
+        public RaceModel(string name, DateTime startDate)
+        {
+            this.Name = name;
+            this.StartDate = startDate;
+        }
+
+        public bool Save()
+        {
+            using (var context = new Entities())
+            {
+                var race = new Race();
+                race.Name = Name;
+                race.StartDate = StartDate;
+                context.Races.AddObject(race);
+                try
+                {
+                    context.SaveChanges();
+                    this.RaceId = race.RaceID;
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
         }
 
         public static List<RaceModel> GetRaces()
@@ -28,6 +55,59 @@ namespace ITimeU.Models
                         StartDate = race.StartDate
                     }).ToList();
             }
+        }
+
+        public void InsertRace(Race races)
+        {
+            
+            using (var ctxDB = new Entities())
+            {                                
+                races.IsDeleted = false;
+                ctxDB.Races.AddObject(races);
+                ctxDB.SaveChanges();
+            }
+
+        }
+
+        public void UpdateRaceName(int id, string name)
+        {
+            using (var ctxDB = new Entities())
+            {
+                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                select.Name = name;
+                ctxDB.SaveChanges();
+            }
+        }
+
+
+        public void UpdateRaceDistance(int id, int distance)
+        {
+            using (var ctxDB = new Entities())
+            {
+                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                select.Distance = distance;
+                ctxDB.SaveChanges();
+            }
+        }
+
+        public void UpdateRaceDate(int id, DateTime date)
+        {
+            using (var ctxDB = new Entities())
+            {
+                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                select.StartDate = date;
+                ctxDB.SaveChanges();
+            }
+        }
+
+        public Race GetRace(int id)
+        {
+            Race select;
+            using (var ctxDB = new Entities())
+            {
+                select = ctxDB.Races.Where(race => race.RaceID == id).Single();                
+            }
+            return select;
         }
     }
 }

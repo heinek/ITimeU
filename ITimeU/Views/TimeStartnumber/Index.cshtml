@@ -75,6 +75,7 @@
             Tools.deleteFromList(listIntermediate, url);
             Tools.ResetEditFields();
             Tools.DisableControls();
+            tbEditStartnumber.val("");
         });
 
         btnUpHour.click(function () {
@@ -189,9 +190,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="containter">
         <div class="row">
             <div class="left">
-                @Html.ListBox("listIntermediate", new SelectList(Model.Intermediates, "CheckpointOrderId", "RuntimeId"), new { @class = "listbox" })
+                @Html.ListBox("listIntermediate", new SelectList(Model.Intermediates, "CheckpointOrderId", "RuntimeId"), new { @class = "listboxwide" })
             </div>
             <div class="right">
                 Startnummer: @Html.TextBox("tbEditStartnumber", null, new { @class = "textboxmedium" })<br />

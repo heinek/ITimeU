@@ -8,6 +8,7 @@ namespace ITimeU.Models
     [Serializable]
     public class AthleteModel
     {
+        private const int EMPTY_ID = -1;
         public int Id { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -20,7 +21,7 @@ namespace ITimeU.Models
         {
             get
             {
-                if (Id == 0)
+                if (Id == EMPTY_ID)
                     return false;
                 return true;
             }
@@ -29,8 +30,19 @@ namespace ITimeU.Models
         public static AthleteModel GetById(int idToGet)
         {
             var entities = new Entities();
+            try
+            {
+                return TryToGetById(idToGet, entities);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ModelNotFoundException("Athlete with ID " + idToGet + " not found in database.");
+            }
+        }
+
+        private static AthleteModel TryToGetById(int idToGet, Entities entities)
+        {
             Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet);
-        
             return new AthleteModel(athleteDb);
         }
 
@@ -57,7 +69,12 @@ namespace ITimeU.Models
         {
             FirstName = firstName;
             LastName = lastName;
-            Id = 0;
+            SetDefaultId();
+        }
+
+        private void SetDefaultId()
+        {
+            Id = EMPTY_ID;
         }
 
         public AthleteModel(Athlete athleteDb)
@@ -76,6 +93,7 @@ namespace ITimeU.Models
 
         public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber)
         {
+            SetDefaultId();
             FirstName = firstName;
             LastName = lastName;
             Birthday = birthday;
@@ -153,6 +171,23 @@ namespace ITimeU.Models
         public override string ToString()
         {
             return FirstName + " " + LastName ;
+        }
+
+
+        /// <summary>
+        /// Deletes the given athlete.
+        /// </summary>
+        /// <param name="runtimeid">The runtimeid.</param>
+        public void DeleteFromDb()
+        {
+            using (var ctx = new Entities())
+            {
+                var rowToDelete = ctx.Athletes.Where(runt => runt.ID == Id).Single();
+                ctx.Athletes.DeleteObject(rowToDelete);
+                ctx.SaveChanges();
+            }
+
+            SetDefaultId();
         }
 
     }

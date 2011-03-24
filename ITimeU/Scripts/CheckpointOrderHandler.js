@@ -19,6 +19,7 @@ var btnUp;
 var btnDown;
 var ddCheckpoints;
 var divErrorMessage;
+var btnChangeCP
 
 CheckpointOrderHandler.prototype.setEditAction = function (_listCheckpointOrders, _btnEdit, _tbedit) {
     listCheckpointOrders = _listCheckpointOrders;
@@ -97,15 +98,29 @@ CheckpointOrderHandler.prototype.setMoveDownAction = function (_listCheckpointOr
     });
 }
 
-CheckpointOrderHandler.prototype.setddCheckpointChangeAction = function (_ddCheckpoints) {
+//CheckpointOrderHandler.prototype.setddCheckpointChangeAction = function (_ddCheckpoints) {
+//    ddCheckpoints = _ddCheckpoints;
+//    ddCheckpoints.bind("change", function () {
+//        $("#ddCheckpoint :selected").each(function () {
+//            ddCheckpointId = $(this).val();
+//        });
+//        url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + ddCheckpointId;
+//        $.get(url, function (data) {
+//            listCheckpointOrders.html(data);            
+//        });
+//    });
+//}
+
+CheckpointOrderHandler.prototype.setddCheckpointChangeAction = function (_ddCheckpoints, _btnChangeCP) {
     ddCheckpoints = _ddCheckpoints;
-    ddCheckpoints.bind("change", function () {
+    btnChangeCP = _btnChangeCP;
+    btnChangeCP.bind("click", function () {
         $("#ddCheckpoint :selected").each(function () {
             ddCheckpointId = $(this).val();
         });
         url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + ddCheckpointId;
-        $.get(url, function (data) {
-            listCheckpointOrders.html(data);            
+        $.post(url, function (data) {
+            listCheckpointOrders.html(data);
         });
     });
 }

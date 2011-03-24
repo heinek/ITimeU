@@ -120,51 +120,31 @@ namespace ITimeU.Tests.Models
         }
 
         [TestMethod]
-        public void Two_ClubModels_With_Same_Properties_Should_Equal_Each_Other()
+        public void Attempting_To_Retrieve_An_Athlete_That_Does_Not_Exist_In_The_Db_Should_Give_An_Error()
         {
-            string name = null;
-            ClubModel clubModel1 = null;
-            ClubModel clubModel2 = null;
+            AthleteModel athlete = null;
+            int athleteIdThatDoesNotExist = -1;
 
-            Given("we have some common properties of two clubs", () =>
-            {
-                // Common properties...
-                name = "Trondheim";
-
+            Given("we have a primary key for an athlete that does not exists in the database", () => {
+                athlete = new AthleteModel("Per", "Olsen");
+                athlete.SaveToDb();
+                athleteIdThatDoesNotExist = athlete.Id;
+                athlete.DeleteFromDb();
             });
 
-            When("we create two clubs with the same properties", () =>
+            When("we attempt to fetch an athlete that does not exist in the database", () =>
             {
-                clubModel1 = ClubModel.GetOrCreate(name);
-                clubModel2 = ClubModel.GetOrCreate(name);
+                try {
+                    AthleteModel.GetById(athleteIdThatDoesNotExist);
+                    false.ShouldBe(true); // Fail test if exception is not thrown.
+                } catch (ModelNotFoundException e) {
+                    Assert.IsTrue(e.Message.Length > 0);
+                }
             });
 
-            Then("the two clubs should equal each other (though not same instance)", () =>
-            {
-                clubModel1.ShouldBe(clubModel2);
-            });
-
+            Then("an exception should have been thrown");
         }
 
-        [TestMethod]
-        public void Two_ClubModels_With_Different_Properties_Should_Not_Equal_Each_Other()
-        {
-            ClubModel clubModel1 = null;
-            ClubModel clubModel2 = null;
-
-            Given("we want to create two clubs with different names"); 
-
-            When("we create two clubs with different properties", () =>
-            {
-                clubModel1 = ClubModel.GetOrCreate("Lade");
-                clubModel2 = ClubModel.GetOrCreate("Malvik");
-            });
-
-            Then("the two clubs should not equal each other", () =>
-            {
-                clubModel1.ShouldNotBe(clubModel2);
-            });
-        }
 
     }
 }

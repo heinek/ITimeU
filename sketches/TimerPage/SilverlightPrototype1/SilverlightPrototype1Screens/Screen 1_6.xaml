@@ -1,0 +1,20 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="SilverlightPrototype1Screens.Screen_1_6"
+	Width="640" Height="480">
+
+	<Grid x:Name="LayoutRoot" Background="White">
+		<TextBox Margin="136,163,208,0" Style="{StaticResource TextBox-Sketch}" VerticalAlignment="Top" Text="Race1" TextWrapping="Wrap" Height="31"/>
+		<TextBox Margin="136,238,208,216" Style="{StaticResource TextBox-Sketch}" Text="100" TextWrapping="Wrap"/>
+		<TextBox Height="28" Margin="136,0,208,132" Style="{StaticResource TextBox-Sketch}" VerticalAlignment="Bottom" Text="21/03/2011" TextWrapping="Wrap"/>
+		<Button Height="32" Margin="136,0,0,83" Style="{StaticResource Button-Sketch}" VerticalAlignment="Bottom" Content="Lag" HorizontalAlignment="Left" Width="103"/>
+		<TextBlock Height="32" HorizontalAlignment="Left" Margin="136,127,0,0" VerticalAlignment="Top" Width="110" Text="Navn" TextWrapping="Wrap" FontSize="16"/>
+		<TextBlock HorizontalAlignment="Left" Margin="136,208,0,0" Width="92" Text="Avstand" TextWrapping="Wrap" FontSize="16" Height="26" VerticalAlignment="Top"/>
+		<TextBlock Height="28" HorizontalAlignment="Left" Margin="136,0,0,164" VerticalAlignment="Bottom" Width="110" FontSize="16" TextWrapping="Wrap"><Run Text="Start"/><Run Text=" "/><Run Text="Dat"/><Run Text="o"/></TextBlock>
+		<Grid Height="100" HorizontalAlignment="Left" Margin="170,138,0,0" VerticalAlignment="Top" Width="100"/>
+	</Grid>
+</UserControl>

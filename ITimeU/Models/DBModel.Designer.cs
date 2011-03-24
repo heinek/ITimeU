@@ -1549,7 +1549,7 @@ namespace ITimeU.Models
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -1605,6 +1605,30 @@ namespace ITimeU.Models
         private global::System.Boolean _IsDeleted;
         partial void OnIsDeletedChanging(global::System.Boolean value);
         partial void OnIsDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> Distance
+        {
+            get
+            {
+                return _Distance;
+            }
+            set
+            {
+                OnDistanceChanging(value);
+                ReportPropertyChanging("Distance");
+                _Distance = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Distance");
+                OnDistanceChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _Distance;
+        partial void OnDistanceChanging(Nullable<global::System.Int32> value);
+        partial void OnDistanceChanged();
 
         #endregion
     

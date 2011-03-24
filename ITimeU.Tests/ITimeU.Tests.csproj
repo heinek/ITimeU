@@ -74,11 +74,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ImportAthletesControllerTest.cs" />
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
     <Compile Include="Library\Import\FriResExporterTest.cs" />
     <Compile Include="Library\Import\FriResImporterTest.cs" />
+    <Compile Include="Library\Logging\LogWriterTest.cs" />
     <Compile Include="Library\NameParserTest.cs" />
     <Compile Include="MockHttpSession.cs" />
     <Compile Include="Models\AthleteClassModelTest.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
     <Compile Include="Models\ClubModelTest.cs" />
+    <Compile Include="Models\RaceModelTest.cs" />
     <Compile Include="Models\RuntimeModelTest.cs" />
     <Compile Include="Controllers\RuntimeControllerTest.cs" />
     <Compile Include="Models\TimeMergerTest.cs" />
