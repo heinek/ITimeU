@@ -29,6 +29,7 @@
         var tbDistance = $("#txtRaceDistance");
         var tbStartDate = $("#txtRaceDate");
         var divErrorMessage = $("#ErrorMessage");
+        var divStatusMessage = $("#StatusMessage");
 
         tbStartDate.mask("99/99/9999");
 
@@ -49,7 +50,8 @@
         tbName,
         tbDistance,
         tbStartDate,
-        divErrorMessage
+        divErrorMessage,
+        divStatusMessage
         );
     });
 </script>
@@ -63,6 +65,8 @@
         
               
         <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>
+
+        <div class="statusmessagearea" id="StatusMessage" style="display: none"></div>
 
         <div class="editor-label">
             @Html.Label("lblRaceName", "Navn")
