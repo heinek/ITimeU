@@ -136,5 +136,30 @@ namespace ITimeU.Tests.Models
             return timer;
         }
 
+        [TestMethod]
+        public void We_Should_Be_Able_To_Insert_And_Fetch_A_Checkpoint_With_A_Race_To_Database()
+        {
+            CheckpointModel checkpoint = null;
+            CheckpointModel checkpointDb = null;
+            RaceModel race = new RaceModel("Malvikløpet", new System.DateTime(2011, 3, 2));
+            race.Save(); // We assume that the race is stored in the database already.
+
+            Given("we have a checkpoint in the database", () =>
+            {
+                checkpoint = new CheckpointModel("MalvikCheckpoint", race.RaceId);
+                checkpoint.SaveToDb();
+            });
+
+            When("we fetch the same checkpoint from database", () =>
+            {
+                checkpointDb = CheckpointModel.getById(checkpoint.Id);
+            });
+
+            Then("the checkpoints should be the same", () =>
+            {
+                checkpointDb.Name.ShouldBe(checkpoint.Name);
+                checkpointDb.Race.RaceId.ShouldBe(checkpoint.Race.RaceId);
+            });
+        }
     }
 }

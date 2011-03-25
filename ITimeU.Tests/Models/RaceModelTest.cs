@@ -218,5 +218,24 @@ namespace ITimeU.Tests.Models
                 races.ShouldBeInstanceOfType<List<RaceModel>>();
             });
         }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Get_A_List_Of_Races()
+        {
+            List<RaceModel> races = null;
+
+            Given("we want to get a list of races");
+
+            When("we get the list of races", () =>
+            {
+                races = RaceModel.GetRaces();
+            });
+
+            Then("we should get a list of races", () =>
+            {
+                races.ShouldBeInstanceOfType<List<RaceModel>>();
+            });
+        }
+
     }
 }

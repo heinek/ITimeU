@@ -51,6 +51,7 @@ namespace ITimeU.Models
             Name = checkpoint.Name;
             if (checkpoint.TimerID != null)
                 this.timer = new TimerModel((int)checkpoint.TimerID);
+            Race = RaceModel.GetById(checkpoint.RaceID);
         }
 
         /// <summary>

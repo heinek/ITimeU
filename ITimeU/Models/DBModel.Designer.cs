@@ -866,12 +866,14 @@ namespace ITimeU.Models
         /// Create a new Checkpoint object.
         /// </summary>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
+        /// <param name="raceID">Initial value of the RaceID property.</param>
         /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
         /// <param name="sortOrder">Initial value of the SortOrder property.</param>
-        public static Checkpoint CreateCheckpoint(global::System.Int32 checkpointID, global::System.Boolean isDeleted, global::System.Int32 sortOrder)
+        public static Checkpoint CreateCheckpoint(global::System.Int32 checkpointID, global::System.Int32 raceID, global::System.Boolean isDeleted, global::System.Int32 sortOrder)
         {
             Checkpoint checkpoint = new Checkpoint();
             checkpoint.CheckpointID = checkpointID;
+            checkpoint.RaceID = raceID;
             checkpoint.IsDeleted = isDeleted;
             checkpoint.SortOrder = sortOrder;
             return checkpoint;
@@ -910,9 +912,9 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> RaceID
+        public global::System.Int32 RaceID
         {
             get
             {
@@ -927,8 +929,8 @@ namespace ITimeU.Models
                 OnRaceIDChanged();
             }
         }
-        private Nullable<global::System.Int32> _RaceID;
-        partial void OnRaceIDChanging(Nullable<global::System.Int32> value);
+        private global::System.Int32 _RaceID;
+        partial void OnRaceIDChanging(global::System.Int32 value);
         partial void OnRaceIDChanged();
     
         /// <summary>

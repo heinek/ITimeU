@@ -71,7 +71,7 @@
             <PropertyRef Name="CheckpointID" />
           </Key>
           <Property Name="CheckpointID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="RaceID" Type="int" />
+          <Property Name="RaceID" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="TimerID" Type="int" />
@@ -283,7 +283,7 @@
             <PropertyRef Name="CheckpointID" />
           </Key>
           <Property Type="Int32" Name="CheckpointID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Int32" Name="RaceID" />
+          <Property Type="Int32" Name="RaceID" Nullable="false" />
           <Property Type="String" Name="Name" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <Property Type="Int32" Name="TimerID" />
@@ -571,7 +571,7 @@
         <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="5.75" PointY="0.875" Height="2.172587890624996" />
         <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="3" PointY="1" Height="2.3648893229166674" />
         <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="0.75" PointY="8.375" Height="1.9802864583333246" />
-        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="8" PointY="0.875" Height="2.172587890624996" />
+        <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="8" PointY="0.875" Height="2.1725878906249818" />
         <AssociationConnector Association="ITimeUModel.FK_Athlete_AthleteClass" >
           <ConnectorPoint PointX="4.25" PointY="7.047841796874998" />
           <ConnectorPoint PointX="4.2916641666666671" PointY="7.0478417968749971" />
@@ -593,8 +593,8 @@
           <ConnectorPoint PointX="4.40625" PointY="3.3648893229166674" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Timer_Race" >
-          <ConnectorPoint PointX="7.25" PointY="1.961293945312498" />
-          <ConnectorPoint PointX="8" PointY="1.961293945312498" />
+          <ConnectorPoint PointX="7.25" PointY="1.9612939453124909" />
+          <ConnectorPoint PointX="8" PointY="1.9612939453124909" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Runtime" >
           <ConnectorPoint PointX="2.25" PointY="9.3651432291666623" />

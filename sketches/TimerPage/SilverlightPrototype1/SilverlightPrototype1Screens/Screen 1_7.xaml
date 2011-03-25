@@ -16,8 +16,8 @@
 			<ComboBoxItem Content="Race1"/>
 		</ComboBox>
 		<TextBlock Height="23" Margin="225,105,302,0" VerticalAlignment="Top" Text="Race" TextWrapping="Wrap" FontSize="16"/>
-		<TextBlock Height="30" Margin="225,193,217,0" VerticalAlignment="Top" TextWrapping="Wrap" FontSize="14.667"><Run Text="Checkpoint"/><Run Text=" "/><Run Text="Name"/></TextBlock>
+		<TextBlock Height="30" Margin="225,193,217,0" VerticalAlignment="Top" TextWrapping="Wrap" FontSize="14.667"><Run Text="Checkpoint"/><Run Text=" "/><Run Text="Na"/><Run Text="vn"/></TextBlock>
 		<TextBox Margin="225,227,249,220" Text="Checkpoint1" TextWrapping="Wrap"/>
-		<Button Height="36" Margin="248,0,269,155" VerticalAlignment="Bottom" Content="Lag" FontSize="18.667"/>
+		<Button Height="36" Margin="248,0,269,155" VerticalAlignment="Bottom" Content="Opprett" FontSize="18.667"/>
 	</Grid>
 </UserControl>
