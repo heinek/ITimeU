@@ -27,8 +27,8 @@ namespace ITimeU.Tests.Models
             timer = new TimerModel();
             var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
             race.Save();
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
+            checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
+            checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             checkpointOrderModel = new CheckpointOrderModel();

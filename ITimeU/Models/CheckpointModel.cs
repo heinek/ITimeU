@@ -50,9 +50,9 @@ namespace ITimeU.Models
             Id = checkpoint.CheckpointID;
             Name = checkpoint.Name;
             if (checkpoint.TimerID != null)
-                this.timer = new TimerModel((int)checkpoint.TimerID);
+                this.timer = TimerModel.GetTimerById((int)checkpoint.TimerID);
+
             Race = RaceModel.GetById(checkpoint.RaceID);
-            
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace ITimeU.Models
         /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
-            checkpoint.Name = Name;
+            checkpoint.Name = Name;            
             checkpoint.SortOrder = Sortorder;
             if (timer != null)
                 checkpoint.TimerID = timer.Id;
