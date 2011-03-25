@@ -11,7 +11,7 @@ namespace ITimeU.Models
         public DateTime StartDate { get; private set; }
         public int? Distance { get; set; }
 
-        public RaceModel()
+        private RaceModel()
         {
             
         }
@@ -37,6 +37,7 @@ namespace ITimeU.Models
                 var race = new Race();
                 race.Name = Name;
                 race.StartDate = StartDate;
+                race.Distance = Distance;
                 context.Races.AddObject(race);
                 try
                 {
@@ -65,17 +66,17 @@ namespace ITimeU.Models
             }
         }
 
-        public void InsertRace(Race races)
-        {
+        //public void InsertRace(Race races)
+        //{
             
-            using (var ctxDB = new Entities())
-            {                                
-                races.IsDeleted = false;
-                ctxDB.Races.AddObject(races);
-                ctxDB.SaveChanges();
-            }
+        //    using (var ctxDB = new Entities())
+        //    {                                
+        //        races.IsDeleted = false;
+        //        ctxDB.Races.AddObject(races);
+        //        ctxDB.SaveChanges();
+        //    }
 
-        }
+        //}
 
         public void UpdateRaceName(int id, string name)
         {

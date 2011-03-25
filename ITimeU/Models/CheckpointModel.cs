@@ -52,6 +52,7 @@ namespace ITimeU.Models
             if (checkpoint.TimerID != null)
                 this.timer = new TimerModel((int)checkpoint.TimerID);
             Race = RaceModel.GetById(checkpoint.RaceID);
+            
         }
 
         /// <summary>
@@ -63,18 +64,22 @@ namespace ITimeU.Models
         {
             Name = name;
             Race = RaceModel.GetById(raceId);
-        }
-
-        public CheckpointModel(string checkpointName, TimerModel timer)
-        {
-            Name = checkpointName;
-            Timer = timer;
             SaveToDb();
         }
 
-        public CheckpointModel(string checkpointName, TimerModel timer, int sortorder)
-            : this(checkpointName, timer)
+        public CheckpointModel(string name, TimerModel timer, RaceModel race)
         {
+            Name = name;
+            Race = RaceModel.GetById(race.RaceId);
+            Timer = timer;            
+            SaveToDb();
+        }
+
+        public CheckpointModel(string name, TimerModel timer, RaceModel race, int sortorder)
+        {
+            Name = name;
+            Race = RaceModel.GetById(race.RaceId);
+            Timer = timer; 
             Sortorder = sortorder;
             SaveToDb();
         }
@@ -92,9 +97,7 @@ namespace ITimeU.Models
         private int CreateDbEntity(Entities context)
         {
             Checkpoint checkpoint = new Checkpoint();
-            if (timer != null)
-                checkpoint.TimerID = timer.Id;
-
+            
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
@@ -110,6 +113,8 @@ namespace ITimeU.Models
         {
             checkpoint.Name = Name;
             checkpoint.SortOrder = Sortorder;
+            if (timer != null)
+                checkpoint.TimerID = timer.Id;
             if (Race != null)
                 checkpoint.RaceID = Race.RaceId;
         }

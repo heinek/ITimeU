@@ -32,7 +32,9 @@ namespace ITimeU.Tests.Models
             Given("we have a timer and the time keeper wants to save a runtime", () =>
             {
                 TimerModel timer = new TimerModel();
-                checkpoint = new CheckpointModel("TheRuntimeCheckpoint", timer);
+                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+                race.Save();
+                checkpoint = new CheckpointModel("TheRuntimeCheckpoint", timer, race);
                 checkpoint.Sortorder = 1;
             });
 
