@@ -376,6 +376,20 @@ table th
     background-color: #FFBABA;
 /*    background-image: url('error.png');    */
 }
+.statusmessagearea
+{
+    height: 20px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border: 1px solid;
+    margin: 10px 10px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #4F8A10;
+    background-color: #DFF2BF;    
+}
+
 
 /* MISC  
 ----------------------------------------------------------*/

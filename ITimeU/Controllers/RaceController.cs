@@ -26,8 +26,8 @@ namespace ITimeU.Controllers
             newRace.Name = name;
             newRace.Distance = intDistance;
             newRace.StartDate = Convert.ToDateTime(startDate);
-            RaceModel race = new RaceModel();
-            race.InsertRace(newRace);            
+            RaceModel race = new RaceModel(newRace);
+            race.Save();
             return View("Index");               
         }
 

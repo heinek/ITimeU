@@ -87,7 +87,6 @@
     <Compile Include="Library\FriResImporter.cs" />
     <Compile Include="Library\NameParser.cs" />
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\AddCheckpointModel.cs" />
     <Compile Include="Models\AthleteClassModel.cs" />
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />

@@ -10,6 +10,19 @@
 @{ Html.BeginForm("Create", "Checkpoint", FormMethod.Post); }
 
 <fieldset>
+    @if (ViewBag.CheckpointCreatedSuccessfully)
+    {
+        <div class="statusmessagearea" id="StatusMessage">
+            Checkpoint has been saved successfully!
+        </div>
+    }
+    
+    @if (ViewBag.IsCheckpointEmpty)
+    {
+        <div class="errormessagearea" id="ErrorMessage">
+            Checkpoint name should not be empty.
+        </div>
+    }
     <div class="editor-label">
         @Html.Label("lblRace", "Race")
     </div>
