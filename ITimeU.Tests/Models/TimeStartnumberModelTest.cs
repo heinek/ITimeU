@@ -25,8 +25,10 @@ namespace ITimeU.Tests.Models
         {
             timeMerger = new TimeMergerModel();
             timer = new TimerModel();
-            checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
-            checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
+            var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            race.Save();
+            checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
+            checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             checkpointOrderModel = new CheckpointOrderModel();

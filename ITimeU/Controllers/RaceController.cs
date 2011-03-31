@@ -26,22 +26,9 @@ namespace ITimeU.Controllers
             newRace.Name = name;
             newRace.Distance = intDistance;
             newRace.StartDate = Convert.ToDateTime(startDate);
-            RaceModel race = new RaceModel();
-            race.InsertRace(newRace);
-            //if (IsValidInput(newRace))
-            //{
-            //    ViewBag.Error = false;
-            //    race.InsertRace(newRace);
-            //}
-            //else
-            //{
-            //    ViewBag.Error = true;
-            //    ViewBag.Message = "All fields must not be empty";
-            //}
-            return View("Index");
-
-                               
-                       
+            RaceModel race = new RaceModel(newRace);
+            race.Save();
+            return View("Index");               
         }
 
         private bool IsValidInput(Race checkRace)

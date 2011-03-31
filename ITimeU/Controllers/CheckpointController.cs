@@ -20,6 +20,19 @@ namespace ITimeU.Controllers
             return View(CheckpointModel.getAll());
         }
 
+        public ActionResult Create()
+        {
+            return View("Create", RaceModel.GetRaces());
+        }
+
+        [HttpPost]
+        public ActionResult Create(int raceId, string txtCheckpointName)
+        {
+            CheckpointModel model = new CheckpointModel(txtCheckpointName, raceId); // race with raceId exists in the database already.
+            model.SaveToDb();
+            return RedirectToAction("Create"); // Redirect in order to reset form values.
+        }
+
     }
 }
 

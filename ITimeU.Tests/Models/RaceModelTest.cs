@@ -26,7 +26,7 @@ namespace ITimeU.Tests.Models
         public void TestSetup()
         {            
             ctxDBTest = new Entities();
-            newRace = new RaceModel();
+            newRace = new RaceModel("RaceModelTestRace", new DateTime(2009, 2, 3));
             raceDB = new Race();
 
             raceDB.Name = "TestingRaceModel";
@@ -46,7 +46,8 @@ namespace ITimeU.Tests.Models
                 {
                     racesBefore = ctxDBTest.Races.Count();
                     CheckAndDeletelDuplicateRace(raceDB);
-                    newRace.InsertRace(raceDB);                    
+                    newRace = new RaceModel(raceDB);
+                    newRace.Save();                   
                 });
 
             Then("The new Race should exist in database", () =>
@@ -67,7 +68,8 @@ namespace ITimeU.Tests.Models
             Given("We have inserted a new Race in database", () =>
                 {
                     CheckAndDeletelDuplicateRace(raceDB);
-                    newRace.InsertRace(raceDB);
+                    newRace = new RaceModel(raceDB);
+                    newRace.Save();   
                     var ctxDB = new Entities();
                     id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;
                 });
@@ -99,7 +101,8 @@ namespace ITimeU.Tests.Models
             Given("We have inserted a new Race in database", () =>
             {
                 CheckAndDeletelDuplicateRace(raceDB);
-                newRace.InsertRace(raceDB);
+                newRace = new RaceModel(raceDB);
+                newRace.Save();                
                 var ctxDB = new Entities();
                 id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;
             });
@@ -127,9 +130,9 @@ namespace ITimeU.Tests.Models
 
             Given("We have inserted a new Race in database", () =>
             {
-                
                 CheckAndDeletelDuplicateRace(raceDB);
-                newRace.InsertRace(raceDB);
+                newRace = new RaceModel(raceDB);
+                newRace.Save();   
                 var ctxDB = new Entities();
                 id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;
             });
@@ -156,7 +159,8 @@ namespace ITimeU.Tests.Models
             Given ("We have a Race in database", () =>
                 {
                     CheckAndDeletelDuplicateRace(raceDB);
-                    newRace.InsertRace(raceDB);
+                    newRace = new RaceModel(raceDB);
+                    newRace.Save();   
                     var ctxDB = new Entities();
                     id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;                    
                 });
@@ -279,6 +283,43 @@ namespace ITimeU.Tests.Models
                     ctxDel.SaveChanges();
                 }
             }        
-        }        
+        }
+
+        [TestMethod]
+        public void It_Should_Possible_To_Get_A_List_Of_Races_From_The_Database()
+        {
+            List<RaceModel> races = null;
+
+            Given("we want to get a list of races");
+
+            When("we fetch all races from the database", () =>
+            {
+                races = RaceModel.GetRaces();
+            });
+
+            Then("we should get a list of races", () =>
+            {
+                races.ShouldBeInstanceOfType<List<RaceModel>>();
+            });
+        }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Get_A_List_Of_Races()
+        {
+            List<RaceModel> races = null;
+
+            Given("we want to get a list of races");
+
+            When("we get the list of races", () =>
+            {
+                races = RaceModel.GetRaces();
+            });
+
+            Then("we should get a list of races", () =>
+            {
+                races.ShouldBeInstanceOfType<List<RaceModel>>();
+            });
+        }
+
     }
 }

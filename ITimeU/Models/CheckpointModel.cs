@@ -44,30 +44,48 @@ namespace ITimeU.Models
 
         public int Sortorder { get; set; }
         public int? RaceId { get; set; }
+        public RaceModel Race { get; private set; }
 
         public CheckpointModel(Checkpoint checkpoint)
         {
             Id = checkpoint.CheckpointID;
             Name = checkpoint.Name;
-            if (checkpoint.Timer != null)
-                this.timer = new TimerModel(checkpoint.Timer);
+            if (checkpoint.TimerID != null)
+                this.timer = TimerModel.GetTimerById((int)checkpoint.TimerID);
+
+            Race = RaceModel.GetById(checkpoint.RaceID);
         }
 
-        public CheckpointModel(string checkpointName, TimerModel timer)
+        /// <summary>
+        /// Creates a CheckpointModel.
+        /// </summary>
+        /// <param name="name">The name of the checkpoint.</param>
+        /// <param name="raceId">The identifier of the race to connect this checkpoint to.</param>
+        public CheckpointModel(string name, int raceId)
         {
-            Name = checkpointName;
-            Timer = timer;
+            Name = name;
+            Race = RaceModel.GetById(raceId);
             SaveToDb();
         }
 
-        public CheckpointModel(string checkpointName, TimerModel timer, int sortorder)
-            : this(checkpointName, timer)
+        public CheckpointModel(string name, TimerModel timer, RaceModel race)
         {
+            Name = name;
+            Race = RaceModel.GetById(race.RaceId);
+            Timer = timer;            
+            SaveToDb();
+        }
+
+        public CheckpointModel(string name, TimerModel timer, RaceModel race, int sortorder)
+        {
+            Name = name;
+            Race = RaceModel.GetById(race.RaceId);
+            Timer = timer; 
             Sortorder = sortorder;
             SaveToDb();
         }
 
-        private void SaveToDb()
+        public void SaveToDb()
         {
             var context = new Entities();
 
@@ -80,8 +98,7 @@ namespace ITimeU.Models
         private int CreateDbEntity(Entities context)
         {
             Checkpoint checkpoint = new Checkpoint();
-            checkpoint.TimerID = timer.Id;
-            checkpoint.SortOrder = Sortorder;
+            
             checkpoint.RaceID = RaceId;
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
@@ -90,16 +107,23 @@ namespace ITimeU.Models
             return checkpoint.CheckpointID;
         }
 
+        /// <summary>
+        /// Updates a checkpoint database entity based on the properties of this model.
+        /// </summary>
+        /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
-            checkpoint.Name = Name;
+            checkpoint.Name = Name;            
             checkpoint.SortOrder = Sortorder;
+            if (timer != null)
+                checkpoint.TimerID = timer.Id;
+            if (Race != null)
+                checkpoint.RaceID = Race.RaceId;
         }
 
         private void updateDbEntry(Entities context)
         {
             Checkpoint checkpoint = context.Checkpoints.Single(tmr => tmr.CheckpointID == Id);
-            checkpoint.SortOrder = Sortorder;
             updateDbEntry(checkpoint);
             context.SaveChanges();
         }

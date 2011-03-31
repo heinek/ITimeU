@@ -9,9 +9,9 @@ namespace ITimeU.Models
         public int RaceId { get; set; }
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
-        public int Distance { get; set; }
+        public int? Distance { get; set; }
 
-        public RaceModel()
+        private RaceModel()
         {
 
         }
@@ -22,6 +22,14 @@ namespace ITimeU.Models
             this.StartDate = startDate;
         }
 
+        public RaceModel(Race raceDb)
+        {
+            RaceId = raceDb.RaceID;
+            Name = raceDb.Name;
+            StartDate = raceDb.StartDate;
+            Distance = raceDb.Distance;
+        }
+
         public bool Save()
         {
             using (var context = new Entities())
@@ -29,6 +37,7 @@ namespace ITimeU.Models
                 var race = new Race();
                 race.Name = Name;
                 race.StartDate = StartDate;
+                race.Distance = Distance;
                 context.Races.AddObject(race);
                 try
                 {
@@ -57,17 +66,17 @@ namespace ITimeU.Models
             }
         }
 
-        public void InsertRace(Race races)
-        {
+        //public void InsertRace(Race races)
+        //{
 
-            using (var ctxDB = new Entities())
-            {
-                races.IsDeleted = false;
-                ctxDB.Races.AddObject(races);
-                ctxDB.SaveChanges();
-            }
+        //    using (var ctxDB = new Entities())
+        //    {                                
+        //        races.IsDeleted = false;
+        //        ctxDB.Races.AddObject(races);
+        //        ctxDB.SaveChanges();
+        //    }
 
-        }
+        //}
 
         public void UpdateRaceName(int id, string name)
         {
@@ -109,6 +118,25 @@ namespace ITimeU.Models
                 select = ctxDB.Races.Where(race => race.RaceID == id).Single();
             }
             return select;
+        }
+
+        public static RaceModel GetById(int idToGet)
+        {
+            var entities = new Entities();
+            try
+            {
+                return TryToGetById(idToGet, entities);
+            }
+            catch (InvalidOperationException)
+            {
+                throw new ModelNotFoundException(typeof(RaceModel).Name + " with ID " + idToGet + " not found in database.");
+            }
+        }
+
+        private static RaceModel TryToGetById(int idToGet, Entities entities)
+        {
+            Race raceDb = entities.Races.Single(temp => temp.RaceID == idToGet);
+            return new RaceModel(raceDb);
         }
 
         public List<AthleteModel> GetAthletes()
