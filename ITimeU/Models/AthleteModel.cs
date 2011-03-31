@@ -9,13 +9,24 @@ namespace ITimeU.Models
     public class AthleteModel
     {
         private const int EMPTY_ID = -1;
-        public int Id { get; private set; }
-        public string FirstName { get; private set; }
-        public string LastName { get; private set; }
-        public int? Birthday { get; private set; }
-        public ClubModel Club { get; private set; }
-        public AthleteClassModel AthleteClass { get; private set; }
-        public int? StartNumber { get; private set; }
+        public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        private string fullname;
+        public string FullName 
+        { 
+            get{
+                return FirstName + " " + LastName;
+            }
+            private set
+            {
+                fullname = value;
+            }
+        }
+        public int? Birthday { get; set; }
+        public ClubModel Club { get; set; }
+        public AthleteClassModel AthleteClass { get; set; }
+        public int? StartNumber { get; set; }
 
         private bool dbEntryCreated
         {
@@ -62,7 +73,7 @@ namespace ITimeU.Models
                 athleteModels.Add(athleteModel);
             }
 
-            return athleteModels;
+            return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
         }
         
         public AthleteModel(string firstName, string lastName)
@@ -91,7 +102,7 @@ namespace ITimeU.Models
                 StartNumber = athleteDb.Startnumber;
         }
 
-        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber)
+        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber, int id=EMPTY_ID)
         {
             SetDefaultId();
             FirstName = firstName;
@@ -100,6 +111,11 @@ namespace ITimeU.Models
             Club = club;
             AthleteClass = athleteClass;
             StartNumber = startNumber;
+        }
+
+        public AthleteModel()
+        {
+            // TODO: Complete member initialization
         }
 
         /// <summary>
@@ -121,7 +137,7 @@ namespace ITimeU.Models
         {
             Athlete athleteDb = new Athlete();
             athleteDb.FirstName = athlete.FirstName;
-            athleteDb.LastName = athleteDb.LastName;
+            athleteDb.LastName = athlete.LastName;
             return athleteDb;
         }
 
@@ -190,5 +206,28 @@ namespace ITimeU.Models
             SetDefaultId();
         }
 
+
+        public void ConnectToRace(int raceId)
+        {
+            Entities context = new Entities();
+            Athlete athleteDb = context.Athletes.Single(temp => temp.ID == Id);
+            RaceAthlete raceAthlete = new RaceAthlete();
+            raceAthlete.AthleteId = Id;
+            raceAthlete.RaceId = raceId;
+           
+            if (athleteDb.Startnumber.HasValue) raceAthlete.Startnumber = athleteDb.Startnumber.Value;
+            context.RaceAthletes.AddObject(raceAthlete);
+            context.SaveChanges();
+        }
+
+        public void RemoveFromRace(int raceid)
+        {
+            using (var ctx = new Entities())
+            {
+                var athleteToRemove = ctx.RaceAthletes.Where(ra => ra.AthleteId == Id && ra.RaceId == raceid).SingleOrDefault();
+                ctx.RaceAthletes.DeleteObject(athleteToRemove);
+                ctx.SaveChanges();
+            }
+        }
     }
 }

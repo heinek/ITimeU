@@ -87,6 +87,18 @@
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_1_7</ClassName>
+      <DisplayName>Screen 1</DisplayName>
+      <FileName>AssignAthletes.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>242</X>
+        <Y>6</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
   </Screens>
   <Connections />
   <BrandingText>Microsoft SketchFlow Prototype</BrandingText>
@@ -135,7 +147,7 @@
     <Zoom>1</Zoom>
     <Center>
       <X>241.7374242424242</X>
-      <Y>34.406795774025795</Y>
+      <Y>6.0564181581130825</Y>
     </Center>
   </ViewState>
 </Data>

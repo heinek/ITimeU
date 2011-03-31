@@ -145,6 +145,55 @@ namespace ITimeU.Tests.Models
             Then("an exception should have been thrown");
         }
 
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Retrieve_A_List_Of_Athletes_From_DB()
+        {
+            var athletes = new List<AthleteModel>();
+            Given("athletes is saved to the database");
 
+            When("we want to retrieve alle the athletes from database", () =>
+            {
+                athletes = AthleteModel.GetAll();
+            });
+
+            Then("the list should not be null", () => athletes.ShouldNotBeNull());
+        }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Connect_An_Athlete_To_A_Race()
+        {
+            RaceModel race = null;
+            AthleteModel athlete = null;
+            Given("we have a race and a athlete", () => {
+                 race = new RaceModel("testrace", DateTime.Today);
+                 race.Save();
+                 athlete = new AthleteModel("Test", "Testesen");
+                 athlete.SaveToDb();
+            });
+
+            When("we want to connect a athlete to that race", () =>
+            {
+                athlete.ConnectToRace(race.RaceId);
+            });
+
+            Then("the list of athletes for the race should be 1", () =>
+            {
+                race.GetAthletes().Count().ShouldBe(1);
+            });
+        }
+
+        //[TestMethod]
+        //public void It_Should_Be_Possible_To_Retrieve_A_List_Of_Athletes_Connected_To_A_Race()
+        //{
+        //    var athletes = new List<AthleteModel>();
+        //    Given("we have a race athletes is connected to a race");
+
+        //    When("we want to retrieve alle the athletes connected to a race", () =>
+        //    {
+        //        athletes = AthleteModel.GetAthletesForRace();
+        //    });
+
+        //    Then("the list should not be null", () => athletes.ShouldNotBeNull());
+        //}
     }
 }

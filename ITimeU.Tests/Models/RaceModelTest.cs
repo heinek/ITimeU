@@ -175,6 +175,86 @@ namespace ITimeU.Tests.Models
                 });
         }
 
+        [TestMethod]
+        public void We_Should_Get_All_Athletes_Connected_To_A_Race()
+        {
+            RaceModel race = null;
+            AthleteModel athlete = null;
+            int athletesConnectedToRace = 0;
+
+            Given("we have a race with athletes", () =>
+            {
+                race = new RaceModel("Testrace", DateTime.Today);
+                race.Save();
+                athlete = new AthleteModel("Testing", "Tester");
+                athlete.SaveToDb();
+                athlete.ConnectToRace(race.RaceId);
+            });
+
+            When("we want to get all the athletes connected to that race", () =>
+                {
+                    athletesConnectedToRace = race.GetAthletes().Count;
+                });
+            Then("the number of athletes should be 1", () =>
+            {
+                athletesConnectedToRace.ShouldBe(1);
+            });
+        }
+
+        [TestMethod]
+        public void We_Should_Get_All_Athletes_Not_Connected_To_A_Race()
+        {
+            RaceModel race = null;
+            AthleteModel athlete = null;
+            int athletesNotConnectedToRace = 0;
+
+            Given("we have a race with athletes", () =>
+            {
+                race = new RaceModel("Testrace", DateTime.Today);
+                race.Save();
+            });
+
+            When("we want to add a new athlete", () =>
+            {
+                athlete = new AthleteModel("Testing", "Tester");
+                athlete.SaveToDb();
+                athletesNotConnectedToRace = race.GetAthletesNotConnected().Count;
+                athlete.ConnectToRace(race.RaceId);
+            });
+
+            Then("the number of athletes not connected to the race should be reduced by 1", () =>
+            {
+                race.GetAthletesNotConnected().Count.ShouldBe(athletesNotConnectedToRace - 1);
+            });
+        }
+
+        [TestMethod]
+        public void We_Should_Remove_Athlete_From_Race()
+        {
+            RaceModel race = null;
+            AthleteModel athlete = null;
+            int athletesConnectedToRace = 0;
+            Given("we have a race and athletes connected to the race", () =>
+            {
+                race = new RaceModel("Testrace", DateTime.Today);
+                race.Save();
+                athlete = new AthleteModel("Test", "Tester");
+                athlete.SaveToDb();
+                athlete.ConnectToRace(race.RaceId);
+                athletesConnectedToRace = race.GetAthletes().Count;
+            });
+
+            When("we want to remove an athlete from the race", () =>
+            {
+                athlete.RemoveFromRace(race.RaceId);
+            });
+
+            Then("the list of athletes should be reduced with 1", () =>
+            {
+                race.GetAthletes().Count.ShouldBe(athletesConnectedToRace - 1);
+            });
+        }
+
         private void CheckAndDeletelDuplicateRace(Race existingRace)
         {
             using (var ctxDel = new Entities())

@@ -8,10 +8,10 @@ namespace ITimeU.Models
     [Serializable]
     public class CheckpointOrderModel
     {
-        public int ID { get; set; }
-        public int CheckpointID { get; set; }
-        public int StartingNumber { get; set; }
-        public int OrderNumber { get; set; }
+        public int ID { get; private set; }
+        public int CheckpointID { get; private set; }
+        public int StartingNumber { get; private set; }
+        public int OrderNumber { get; private set; }
         public Dictionary<int, int> CheckpointOrderDic { get; set; }
 
         public CheckpointOrderModel()
@@ -46,7 +46,7 @@ namespace ITimeU.Models
             var checkpointOrder = CreateCheckpointOrder(checkpointId, startingNumber, entities);
             SaveCheckpointOrder(checkpointOrder, entities);
             AddToCheckpointOrderDic(checkpointId, entities);
-            ID = checkpointOrder.ID;
+
             return checkpointOrder.ID;
         }
 
@@ -87,7 +87,6 @@ namespace ITimeU.Models
         {
             entities.CheckpointOrders.AddObject(checkpointOrder);
             entities.SaveChanges();
-            
         }
 
         private void AddToCheckpointOrderDic(int checkpointId, Entities entities)
@@ -315,11 +314,21 @@ namespace ITimeU.Models
             return new SelectList(new Entities().Checkpoints.ToList(), "CheckpointID", "Name");
         }
 
+<<<<<<< HEAD
+        //public IEnumerable<SelectListItem> CheckpointOrders()
+        //{
+        //    using (var ctx = new Entities())
+        //    {
+        //        return new SelectList(ctx.CheckpointOrders.ToList(), "ID", "OrderNumber");
+        //    }
+        //}
+=======
         public IEnumerable<SelectListItem> CheckpointOrders()
         {
             return new SelectList(new Entities().CheckpointOrders.ToList(), "ID", "OrderNumber");
         }
 
+>>>>>>> 10b91cf7562ef034030768a548f2ffad7a267628
         /// <summary>
         /// Deletes the checkpoint order.
         /// </summary>

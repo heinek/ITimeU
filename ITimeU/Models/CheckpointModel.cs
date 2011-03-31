@@ -43,6 +43,7 @@ namespace ITimeU.Models
         }
 
         public int Sortorder { get; set; }
+        public int? RaceId { get; set; }
 
         public CheckpointModel(Checkpoint checkpoint)
         {
@@ -81,6 +82,7 @@ namespace ITimeU.Models
             Checkpoint checkpoint = new Checkpoint();
             checkpoint.TimerID = timer.Id;
             checkpoint.SortOrder = Sortorder;
+            checkpoint.RaceID = RaceId;
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
@@ -154,6 +156,18 @@ namespace ITimeU.Models
         public override string ToString()
         {
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
+        }
+
+        public void Update()
+        {
+            using (var context = new Entities())
+            {
+                var checkpoint = context.Checkpoints.Where(cp => cp.CheckpointID == Id && !cp.IsDeleted).SingleOrDefault();
+                checkpoint.RaceID = RaceId;
+                checkpoint.Name = Name;
+                checkpoint.SortOrder = Sortorder;
+                context.SaveChanges();
+            }
         }
     }
 }

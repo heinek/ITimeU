@@ -11,10 +11,16 @@
           <EntitySet Name="Checkpoint" EntityType="ITimeUModel.Store.Checkpoint" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CheckpointOrder" EntityType="ITimeUModel.Store.CheckpointOrder" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Club" EntityType="ITimeUModel.Store.Club" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Participant" EntityType="ITimeUModel.Store.Participant" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Race" EntityType="ITimeUModel.Store.Race" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RaceAthlete" EntityType="ITimeUModel.Store.RaceAthlete" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="RaceIntermediate" EntityType="ITimeUModel.Store.RaceIntermediate" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Runtime" EntityType="ITimeUModel.Store.Runtime" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Timer" EntityType="ITimeUModel.Store.Timer" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Athlete_AthleteClass" Association="ITimeUModel.Store.FK_Athlete_AthleteClass">
+            <End Role="AthleteClass" EntitySet="AthleteClass" />
+            <End Role="Athlete" EntitySet="Athlete" />
+          </AssociationSet>
           <AssociationSet Name="FK_Athlete_Club" Association="ITimeUModel.Store.FK_Athlete_Club">
             <End Role="Club" EntitySet="Club" />
             <End Role="Athlete" EntitySet="Athlete" />
@@ -22,6 +28,18 @@
           <AssociationSet Name="FK_Checkpoint_Timer" Association="ITimeUModel.Store.FK_Checkpoint_Timer">
             <End Role="Timer" EntitySet="Timer" />
             <End Role="Checkpoint" EntitySet="Checkpoint" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceAthlete_Athlete" Association="ITimeUModel.Store.FK_RaceAthlete_Athlete">
+            <End Role="Athlete" EntitySet="Athlete" />
+            <End Role="RaceAthlete" EntitySet="RaceAthlete" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceAthlete_Race" Association="ITimeUModel.Store.FK_RaceAthlete_Race">
+            <End Role="Race" EntitySet="Race" />
+            <End Role="RaceAthlete" EntitySet="RaceAthlete" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceIntermediate_Athlete" Association="ITimeUModel.Store.FK_RaceIntermediate_Athlete">
+            <End Role="Athlete" EntitySet="Athlete" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediate" />
           </AssociationSet>
           <AssociationSet Name="FK_RaceIntermediate_Checkpoint" Association="ITimeUModel.Store.FK_RaceIntermediate_Checkpoint">
             <End Role="Checkpoint" EntitySet="Checkpoint" />
@@ -98,6 +116,23 @@
           <Property Name="ContactPhone" Type="nvarchar" MaxLength="100" />
           <Property Name="ContactEmail" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="Participant">
+          <Key>
+            <PropertyRef Name="ParticipantID" />
+          </Key>
+          <Property Name="ParticipantID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="SurName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PostalAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="PostalCode" Type="nvarchar" MaxLength="4" />
+          <Property Name="PostalPlace" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Club" Type="int" />
+          <Property Name="Birthday" Type="datetime" />
+          <Property Name="Gender" Type="char" MaxLength="1" />
+          <Property Name="IsDeleted" Type="bit" />
+        </EntityType>
         <EntityType Name="Race">
           <Key>
             <PropertyRef Name="RaceID" />
@@ -108,6 +143,15 @@
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="Distance" Type="int" />
         </EntityType>
+        <EntityType Name="RaceAthlete">
+          <Key>
+            <PropertyRef Name="RaceId" />
+            <PropertyRef Name="AthleteId" />
+          </Key>
+          <Property Name="RaceId" Type="int" Nullable="false" />
+          <Property Name="AthleteId" Type="int" Nullable="false" />
+          <Property Name="Startnumber" Type="int" />
+        </EntityType>
         <EntityType Name="RaceIntermediate">
           <Key>
             <PropertyRef Name="CheckpointID" />
@@ -117,6 +161,7 @@
           <Property Name="CheckpointID" Type="int" Nullable="false" />
           <Property Name="CheckpointOrderID" Type="int" Nullable="false" />
           <Property Name="RuntimeId" Type="int" Nullable="false" />
+          <Property Name="AthleteId" Type="int" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Runtime">
@@ -138,6 +183,18 @@
           <Property Name="EndTime" Type="datetime" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Athlete_AthleteClass">
+          <End Role="AthleteClass" Type="ITimeUModel.Store.AthleteClass" Multiplicity="0..1" />
+          <End Role="Athlete" Type="ITimeUModel.Store.Athlete" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AthleteClass">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Athlete">
+              <PropertyRef Name="ClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Athlete_Club">
           <End Role="Club" Type="ITimeUModel.Store.Club" Multiplicity="0..1" />
           <End Role="Athlete" Type="ITimeUModel.Store.Athlete" Multiplicity="*" />
@@ -159,6 +216,42 @@
             </Principal>
             <Dependent Role="Checkpoint">
               <PropertyRef Name="TimerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceAthlete_Athlete">
+          <End Role="Athlete" Type="ITimeUModel.Store.Athlete" Multiplicity="1" />
+          <End Role="RaceAthlete" Type="ITimeUModel.Store.RaceAthlete" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Athlete">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RaceAthlete">
+              <PropertyRef Name="AthleteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceAthlete_Race">
+          <End Role="Race" Type="ITimeUModel.Store.Race" Multiplicity="1" />
+          <End Role="RaceAthlete" Type="ITimeUModel.Store.RaceAthlete" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceID" />
+            </Principal>
+            <Dependent Role="RaceAthlete">
+              <PropertyRef Name="RaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceIntermediate_Athlete">
+          <End Role="Athlete" Type="ITimeUModel.Store.Athlete" Multiplicity="0..1" />
+          <End Role="RaceIntermediate" Type="ITimeUModel.Store.RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Athlete">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="AthleteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -252,6 +345,20 @@
             <End Role="Runtime" EntitySet="Runtimes" />
             <End Role="RaceIntermediate" EntitySet="RaceIntermediates" />
           </AssociationSet>
+          <EntitySet Name="Participants" EntityType="ITimeUModel.Participant" />
+          <EntitySet Name="RaceAthletes" EntityType="ITimeUModel.RaceAthlete" />
+          <AssociationSet Name="FK_RaceAthlete_Athlete" Association="ITimeUModel.FK_RaceAthlete_Athlete">
+            <End Role="Athlete" EntitySet="Athletes" />
+            <End Role="RaceAthlete" EntitySet="RaceAthletes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceAthlete_Race" Association="ITimeUModel.FK_RaceAthlete_Race">
+            <End Role="Race" EntitySet="Races" />
+            <End Role="RaceAthlete" EntitySet="RaceAthletes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RaceIntermediate_Athlete" Association="ITimeUModel.FK_RaceIntermediate_Athlete">
+            <End Role="Athlete" EntitySet="Athletes" />
+            <End Role="RaceIntermediate" EntitySet="RaceIntermediates" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Athlete">
           <Key>
@@ -273,6 +380,8 @@
           <Property Type="Boolean" Name="IsDeleted" />
           <NavigationProperty Name="AthleteClass" Relationship="ITimeUModel.FK_Athlete_AthleteClass" FromRole="Athlete" ToRole="AthleteClass" />
           <NavigationProperty Name="Club" Relationship="ITimeUModel.FK_Athlete_Club" FromRole="Athlete" ToRole="Club" />
+          <NavigationProperty Name="RaceAthletes" Relationship="ITimeUModel.FK_RaceAthlete_Athlete" FromRole="Athlete" ToRole="RaceAthlete" />
+          <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_Athlete" FromRole="Athlete" ToRole="RaceIntermediate" />
         </EntityType>
         <EntityType Name="AthleteClass">
           <Key>
@@ -328,6 +437,7 @@
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <NavigationProperty Name="Timers" Relationship="ITimeUModel.FK_Timer_Race" FromRole="Race" ToRole="Timer" />
           <Property Type="Int32" Name="Distance" />
+          <NavigationProperty Name="RaceAthletes" Relationship="ITimeUModel.FK_RaceAthlete_Race" FromRole="Race" ToRole="RaceAthlete" />
         </EntityType>
         <EntityType Name="RaceIntermediate">
           <Key>
@@ -342,6 +452,8 @@
           <NavigationProperty Name="Checkpoint" Relationship="ITimeUModel.FK_RaceIntermediate_Checkpoint" FromRole="RaceIntermediate" ToRole="Checkpoint" />
           <NavigationProperty Name="CheckpointOrder" Relationship="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" FromRole="RaceIntermediate" ToRole="CheckpointOrder" />
           <NavigationProperty Name="Runtime" Relationship="ITimeUModel.FK_RaceIntermediate_Runtime" FromRole="RaceIntermediate" ToRole="Runtime" />
+          <Property Type="Int32" Name="AthleteId" />
+          <NavigationProperty Name="Athlete" Relationship="ITimeUModel.FK_RaceIntermediate_Athlete" FromRole="RaceIntermediate" ToRole="Athlete" />
         </EntityType>
         <EntityType Name="Runtime">
           <Key>
@@ -449,6 +561,70 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Participant">
+          <Key>
+            <PropertyRef Name="ParticipantID" />
+          </Key>
+          <Property Type="Int32" Name="ParticipantID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FirstName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SurName" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalAddress" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalCode" MaxLength="4" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="PostalPlace" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Phone" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Email" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="Club" />
+          <Property Type="DateTime" Name="Birthday" />
+          <Property Type="String" Name="Gender" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Type="Boolean" Name="IsDeleted" />
+        </EntityType>
+        <EntityType Name="RaceAthlete">
+          <Key>
+            <PropertyRef Name="RaceId" />
+            <PropertyRef Name="AthleteId" />
+          </Key>
+          <Property Type="Int32" Name="RaceId" Nullable="false" />
+          <Property Type="Int32" Name="AthleteId" Nullable="false" />
+          <Property Type="Int32" Name="Startnumber" />
+          <NavigationProperty Name="Athlete" Relationship="ITimeUModel.FK_RaceAthlete_Athlete" FromRole="RaceAthlete" ToRole="Athlete" />
+          <NavigationProperty Name="Race" Relationship="ITimeUModel.FK_RaceAthlete_Race" FromRole="RaceAthlete" ToRole="Race" />
+        </EntityType>
+        <Association Name="FK_RaceAthlete_Athlete">
+          <End Type="ITimeUModel.Athlete" Role="Athlete" Multiplicity="1" />
+          <End Type="ITimeUModel.RaceAthlete" Role="RaceAthlete" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Athlete">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RaceAthlete">
+              <PropertyRef Name="AthleteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceAthlete_Race">
+          <End Type="ITimeUModel.Race" Role="Race" Multiplicity="1" />
+          <End Type="ITimeUModel.RaceAthlete" Role="RaceAthlete" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Race">
+              <PropertyRef Name="RaceID" />
+            </Principal>
+            <Dependent Role="RaceAthlete">
+              <PropertyRef Name="RaceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RaceIntermediate_Athlete">
+          <End Type="ITimeUModel.Athlete" Role="Athlete" Multiplicity="0..1" />
+          <End Type="ITimeUModel.RaceIntermediate" Role="RaceIntermediate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Athlete">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RaceIntermediate">
+              <PropertyRef Name="AthleteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
    </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -532,6 +708,7 @@
           <EntitySetMapping Name="RaceIntermediates">
             <EntityTypeMapping TypeName="ITimeUModel.RaceIntermediate">
               <MappingFragment StoreEntitySet="RaceIntermediate">
+                <ScalarProperty Name="AthleteId" ColumnName="AthleteId" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="RuntimeId" ColumnName="RuntimeId" />
                 <ScalarProperty Name="CheckpointOrderID" ColumnName="CheckpointOrderID" />
@@ -557,6 +734,33 @@
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="RaceID" ColumnName="RaceID" />
                 <ScalarProperty Name="TimerID" ColumnName="TimerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Participants">
+            <EntityTypeMapping TypeName="ITimeUModel.Participant">
+              <MappingFragment StoreEntitySet="Participant">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Club" ColumnName="Club" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="PostalPlace" ColumnName="PostalPlace" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="PostalAddress" ColumnName="PostalAddress" />
+                <ScalarProperty Name="SurName" ColumnName="SurName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="ParticipantID" ColumnName="ParticipantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RaceAthletes">
+            <EntityTypeMapping TypeName="ITimeUModel.RaceAthlete">
+              <MappingFragment StoreEntitySet="RaceAthlete">
+                <ScalarProperty Name="Startnumber" ColumnName="Startnumber" />
+                <ScalarProperty Name="AthleteId" ColumnName="AthleteId" />
+                <ScalarProperty Name="RaceId" ColumnName="RaceId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -592,29 +796,28 @@
         <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="3" PointY="1" Height="2.3648893229166674" />
         <AssociationConnector Association="ITimeUModel.FK_Athlete_AthleteClass" >
           <ConnectorPoint PointX="9.25" PointY="7.047841796874998" />
-          <ConnectorPoint PointX="9.3072891666666653" PointY="7.0478417968749971" />
-          <ConnectorPoint PointX="9.4739558333333331" PointY="7.047841796874998" />
+          <ConnectorPoint PointX="9.3268197916666669" PointY="7.0478417968749971" />
+          <ConnectorPoint PointX="9.4934864583333347" PointY="7.047841796874998" />
           <ConnectorPoint PointX="10" PointY="7.047841796874998" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Athlete_Club" >
-          <ConnectorPoint PointX="9.25" PointY="10.134095552083331" />
-          <ConnectorPoint PointX="10.75" PointY="10.134095552083331" />
-          <ConnectorPoint PointX="10.75" PointY="9.0956022135416674" />
+          <ConnectorPoint PointX="9.25" PointY="9.2401025390625016" />
+          <ConnectorPoint PointX="10" PointY="9.2401025390625016" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Checkpoint_Timer" >
           <ConnectorPoint PointX="4.5" PointY="2.1824446614583337" />
           <ConnectorPoint PointX="5.25" PointY="2.1824446614583337" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Checkpoint" >
-          <ConnectorPoint PointX="6.75" PointY="2.3074446614583337" />
-          <ConnectorPoint PointX="7.875" PointY="2.3074446614583337" />
+          <ConnectorPoint PointX="6.75" PointY="2.3410953776041694" />
+          <ConnectorPoint PointX="7.875" PointY="2.3410953776041694" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" >
           <ConnectorPoint PointX="6.75" PointY="5.78125" />
-          <ConnectorPoint PointX="9.3072891666666653" PointY="5.7812499999999991" />
-          <ConnectorPoint PointX="9.4739558333333331" PointY="5.78125" />
-          <ConnectorPoint PointX="9.53125" PointY="5.78125" />
-          <ConnectorPoint PointX="9.53125" PointY="3.4898893229166674" />
+          <ConnectorPoint PointX="9.3268197916666669" PointY="5.7812499999999991" />
+          <ConnectorPoint PointX="9.4934864583333347" PointY="5.78125" />
+          <ConnectorPoint PointX="9.57031125" PointY="5.78125" />
+          <ConnectorPoint PointX="9.57031125" PointY="3.8744921875" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Timer_Race" >
           <ConnectorPoint PointX="2.25" PointY="2.4324446614583337" />
@@ -622,8 +825,26 @@
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Runtime" >
           <ConnectorPoint PointX="6.75" PointY="8.71875" />
-          <ConnectorPoint PointX="9.3906225" PointY="8.71875" />
-          <ConnectorPoint PointX="9.3906225" PointY="3.4898893229166674" />
+          <ConnectorPoint PointX="9.410153125" PointY="8.71875" />
+          <ConnectorPoint PointX="9.410153125" PointY="3.8744921875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ITimeUModel.Participant" Width="1.5" PointX="0.75" PointY="4.75" Height="3.3263964843750031" />
+        <EntityTypeShape EntityType="ITimeUModel.RaceAthlete" Width="1.5" PointX="2.75" PointY="4.75" Height="1.5956835937500031" />
+        <AssociationConnector Association="ITimeUModel.FK_RaceAthlete_Athlete" >
+          <ConnectorPoint PointX="10" PointY="5.15625" />
+          <ConnectorPoint PointX="9.6536445833333335" PointY="5.1562499999999991" />
+          <ConnectorPoint PointX="9.3268197916666669" PointY="5.15625" />
+          <ConnectorPoint PointX="4.25" PointY="5.15625" />
+        </AssociationConnector>
+        <AssociationConnector Association="ITimeUModel.FK_RaceAthlete_Race" >
+          <ConnectorPoint PointX="2.25" PointY="3.6461393229166665" />
+          <ConnectorPoint PointX="2.84375" PointY="3.6461393229166665" />
+          <ConnectorPoint PointX="2.84375" PointY="4.75" />
+        </AssociationConnector>
+        <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Athlete" >
+          <ConnectorPoint PointX="10.75" PointY="5" />
+          <ConnectorPoint PointX="10.75" PointY="2.49974609375" />
+          <ConnectorPoint PointX="9.75" PointY="2.49974609375" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

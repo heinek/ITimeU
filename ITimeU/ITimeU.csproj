@@ -71,6 +71,7 @@
     <Compile Include="Controllers\MockController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RaceAthleteController.cs" />
     <Compile Include="Controllers\ResultsController.cs" />
     <Compile Include="Controllers\RaceController.cs" />
     <Compile Include="Controllers\RuntimeController.cs" />
@@ -98,6 +99,8 @@
     </Compile>
     <Compile Include="Models\AthleteModel.cs" />
     <Compile Include="Models\ModelNotFoundException.cs" />
+    <Compile Include="Models\RaceAthleteModel.cs" />
+    <Compile Include="Models\RaceAthleteViewModel.cs" />
     <Compile Include="Models\RaceIntermediateModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
     <Compile Include="Models\RuntimeModel.cs" />
@@ -141,6 +144,7 @@
     <Content Include="Content\images\upOver.png" />
     <Content Include="Content\images\upSmall.png" />
     <Content Include="Content\jquery-ui-1.8.10.custom.css" />
+    <Content Include="Content\print.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\CheckpointOrderHandler.js" />
     <Content Include="Content\qunit.css" />
@@ -253,6 +257,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Race\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\RaceAthlete\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\Print.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
