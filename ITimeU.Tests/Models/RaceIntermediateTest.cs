@@ -38,7 +38,7 @@ namespace ITimeU.Tests.Models
                 race = new RaceModel("TestRace", DateTime.Today);
                 race.Save();
                 athlete.ConnectToRace(race.RaceId);
-                timer = CreateNewTimerModelWithCheckpoints(race.RaceId);
+                timer = CreateNewTimerModelWithCheckpoints(race);
                 checkpointOrder = new CheckpointOrderModel();
                 checkpointOrder.AddCheckpointOrderDB(timer.CurrentCheckpointId, 1);
                 timer.Start();
@@ -63,16 +63,12 @@ namespace ITimeU.Tests.Models
         /// Creates the new timer model with checkpoints.
         /// </summary>
         /// <returns></returns>
-        private TimerModel CreateNewTimerModelWithCheckpoints(int raceid)
+        private TimerModel CreateNewTimerModelWithCheckpoints(RaceModel race)
         {
             var timer = new TimerModel();
-            timer.RaceID = raceid;
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, 1);
-            checkpoint1.RaceId = raceid;
-            checkpoint1.Update();
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, 2);
-            checkpoint2.RaceId = raceid;
-            checkpoint2.Update();
+            timer.RaceID = race.RaceId;
+            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
+            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             return timer;

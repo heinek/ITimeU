@@ -11,7 +11,7 @@ namespace ITimeU.Models
         public DateTime StartDate { get; set; }
         public int? Distance { get; set; }
 
-        private RaceModel()
+        public RaceModel()
         {
 
         }
@@ -175,8 +175,8 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var athletesQuery = from a in ctx.Athletes
-                            where !(from ra in ctx.RaceAthletes select ra.AthleteId).Contains(a.ID)         
-                                    select a; 
+                                    where !(from ra in ctx.RaceAthletes select ra.AthleteId).Contains(a.ID)
+                                    select a;
 
                 foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false))
                 {
@@ -203,20 +203,22 @@ namespace ITimeU.Models
             return athletes;
         }
 
-        internal static RaceModel GetById(int raceid)
+        public bool HasTimer()
         {
-            using (var entities = new Entities())
+            using (var context = new Entities())
             {
-                var race = entities.Races.Where(r => r.RaceID == raceid).Single();
-                return new RaceModel()
-                {
-                    RaceId = race.RaceID,
-                    Name = race.Name,
-                    Distance = race.Distance.HasValue ? race.Distance.Value : 0,
-                    StartDate = race.StartDate
-                };
+                if (context.Races.Where(race => race.RaceID == RaceId).Single().Timers.Count > 0)
+                    return true;
+                return false;
             }
         }
 
+        public int GetTimerId()
+        {
+            using (var context = new Entities())
+            {
+                return context.Races.Where(race => race.RaceID == RaceId).Single().Timers.First().TimerID;
+            }
+        }
     }
 }

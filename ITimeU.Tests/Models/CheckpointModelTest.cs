@@ -147,6 +147,7 @@ namespace ITimeU.Tests.Models
             var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+            timer.SaveToDb();
             return timer;
         }
 
