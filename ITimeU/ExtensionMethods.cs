@@ -92,6 +92,48 @@ namespace ITimeU
             return listboxlist.ToString();
         }
 
+        public static string ToListboxvalues(this List<AthleteModel> lstAthletes)
+        {
+            StringBuilder listboxlist = new StringBuilder();
+            foreach (var athlete in lstAthletes)
+            {
+                using (var context = new Entities())
+                {
+                    listboxlist.Append(string.Format("<option value=\"{0}\">{1} {2}</option>", athlete.Id, athlete.FirstName, athlete.LastName));
+                }
+            }
+            return listboxlist.ToString();
+        }
+
+        public static string ToTable(this List<RaceIntermediateModel> lstRaceintermediates)
+        {
+            var sortedList = lstRaceintermediates.OrderBy(raceintermediate => raceintermediate.RuntimeModel.Runtime);
+            StringBuilder table = new StringBuilder();
+            table.Append("<table><th>Plassering</th><th>Startnummer</th><th>Navn</th><th>Klubb</th><th>Tid</th>");
+            int rank = 1;
+            foreach (var raceintermediate in sortedList)
+            {
+                using (var context = new Entities())
+                {
+                    table.Append(string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>", 
+                        rank,
+                        context.CheckpointOrders.
+                        Where(checkpointOrder => checkpointOrder.ID == raceintermediate.CheckpointOrderID).
+                        Single().StartingNumber,
+                        raceintermediate.AthleteId.HasValue ?
+                        raceintermediate.AthleteModel.FullName :
+                        " - ", 
+                        raceintermediate.AthleteModel.Club.Name,
+                        context.Runtimes.
+                        Where(runtime => runtime.RuntimeID == raceintermediate.RuntimeId).
+                        Single().Runtime1.ToTimerString()));
+                }
+                rank++;
+            }
+            table.Append("</table>");
+            return table.ToString();
+        }
+
         public static string ToTimerString(this int milliseconds)
         {
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, milliseconds);

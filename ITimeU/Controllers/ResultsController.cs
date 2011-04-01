@@ -41,8 +41,8 @@ namespace ITimeU.Controllers
             ViewBag.Timers = new List<Timer>();
             ViewBag.Checkpoints = new List<Checkpoint>();
             ViewBag.Intermediates = new Dictionary<int, int>();
-            var raceIntermediates = RaceIntermediateModel.GetRaceintermediateForRace(checkpointId);
-            var listboxvalues = raceIntermediates.ToListboxvalues();
+            var raceIntermediates = RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointId);
+            var listboxvalues = raceIntermediates.OrderBy(raceintermediate => raceintermediate.RuntimeModel.Runtime).ToList().ToListboxvalues();
             return Content(listboxvalues);
         }
 
@@ -61,7 +61,7 @@ namespace ITimeU.Controllers
             var raceintermediate = RaceIntermediateModel.GetRaceintermediate(checkpointid, checkpointOrderId);
             RuntimeModel.EditRuntime(raceintermediate.RuntimeId, hour, min, sek, msek);
             CheckpointOrderModel.EditCheckpointOrder(raceintermediate.CheckpointOrderID, startnumber);
-            return Content(RaceIntermediateModel.GetRaceintermediateForRace(checkpointid).ToListboxvalues());
+            return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).ToListboxvalues());
         }
 
         /// <summary>
@@ -74,7 +74,22 @@ namespace ITimeU.Controllers
         public ActionResult DeleteRaceintermediate(int checkpointid, int checkpointOrderId)
         {
             RaceIntermediateModel.DeleteRaceintermediate(checkpointid, checkpointOrderId);
-            return Content(RaceIntermediateModel.GetRaceintermediateForRace(checkpointid).ToListboxvalues());
+            return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).ToListboxvalues());
+        }
+
+        [HttpPost]
+        public ActionResult Approve(int checkpointid)
+        {
+            var raceIntermediates = RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid);
+            return Content(raceIntermediates.ToTable());
+        }
+
+        public ActionResult Print(int checkpointid, string racename, string checkpointname)
+        {
+            ViewBag.RaceName = racename;
+            ViewBag.CheckpointName = checkpointname;
+            var raceIntermediates = RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid);
+            return View(raceIntermediates);
         }
     }
 }

@@ -6,11 +6,13 @@ namespace ITimeU.Models
     public class RaceIntermediateModel
     {
         public int CheckpointID { get; set; }
-        public int CheckpointOrderID { get; set; }
-        public int RuntimeId { get; set; }
         public CheckpointModel CheckpointModel { get; set; }
+        public int CheckpointOrderID { get; set; }
         public CheckpointOrderModel CheckpointorderModel { get; set; }
+        public int RuntimeId { get; set; }
         public RuntimeModel RuntimeModel { get; set; }
+        public int? AthleteId { get; set; }
+        public AthleteModel AthleteModel { get; set; }
 
         public RaceIntermediateModel()
         {
@@ -39,7 +41,8 @@ namespace ITimeU.Models
                 {
                     CheckpointID = CheckpointID,
                     CheckpointOrderID = CheckpointOrderID,
-                    RuntimeId = RuntimeId
+                    RuntimeId = RuntimeId,
+                    AthleteId = AthleteId
                 };
                 ctx.RaceIntermediates.AddObject(raceIntermediate);
                 var checkpointOrder = ctx.CheckpointOrders.Where(cpOrder => cpOrder.ID == CheckpointOrderID).Single();
@@ -58,6 +61,27 @@ namespace ITimeU.Models
             return true;
         }
 
+        public bool Update()
+        {
+            using (var ctx = new Entities())
+            {
+                var raceIntermediate = ctx.RaceIntermediates.
+                    Where(raceint => raceint.CheckpointID == CheckpointID 
+                        && raceint.CheckpointOrderID == CheckpointOrderID 
+                        && raceint.RuntimeId == RuntimeId).
+                        Single();
+                raceIntermediate.AthleteId = AthleteId;
+                try
+                {
+                    ctx.SaveChanges();
+                }
+                catch (System.Exception)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         /// <summary>
         /// Gets the raceintermediate.
         /// </summary>
@@ -68,7 +92,9 @@ namespace ITimeU.Models
         {
             using (var context = new Entities())
             {
-                return context.RaceIntermediates.Where(raceintermediate => raceintermediate.CheckpointID == cpid && raceintermediate.CheckpointOrderID == cpOrderid).SingleOrDefault();
+                return context.RaceIntermediates.
+                    Where(raceintermediate => raceintermediate.CheckpointID == cpid && raceintermediate.CheckpointOrderID == cpOrderid).
+                    SingleOrDefault();
             }
         }
 
@@ -88,11 +114,11 @@ namespace ITimeU.Models
         }
 
         /// <summary>
-        /// Gets the raceintermediate for race.
+        /// Gets the raceintermediate for a checkpoint.
         /// </summary>
         /// <param name="checkpointId">The checkpoint id.</param>
         /// <returns></returns>
-        public static List<RaceIntermediateModel> GetRaceintermediateForRace(int checkpointId)
+        public static List<RaceIntermediateModel> GetRaceintermediatesForCheckpoint(int checkpointId)
         {
             using (var context = new Entities())
             {
@@ -102,9 +128,97 @@ namespace ITimeU.Models
                     {
                         CheckpointID = raceintermediate.CheckpointID,
                         CheckpointOrderID = raceintermediate.CheckpointOrderID,
-                        RuntimeId = raceintermediate.RuntimeId
+                        CheckpointorderModel = new CheckpointOrderModel()
+                        {
+                            ID = raceintermediate.CheckpointOrderID,
+                            CheckpointID = raceintermediate.CheckpointID,
+                            OrderNumber = raceintermediate.CheckpointOrder.OrderNumber.HasValue ? raceintermediate.CheckpointOrder.OrderNumber.Value : 0,
+                            StartingNumber = raceintermediate.CheckpointOrder.StartingNumber.HasValue ? raceintermediate.CheckpointOrder.StartingNumber.Value : 0
+                        },
+                        RuntimeId = raceintermediate.RuntimeId,
+                        RuntimeModel = new RuntimeModel()
+                        {
+                            CheckPointId = raceintermediate.CheckpointID,
+                            Id = raceintermediate.RuntimeId,
+                            Runtime = raceintermediate.Runtime.Runtime1
+                        },
+                        AthleteId = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId : null,
+                        AthleteModel = new AthleteModel()
+                        {
+                            Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
+                            FirstName = raceintermediate.Athlete.FirstName,
+                            LastName = raceintermediate.Athlete.LastName,
+                            Club = new ClubModel()
+                            {
+                                Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.ClubID.Value : 0,
+                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : " - "
+                            },
+                            Birthday = raceintermediate.Athlete.Birthday,
+                            StartNumber = raceintermediate.Athlete.Startnumber
+                        }
                     }).ToList();
                 return list;
+            }
+        }
+
+        /// <summary>
+        /// Gets the raceintermediate for a race.
+        /// </summary>
+        /// <param name="raceid">The race id.</param>
+        /// <returns></returns>
+        public static List<RaceIntermediateModel> GetRaceintermediatesForRace(int raceid)
+        {
+            using (var context = new Entities())
+            {
+                var list = context.RaceIntermediates.
+                    Where(raceintermediate => raceintermediate.Checkpoint.RaceID == raceid && !raceintermediate.IsDeleted).
+                    Select(raceintermediate => new RaceIntermediateModel()
+                    {
+                        CheckpointID = raceintermediate.CheckpointID,
+                        CheckpointOrderID = raceintermediate.CheckpointOrderID,
+                        CheckpointorderModel = new CheckpointOrderModel()
+                        {
+                            ID = raceintermediate.CheckpointOrderID,
+                            CheckpointID = raceintermediate.CheckpointID,
+                            OrderNumber = raceintermediate.CheckpointOrder.OrderNumber.HasValue ? raceintermediate.CheckpointOrder.OrderNumber.Value : 0,
+                            StartingNumber = raceintermediate.CheckpointOrder.StartingNumber.HasValue ? raceintermediate.CheckpointOrder.StartingNumber.Value : 0
+                        },
+                        RuntimeId = raceintermediate.RuntimeId,
+                        RuntimeModel = new RuntimeModel()
+                        {
+                            CheckPointId = raceintermediate.CheckpointID,
+                            Id = raceintermediate.RuntimeId,
+                            Runtime = raceintermediate.Runtime.Runtime1
+                        },
+                        AthleteId = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId : null,
+                        AthleteModel = new AthleteModel()
+                        {
+                            Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value :0,
+                            FirstName = raceintermediate.Athlete.FirstName,
+                            LastName = raceintermediate.Athlete.LastName,
+                            Birthday = raceintermediate.Athlete.Birthday,
+                            StartNumber = raceintermediate.Athlete.Startnumber
+                        }
+                    }).ToList();
+                return list;
+            }
+        }
+
+        public static void MergeAthletes(int raceid)
+        {
+            var raceintermediates = GetRaceintermediatesForRace(raceid);
+            var raceathletes = RaceAthleteModel.GetRaceAthletesForRace(raceid);
+            foreach (var raceathlete in raceathletes)
+            {
+                foreach (var raceintermediate in raceintermediates)
+                {
+                    if (raceintermediate.CheckpointorderModel.StartingNumber == raceathlete.Startnumber)
+                    {
+                        raceintermediate.AthleteId = raceathlete.AthleteId;
+                        raceintermediate.AthleteModel = AthleteModel.GetById(raceathlete.AthleteId);
+                        raceintermediate.Update();
+                    }
+                }
             }
         }
     }

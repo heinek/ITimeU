@@ -61,19 +61,19 @@ namespace ITimeU.Tests.Models
             {
                 CheckpointOrderModel.GetCheckpointOrders(-1).Count().ShouldNotBe(0);
             });
-           
+
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Insert_A_New_CheckpointOrder_To_The_Database()
         {
             int previousSize = CheckpointOrderModel.GetCheckpointOrders(-1).Count;
-            
+
             Given("we want to insert a new checkpointOrder to the database");
 
             When("we create the checkpointOrder", () =>
             {
-                checkpointOrderModel.AddCheckpointOrderDB(-1, 1);                
+                checkpointOrderModel.AddCheckpointOrderDB(-1, 1);
             });
 
             Then("it should exist in the database", () =>

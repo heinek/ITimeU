@@ -123,7 +123,7 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Screen 1_7.xaml">
+    <Page Include="AssignAthletes.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -178,8 +178,8 @@
     <Compile Include="Screen 1_6.xaml.cs">
       <DependentUpon>Screen 1_6.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Screen 1_7.xaml.cs">
-      <DependentUpon>Screen 1_7.xaml</DependentUpon>
+    <Compile Include="AssignAthletes.xaml.cs">
+      <DependentUpon>AssignAthletes.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screen 2.xaml.cs">
       <DependentUpon>Screen 2.xaml</DependentUpon>

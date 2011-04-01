@@ -43,6 +43,7 @@ namespace ITimeU.Models
         }
 
         public int Sortorder { get; set; }
+        public int? RaceId { get; set; }
         public RaceModel Race { get; private set; }
 
         public CheckpointModel(Checkpoint checkpoint)
@@ -51,8 +52,8 @@ namespace ITimeU.Models
             Name = checkpoint.Name;
             if (checkpoint.TimerID != null)
                 this.timer = TimerModel.GetTimerById((int)checkpoint.TimerID);
-
-            Race = RaceModel.GetById(checkpoint.RaceID);
+            if(checkpoint.RaceID.HasValue)
+                Race = RaceModel.GetById(checkpoint.RaceID.Value);
         }
 
         /// <summary>
@@ -79,6 +80,7 @@ namespace ITimeU.Models
         {
             Name = name;
             Race = RaceModel.GetById(race.RaceId);
+            RaceId = race.RaceId;
             Timer = timer; 
             Sortorder = sortorder;
             SaveToDb();
@@ -98,6 +100,7 @@ namespace ITimeU.Models
         {
             Checkpoint checkpoint = new Checkpoint();
             
+            checkpoint.RaceID = RaceId;
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
             context.SaveChanges();
@@ -179,5 +182,17 @@ namespace ITimeU.Models
         {
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
         }
+
+        //public void Update()
+        //{
+        //    using (var context = new Entities())
+        //    {
+        //        var checkpoint = context.Checkpoints.Where(cp => cp.CheckpointID == Id && !cp.IsDeleted).SingleOrDefault();
+        //        checkpoint.RaceID = RaceId;
+        //        checkpoint.Name = Name;
+        //        checkpoint.SortOrder = Sortorder;
+        //        context.SaveChanges();
+        //    }
+        //}
     }
 }

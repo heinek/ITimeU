@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ITimeU.Models.RaceIntermediateModel>
+@{
+    Layout = null;
+}
+<link rel="stylesheet" type="text/css" href="../../Content/print.css" media="print">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultatliste</title>
+</head>
+<body>
+    <h2>
+        Resultatliste for @ViewBag.RaceName, @ViewBag.CheckpointName</h2>
+    <div class="contentmargin">
+        <table style="width: 800">
+            <tr>
+                <th align="left" style="width: 80">
+                    Plassering
+                </th>
+                <th align="left" style="width: 100">
+                    Startnummer
+                </th>
+                <th align="left">
+                    Navn
+                </th>
+                <th align="left">
+                    Klubb
+                </th>
+                <th align="left">
+                    Tid
+                </th>
+            </tr>
+            @{
+
+                int rank = 0;
+                foreach (var item in Model)
+                {
+                    rank++;
+                <tr>
+                    <td align="left" style="width: 80">
+                        @rank
+                    </td>
+                    <td align="left" style="width: 100">
+                        @item.CheckpointorderModel.StartingNumber
+                    </td>
+                    <td align="left">
+                        @item.AthleteModel.FullName
+                    </td>
+                    <td align="left">
+                        @item.AthleteModel.Club.Name
+                    </td>
+                    <td align="left">
+                        @item.RuntimeModel.RuntimeToTime
+                    </td>
+                </tr>
+                }
+            }
+        </table>
+    </div>
+</body>
+</html>

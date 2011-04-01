@@ -10,8 +10,8 @@ namespace ITimeU.Models
         private static Entities entitiesStatic = new Entities();
         private static int ID_WHEN_NOT_CREATED_IN_DB = -1;
 
-        public int Id { get; private set; }
-        public string Name { get; private set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         private bool instanceSaved
         {
@@ -33,6 +33,11 @@ namespace ITimeU.Models
         {
             Id = club.ClubID;
             Name = club.Name;
+        }
+
+        public ClubModel()
+        {
+            // TODO: Complete member initialization
         }
 
         internal int SaveToDb()

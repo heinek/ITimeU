@@ -1,0 +1,32 @@
+﻿body
+{
+    background-color: transparent;
+    font-size: 12pt;
+    font-family: 'Times New Roman' ,Times,serif;
+    color: #000000;
+}
+#navi
+{
+    display: none;
+}
+
+#content
+{
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+}
+
+a:after, a:link:after
+{
+    color: #000000;
+    background-color: transparent;
+    content: " * Link " attr(href) "* ";
+}
+
+a:visited:after
+{
+    color: #000000;
+    background-color: transparent;
+    content: " * Link " attr(href) "* ";
+}
