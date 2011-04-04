@@ -35,6 +35,13 @@ namespace ITimeU.Models
             Name = club.Name;
         }
 
+        public ClubModel(int id)
+        {
+            this.Id = id;
+            var entities = new Entities();
+            this.Name = entities.Clubs.Single(clbid => clbid.ClubID == id).Name;
+        }
+
         internal int SaveToDb()
         {
             var entities = new Entities();

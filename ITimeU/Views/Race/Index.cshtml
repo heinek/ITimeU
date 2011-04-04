@@ -31,7 +31,7 @@
         var divErrorMessage = $("#ErrorMessage");
         var divStatusMessage = $("#StatusMessage");
 
-        tbStartDate.mask("99/99/9999");
+        //tbStartDate.mask("99/99/9999");
 
         tbStartDate.datepicker({
             dateFormat: "dd/mm/yy",
@@ -39,7 +39,8 @@
             buttonImage: "/Content/images/Calendar.png",
             buttonImageOnly: true,
             buttonText: "Choose Date",
-            showOn: "both"
+            showOn: "both",
+            minDate: '0d'
         });
 
 

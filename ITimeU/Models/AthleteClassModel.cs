@@ -28,6 +28,13 @@ namespace ITimeU.Models
             Id = 0;
         }
 
+        public AthleteClassModel(int id)
+        {
+            this.Id = id;
+            var entities = new Entities();
+            this.Name = entities.AthleteClasses.Single(athcls => athcls.ID == id).Name;            
+        }
+
         public AthleteClassModel(AthleteClass athleteClass)
         {
             Id = athleteClass.ID;

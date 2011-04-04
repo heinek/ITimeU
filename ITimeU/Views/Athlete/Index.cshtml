@@ -1,0 +1,157 @@
+﻿@model IEnumerable<ITimeU.Models.ClubModel>           
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Athlete</h2>
+@{ Html.BeginForm("Create", "Athlete", FormMethod.Post); }
+<fieldset>
+@if (ViewBag.IsAthleteCreated)
+    {
+        <div class="statusmessagearea" id="StatusMessage">
+            Athlete has been saved successfully!
+        </div>
+    }
+    
+@if (!ViewBag.IsValidInput)
+{
+    <div class="errormessagearea">
+        First Name, Last Name, Email and StartNumber must not be empty and invalid.
+    </div>
+}
+
+<table>
+    <tr>
+        <td>
+<div class="editor-label">
+        @Html.Label("lblFirstName", "First Name")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtFirstName", null, new { @class = "textbox" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblLastName", "Last Name")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtLastName", null, new { @class = "textbox" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblEmail", "Email")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtEmail", null, new { @class = "textbox" })
+    </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+<div class="editor-label">
+        @Html.Label("lblPostaladdress", "Postal Address")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtPostalAddress", null, new { @class = "textbox" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblPostalCode", "Postal Code")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtPostalCode", null, new { @class = "textbox" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblCity", "City")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtCity", null, new { @class = "textbox" })
+    </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+        <div class="editor-label">
+                @Html.Label("lblPhoneNumber", "Phone Number")
+            </div>
+
+            <div class="editor-field">
+                @Html.TextBox("txtPhoneNumber", null, new { @class = "textbox" })
+            </div>
+                </td>
+        <td>
+<div class="editor-label">
+        @Html.Label("lblGender", "Gender")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("genderId",new SelectList(ViewBag.Gender, "Id", "Name" ))
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblBirthDate", "Birthdate")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("birthdateId", new SelectList(ViewBag.BirthDate, "Id", "BirthYear"))
+    </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+        <div class="editor-label">
+                @Html.Label("lblStartNumber", "StartNumber")
+            </div>
+
+            <div class="editor-field">
+                @Html.TextBox("txtStartNumber", null, new { @class = "textbox" })
+            </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblClub", "Club")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("clubId", new SelectList(Model, "Id", "Name"))
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblClass", "AthleteClass")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("classId", new SelectList(ViewBag.AthleteClass, "Id", "Name"))
+    </div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>
+            <input type="submit" class="btnRegular" id="btnCreate" value="Create" style="width: 100px" />
+        </td>
+    </tr>
+</table>
+</fieldset>
+@{ Html.EndForm(); }
+

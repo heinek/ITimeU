@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 
 
 namespace ITimeU.Models
@@ -16,7 +17,14 @@ namespace ITimeU.Models
         public ClubModel Club { get; private set; }
         public AthleteClassModel AthleteClass { get; private set; }
         public int? StartNumber { get; private set; }
+        public string PostalAddress { get; private set; }
+        public string PostalCode { get; private set; }
+        public string City { get; private set; }
+        public string Email { get; private set; }
+        public string Gender { get; private set; }        
+        public string PhoneNumber { get; private set; }
 
+               
         private bool dbEntryCreated
         {
             get
@@ -102,6 +110,24 @@ namespace ITimeU.Models
             StartNumber = startNumber;
         }
 
+        public AthleteModel(string firstName, string lastName, string email, string address, string postalcode, string city, string gender, int? birthday, string phonenumber, int? startNumber, ClubModel club, AthleteClassModel athleteClass)
+                            
+        {
+            SetDefaultId();
+            FirstName = firstName;
+            LastName = lastName;
+            Birthday = birthday;
+            Club = club;
+            AthleteClass = athleteClass;
+            StartNumber = startNumber;
+            PostalAddress = address;
+            PostalCode = postalcode;
+            City = city;
+            Gender = gender;
+            PhoneNumber = phonenumber;
+            Email = email;
+        }
+
         /// <summary>
         /// Saves a list of athletes to the database.
         /// </summary>
@@ -151,6 +177,14 @@ namespace ITimeU.Models
             athlete.FirstName = FirstName;
             athlete.LastName = LastName;
             athlete.Birthday = Birthday;
+            athlete.PostalAddress = PostalAddress;
+            athlete.PostalCode = PostalCode;
+            athlete.PostalPlace = City;
+            athlete.Email = Email;
+            athlete.Gender = Gender;
+            athlete.Phone = PhoneNumber;
+            athlete.IsDeleted = false;
+
             if (Club != null)
                 athlete.ClubID = Club.SaveToDb();
             if (AthleteClass != null)

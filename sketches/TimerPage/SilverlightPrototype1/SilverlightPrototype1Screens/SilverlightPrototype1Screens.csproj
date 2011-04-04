@@ -131,6 +131,10 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Screen 2_1.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="SketchStyles.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
       <SubType>Designer</SubType>
@@ -183,6 +187,9 @@
     </Compile>
     <Compile Include="Screen 2.xaml.cs">
       <DependentUpon>Screen 2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screen 2_1.xaml.cs">
+      <DependentUpon>Screen 2_1.xaml</DependentUpon>
     </Compile>
     <Resource Include="Fonts\BuxtonSketch.ttf" />
     <Resource Include="Fonts\SketchFlow Print.ttf" />

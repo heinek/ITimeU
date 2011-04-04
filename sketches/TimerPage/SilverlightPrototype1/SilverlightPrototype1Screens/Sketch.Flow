@@ -99,6 +99,18 @@
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Screen_2_1</ClassName>
+      <DisplayName>Athlete</DisplayName>
+      <FileName>Screen 2_1.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>498</X>
+        <Y>18</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
   </Screens>
   <Connections />
   <BrandingText>Microsoft SketchFlow Prototype</BrandingText>

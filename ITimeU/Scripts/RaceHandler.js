@@ -19,10 +19,14 @@ RaceHandler.prototype.setInsertAction = function (_btnCreate, _tbName, _tbDistan
     divErrorMessage = _divErrorMessage;
     divStatusMessage = _divStatusMessage;
 
+    tbStartDate.bind("focus", function () {
+        tbStartDate.blur();
+    });
+
     btnCreate.bind("click", function () {
-        if (tbName.val().length == 0 || tbDistance.val().length == 0 || tbStartDate.val().length == 0) {
+        if (tbName.val().length == 0 || tbStartDate.val().length == 0) {
             divStatusMessage.hide();
-            divErrorMessage.show().html('Input fields must not be empty');
+            divErrorMessage.show().html('Race name and start date must not be empty');
         }
         else if (!IsNumber(tbDistance.val())) {
             divStatusMessage.hide();
