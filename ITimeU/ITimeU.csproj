@@ -129,6 +129,11 @@
     <Content Include="Content\images\Image1.png" />
     <Content Include="Content\images\Logo2.png" />
     <Content Include="Content\images\Logo3.png" />
+    <Content Include="Content\images\menu01.png" />
+    <Content Include="Content\images\menu02.png" />
+    <Content Include="Content\images\menu03.png" />
+    <Content Include="Content\images\menu04.png" />
+    <Content Include="Content\images\menu05.png" />
     <Content Include="Content\images\menubg.png" />
     <Content Include="Content\images\runner01.jpg" />
     <Content Include="Content\images\timer01.jpg" />

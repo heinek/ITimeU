@@ -21,19 +21,18 @@ a:link
 }
 a:visited
 {
-    color: #505abc;
+	color: #fff;
     border: 0px;
     text-decoration: none;
 }
 a:hover
 {
-    color: #1d60ff;
+    color: #ccc;
     text-decoration: none;
     border: 0px;
 }
 a:active
 {
-    color: #12eb87;
     border: 0px;
     text-decoration: none;
 }
@@ -390,9 +389,11 @@ table th
     background-position: top;
     width: 900px;
     height: 601px;
+/*
     opacity: .5;
     filter: alpha(opacity=50);
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+*/
 }
 .clear
 {
@@ -456,10 +457,10 @@ table th
 }
 .menubg
 {
-    padding-top: 500px;
+    padding-top: 220px;
+    padding-left: 84px;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url("images/menubg.png");
 }
 .listbox
 {
@@ -647,4 +648,13 @@ div#title
 .tri-state
 {
     width: 6em;
+}
+
+.topmenubar
+{
+	background-color: #000;
+	width: 100%;
+	height: 16px;
+	color:White;
+	font-weight:bold;
 }
