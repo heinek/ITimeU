@@ -14,9 +14,13 @@ namespace ITimeU.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         private string fullname;
-        public string FullName 
-        { 
-            get{
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public string PostalAddress { get; private set; }
         public string PostalCode { get; private set; }
         public string City { get; private set; }
@@ -130,6 +134,11 @@ namespace ITimeU.Models
             Gender = gender;
             PhoneNumber = phonenumber;
             Email = email;
+        }
+
+        public AthleteModel()
+        {
+            // TODO: Complete member initialization
         }
 
         /// <summary>

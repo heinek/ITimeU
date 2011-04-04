@@ -52,7 +52,7 @@ namespace ITimeU.Models
             Name = checkpoint.Name;
             if (checkpoint.TimerID != null)
                 this.timer = TimerModel.GetTimerById((int)checkpoint.TimerID);
-            if(checkpoint.RaceID.HasValue)
+            if (checkpoint.RaceID.HasValue)
                 Race = RaceModel.GetById(checkpoint.RaceID.Value);
         }
 
@@ -65,6 +65,7 @@ namespace ITimeU.Models
         {
             Name = name;
             Race = RaceModel.GetById(raceId);
+            Sortorder = GetNextOrdernumber(raceId);
             SaveToDb();
         }
 
@@ -72,7 +73,7 @@ namespace ITimeU.Models
         {
             Name = name;
             Race = RaceModel.GetById(race.RaceId);
-            Timer = timer;            
+            Timer = timer;
             SaveToDb();
         }
 
@@ -81,7 +82,7 @@ namespace ITimeU.Models
             Name = name;
             Race = RaceModel.GetById(race.RaceId);
             RaceId = race.RaceId;
-            Timer = timer; 
+            Timer = timer;
             Sortorder = sortorder;
             SaveToDb();
         }
@@ -99,7 +100,7 @@ namespace ITimeU.Models
         private int CreateDbEntity(Entities context)
         {
             Checkpoint checkpoint = new Checkpoint();
-            
+
             checkpoint.RaceID = RaceId;
             updateDbEntry(checkpoint);
             context.Checkpoints.AddObject(checkpoint);
@@ -114,7 +115,7 @@ namespace ITimeU.Models
         /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
-            checkpoint.Name = Name;            
+            checkpoint.Name = Name;
             checkpoint.SortOrder = Sortorder;
             if (timer != null)
                 checkpoint.TimerID = timer.Id;
@@ -183,6 +184,17 @@ namespace ITimeU.Models
             return "[Checkpoint, id: " + Id + ", name: " + Name + "]";
         }
 
+        public static int GetNextOrdernumber(int raceid)
+        {
+            using (var context = new Entities())
+            {
+                var checkpoints = context.Checkpoints.Where(cp => cp.RaceID == raceid && !cp.IsDeleted);
+                if (checkpoints.Count() > 0)
+                    return checkpoints.OrderByDescending(cp => cp.SortOrder).First().SortOrder + 1;
+                else
+                    return 0;
+            }
+        }
         //public void Update()
         //{
         //    using (var context = new Entities())

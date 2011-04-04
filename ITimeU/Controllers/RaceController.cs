@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ITimeU.Models;
 
@@ -15,20 +12,19 @@ namespace ITimeU.Controllers
         public ActionResult Index()
         {
             ViewBag.Error = false;
-            return View();            
+            return View();
         }
-        
-        public ActionResult Create(string name, string distance, string startDate)      //string name, string distance, string startDate)
+
+        public ActionResult Create(string name, string distance, string startDate)
         {
             int intDistance;
             int.TryParse(distance, out intDistance);
-            Race newRace = new Race();
-            newRace.Name = name;
-            newRace.Distance = intDistance;
-            newRace.StartDate = Convert.ToDateTime(startDate);
-            RaceModel race = new RaceModel(newRace);
+            var race = new RaceModel();
+            race.Name = name;
+            race.Distance = intDistance;
+            race.StartDate = Convert.ToDateTime(startDate);
             race.Save();
-            return View("Index");               
+            return View("Index");
         }
 
         private bool IsValidInput(Race checkRace)

@@ -3,42 +3,43 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>
-    Create
-</h2>
-
-@{ Html.BeginForm("Create", "Checkpoint", FormMethod.Post); }
-
-<fieldset>
-    @if (ViewBag.CheckpointCreatedSuccessfully)
-    {
-        <div class="statusmessagearea" id="StatusMessage">
-            Checkpoint has been saved successfully!
+    <div class="topmenubar">
+        <center>
+        | @Html.ActionLink("HJEM", "Index", "Home") | @Html.ActionLink("ADMIN", "Index", "Admin") |
+        </center>
+    </div>
+<div class="contentmargin">
+    <h2>
+        Lag nytt passeringspunkt
+    </h2>
+    @{ Html.BeginForm("Create", "Checkpoint", FormMethod.Post); }
+        @if (ViewBag.CheckpointCreatedSuccessfully)
+        {
+            <div class="statusmessagearea" id="StatusMessage">
+                Passeringspunkt har blitt lagret!
+            </div>
+        }
+        @if (ViewBag.IsCheckpointEmpty)
+        {
+            <div class="errormessagearea" id="ErrorMessage">
+                Navn kan ikke være tomt.
+            </div>
+        }
+        <div class="editor-label">
+            @Html.Label("lblRace", "Løp:")
         </div>
-    }
-    
-    @if (ViewBag.IsCheckpointEmpty)
-    {
-        <div class="errormessagearea" id="ErrorMessage">
-            Checkpoint name should not be empty.
+        <div class="editor-field">
+            @Html.DropDownList("raceId", new SelectList(Model, "RaceID", "Name"))
         </div>
-    }
-    <div class="editor-label">
-        @Html.Label("lblRace", "Race")
-    </div>
-    <div class="editor-field">
-        @Html.DropDownList("raceId", new SelectList(Model, "RaceID", "Name"))
-    </div>
+        <div class="editor-label">
+            @Html.Label("lblCheckpointName", "Navn:")
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("txtCheckpointName", null, new { @class = "textbox" })
+        </div>
+        <p>
+            <input type="submit" class="btnRegular" id="btnCreate" value="Opprett" style="width: 100px" />
+        </p>
+    @{ Html.EndForm(); }
+</div>
 
-    <div class="editor-label">
-        @Html.Label("lblCheckpointName", "Checkpoint Navn")
-    </div>
-
-    <div class="editor-field">
-        @Html.TextBox("txtCheckpointName", null, new { @class = "textbox" })
-    </div>
-    <p>
-        <input type="submit" class="btnRegular" id="btnCreate" value="Opprett" style="width: 100px" />
-    </p>
-</fieldset>
-@{ Html.EndForm(); }
