@@ -26,10 +26,6 @@ CREATE TABLE [dbo].[Athlete](
 	[Startnumber] [int] NULL,
 	[Gender] [char](1) NULL,
 	[IsDeleted] [bit] NULL,
- CONSTRAINT [PK_Participant] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
 GO
@@ -44,14 +40,5 @@ ON DELETE SET NULL
 GO
 
 ALTER TABLE [dbo].[Athlete] CHECK CONSTRAINT [FK_Athlete_AthleteClass]
-GO
-
-ALTER TABLE [dbo].[Athlete]  WITH CHECK ADD  CONSTRAINT [FK_Athlete_Club] FOREIGN KEY([ClubID])
-REFERENCES [dbo].[Club] ([ClubID])
-ON UPDATE CASCADE
-ON DELETE SET NULL
-GO
-
-ALTER TABLE [dbo].[Athlete] CHECK CONSTRAINT [FK_Athlete_Club]
 GO
 

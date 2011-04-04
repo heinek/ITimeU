@@ -8,10 +8,10 @@ namespace ITimeU.Models
     [Serializable]
     public class CheckpointOrderModel
     {
-        public int ID { get; private set; }
-        public int CheckpointID { get; private set; }
-        public int StartingNumber { get; private set; }
-        public int OrderNumber { get; private set; }
+        public int ID { get; set; }
+        public int CheckpointID { get; set; }
+        public int StartingNumber { get; set; }
+        public int OrderNumber { get; set; }
         public Dictionary<int, int> CheckpointOrderDic { get; set; }
 
         public CheckpointOrderModel()
@@ -46,7 +46,7 @@ namespace ITimeU.Models
             var checkpointOrder = CreateCheckpointOrder(checkpointId, startingNumber, entities);
             SaveCheckpointOrder(checkpointOrder, entities);
             AddToCheckpointOrderDic(checkpointId, entities);
-
+            ID = checkpointOrder.ID;
             return checkpointOrder.ID;
         }
 
@@ -87,6 +87,7 @@ namespace ITimeU.Models
         {
             entities.CheckpointOrders.AddObject(checkpointOrder);
             entities.SaveChanges();
+            
         }
 
         private void AddToCheckpointOrderDic(int checkpointId, Entities entities)

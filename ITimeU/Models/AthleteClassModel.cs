@@ -7,8 +7,8 @@ namespace ITimeU.Models
 {
     public class AthleteClassModel
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
 
         private static Entities entitiesStatic = new Entities();
 
@@ -39,6 +39,11 @@ namespace ITimeU.Models
         {
             Id = athleteClass.ID;
             Name = athleteClass.Name;
+        }
+
+        public AthleteClassModel()
+        {
+            // TODO: Complete member initialization
         }
 
         internal int SaveToDb()

@@ -16,7 +16,16 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int timerId)
         {
-            var timer = new TimerModel(timerId);
+            var race = RaceModel.GetById(timerId);
+            TimerModel timer = null;
+            if (race.HasTimer())
+                timer = new TimerModel(race.GetTimerId());
+            else
+            {
+                timer = new TimerModel();
+                timer.RaceID = timerId;
+            }
+            timer.SaveToDb();
             var checkpointOrder = new CheckpointOrderModel();
 
             ViewBag.Checkpoints = timer.GetCheckpoints();

@@ -9,6 +9,12 @@ namespace ITimeU.Models
     {
         public int Id { get; set; }
         public int Runtime { get; set; }
+        public string RuntimeToTime { 
+            get
+            {
+                return Runtime.ToTimerString();
+            }
+        }
         public int CheckPointId { get; set; }
 
         public RuntimeModel()

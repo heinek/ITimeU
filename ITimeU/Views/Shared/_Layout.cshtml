@@ -4,6 +4,17 @@
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var imgLogo = $("#imgLogo");
+
+            imgLogo.click(function () {
+                var url = "../..";
+                document.location = url;
+            });
+
+        });
+</script>
 </head>
 <body style="height: 100%">
     <div class="containermaster">
@@ -11,8 +22,7 @@
             <div class="lefttopmaster">
             </div>
             <div class="middle">
-                <a href="../.." style="border-bottom-width:0px">
-                <img src="../../Content/images/Logo3.png" class="logo" alt="Logo" /></a>
+                <img src="../../Content/images/Logo3.png" id="imgLogo" class="logo" alt="Logo" />
             </div>
             <div class="righttopmaster">
             </div>

@@ -72,6 +72,7 @@ namespace ITimeU.Models
         public int CurrentCheckpointId { get; set; }
         private bool dbEntryCreated = false;
 
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TimerModel"/> class.
         /// </summary>

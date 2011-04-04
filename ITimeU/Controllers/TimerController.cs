@@ -1,40 +1,31 @@
 ﻿using System.Web.Mvc;
 using ITimeU.Models;
+using System;
 
 namespace ITimeU.Controllers
 {
     public class TimerController : Controller
     {
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        //[HttpGet]
-        //public ActionResult Index()
-        //{
-        //    Logging.LogWriter.getInstance().Write("yoyoyo");
-        //    var timer = new TimerModel(1);
-        //    ViewBag.Checkpoints = timer.GetCheckpoints();
-        //    Session["timer"] = timer;
-        //    return View("Index", timer);
-        //}
-
         /// <summary>
         /// Indexes the specified checkpoint_id.
         /// </summary>
-        /// <param name="Id">The timer id.</param>
+        /// <param name="Id">The race id.</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Index(int Id)
+        public ActionResult Index(int id)
         {
-            var timer = new TimerModel(Id);
+            var race = RaceModel.GetById(id);
+            TimerModel timer = null;
+            if (race.HasTimer())
+                timer = new TimerModel(race.GetTimerId());
+            else
+            {
+                timer = new TimerModel();
+                timer.RaceID = id;
+            }
+            timer.SaveToDb();
             ViewBag.Checkpoints = timer.GetCheckpoints();
             Session["timer"] = timer;
-            //if (checkpoint_id != null)
-            //{
-            //    CheckpointModel checkpoint = CheckpointModel.getById((int)checkpoint_id);
-            //    checkpoint = timer;
-            //}
             return View("Index", timer);
         }
 
@@ -134,6 +125,39 @@ namespace ITimeU.Controllers
             var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Descending, toTimer: true);
             Session["timer"] = timer;
             return runtimeDic;
+        }
+
+        [HttpGet]
+        public ActionResult Speaker(int id)
+        {
+            var race = RaceModel.GetById(id);
+            TimerModel timer = null;
+            if (race.HasTimer())
+                timer = TimerModel.GetTimerById(race.GetTimerId());
+            else
+            {
+                timer = new TimerModel();
+                timer.RaceID = id;
+            }
+            timer.SaveToDb();
+            Session["timer"] = timer;
+            return View("Speaker", timer);
+        }
+
+        [HttpGet]
+        public ActionResult GetStartruntimeForSpeaker()
+        {
+            TimerModel timer = (TimerModel)Session["timer"];
+            DateTime starttime;
+            int runtime = 0;
+
+            if (timer.StartTime.HasValue)
+            {
+                starttime = timer.StartTime.Value;
+                var ts = DateTime.Now - starttime;
+                runtime = (int)ts.TotalMilliseconds;
+            }
+            return Content(runtime.ToString());
         }
     }
 }
