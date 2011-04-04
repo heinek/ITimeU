@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using ITimeU.Models;
+using System;
 
 namespace ITimeU.Controllers
 {
@@ -124,6 +125,39 @@ namespace ITimeU.Controllers
             var runtimeDic = timer.CheckpointRuntimes[timer.CurrentCheckpointId].ToListboxvalues(sorting: ExtensionMethods.ListboxSorting.Descending, toTimer: true);
             Session["timer"] = timer;
             return runtimeDic;
+        }
+
+        [HttpGet]
+        public ActionResult Speaker(int id)
+        {
+            var race = RaceModel.GetById(id);
+            TimerModel timer = null;
+            if (race.HasTimer())
+                timer = TimerModel.GetTimerById(race.GetTimerId());
+            else
+            {
+                timer = new TimerModel();
+                timer.RaceID = id;
+            }
+            timer.SaveToDb();
+            Session["timer"] = timer;
+            return View("Speaker", timer);
+        }
+
+        [HttpGet]
+        public ActionResult GetStartruntimeForSpeaker()
+        {
+            TimerModel timer = (TimerModel)Session["timer"];
+            DateTime starttime;
+            int runtime = 0;
+
+            if (timer.StartTime.HasValue)
+            {
+                starttime = timer.StartTime.Value;
+                var ts = DateTime.Now - starttime;
+                runtime = (int)ts.TotalMilliseconds;
+            }
+            return Content(runtime.ToString());
         }
     }
 }

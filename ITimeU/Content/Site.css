@@ -455,6 +455,10 @@ table th
     margin-bottom: 8px;
     background-image: url("images/Logo3.png");
 }
+.linkimage
+{
+    cursor: hand;
+}
 .menubg
 {
     padding-top: 220px;

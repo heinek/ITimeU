@@ -10,7 +10,8 @@
     $(document).ready(function () {
         var img1pc = $("#img1pc");
         var img2pc = $("#img2pc");
-        var hdRaceid =$("#hdRaceid");
+        var imgSpeaker = $("#imgSpeaker");
+        var hdRaceid = $("#hdRaceid");
 
 
         img1pc.click(function () {
@@ -22,6 +23,12 @@
             var url = "/StartRace/DualPcSetup/?raceId=" + hdRaceid.val();
             document.location = url;
         });
+
+        imgSpeaker.click(function () {
+            var url = "/Timer/Speaker/" + hdRaceid.val();
+            document.location = url;
+        });
+
     });
 </script>
 <div class="contentmargin">
@@ -31,10 +38,13 @@
                 <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
-                                <img src="../../Content/images/1pc.jpg" class="logo" id="img1pc" alt="Logo" />
+                                <img src="../../Content/images/1pc.jpg" class="linkimage" id="img1pc" alt="En pc oppsett" />
                         </td>
                         <td>
-                                <img src="../../Content/images/2pc.jpg" class="logo" id="img2pc" alt="Logo" />
+                                <img src="../../Content/images/2pc.jpg" class="linkimage" id="img2pc" alt="To pc oppsett" />
+                        </td>
+                                                <td>
+                                <img src="../../Content/images/Speaker200.jpg" class="linkimage" id="imgSpeaker" alt="Speaker" />
                         </td>
                     </tr>
                 </table>

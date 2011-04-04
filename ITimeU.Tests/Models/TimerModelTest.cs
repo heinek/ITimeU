@@ -659,6 +659,26 @@ namespace ITimeU.Tests.Models
             });
         }
 
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Get_The_Starttime_Of_A_Running_Timer()
+        {
+            var timer = CreateNewTimerModelWithCheckpoints();
+            DateTime? starttime = null;
+
+            Given("we have started a timer", () =>
+            {
+                timer.Start();
+            });
+
+            When("we want to see the running timer, we should get the starttime of the timer", () =>
+            {
+                starttime = timer.StartTime;
+            });
+
+            Then("the starttime should not be null", () => starttime.ShouldNotBeNull());
+        }
+
+
         [TestCleanup]
         public void TestCleanup()
         {
