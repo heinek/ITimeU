@@ -206,5 +206,14 @@ namespace ITimeU.Models
         //        context.SaveChanges();
         //    }
         //}
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                context.Checkpoints.Where(cp => cp.CheckpointID == Id).Single().IsDeleted = true;
+                context.SaveChanges();
+            }
+        }
     }
 }

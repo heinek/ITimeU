@@ -107,13 +107,10 @@
         });
 
         btnPrint.click(function () {
-            //            window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val());
             printWin = window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val() + "&racename=" + $("#ddlRaces option:selected").text() + "&checkpointname=" + $("#ddlCheckpoints option:selected").text(), "_blank", "height=800,left=100,top=100,width=800,toolbar=no,titlebar=0,status=0,menubar=yes,location= no,scrollbars=1");
             printWin.print();
 
         });
-
-
 
         listIntermediates.change(function () {
             var strid = "";
@@ -218,7 +215,7 @@
                 <input type="button" id="btnPrint" value="Skriv ut" class="btnRegular" style="width: 110px" />
             </div>
         </div>
-                <div class="row">
+        <div class="row">
             <div class="left">
                 <div id="divResults">
                 </div>

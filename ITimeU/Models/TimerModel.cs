@@ -360,5 +360,14 @@ namespace ITimeU.Models
                 return ctx.Timers.Where(timer => timer.IsDeleted == false && timer.RaceID == raceId).ToList();
             }
         }
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                context.Timers.Where(timer => timer.TimerID == Id).Single().IsDeleted = true;
+                context.SaveChanges();
+            }
+        }
     }
 }

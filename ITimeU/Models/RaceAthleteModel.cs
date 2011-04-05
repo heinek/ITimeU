@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace ITimeU.Models
 {
@@ -17,6 +15,12 @@ namespace ITimeU.Models
         {
 
         }
+
+        /// <summary>
+        /// Gets the race athletes for race.
+        /// </summary>
+        /// <param name="raceid">The raceid.</param>
+        /// <returns></returns>
         public static List<RaceAthleteModel> GetRaceAthletesForRace(int raceid)
         {
             using (var context = new Entities())

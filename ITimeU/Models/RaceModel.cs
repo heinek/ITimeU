@@ -220,5 +220,14 @@ namespace ITimeU.Models
                 return context.Races.Where(race => race.RaceID == RaceId).Single().Timers.First().TimerID;
             }
         }
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                context.Races.Where(race => race.RaceID == RaceId).Single().IsDeleted = true;
+                context.SaveChanges();
+            }
+        }
     }
 }

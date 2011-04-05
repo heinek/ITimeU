@@ -20,12 +20,22 @@ namespace ITimeU.Controllers
             return View("Index", raceIntermediates);
         }
 
+        /// <summary>
+        /// Gets the timers.
+        /// </summary>
+        /// <param name="raceId">The race id.</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult GetTimers(int raceId)
         {
             return Content(TimerModel.GetTimers(raceId).ToDictionary(timer => timer.TimerID, timer => timer.StartTime).ToListboxvalues());
         }
 
+        /// <summary>
+        /// Gets the checkpoints.
+        /// </summary>
+        /// <param name="timerId">The timer id.</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult GetCheckpoints(int timerId)
         {
@@ -34,6 +44,11 @@ namespace ITimeU.Controllers
             return Content(dic.ToListboxvalues());
         }
 
+        /// <summary>
+        /// Gets the raceintermediates.
+        /// </summary>
+        /// <param name="checkpointId">The checkpoint id.</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult GetRaceintermediates(int checkpointId)
         {
@@ -77,6 +92,11 @@ namespace ITimeU.Controllers
             return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).ToListboxvalues());
         }
 
+        /// <summary>
+        /// Approves the results.
+        /// </summary>
+        /// <param name="checkpointid">The checkpointid.</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Approve(int checkpointid)
         {
@@ -84,6 +104,13 @@ namespace ITimeU.Controllers
             return Content(raceIntermediates.ToTable());
         }
 
+        /// <summary>
+        /// Prints the results.
+        /// </summary>
+        /// <param name="checkpointid">The checkpointid.</param>
+        /// <param name="racename">The racename.</param>
+        /// <param name="checkpointname">The checkpointname.</param>
+        /// <returns></returns>
         public ActionResult Print(int checkpointid, string racename, string checkpointname)
         {
             ViewBag.RaceName = racename;
