@@ -177,10 +177,7 @@ namespace ITimeU.Models
             Id = id;
         }
 
-        public AthleteModel()
-        {
-            // TODO: Complete member initialization
-        }
+        
 
         /// <summary>
         /// Saves a list of athletes to the database.
