@@ -13,22 +13,27 @@ namespace ITimeU.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        private string fullname;
-        public string FullName 
-        { 
-            get{
+        public string FullName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
+        }
         public string PostalAddress { get; private set; }
         public string PostalCode { get; private set; }
         public string City { get; private set; }
         public string Email { get; private set; }
-        public string Gender { get; private set; }        
+        public string Gender { get; private set; }
         public string PhoneNumber { get; private set; }
 
         public int? Birthday { get; set; }
         public ClubModel Club { get; set; }
         public AthleteClassModel AthleteClass { get; set; }
         public int? StartNumber { get; set; }
-               
+
+        public Dictionary<int, string> AthleteDic { get; set; }
+
         private bool dbEntryCreated
         {
             get
@@ -54,7 +59,7 @@ namespace ITimeU.Models
 
         private static AthleteModel TryToGetById(int idToGet, Entities entities)
         {
-            Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet);
+            Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet);            
             return new AthleteModel(athleteDb);
         }
 
@@ -76,7 +81,28 @@ namespace ITimeU.Models
 
             return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
         }
-        
+
+        public List<AthleteModel> GetAllByClubId(int id)
+        {
+            var entities = new Entities();
+            IEnumerable<Athlete> athletes = entities.Athletes.AsEnumerable<Athlete>();
+
+            List<AthleteModel> athleteModels = new List<AthleteModel>();
+            AthleteDic.Clear();
+            foreach (Athlete athleteDb in athletes)
+            {
+                if (athleteDb.ClubID == id)
+                {
+                    AthleteModel athleteModel = new AthleteModel(athleteDb);
+                    athleteModels.Add(athleteModel);
+                    AthleteDic.Add(athleteModel.Id, athleteModel.FullName);
+                    
+                }
+            }                       
+
+            return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
+        }
+
         public AthleteModel(string firstName, string lastName)
         {
             FirstName = firstName;
@@ -95,6 +121,15 @@ namespace ITimeU.Models
             FirstName = athleteDb.FirstName;
             LastName = athleteDb.LastName;
             Birthday = athleteDb.Birthday;
+            Email = athleteDb.Email;
+            PostalAddress = athleteDb.PostalAddress;
+            PostalCode = athleteDb.PostalCode;
+            City = athleteDb.PostalPlace;
+            PhoneNumber = athleteDb.Phone;
+            Gender = athleteDb.Gender;
+            Birthday = athleteDb.Birthday;
+
+
             if (athleteDb.Club != null)
                 Club = ClubModel.GetOrCreate(athleteDb.Club.Name);
             if (athleteDb.AthleteClass != null)
@@ -103,7 +138,7 @@ namespace ITimeU.Models
                 StartNumber = athleteDb.Startnumber;
         }
 
-        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber, int id=EMPTY_ID)
+        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber, int id = EMPTY_ID)
         {
             SetDefaultId();
             FirstName = firstName;
@@ -115,7 +150,6 @@ namespace ITimeU.Models
         }
 
         public AthleteModel(string firstName, string lastName, string email, string address, string postalcode, string city, string gender, int? birthday, string phonenumber, int? startNumber, ClubModel club, AthleteClassModel athleteClass)
-                            
         {
             SetDefaultId();
             FirstName = firstName;
@@ -130,6 +164,18 @@ namespace ITimeU.Models
             Gender = gender;
             PhoneNumber = phonenumber;
             Email = email;
+            
+        }
+
+        public AthleteModel()
+        {
+            // TODO: Complete member initialization
+            AthleteDic = new Dictionary<int, string>();
+        }
+
+        public AthleteModel(int id)
+        {
+            Id = id;
         }
 
         /// <summary>
@@ -194,7 +240,7 @@ namespace ITimeU.Models
             if (AthleteClass != null)
                 athlete.ClassID = AthleteClass.SaveToDb();
 
-           // athlete.AthleteClass = AthleteClass;
+            // athlete.AthleteClass = AthleteClass;
             athlete.Startnumber = StartNumber;
 
         }
@@ -208,7 +254,7 @@ namespace ITimeU.Models
 
         public override string ToString()
         {
-            return FirstName + " " + LastName ;
+            return FirstName + " " + LastName;
         }
 
 
@@ -236,7 +282,7 @@ namespace ITimeU.Models
             RaceAthlete raceAthlete = new RaceAthlete();
             raceAthlete.AthleteId = Id;
             raceAthlete.RaceId = raceId;
-           
+
             if (athleteDb.Startnumber.HasValue) raceAthlete.Startnumber = athleteDb.Startnumber.Value;
             context.RaceAthletes.AddObject(raceAthlete);
             context.SaveChanges();

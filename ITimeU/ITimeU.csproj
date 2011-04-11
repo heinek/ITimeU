@@ -161,6 +161,7 @@
     <Content Include="Content\jquery-ui-1.8.10.custom.css" />
     <Content Include="Content\print.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\AthleteHandler.js" />
     <Content Include="Scripts\CheckpointOrderHandler.js" />
     <Content Include="Content\qunit.css" />
     <Content Include="Scripts\date.js" />
@@ -293,6 +294,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Timer\Speaker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\Edit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

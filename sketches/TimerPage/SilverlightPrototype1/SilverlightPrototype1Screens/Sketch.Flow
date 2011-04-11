@@ -82,7 +82,7 @@
       <FileName>Screen 1_6.xaml</FileName>
       <Annotations />
       <Position>
-        <X>292</X>
+        <X>282</X>
         <Y>-44</Y>
       </Position>
       <VisualTag>0</VisualTag>
@@ -94,8 +94,8 @@
       <FileName>AssignAthletes.xaml</FileName>
       <Annotations />
       <Position>
-        <X>242</X>
-        <Y>6</Y>
+        <X>282</X>
+        <Y>38</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>
@@ -106,8 +106,20 @@
       <FileName>Screen 2_1.xaml</FileName>
       <Annotations />
       <Position>
-        <X>498</X>
-        <Y>18</Y>
+        <X>400</X>
+        <Y>-41</Y>
+      </Position>
+      <VisualTag>0</VisualTag>
+    </Screen>
+    <Screen>
+      <Type>Navigation</Type>
+      <ClassName>SilverlightPrototype1Screens.Copy_of_Athlete</ClassName>
+      <DisplayName>Edit Athlete</DisplayName>
+      <FileName>Copy of Athlete.xaml</FileName>
+      <Annotations />
+      <Position>
+        <X>401</X>
+        <Y>37</Y>
       </Position>
       <VisualTag>0</VisualTag>
     </Screen>

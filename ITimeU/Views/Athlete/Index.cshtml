@@ -5,6 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        //var btnEdit = $("#btnEdit");
+        $("#btnEdit").click(function () {
+            url = "/Athlete/Edit";
+            $.post(url);
+        });
+    });
+</script>
+
 <h2>Create Athlete</h2>
 @{ Html.BeginForm("Create", "Athlete", FormMethod.Post); }
 <fieldset>
@@ -26,31 +40,31 @@
     <tr>
         <td>
 <div class="editor-label">
-        @Html.Label("lblFirstName", "First Name")
+        @Html.Label("lblFirstName", "First Name *")
     </div>
 
     <div class="editor-field">
-        @Html.TextBox("txtFirstName", null, new { @class = "textbox" })
+        @Html.TextBox("txtFirstName", null, new { @class = "textboxRequired" })
     </div>
         </td>
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblLastName", "Last Name")
+        @Html.Label("lblLastName", "Last Name *")
     </div>
 
     <div class="editor-field">
-        @Html.TextBox("txtLastName", null, new { @class = "textbox" })
+        @Html.TextBox("txtLastName", null, new { @class = "textboxRequired" })
     </div>
         </td>
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblEmail", "Email")
+        @Html.Label("lblEmail", "Email *")
     </div>
 
     <div class="editor-field">
-        @Html.TextBox("txtEmail", null, new { @class = "textbox" })
+        @Html.TextBox("txtEmail", null, new { @class = "textboxRequired" })
     </div>
         </td>
     </tr>
@@ -102,7 +116,7 @@
         @Html.Label("lblGender", "Gender")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("genderId",new SelectList(ViewBag.Gender, "Id", "Name" ))
+        @Html.DropDownList("genderId", new SelectList(ViewBag.Gender, "Id", "Name"), new { @class = "dropdownlist" })
     </div>
         </td>
 
@@ -111,7 +125,7 @@
         @Html.Label("lblBirthDate", "Birthdate")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("birthdateId", new SelectList(ViewBag.BirthDate, "Id", "BirthYear"))
+        @Html.DropDownList("birthdateId", new SelectList(ViewBag.BirthDate, "Id", "BirthYear"), new { @class = "dropdownlist" })
     </div>
         </td>
     </tr>
@@ -119,20 +133,20 @@
     <tr>
         <td>
         <div class="editor-label">
-                @Html.Label("lblStartNumber", "StartNumber")
+                @Html.Label("lblStartNumber", "StartNumber *")
             </div>
 
             <div class="editor-field">
-                @Html.TextBox("txtStartNumber", null, new { @class = "textbox" })
+                @Html.TextBox("txtStartNumber", null, new { @class = "textboxRequired" })
             </div>
         </td>
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblClub", "Club")
+        @Html.Label("lblClub", "Club *")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("clubId", new SelectList(Model, "Id", "Name"))
+        @Html.DropDownList("clubId", new SelectList(Model, "Id", "Name"), new { @class = "dropdownlistRequired" })
     </div>
         </td>
 
@@ -141,7 +155,7 @@
         @Html.Label("lblClass", "AthleteClass")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("classId", new SelectList(ViewBag.AthleteClass, "Id", "Name"))
+        @Html.DropDownList("classId", new SelectList(ViewBag.AthleteClass, "Id", "Name"), new { @class = "dropdownlist" })
     </div>
         </td>
     </tr>
@@ -149,6 +163,9 @@
     <tr>
         <td>
             <input type="submit" class="btnRegular" id="btnCreate" value="Create" style="width: 100px" />
+        </td>     
+        <td>
+            @Html.ActionLink("EditAthlete", "Edit", null,new { @class = "custom" })       
         </td>
     </tr>
 </table>

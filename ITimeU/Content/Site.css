@@ -430,6 +430,24 @@ table th
     margin-bottom: 10px;
 }
 
+.textboxRequired
+{
+    width: 195px;
+    margin-bottom: 10px;
+    background-color:#FFFFCC;    
+}
+
+.dropdownlist
+{
+    width: 195px;    
+}
+
+.dropdownlistRequired
+{
+    width: 195px;  
+    background-color:#FFFFCC;   
+}
+
 .textboxlarge
 {
     width: 250px;
@@ -610,6 +628,15 @@ div#title
     padding-bottom: 5px;
     padding-right: 25px;
     padding-right: 15px;
+}
+
+a.custom
+{
+   background-color: #DB6600;
+    background-image: url("images/button_bg.jpg");
+    border: 1px solid #DB6600;
+    color: #FFFFFF;
+    padding: 3px 6px;   
 }
 
 /* Styles for validation helpers
