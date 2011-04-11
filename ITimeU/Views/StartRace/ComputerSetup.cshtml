@@ -3,7 +3,7 @@
     ViewBag.Title = "ComputerSetup";
 }
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
-<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script type="text/javascript">
@@ -11,6 +11,7 @@
         var img1pc = $("#img1pc");
         var img2pc = $("#img2pc");
         var imgSpeaker = $("#imgSpeaker");
+        var imgAthletes = $("#imgAthletes");
         var hdRaceid = $("#hdRaceid");
 
 
@@ -24,6 +25,11 @@
             document.location = url;
         });
 
+        imgAthletes.click(function () {
+            var url = "/Athlete/AthletesForRace/?raceId=" + hdRaceid.val();
+            document.location = url;
+        });
+
         imgSpeaker.click(function () {
             var url = "/Timer/Speaker/" + hdRaceid.val();
             document.location = url;
@@ -33,7 +39,8 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", new { @class = "topmenulink" }) |
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        |
     </center>
 </div>
 <div class="contentmargin">
@@ -43,13 +50,18 @@
                 <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
-                                <img src="../../Content/images/1pc.jpg" class="linkimage" id="img1pc" alt="En pc oppsett" />
+                            <img src="../../Content/images/1pc.jpg" class="linkimage" id="img1pc" alt="En pc oppsett" />
                         </td>
                         <td>
-                                <img src="../../Content/images/2pc.jpg" class="linkimage" id="img2pc" alt="To pc oppsett" />
+                            <img src="../../Content/images/2pc.jpg" class="linkimage" id="img2pc" alt="To pc oppsett" />
+                        </td>
+                        <td>
+                            <img src="../../Content/images/Speaker200.jpg" class="linkimage" id="imgSpeaker"
+                                alt="Speaker" />
                         </td>
                                                 <td>
-                                <img src="../../Content/images/Speaker200.jpg" class="linkimage" id="imgSpeaker" alt="Speaker" />
+                            <img src="../../Content/images/athlete01.jpg" class="linkimage" id="imgAthletes"
+                                alt="Athletes" />
                         </td>
                     </tr>
                 </table>
@@ -58,4 +70,3 @@
     </table>
     @Html.Hidden("hdRaceid", Model.RaceId)
 </div>
-
