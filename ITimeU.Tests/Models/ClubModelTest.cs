@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
 {
@@ -13,17 +9,19 @@ namespace ITimeU.Tests.Models
     public class ClubModelTest : ScenarioClass
     {
         private const string CLUB_BYAASEN = "Byåsen";
+        private ClubModel club;
 
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            club.DeleteFromDb();
         }
 
         [TestMethod]
         public void When_Fetching_A_Club_That_Does_Not_Exists_In_The_Db_We_Should_Create_That_Club()
         {
-            ClubModel club = null;
+            club = null;
             int previousCount = -1;
 
             Given("we want to fetch a spesific club called Byåsen");
@@ -47,7 +45,7 @@ namespace ITimeU.Tests.Models
         {
             When_Fetching_A_Club_That_Does_Not_Exists_In_The_Db_We_Should_Create_That_Club();
 
-            ClubModel club = null;
+            club = null;
             int previousCount = 0;
 
             Given("we want to fetch a spesific club called Byåsen");
@@ -109,6 +107,25 @@ namespace ITimeU.Tests.Models
             Then("the two clubs should not equal each other", () =>
             {
                 clubModel1.ShouldNotBe(clubModel2);
+            });
+        }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Save_A_Club_To_The_Database()
+        {
+            int initialclubcount = ClubModel.GetAll().Count;
+            club = null;
+            Given("we want to create a club", () =>
+            {
+                club = new ClubModel("Test");
+            });
+            When("we want to save it to the database", () =>
+            {
+                club.Save();
+            });
+            Then("the number of clubs should be increased with one", () =>
+            {
+                ClubModel.GetAll().Count.ShouldBe(initialclubcount + 1);
             });
         }
 

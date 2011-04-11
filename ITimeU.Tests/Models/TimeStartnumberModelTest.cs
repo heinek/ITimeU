@@ -20,12 +20,18 @@ namespace ITimeU.Tests.Models
         private CheckpointOrderModel checkpointOrderModel;
         private CheckpointModel checkpoint1;
         private CheckpointModel checkpoint2;
+        private EventModel eventModel;
+        private RaceModel race;
+        
         [TestInitialize]
         public void TestSetup()
         {
             timeMerger = new TimeMergerModel();
             timer = new TimerModel();
-            var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            eventModel = new EventModel("Testevent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            race.EventId = eventModel.EventId;
             race.Save();
             checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
             checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
@@ -158,6 +164,11 @@ namespace ITimeU.Tests.Models
         public void TestCleanup()
         {
             StartScenario();
+            race.Delete();
+            eventModel.Delete();
+            checkpoint1.Delete();
+            checkpoint2.Delete();
+            timer.Delete();
         }
     }
 }

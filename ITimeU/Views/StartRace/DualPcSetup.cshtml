@@ -19,11 +19,16 @@
         });
 
         imgRunner.click(function () {
-            var url = "/CheckpointOrder/";
+            var url = "/CheckpointOrder/?raceId=" + hdRaceid.val();
             document.location = url;
         });
     });
 </script>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" }) | 
+    </center>
+</div>
 <div class="contentmargin">
     <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -31,10 +36,10 @@
                 <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td>
-                                <img src="../../Content/images/timer01.jpg" class="logo" id="imgTimer" alt="Logo" />
+                                <img src="../../Content/images/timer01.jpg" class="linkimage" id="imgTimer" alt="Logo" />
                         </td>
                         <td>
-                                <img src="../../Content/images/runner01.jpg" class="logo" id="imgRunner" alt="Logo" />
+                                <img src="../../Content/images/runner01.jpg" class="linkimage" id="imgRunner" alt="Logo" />
                         </td>
                     </tr>
                 </table>

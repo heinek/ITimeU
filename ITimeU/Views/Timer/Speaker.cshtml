@@ -44,16 +44,24 @@
 
     });
 </script>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" }) | 
+    </center>
+</div>
 <div class="contentmargin">
     <div class="containter">
-        <div class="row"" id="divStarted">
+        <div class="row" id="divStarted">
             <div class="left">
-                <span id="lblRunningTimer" class="timer"></span>
+                <center>
+                    <span id="lblRunningTimer" class="timerbig"></span>
+                </center>
             </div>
         </div>
         <div class="row" id="divNotStarted">
             <div class="left">
-                <b>Løpet har ikke startet ennå, prøv å oppdatere:</b><br /><br />
+                <b>Løpet har ikke startet ennå, prøv å oppdatere:</b><br />
+                <br />
                 <input type="button" id="btnUpdate" class="btnRegular" value="Oppdater" />
             </div>
         </div>

@@ -14,14 +14,21 @@ namespace ITimeU.Tests.Models
     {
         private TimeMergerModel timeMerger;
         private TimerModel timer;
+        private RaceModel race;
         private CheckpointOrderModel checkpointOrderModel;
         private CheckpointModel checkpoint1;
         private CheckpointModel checkpoint2;
+        private EventModel eventModel;
 
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            timer.Delete();
+            race.Delete();
+            eventModel.Delete();
+            checkpoint1.Delete();
+            checkpoint2.Delete();
         }
 
         [TestInitialize]
@@ -29,10 +36,13 @@ namespace ITimeU.Tests.Models
         {
             timeMerger = new TimeMergerModel();
             timer = new TimerModel();
-            var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            race.EventId = eventModel.EventId;
             race.Save();
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
+            checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
+            checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             checkpointOrderModel = new CheckpointOrderModel();

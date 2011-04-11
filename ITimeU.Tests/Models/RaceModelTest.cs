@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using ITimeU.Models;
@@ -10,9 +9,10 @@ using TinyBDD.Specification.MSTest;
 namespace ITimeU.Tests.Models
 {
     [TestClass]
-    public class RaceModelTest: ScenarioClass
+    public class RaceModelTest : ScenarioClass
     {
         private RaceModel newRace;
+        private EventModel newEvent;
         private Race raceDB;
         private Entities ctxDBTest;
 
@@ -20,34 +20,46 @@ namespace ITimeU.Tests.Models
         public void TestCleanup()
         {
             StartScenario();
+            newEvent.Delete();
+            newRace.Delete();
         }
 
         [TestInitialize]
         public void TestSetup()
-        {            
+        {
             ctxDBTest = new Entities();
+            newEvent = new EventModel("TestEvent", DateTime.Today);
+            newEvent.Save();
             newRace = new RaceModel("RaceModelTestRace", new DateTime(2009, 2, 3));
+            newRace.EventId = newEvent.EventId;
+            newRace.Save();
             raceDB = new Race();
-
+            raceDB.EventId = newEvent.EventId;
             raceDB.Name = "TestingRaceModel";
             raceDB.Distance = 200;
             raceDB.StartDate = DateTime.Parse("10/03/2020");
-
+            ctxDBTest.Races.AddObject(raceDB);
+            ctxDBTest.SaveChanges();
         }
 
         [TestMethod]
         public void We_Should_Be_Able_To_Add_New_Race_In_Database()
-        {                         
+        {
             int racesBefore = 0;
             int racesAfter = 0;
-            Given("We want to insert new Race in the database");
+            RaceModel newTestRace = null;
+
+
+            Given("We want to insert new Race in the database", () =>
+                {
+                    newTestRace = new RaceModel("test", DateTime.Today);
+                });
 
             When("We insert a new Race in database", () =>
                 {
                     racesBefore = ctxDBTest.Races.Count();
-                    CheckAndDeletelDuplicateRace(raceDB);
-                    newRace = new RaceModel(raceDB);
-                    newRace.Save();                   
+                    newTestRace.EventId = newEvent.EventId;
+                    newTestRace.Save();
                 });
 
             Then("The new Race should exist in database", () =>
@@ -60,114 +72,84 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void We_should_Be_Able_To_Update_Race_Name()
         {
-            string insertedName = raceDB.Name;
+            string insertedName = newRace.Name;
             string updatedName = insertedName;
-            var id = 0;
-            
-            
+
             Given("We have inserted a new Race in database", () =>
                 {
-                    CheckAndDeletelDuplicateRace(raceDB);
-                    newRace = new RaceModel(raceDB);
-                    newRace.Save();   
-                    var ctxDB = new Entities();
-                    id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;
                 });
 
             When("We update Race name", () =>
                 {
-                    
-                    newRace.UpdateRaceName(id,"TestingRaceModelUpdated");
+
+                    newRace.UpdateRaceName("TestingRaceModelUpdated");
                     var ctxTest = new Entities();
-                    updatedName = ctxTest.Races.Where(raceid => raceid.RaceID == id).Single().Name;
-                    
+                    updatedName = ctxTest.Races.Where(raceid => raceid.RaceID == newRace.RaceId).Single().Name;
                 });
 
             Then("Race name must be update", () =>
-                {                    
+                {
                     updatedName.ShouldNotBe(insertedName);
-                    DeleteUpdated(updatedName, (int)raceDB.Distance, raceDB.StartDate);
                 });
         }
 
         [TestMethod]
         public void We_should_Be_Able_To_Update_Race_Distance()
-        {           
+        {
             var insertedDistance = raceDB.Distance;
             var updatedDistance = insertedDistance;
-            var id = 0;
-            
 
             Given("We have inserted a new Race in database", () =>
             {
-                CheckAndDeletelDuplicateRace(raceDB);
-                newRace = new RaceModel(raceDB);
-                newRace.Save();                
-                var ctxDB = new Entities();
-                id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;
             });
 
             When("We update Race distance", () =>
             {
-                newRace.UpdateRaceDistance(id, 300);
+                newRace.UpdateRaceDistance(300);
             });
 
             Then("Race distance must be update", () =>
             {
                 var ctxTest = new Entities();
-                updatedDistance = ctxTest.Races.Where(raceid => raceid.RaceID == id).Single().Distance;
+                updatedDistance = ctxTest.Races.Where(raceid => raceid.RaceID == newRace.RaceId).Single().Distance;
                 updatedDistance.ShouldNotBe(insertedDistance);
-                DeleteUpdated(raceDB.Name, (int)updatedDistance, raceDB.StartDate);
             });
         }
 
         [TestMethod]
         public void We_should_Be_Able_To_Update_Race_Start_Date()
-        {            
+        {
             var insertedDate = raceDB.StartDate;
             var updatedDate = insertedDate;
-            var id = 0;            
 
             Given("We have inserted a new Race in database", () =>
             {
-                CheckAndDeletelDuplicateRace(raceDB);
-                newRace = new RaceModel(raceDB);
-                newRace.Save();   
-                var ctxDB = new Entities();
-                id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;
             });
 
             When("We update Race name", () =>
             {
-                newRace.UpdateRaceDate(id, DateTime.Parse("10/05/2020"));
+                newRace.UpdateRaceDate(DateTime.Parse("10/05/2020"));
             });
 
             Then("Race name must be update", () =>
             {
                 var ctxTest = new Entities();
-                updatedDate = ctxTest.Races.Where(raceid => raceid.RaceID == id).Single().StartDate;
+                updatedDate = ctxTest.Races.Where(raceid => raceid.RaceID == newRace.RaceId).Single().StartDate;
                 updatedDate.ShouldNotBe(insertedDate);
-                DeleteUpdated(raceDB.Name, (int)raceDB.Distance, updatedDate);
             });
         }
 
         [TestMethod]
         public void We_Should_Retrieve_Single_Race()
         {
-            int id = 0;
-            Race insertedRace = new Race();
-            Given ("We have a Race in database", () =>
+            Race insertedRace = null;
+            Given("We have a Race in database", () =>
                 {
-                    CheckAndDeletelDuplicateRace(raceDB);
-                    newRace = new RaceModel(raceDB);
-                    newRace.Save();   
-                    var ctxDB = new Entities();
-                    id = ctxDB.Races.Where(race => (race.Name == raceDB.Name && race.Distance == raceDB.Distance && race.StartDate == raceDB.StartDate)).Single().RaceID;                    
                 });
 
-            When ("We retrieve a single race", () =>
+            When("We retrieve a single race", () =>
                 {
-                    insertedRace = newRace.GetRace(id);
+                    insertedRace = RaceModel.GetRace(raceDB.RaceID);
                 });
 
             Then("It should have same inserted data", () =>
@@ -175,29 +157,25 @@ namespace ITimeU.Tests.Models
                     insertedRace.Name.ShouldBe(raceDB.Name);
                     insertedRace.Distance.ShouldBe(raceDB.Distance);
                     insertedRace.StartDate.ShouldBe(raceDB.StartDate);
-                    CheckAndDeletelDuplicateRace(raceDB);
                 });
         }
 
         [TestMethod]
         public void We_Should_Get_All_Athletes_Connected_To_A_Race()
         {
-            RaceModel race = null;
             AthleteModel athlete = null;
             int athletesConnectedToRace = 0;
 
             Given("we have a race with athletes", () =>
             {
-                race = new RaceModel("Testrace", DateTime.Today);
-                race.Save();
                 athlete = new AthleteModel("Testing", "Tester");
                 athlete.SaveToDb();
-                athlete.ConnectToRace(race.RaceId);
+                athlete.ConnectToRace(newRace.RaceId);
             });
 
             When("we want to get all the athletes connected to that race", () =>
                 {
-                    athletesConnectedToRace = race.GetAthletes().Count;
+                    athletesConnectedToRace = newRace.GetAthletes().Count;
                 });
             Then("the number of athletes should be 1", () =>
             {
@@ -208,54 +186,49 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void We_Should_Get_All_Athletes_Not_Connected_To_A_Race()
         {
-            RaceModel race = null;
-            AthleteModel athlete = null;
             int athletesNotConnectedToRace = 0;
+            AthleteModel athlete = null;
 
             Given("we have a race with athletes", () =>
             {
-                race = new RaceModel("Testrace", DateTime.Today);
-                race.Save();
             });
 
             When("we want to add a new athlete", () =>
             {
                 athlete = new AthleteModel("Testing", "Tester");
                 athlete.SaveToDb();
-                athletesNotConnectedToRace = race.GetAthletesNotConnected().Count;
-                athlete.ConnectToRace(race.RaceId);
+                athletesNotConnectedToRace = newRace.GetAthletesNotConnected().Count;
+                athlete.ConnectToRace(newRace.RaceId);
             });
 
             Then("the number of athletes not connected to the race should be reduced by 1", () =>
             {
-                race.GetAthletesNotConnected().Count.ShouldBe(athletesNotConnectedToRace - 1);
+                newRace.GetAthletesNotConnected().Count.ShouldBe(athletesNotConnectedToRace - 1);
+                athlete.Delete();
             });
         }
 
         [TestMethod]
         public void We_Should_Remove_Athlete_From_Race()
         {
-            RaceModel race = null;
             AthleteModel athlete = null;
             int athletesConnectedToRace = 0;
             Given("we have a race and athletes connected to the race", () =>
             {
-                race = new RaceModel("Testrace", DateTime.Today);
-                race.Save();
                 athlete = new AthleteModel("Test", "Tester");
                 athlete.SaveToDb();
-                athlete.ConnectToRace(race.RaceId);
-                athletesConnectedToRace = race.GetAthletes().Count;
+                athlete.ConnectToRace(newRace.RaceId);
+                athletesConnectedToRace = newRace.GetAthletes().Count;
             });
 
             When("we want to remove an athlete from the race", () =>
             {
-                athlete.RemoveFromRace(race.RaceId);
+                athlete.RemoveFromRace(newRace.RaceId);
             });
 
             Then("the list of athletes should be reduced with 1", () =>
             {
-                race.GetAthletes().Count.ShouldBe(athletesConnectedToRace - 1);
+                newRace.GetAthletes().Count.ShouldBe(athletesConnectedToRace - 1);
             });
         }
 
@@ -282,7 +255,7 @@ namespace ITimeU.Tests.Models
                     ctxDel.DeleteObject(DelRace);
                     ctxDel.SaveChanges();
                 }
-            }        
+            }
         }
 
         [TestMethod]

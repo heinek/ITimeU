@@ -74,9 +74,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AthleteControllerTest.cs" />
     <Compile Include="Controllers\CheckpointControllerTest.cs" />
+    <Compile Include="Controllers\ClubControllerTest.cs" />
     <Compile Include="Controllers\ImportAthletesControllerTest.cs" />
     <Compile Include="Controllers\MockControllerTest.cs" />
+    <Compile Include="Controllers\ResultsControllerTest.cs" />
     <Compile Include="Controllers\TimerControllerTest.cs" />
     <Compile Include="Library\DateTimeRounderTest.cs" />
     <Compile Include="Library\Import\FriResExporterTest.cs" />

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using ITimeU.Models;
-using System.Text.RegularExpressions;
 
 namespace ITimeU.Controllers
 {
@@ -17,12 +16,12 @@ namespace ITimeU.Controllers
         {
             setViewData();
             ViewBag.IsAthleteCreated = false;
-            ViewBag.IsValidInput = true;            
+            ViewBag.IsValidInput = true;
             return View(ClubModel.GetAll());
         }
 
         private void setViewData()
-        {            
+        {
             ViewBag.Gender = getGender();
             ViewBag.BirthDate = getBirthDate();
             ViewBag.AthleteClass = AthleteClassModel.GetAll();  
@@ -57,18 +56,33 @@ namespace ITimeU.Controllers
             return Content(AthleteModel.GetById(Id).ToListboxvalues());
         }
 
+        /// <summary>
+        /// Creates the specified TXT first name.
+        /// </summary>
+        /// <param name="txtFirstName">First name.</param>
+        /// <param name="txtLastName">Last name.</param>
+        /// <param name="txtEmail">The email.</param>
+        /// <param name="txtPostalAddress">Postal address.</param>
+        /// <param name="txtPostalCode">The postal code.</param>
+        /// <param name="txtCity">The city.</param>
+        /// <param name="txtPhoneNumber">The phone number.</param>
+        /// <param name="genderId">The gender id.</param>
+        /// <param name="birthdateId">The birthdate id.</param>
+        /// <param name="txtStartNumber">The start number.</param>
+        /// <param name="clubId">The club id.</param>
+        /// <param name="classId">The class id.</param>
+        /// <returns></returns>
         public ActionResult Create(string txtFirstName, string txtLastName, string txtEmail, string txtPostalAddress, string txtPostalCode, string txtCity,
-                                    string txtPhoneNumber, string genderId, string birthdateId, string txtStartNumber, string clubId, string classId )
+                                    string txtPhoneNumber, string genderId, string birthdateId, string txtStartNumber, string clubId, string classId)
         {
             if (!IsValidInput(txtFirstName,txtLastName,txtEmail,txtStartNumber,clubId))
-            {                
+            {
                 ViewBag.IsValidInput = false;
                 ViewBag.IsAthleteCreated = false;
-                //ViewBag.IsValidEmail = false;
                 setViewData();
                 return View("Index", ClubModel.GetAll());
             }
-            else 
+            else
             {
                 int birthdate = 0, startnum = 0;
                 int gender = 0, athleteclubid = 0, athleteclassid = 0;
@@ -108,7 +122,7 @@ namespace ITimeU.Controllers
                                     txtPostalCode, txtCity, gendername, birthyear, txtPhoneNumber, startnum, athclubobj, athclassobj);
                 athlete.SaveToDb();
                 return RedirectToAction("ResetFormField");
-            }            
+            }
         }
 
         public ActionResult EditAthlete(string btnSubmit, string ddAthlete, string txtFirstName, string txtLastName, string txtEmail, string txtPostalAddress, string txtPostalCode, string txtCity,
@@ -191,6 +205,10 @@ namespace ITimeU.Controllers
             {
                 return false;
             }
+            else if (AthleteModel.StartnumberExistsInDb(startnum))
+            {
+                return false;
+            }
             else
             {
                 return true;
@@ -251,12 +269,14 @@ namespace ITimeU.Controllers
                 return (false);
         }
 
+
+
         private List<Gender> getGender()
         {
             List<Gender> gender = new List<Gender>()
             {
                 new Gender() { Id = 1, Name = "M" },
-                new Gender() { Id = 2, Name = "F" }
+                new Gender() { Id = 2, Name = "K" }
             };
             gender.Insert(0, null);
             return gender;
@@ -267,7 +287,7 @@ namespace ITimeU.Controllers
             List<Gender> gender = new List<Gender>()
             {
                 new Gender() { Id = 1, Name = "M" },
-                new Gender() { Id = 2, Name = "F" }
+                new Gender() { Id = 2, Name = "K" }
             };
             return (gender.SingleOrDefault(gid => gid.Id == id));
         }
@@ -279,7 +299,7 @@ namespace ITimeU.Controllers
             List<BirthDate> birthdate = new List<BirthDate>();
             while (startdate <= DateTime.Now.Year)
             {
-                birthdate.Add(new BirthDate() { Id = id++, BirthYear = startdate++ });                
+                birthdate.Add(new BirthDate() { Id = id++, BirthYear = startdate++ });
             }
             birthdate.Insert(0, null);
             return birthdate;
@@ -292,9 +312,21 @@ namespace ITimeU.Controllers
             List<BirthDate> birthdate = new List<BirthDate>();
             while (startdate <= DateTime.Now.Year)
             {
-                birthdate.Add(new BirthDate() { Id = id++, BirthYear = startdate++ });
+                birthdate.Insert(0, new BirthDate() { Id = id++, BirthYear = startdate++ });
             }
             return birthdate.SingleOrDefault(bday => bday.Id == birthid);
+        }
+
+        [HttpGet]
+        public ActionResult Athletes(int clubId)
+        {
+            return View("Athletes", AthleteModel.GetAthletes(clubId));
+        }
+
+        [HttpGet]
+        public ActionResult AthletesForRace(int raceId)
+        {
+            return View("Athletes", AthleteModel.GetAthletesForRace(raceId));
         }
     }
 }

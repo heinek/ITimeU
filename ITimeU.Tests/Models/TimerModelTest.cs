@@ -7,40 +7,40 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
 
-/*
-    Given("", () =>
-    {
-
-    });
-
-    When("", () =>
-    {
-
-    });
-
-    Then("", () =>
-    {
-
-    });
-*/
-
 namespace ITimeU.Tests.Models
 {
 
     [TestClass]
     public class TimerModelTest : ScenarioClass
     {
-        private TimerModel timer = null;
-        private RuntimeModel runtime = null;
+        private TimerModel timer;
+        private RaceModel race;
+        private EventModel eventModel;
+        private CheckpointModel checkpoint;
+        private CheckpointModel checkpoint2;
+        private RuntimeModel runtime;
+
+        [TestInitialize]
+        public void TestSetup()
+        {
+            timer = new TimerModel();
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            race.EventId = eventModel.EventId;
+            race.Save();
+            checkpoint = new CheckpointModel("Checkpoint1", timer, race, 1);
+            checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+        }
 
         [TestMethod]
         public void A_Timer_Exists()
         {
             Given("we want to create a timer");
 
-            When("we instantiate the timer",
-                () => timer = new TimerModel()
-            );
+            When("we instantiate the timer");
 
             Then("we have a timer", () => timer.ShouldNotBeNull()
             );
@@ -49,18 +49,19 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Timer_Id_Should_Be_Zero_Before_Timer_Has_Saved_Data()
         {
+            TimerModel newTimer = null;
             When("we create a new timer", () =>
             {
-                timer = new TimerModel();
+                newTimer = new TimerModel();
             });
 
-            Then("its ID should be zero", () => timer.Id.ShouldBe(0));
+            Then("its ID should be zero", () => newTimer.Id.ShouldBe(0));
         }
 
         [TestMethod]
         public void A_Started_Timer_Must_Have_A_Starttime()
         {
-            Given("we have an instance of the timerclass", () => timer = new TimerModel());
+            Given("we have an instance of the timerclass");
             When("we we click the startbutton", () => timer.Start());
             Then("the timer should have a starttime", () => timer.StartTime.ShouldBeInstanceOfType<DateTime>());
         }
@@ -69,7 +70,7 @@ namespace ITimeU.Tests.Models
         public void A_Started_Timer_Should_Always_Return_The_Same_StartTime()
         {
             DateTime? startTime = null;
-            Given("we have a timer", () => timer = new TimerModel());
+            Given("we have a timer");
 
             When("we click the start button", () =>
             {
@@ -86,7 +87,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Starting_A_Timer_Twice_Should_Throw_Exception()
         {
-            Given("we have a timer", () => timer = new TimerModel());
+            Given("we have a timer");
 
             When("we start the timer twice", () =>
             {
@@ -108,13 +109,9 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Stopping_A_Timer_Twice_Should_Throw_Exception()
         {
-            Given("we have a started timer", () =>
-            {
-                timer = new TimerModel();
-                timer.Start();
-            });
+            Given("we have a started timer");
 
-            When("we start the timer twice", () =>
+            When("we stop the timer twice", () =>
             {
                 timer.Stop();
                 try
@@ -133,7 +130,7 @@ namespace ITimeU.Tests.Models
         {
             DateTime? startTime = new DateTime();
 
-            Given("we have a timer", () => timer = new TimerModel());
+            Given("we have a timer");
             When("we fetch the start time", () => startTime = timer.StartTime);
             Then("the start time should be null", () => startTime.ShouldBeNull());
         }
@@ -142,7 +139,7 @@ namespace ITimeU.Tests.Models
         public void The_Timer_Should_Initially_Not_Be_Started()
         {
             Given("we are going to create a timer");
-            When("we create the timer", () => timer = new TimerModel());
+            When("we create the timer");
             Then("the timer should not be started", () => timer.IsStarted.ShouldBeFalse());
         }
 
@@ -151,10 +148,7 @@ namespace ITimeU.Tests.Models
         {
             DateTime? startTime = new DateTime();
 
-            Given("we have a started timer", () =>
-            {
-                timer = new TimerModel();
-            });
+            Given("we have a timer");
 
             When("we start the timer", () =>
             {
@@ -180,7 +174,6 @@ namespace ITimeU.Tests.Models
 
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
             });
 
@@ -204,7 +197,6 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
             });
 
@@ -221,10 +213,7 @@ namespace ITimeU.Tests.Models
         {
             TimerModel timerDb = null;
 
-            Given("we have a timer", () =>
-            {
-                timer = new TimerModel();
-            });
+            Given("we have a timer");
 
             When("we start the timer, and retrieve it from the database", () =>
             {
@@ -243,7 +232,6 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
             });
 
@@ -260,7 +248,6 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
             });
 
@@ -279,7 +266,6 @@ namespace ITimeU.Tests.Models
 
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
                 oldStartTime = timer.StartTime;
             });
@@ -305,7 +291,6 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
             });
 
@@ -329,7 +314,6 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
             });
 
@@ -352,7 +336,6 @@ namespace ITimeU.Tests.Models
 
             Given("we have a started timer", () =>
             {
-                timer = new TimerModel();
                 timer.Start();
                 oldTimerId = timer.Id;
             });
@@ -476,6 +459,7 @@ namespace ITimeU.Tests.Models
         public void Setting_A_Timers_Start_Time_Should_Be_Rounded()
         {
             ITimeU.Models.Timer t = null;
+            TimerModel timerDb = null;
             Given("we have a timer database entry with a start time set to 42.972 seconds", () =>
             {
                 t = new ITimeU.Models.Timer();
@@ -484,13 +468,13 @@ namespace ITimeU.Tests.Models
 
             When("we create a timer model based on the timer entry", () =>
             {
-                timer = new TimerModel(t);
+                timerDb = new TimerModel(t);
             });
 
             Then("the time should be rounded to 43 seconds and 0 milliseconds", () =>
             {
-                timer.StartTime.Value.Second.ShouldBe(43);
-                timer.StartTime.Value.Millisecond.ShouldBe(0);
+                timerDb.StartTime.Value.Second.ShouldBe(43);
+                timerDb.StartTime.Value.Millisecond.ShouldBe(0);
             });
         }
 
@@ -514,10 +498,10 @@ namespace ITimeU.Tests.Models
 
             Then("the time should be rounded to 43 seconds and 0 milliseconds", () =>
             {
-                TimerModel timer = TimerModel.GetTimerById(t.TimerID);
+                TimerModel timerDb = TimerModel.GetTimerById(t.TimerID);
 
-                timer.StartTime.Value.Second.ShouldBe(43);
-                timer.StartTime.Value.Millisecond.ShouldBe(0);
+                timerDb.StartTime.Value.Second.ShouldBe(43);
+                timerDb.StartTime.Value.Millisecond.ShouldBe(0);
             });
         }
 
@@ -527,7 +511,6 @@ namespace ITimeU.Tests.Models
             var runtime = new RuntimeModel();
             var listcount = 0;
             var checkpointid = 0;
-            var timer = CreateNewTimerModelWithCheckpoints();
             Given("we have a runtimelist", () =>
             {
                 timer.Start();
@@ -553,7 +536,6 @@ namespace ITimeU.Tests.Models
             var runtimemodel = new RuntimeModel();
             var newValue = 0;
             var checkpointid = 0;
-            var timer = CreateNewTimerModelWithCheckpoints();
             Given("we have a runtime", () =>
             {
                 timer.Start();
@@ -573,7 +555,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Changing_A_Checkpoint_Should_Give_A_New_CheckpointId()
         {
-            var timer = CreateNewTimerModelWithCheckpoints();
             var initialCheckpointId = 0;
             Given("we have started a timer", () =>
             {
@@ -593,7 +574,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Changing_A_Checkpoint_Should_Give_A_New_CheckpointList()
         {
-            var timer = CreateNewTimerModelWithCheckpoints();
             Dictionary<int, int> initialruntimes = new Dictionary<int, int>();
             Given("we have started a timer", () =>
             {
@@ -614,7 +594,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Adding_A_Runtime_To_A_Checkpoint_Then_Changing_To_New_Checkpoint_Then_Going_Back_To_First_Checkpoint_Should_Give_Same_Runtimelist_As_Before()
         {
-            var timer = CreateNewTimerModelWithCheckpoints();
             var initialruntimes = new Dictionary<int, int>();
             Given("we have started a timer and added a runtime", () =>
             {
@@ -637,7 +616,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Adding_A_Runtime_To_A_Checkpoint_Then_Changing_To_New_Checkpoint_Then_Going_Back_To_First_Checkpoint_Then_Going_Back_To_Second_Checkpoint_Should_Give_Same_Runtimelist_As_Before()
         {
-            var timer = CreateNewTimerModelWithCheckpoints();
             var initialruntimes = new Dictionary<int, int>();
             Given("we have started a timer and added a runtime and then change", () =>
             {
@@ -662,7 +640,6 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_The_Starttime_Of_A_Running_Timer()
         {
-            var timer = CreateNewTimerModelWithCheckpoints();
             DateTime? starttime = null;
 
             Given("we have started a timer", () =>
@@ -683,22 +660,10 @@ namespace ITimeU.Tests.Models
         public void TestCleanup()
         {
             StartScenario();
-        }
-
-        /// <summary>
-        /// Creates the new timer model with checkpoints.
-        /// </summary>
-        /// <returns></returns>
-        private TimerModel CreateNewTimerModelWithCheckpoints()
-        {
-            var timer = new TimerModel();
-            var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-            race.Save();
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
-            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
-            return timer;
+            checkpoint.Delete();
+            timer.Delete();
+            race.Delete();
+            eventModel.Delete();
         }
     }
 }

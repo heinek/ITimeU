@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ITimeU.Models.AthleteModel>
+@{
+    ViewBag.Title = "Athletes";
+}
+
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" }) | 
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Utøvere</h2>
+    <table>
+        <tr>
+            <th>
+                Navn
+            </th>
+            <th>
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.FullName
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

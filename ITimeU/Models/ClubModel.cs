@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 
 namespace ITimeU.Models
 {
@@ -11,6 +12,9 @@ namespace ITimeU.Models
         private static int ID_WHEN_NOT_CREATED_IN_DB = -1;
 
         public int Id { get; set; }
+        [Required]
+        [DisplayName("Navn")]
+        [DataType(DataType.Text)]
         public string Name { get; set; }
 
         private bool instanceSaved
@@ -136,7 +140,7 @@ namespace ITimeU.Models
             {
                 clubDb = CreateDbEntry(name);
             }
-          
+
             return new ClubModel(clubDb);
         }
 
@@ -211,6 +215,55 @@ namespace ITimeU.Models
         private void SetDefaultId()
         {
             Id = ID_WHEN_NOT_CREATED_IN_DB;
+        }
+
+        public static List<ClubModel> GetClubs()
+        {
+            using (var context = new Entities())
+            {
+                return context.Clubs.Select(club => new ClubModel()
+                {
+                    Id = club.ClubID,
+                    Name = club.Name
+                }).ToList();
+            }
+        }
+
+        public void Save()
+        {
+            using (var context = new Entities())
+            {
+                var club = new Club()
+                {
+                    Name = Name
+                };
+                context.Clubs.AddObject(club);
+                context.SaveChanges();
+                Id = club.ClubID;
+            }
+        }
+
+        public static ClubModel GetById(int id)
+        {
+            using (var context = new Entities())
+            {
+                var clubToFetch = context.Clubs.Where(club => club.ClubID == id).Single();
+                return new ClubModel()
+                {
+                    Id = clubToFetch.ClubID,
+                    Name = clubToFetch.Name
+                };
+            }
+        }
+
+        public void Update()
+        {
+            using (var context = new Entities())
+            {
+                var club = context.Clubs.Single(clb => clb.ClubID == Id);
+                club.Name = Name;
+                context.SaveChanges();
+            }
         }
     }
 }

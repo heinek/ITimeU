@@ -204,6 +204,11 @@
     }
 
 </script>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("TILBAKE", "DualPcSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" }) | 
+    </center>
+</div>
 <div class="contentmargin">
     <div class="containter">
         <div class="row">
@@ -213,7 +218,7 @@
             </div>
             <div class="row">
                 <br />
-                @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))
+                @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "Id", "Name"))
                 <input type="button" id="btnChangeCP" class="btnGo" value=" " />
             </div>
         </div>

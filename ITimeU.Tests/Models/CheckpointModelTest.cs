@@ -1,33 +1,53 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ITimeU.Logging;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using System;
 
 namespace ITimeU.Tests.Models
 {
     [TestClass]
     public class CheckpointModelTest : ScenarioClass
     {
+        private CheckpointModel checkpoint;
+        private EventModel eventModel;
+        private RaceModel race;
+        private TimerModel timer;
+        [TestInitialize]
+        public void TestSetup()
+        {
+            timer = new TimerModel();
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            race.EventId = eventModel.EventId;
+            race.Save();
+            checkpoint = new CheckpointModel("Checkpoint1", timer, race, 1);
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+            timer.SaveToDb();
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            checkpoint.Delete();
+            timer.Delete();
+            race.Delete();
+            eventModel.Delete();
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Get_A_List_Of_Checkpoints_From_The_Database()
         {
             List<CheckpointModel> checkpointsDb = null;
-            var timer = CreateNewTimerModelWithCheckpoints();
+
             int previousSize = CheckpointModel.getAll().Count;
             Given("we insert three checkpoints in the datbase", () =>
             {
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
-
                 new CheckpointModel("1st checkpoint", timer, race, 1);
                 new CheckpointModel("2nd checkpoint", timer, race, 2);
                 new CheckpointModel("3rd checkpoint", timer, race, 3);
@@ -50,14 +70,11 @@ namespace ITimeU.Tests.Models
         public void It_Should_Be_Possible_To_Insert_A_New_Checkpoint_To_The_Database()
         {
             CheckpointModel newCheckpoint = null;
-
             Given("we want to insert a new checkpoint to the database");
 
             When("we create the checkpoint", () =>
             {
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
-                newCheckpoint = new CheckpointModel("MyCheckpoint", new TimerModel(), race, 1);
+                newCheckpoint = new CheckpointModel("MyCheckpoint", timer, race, 1);
             });
 
             Then("it should exist in the database", () =>
@@ -70,14 +87,8 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void The_Checkpoint_Should_Have_A_Timer_With_Correct_Start_Time_When_Starting_The_Timer()
         {
-            TimerModel timer = null;
-            CheckpointModel checkpoint = null;
             Given("we have a timer which is associated with a checkpoint", () =>
             {
-                timer = new TimerModel();
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
-                checkpoint = new CheckpointModel("RelationToTimerCheckpoint", timer, race);
             });
 
             When("we start the timer", () => timer.Start());
@@ -92,19 +103,12 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void A_Checkpoint_Should_Be_Able_To_Have_A_Timer()
         {
-            TimerModel timer = null;
-            CheckpointModel checkpoint = null;
-
             Given("we have a timer", () =>
             {
-                timer = new TimerModel();
             });
 
             When("when we create a checkpoint and associate it with a timer", () =>
             {
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
-                checkpoint = new CheckpointModel("Supercheckpoint", timer, race);
             });
 
             Then("the checkpoint should have the correct timer associated with it", () =>
@@ -117,14 +121,9 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void We_Should_Be_Able_To_Insert_And_Fetch_A_Checkpoint_To_Database()
         {
-            CheckpointModel checkpoint = null;
             CheckpointModel checkpointDb = null;
-            var timer = CreateNewTimerModelWithCheckpoints();
             Given("we have a checkpoint", () =>
             {
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
-                checkpoint = new CheckpointModel("MyCheckpoint", timer, race, 1);
             });
 
             When("we fetch the same checkpoint from database", () =>
@@ -138,31 +137,13 @@ namespace ITimeU.Tests.Models
             });
         }
 
-        private TimerModel CreateNewTimerModelWithCheckpoints()
-        {
-            var timer = new TimerModel();
-            var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-            race.Save();
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
-            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
-            timer.SaveToDb();
-            return timer;
-        }
-
         [TestMethod]
         public void We_Should_Be_Able_To_Insert_And_Fetch_A_Checkpoint_With_A_Race_To_Database()
         {
-            CheckpointModel checkpoint = null;
             CheckpointModel checkpointDb = null;
-            RaceModel race = new RaceModel("Malvikløpet", new System.DateTime(2011, 3, 2));
-            race.Save(); // We assume that the race is stored in the database already.
 
             Given("we have a checkpoint in the database", () =>
             {
-                checkpoint = new CheckpointModel("MalvikCheckpoint", race.RaceId);
-                checkpoint.SaveToDb();
             });
 
             When("we fetch the same checkpoint from database", () =>

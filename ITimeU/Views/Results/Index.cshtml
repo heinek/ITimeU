@@ -8,10 +8,10 @@
     $(document).ready(function () {
         var btnApprove = $("#btnApprove");
         var btnChangeRace = $("#btnChangeRace");
-        var btnChangeTimer = $("#btnChangeTimer");
+        var btnChangeEvent = $("#btnChangeEvent");
         var btnChangeCP = $("#btnChangeCP");
         var ddlRaces = $("#ddlRaces");
-        var ddlTimers = $("#ddlTimers");
+        var ddlEvents = $("#ddlEvents");
         var ddlCheckpoints = $("#ddlCheckpoints");
         var divResults = $("#divResults");
         var listIntermediates = $("#listIntermediates");
@@ -33,14 +33,14 @@
         var tbEditStartnumber = $("#tbEditStartnumber");
         var initialChecpointOrderId;
 
-        btnChangeRace.click(function () {
-            url = "/Results/GetTimers/?raceId=" + ddlRaces.val();
-            Tools.postUpdate(ddlTimers, url);
+        btnChangeEvent.click(function () {
+            url = "/Results/GetRaces/?eventId=" + ddlEvents.val();
+            Tools.postUpdate(ddlRaces, url);
             divResults.html("");
         });
 
-        btnChangeTimer.click(function () {
-            url = "/Results/GetCheckpoints/?timerId=" + ddlTimers.val();
+        btnChangeRace.click(function () {
+            url = "/Results/GetCheckpoints/?raceId=" + ddlRaces.val();
             Tools.postUpdate(ddlCheckpoints, url);
             divResults.html("");
         });
@@ -107,13 +107,10 @@
         });
 
         btnPrint.click(function () {
-            //            window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val());
             printWin = window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val() + "&racename=" + $("#ddlRaces option:selected").text() + "&checkpointname=" + $("#ddlCheckpoints option:selected").text(), "_blank", "height=800,left=100,top=100,width=800,toolbar=no,titlebar=0,status=0,menubar=yes,location= no,scrollbars=1");
             printWin.print();
 
         });
-
-
 
         listIntermediates.change(function () {
             var strid = "";
@@ -142,12 +139,29 @@
         });
     });
 </script>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) |
+    </center>
+</div>
 <div class="contentmargin">
     <div class="editor-label" style="vertical-align: top">
         <h2>
             Resultatliste</h2>
     </div>
     <div class="containter">
+        <div class="row">
+            <div class="left">
+                <div class="editor-label" style="vertical-align: top">
+                    <b>@Html.Label("lblEvent", "Stevne:")</b>
+                </div>
+            </div>
+            <div class="middle">
+                <br />
+                @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"), "Velg stevne...")
+                <input type="button" id="btnChangeEvent" class="btnGo" value=" " />
+            </div>
+        </div>
         <div class="row">
             <div class="left">
                 <div class="editor-label" style="vertical-align: top">
@@ -158,18 +172,6 @@
                 <br />
                 @Html.DropDownList("ddlRaces", new SelectList(ViewBag.Races, "RaceId", "Name"), "Velg løp...")
                 <input type="button" id="btnChangeRace" class="btnGo" value=" " />
-            </div>
-        </div>
-        <div class="row">
-            <div class="left">
-                <div class="editor-label" style="vertical-align: top">
-                    <b>@Html.Label("lblTimer", "Timer:")</b>
-                </div>
-            </div>
-            <div class="middle">
-                <br />
-                @Html.DropDownList("ddlTimers", new SelectList(ViewBag.Timers, "TimerId", "StartTime"), "Velg timer...")
-                <input type="button" id="btnChangeTimer" class="btnGo" value=" " />
             </div>
         </div>
         <div class="row">
@@ -218,7 +220,7 @@
                 <input type="button" id="btnPrint" value="Skriv ut" class="btnRegular" style="width: 110px" />
             </div>
         </div>
-                <div class="row">
+        <div class="row">
             <div class="left">
                 <div id="divResults">
                 </div>

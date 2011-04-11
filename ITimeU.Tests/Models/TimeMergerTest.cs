@@ -14,6 +14,7 @@ namespace ITimeU.Tests.Models
     [TestClass]
     public class TimeMergerTest : ScenarioClass
     {
+        private EventModel eventModel;
         private TimeMergerModel timeMerger;
         private TimerModel timer;
         private CheckpointOrderModel checkpointOrderModel;
@@ -22,9 +23,13 @@ namespace ITimeU.Tests.Models
         [TestInitialize]
         public void TestSetup()
         {
+
             timeMerger = new TimeMergerModel();
             timer = new TimerModel();
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
             var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
+            race.EventId = eventModel.EventId;
             race.Save();
             checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
             checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);

@@ -4,7 +4,14 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" }) | 
+    </center>
+</div>
+<div class="contentmargin">
 
+<h2>Legg til utøver</h2>
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
 <script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
@@ -19,20 +26,18 @@
     });
 </script>
 
-<h2>Create Athlete</h2>
 @{ Html.BeginForm("Create", "Athlete", FormMethod.Post); }
-<fieldset>
 @if (ViewBag.IsAthleteCreated)
     {
         <div class="statusmessagearea" id="StatusMessage">
-            Athlete has been saved successfully!
+            Utøver har blitt lagret!
         </div>
     }
     
 @if (!ViewBag.IsValidInput)
 {
     <div class="errormessagearea">
-        First Name, Last Name, Email and StartNumber must not be empty and invalid.
+        Fornavn, etternavn, e-post og startnummer kan ikke være tom. Man kan heller ikke legge inn et startnummer som allerede eksisterer i databasen.
     </div>
 }
 
@@ -72,7 +77,7 @@
     <tr>
         <td>
 <div class="editor-label">
-        @Html.Label("lblPostaladdress", "Postal Address")
+        @Html.Label("lblPostaladdress", "Postadresse")
     </div>
 
     <div class="editor-field">
@@ -82,7 +87,7 @@
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblPostalCode", "Postal Code")
+        @Html.Label("lblPostalCode", "Postkode")
     </div>
 
     <div class="editor-field">
@@ -92,7 +97,7 @@
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblCity", "City")
+        @Html.Label("lblCity", "By")
     </div>
 
     <div class="editor-field">
@@ -104,7 +109,7 @@
     <tr>
         <td>
         <div class="editor-label">
-                @Html.Label("lblPhoneNumber", "Phone Number")
+                @Html.Label("lblPhoneNumber", "Telefonnummer")
             </div>
 
             <div class="editor-field">
@@ -113,7 +118,7 @@
                 </td>
         <td>
 <div class="editor-label">
-        @Html.Label("lblGender", "Gender")
+        @Html.Label("lblGender", "Kjønn")
     </div>
     <div class="editor-field">
         @Html.DropDownList("genderId", new SelectList(ViewBag.Gender, "Id", "Name"), new { @class = "dropdownlist" })
@@ -122,7 +127,7 @@
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblBirthDate", "Birthdate")
+        @Html.Label("lblBirthDate", "Fødselsår")
     </div>
     <div class="editor-field">
         @Html.DropDownList("birthdateId", new SelectList(ViewBag.BirthDate, "Id", "BirthYear"), new { @class = "dropdownlist" })
@@ -152,7 +157,7 @@
 
         <td>
 <div class="editor-label">
-        @Html.Label("lblClass", "AthleteClass")
+        @Html.Label("lblClass", "Klasse")
     </div>
     <div class="editor-field">
         @Html.DropDownList("classId", new SelectList(ViewBag.AthleteClass, "Id", "Name"), new { @class = "dropdownlist" })
@@ -162,13 +167,12 @@
     
     <tr>
         <td>
-            <input type="submit" class="btnRegular" id="btnCreate" value="Create" style="width: 100px" />
+            <input type="submit" class="btnRegular" id="btnCreate" value="Opprett" style="width: 100px" />
         </td>     
         <td>
             @Html.ActionLink("EditAthlete", "Edit", null,new { @class = "custom" })       
         </td>
     </tr>
 </table>
-</fieldset>
 @{ Html.EndForm(); }
-
+</div>

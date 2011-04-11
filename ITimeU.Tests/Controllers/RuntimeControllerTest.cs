@@ -13,11 +13,29 @@ namespace ITimeU.Tests.Models
     [TestClass]
     public class RuntimeControllerTest : ScenarioClass
     {
+        private EventModel eventModel;
+        private RaceModel race;
+        private TimerModel timer;
+
+        [TestInitialize]
+        public void TestSetup()
+        {
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("TestRace", DateTime.Today);
+            race.EventId = eventModel.EventId;
+            race.Save();
+            timer = new TimerModel();
+            timer.SaveToDb();
+        }
 
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            eventModel.Delete();
+            race.Delete();
+            timer.Delete();
         }
 
         [TestMethod]
@@ -31,9 +49,6 @@ namespace ITimeU.Tests.Models
 
             Given("we have a timer and the time keeper wants to save a runtime", () =>
             {
-                TimerModel timer = new TimerModel();
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
                 checkpoint = new CheckpointModel("TheRuntimeCheckpoint", timer, race);
                 checkpoint.Sortorder = 1;
             });

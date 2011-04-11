@@ -1,27 +1,17 @@
 ﻿@model ITimeU.Models.RaceModel
-
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Create Race</h2>
-
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
-<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/RaceHandler.js")" type="text/javascript"></script>
-
 <script src="@Url.Content("/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
-<link href="/Content/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css"/>
-
+<link href="/Content/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css" />
 <script src="@Url.Content("/Scripts/date.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.maskedinput-1.2.2.js")" type="text/javascript"></script>
-
-
-
 <script type="text/javascript">
     $(document).ready(function () {
         var btnCreate = $("#btnCreate");
@@ -30,6 +20,7 @@
         var tbStartDate = $("#txtRaceDate");
         var divErrorMessage = $("#ErrorMessage");
         var divStatusMessage = $("#StatusMessage");
+        var ddlEvents = $("#ddlEvents");
 
         //tbStartDate.mask("99/99/9999");
 
@@ -51,53 +42,53 @@
         tbName,
         tbDistance,
         tbStartDate,
+        ddlEvents,
         divErrorMessage,
         divStatusMessage
         );
     });
 </script>
-
-
-@using (Html.BeginForm())
-{
-    
-    <fieldset>
-        <legend>New Race</legend>
-        
-              
-        <div class="errormessagearea" id="ErrorMessage" style="display: none"></div>
-
-        <div class="statusmessagearea" id="StatusMessage" style="display: none"></div>
-
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        |
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Opprett løp</h2>
+    @using (Html.BeginForm())
+    {
+        <div class="errormessagearea" id="ErrorMessage" style="display: none">
+        </div>
+        <div class="statusmessagearea" id="StatusMessage" style="display: none">
+        </div>
         <div class="editor-label">
             @Html.Label("lblRaceName", "Navn")
         </div>
         <div class="editor-field">
-            @Html.TextBox("txtRaceName", null, new { @class = "textbox" })            
+            @Html.TextBox("txtRaceName", null, new { @class = "textbox" })
         </div>
-
         <div class="editor-label">
             @Html.Label("lblRaceDistance", "Avstand")
         </div>
         <div class="editor-field">
-            @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })            
+            @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })
         </div>
-
         <div class="editor-label">
             @Html.Label("lblRaceDate", "Start Dato")
         </div>
         <div class="editor-field">
-            @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })            
-        </div>        
-
+            @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })
+        </div>
+                <div class="editor-label">
+            @Html.Label("lblRace", "Event:")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"))
+        </div>
         <p>
-            <input type="button" class="btnRegular" id="btnCreate" value="Lag" style="width: 100px" />
+            <input type="button" class="btnRegular" id="btnCreate" value="Opprett" style="width: 100px" />
         </p>
-            
-           
-    </fieldset>
-}
-
-
-
-
+    }
+</div>

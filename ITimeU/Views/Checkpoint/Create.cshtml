@@ -3,42 +3,42 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>
-    Create
-</h2>
-
-@{ Html.BeginForm("Create", "Checkpoint", FormMethod.Post); }
-
-<fieldset>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" }) | 
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Lag nytt passeringspunkt
+    </h2>
+    @{ Html.BeginForm("Create", "Checkpoint", FormMethod.Post); }
     @if (ViewBag.CheckpointCreatedSuccessfully)
     {
         <div class="statusmessagearea" id="StatusMessage">
-            Checkpoint has been saved successfully!
+            Passeringspunkt har blitt lagret!
         </div>
     }
-    
     @if (ViewBag.IsCheckpointEmpty)
     {
         <div class="errormessagearea" id="ErrorMessage">
-            Checkpoint name should not be empty.
+            Navn kan ikke være tomt.
         </div>
     }
     <div class="editor-label">
-        @Html.Label("lblRace", "Race")
+        @Html.Label("lblRace", "Løp:")
     </div>
     <div class="editor-field">
         @Html.DropDownList("raceId", new SelectList(Model, "RaceID", "Name"))
     </div>
-
     <div class="editor-label">
-        @Html.Label("lblCheckpointName", "Checkpoint Navn")
+        @Html.Label("lblCheckpointName", "Navn:")
     </div>
-
     <div class="editor-field">
         @Html.TextBox("txtCheckpointName", null, new { @class = "textbox" })
     </div>
     <p>
         <input type="submit" class="btnRegular" id="btnCreate" value="Opprett" style="width: 100px" />
     </p>
-</fieldset>
-@{ Html.EndForm(); }
+    @{ Html.EndForm(); }
+</div>

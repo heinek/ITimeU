@@ -1,16 +1,12 @@
 ﻿@model ITimeU.Models.CheckpointOrderModel
-
 @{
     ViewBag.Title = "CheckpointOrder";
 }
-
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
-<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/CheckpointOrderHandler.js")" type="text/javascript"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         var listCheckpointOrders = $("#lstCheckpointOrders");
@@ -63,52 +59,52 @@
         listCheckpointOrders,
         tbEdit,
         divErrorMessage
-        );        
+        );
 
     });
 </script>
-
 <script language="javascript" type="text/javascript">
     var checkpointOrders = [];
 </script>
-
-<h2>Startnummer</h2>
-
-<fieldset> 
-    <div class="editor-label"> 
-        @Html.Label("lblCheckpoint", "Checkpoint") 
-    </div> 
-    <div class="editor-field"> 
-        @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "CheckpointID", "Name"))   
-        <input type="button" id="btnChangeCP" class="btnGo" value=" " />                     
-    </div> 
-
-    <div class="editor-label"> 
-        @Html.Label("lblStartingNumber", "Startnummer")             
-    </div> 
-
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("TILBAKE", "DualPcSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" }) | 
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Startnummer</h2>
+    <div class="editor-label">
+        @Html.Label("lblCheckpoint", "Passeringspunkt")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("ddCheckpoint", new SelectList(ViewBag.Checkpoints, "Id", "Name"))
+        <input type="button" id="btnChangeCP" class="btnGo" value=" " />
+    </div>
+    <div class="editor-label">
+        @Html.Label("lblStartingNumber", "Skriv inn startnummer")
+    </div>
     <div class="editor-field">
         @Html.TextBox("txtStartingNumber", null, new { @class = "textbox" })
-                  
-        <input type="button" class="btnRegular" id="btnChange" value="Endre" style="width: 100px" disabled="disabled" />
-        <input type="button" class="btnRegular" id="btnDelete" value="Slett" style="width: 100px" disabled="disabled" />                            
+        <input type="button" class="btnRegular" id="btnChange" value="Endre" style="width: 100px"
+            disabled="disabled" />
+        <input type="button" class="btnRegular" id="btnDelete" value="Slett" style="width: 100px"
+            disabled="disabled" />
     </div>
- 
-    <div id="ErrorMessage" style="color:Red; display:none" ></div>       
-
-    <div class="editor-label" > 
-        @Html.Label("lblCheckpointOrders", "CheckpointOrders") 
+    <div id="ErrorMessage" style="color: Red; display: none">
     </div>
-
-    <div class="editor-field" style="position:relative">
-        @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"),new { @class = "listbox" })
-        
-        <div style="position:absolute; top:60px; left:100px; width:100px">
-            <input type="button" class="btnUp" id="btnUp" value="" style="width:25px; height:25px" disabled="disabled" />  
-            <br /><br />                    
-            <input type="button" class="btnDown" id="btnDown" value="" style="width:25px; height:25px" disabled="disabled" />
+    <div class="editor-label">
+        @Html.Label("lblCheckpointOrders", "Rekkefølge(siste passering øverst)")
+    </div>
+    <div class="editor-field" style="position: relative">
+        @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"), new { @class = "listbox" })
+        <div style="position: absolute; top: 60px; left: 100px; width: 100px">
+            <input type="button" class="btnUp" id="btnUp" value="" style="width: 25px; height: 25px"
+                disabled="disabled" />
+            <br />
+            <br />
+            <input type="button" class="btnDown" id="btnDown" value="" style="width: 25px; height: 25px"
+                disabled="disabled" />
         </div>
-
     </div>
-
-</fieldset>
+</div>

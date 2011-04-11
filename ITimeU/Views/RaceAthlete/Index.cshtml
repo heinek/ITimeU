@@ -5,7 +5,7 @@
 @using(Html.BeginForm()){
     <div class="topmenubar">
         <center>
-        | @Html.ActionLink("HJEM", "Index", "Home") | @Html.ActionLink("OPPRETT LØP", "Index", "Race") |
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("OPPRETT LØP", "Index", "Race", null, new { @class = "topmenulink" }) |
         </center>
     </div>
     <div class="contentmargin">
@@ -14,6 +14,18 @@
                 Koble utøvere til løp</h2>
         </div>
         <div class="container">
+@*                    <div class="row">
+                <div class="left">
+                    <div class="editor-label" style="vertical-align: top">
+                        <b>@Html.Label("lblEvent", "Stevne:")</b>
+                    </div>
+                </div>
+                <div class="middle">
+                    <br />
+                    @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"), "Velg stevne...")
+                    <input type="submit" name="changeEvent" id="changeEvent" class="btnGo" value=" " />
+                </div>
+            </div>*@
             <div class="row">
                 <div class="left">
                     <div class="editor-label" style="vertical-align: top">

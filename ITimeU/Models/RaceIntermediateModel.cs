@@ -66,8 +66,8 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var raceIntermediate = ctx.RaceIntermediates.
-                    Where(raceint => raceint.CheckpointID == CheckpointID 
-                        && raceint.CheckpointOrderID == CheckpointOrderID 
+                    Where(raceint => raceint.CheckpointID == CheckpointID
+                        && raceint.CheckpointOrderID == CheckpointOrderID
                         && raceint.RuntimeId == RuntimeId).
                         Single();
                 raceIntermediate.AthleteId = AthleteId;
@@ -193,7 +193,7 @@ namespace ITimeU.Models
                         AthleteId = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId : null,
                         AthleteModel = new AthleteModel()
                         {
-                            Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value :0,
+                            Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
                             FirstName = raceintermediate.Athlete.FirstName,
                             LastName = raceintermediate.Athlete.LastName,
                             Birthday = raceintermediate.Athlete.Birthday,

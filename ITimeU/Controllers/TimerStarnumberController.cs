@@ -11,24 +11,28 @@ namespace ITimeU.Controllers
         /// <summary>
         /// Returns the index view
         /// </summary>
-        /// <param name="timerId">The timer id.</param>
+        /// <param name="raceId">The race id.</param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult Index(int timerId)
+        public ActionResult Index(int raceId)
         {
-            var race = RaceModel.GetById(timerId);
+            var race = RaceModel.GetById(raceId);
             TimerModel timer = null;
-            if (race.HasTimer())
-                timer = new TimerModel(race.GetTimerId());
+            if (race.GetTimerId().HasValue)
+            {
+                timer = new TimerModel(race.GetTimerId().Value);
+                timer.RaceID = raceId;
+            }
             else
             {
                 timer = new TimerModel();
-                timer.RaceID = timerId;
+                timer.RaceID = raceId;
             }
             timer.SaveToDb();
             var checkpointOrder = new CheckpointOrderModel();
 
-            ViewBag.Checkpoints = timer.GetCheckpoints();
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
+            ViewBag.RaceId = raceId;
             var timeStartnumberModel = new TimeStartnumberModel(timer);
             timeStartnumberModel.ChangeCheckpoint(timer.GetFirstCheckpointId());
             timeStartnumberModel.CheckpointOrder = checkpointOrder;
@@ -43,7 +47,7 @@ namespace ITimeU.Controllers
         {
             var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
             timeStartnumberModel.Timer.Start();
-            ViewBag.Checkpoints = timeStartnumberModel.Timer.GetCheckpoints();
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(timeStartnumberModel.Timer.RaceID.Value);
             Session["TimeStartnumber"] = timeStartnumberModel;
             return Content("");
         }
@@ -55,7 +59,7 @@ namespace ITimeU.Controllers
         {
             var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
             timeStartnumberModel.Timer.Stop();
-            ViewBag.Checkpoints = timeStartnumberModel.Timer.GetCheckpoints();
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(timeStartnumberModel.Timer.RaceID.Value);
             Session["TimeStartnumber"] = timeStartnumberModel;
             return Content("");
         }
