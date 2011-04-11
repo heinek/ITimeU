@@ -10,6 +10,7 @@ namespace ITimeU.Models
         public string Name { get; set; }
         public DateTime StartDate { get; set; }
         public int? Distance { get; set; }
+        public int EventId { get; set; }
 
         public RaceModel()
         {
@@ -25,6 +26,7 @@ namespace ITimeU.Models
         public RaceModel(Race raceDb)
         {
             RaceId = raceDb.RaceID;
+            EventId = raceDb.EventId.HasValue ? raceDb.EventId.Value : 0;
             Name = raceDb.Name;
             StartDate = raceDb.StartDate;
             Distance = raceDb.Distance;
@@ -38,6 +40,7 @@ namespace ITimeU.Models
                 race.Name = Name;
                 race.StartDate = StartDate;
                 race.Distance = Distance;
+                race.EventId = EventId;
                 context.Races.AddObject(race);
                 try
                 {
@@ -78,39 +81,39 @@ namespace ITimeU.Models
 
         //}
 
-        public void UpdateRaceName(int id, string name)
+        public void UpdateRaceName(string name)
         {
             using (var ctxDB = new Entities())
             {
-                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                var select = ctxDB.Races.Where(race => race.RaceID == RaceId).Single();
                 select.Name = name;
                 ctxDB.SaveChanges();
             }
         }
 
 
-        public void UpdateRaceDistance(int id, int distance)
+        public void UpdateRaceDistance(int distance)
         {
             using (var ctxDB = new Entities())
             {
-                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                var select = ctxDB.Races.Where(race => race.RaceID == RaceId).Single();
                 select.Distance = distance;
                 ctxDB.SaveChanges();
             }
         }
 
-        public void UpdateRaceDate(int id, DateTime date)
+        public void UpdateRaceDate(DateTime date)
         {
             using (var ctxDB = new Entities())
             {
-                var select = ctxDB.Races.Where(race => race.RaceID == id).Single();
+                var select = ctxDB.Races.Where(race => race.RaceID == RaceId).Single();
                 select.StartDate = date;
                 ctxDB.SaveChanges();
             }
         }
 
 
-        public Race GetRace(int id)
+        public static Race GetRace(int id)
         {
             Race select;
             using (var ctxDB = new Entities())
@@ -213,11 +216,14 @@ namespace ITimeU.Models
             }
         }
 
-        public int GetTimerId()
+        public int? GetTimerId()
         {
             using (var context = new Entities())
             {
-                return context.Races.Where(race => race.RaceID == RaceId).Single().Timers.First().TimerID;
+                var timer = context.Races.Where(race => race.RaceID == RaceId).Single().Timers.SingleOrDefault();
+                if (timer != null)
+                    return timer.TimerID;
+                return null;
             }
         }
 
@@ -227,6 +233,20 @@ namespace ITimeU.Models
             {
                 context.Races.Where(race => race.RaceID == RaceId).Single().IsDeleted = true;
                 context.SaveChanges();
+            }
+        }
+
+        public static List<RaceModel> GetRaces(int eventId)
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Races.Where(race => !race.IsDeleted && race.EventId == eventId).Select(race =>
+                    new RaceModel()
+                    {
+                        RaceId = race.RaceID,
+                        Name = race.Name,
+                        StartDate = race.StartDate
+                    }).ToList();
             }
         }
     }

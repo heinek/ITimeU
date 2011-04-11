@@ -74,7 +74,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AthleteControllerTest.cs" />
     <Compile Include="Controllers\CheckpointControllerTest.cs" />
+    <Compile Include="Controllers\ClubControllerTest.cs" />
     <Compile Include="Controllers\ImportAthletesControllerTest.cs" />
     <Compile Include="Controllers\MockControllerTest.cs" />
     <Compile Include="Controllers\ResultsControllerTest.cs" />

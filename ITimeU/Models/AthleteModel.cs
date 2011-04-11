@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 
 
 namespace ITimeU.Models
@@ -25,14 +24,14 @@ namespace ITimeU.Models
         public string PostalCode { get; private set; }
         public string City { get; private set; }
         public string Email { get; private set; }
-        public string Gender { get; private set; }        
+        public string Gender { get; private set; }
         public string PhoneNumber { get; private set; }
 
         public int? Birthday { get; set; }
         public ClubModel Club { get; set; }
         public AthleteClassModel AthleteClass { get; set; }
         public int? StartNumber { get; set; }
-               
+
         private bool dbEntryCreated
         {
             get
@@ -58,7 +57,7 @@ namespace ITimeU.Models
 
         private static AthleteModel TryToGetById(int idToGet, Entities entities)
         {
-            Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet);
+            Athlete athleteDb = entities.Athletes.Single(temp => temp.ID == idToGet && temp.IsDeleted.Value != true);
             return new AthleteModel(athleteDb);
         }
 
@@ -80,7 +79,7 @@ namespace ITimeU.Models
 
             return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
         }
-        
+
         public AthleteModel(string firstName, string lastName)
         {
             FirstName = firstName;
@@ -107,7 +106,7 @@ namespace ITimeU.Models
                 StartNumber = athleteDb.Startnumber;
         }
 
-        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber, int id=EMPTY_ID)
+        public AthleteModel(string firstName, string lastName, int? birthday, ClubModel club, AthleteClassModel athleteClass, int? startNumber, int id = EMPTY_ID)
         {
             SetDefaultId();
             FirstName = firstName;
@@ -119,7 +118,6 @@ namespace ITimeU.Models
         }
 
         public AthleteModel(string firstName, string lastName, string email, string address, string postalcode, string city, string gender, int? birthday, string phonenumber, int? startNumber, ClubModel club, AthleteClassModel athleteClass)
-                            
         {
             SetDefaultId();
             FirstName = firstName;
@@ -154,6 +152,7 @@ namespace ITimeU.Models
                 context.Athletes.AddObject(athleteDb);
             }
             context.SaveChanges();
+
         }
 
         private static Athlete createAthleteDbFrom(AthleteModel athlete)
@@ -203,7 +202,7 @@ namespace ITimeU.Models
             if (AthleteClass != null)
                 athlete.ClassID = AthleteClass.SaveToDb();
 
-           // athlete.AthleteClass = AthleteClass;
+            // athlete.AthleteClass = AthleteClass;
             athlete.Startnumber = StartNumber;
 
         }
@@ -217,7 +216,7 @@ namespace ITimeU.Models
 
         public override string ToString()
         {
-            return FirstName + " " + LastName ;
+            return FirstName + " " + LastName;
         }
 
 
@@ -241,12 +240,11 @@ namespace ITimeU.Models
         public void ConnectToRace(int raceId)
         {
             Entities context = new Entities();
-            Athlete athleteDb = context.Athletes.Single(temp => temp.ID == Id);
             RaceAthlete raceAthlete = new RaceAthlete();
             raceAthlete.AthleteId = Id;
             raceAthlete.RaceId = raceId;
-           
-            if (athleteDb.Startnumber.HasValue) raceAthlete.Startnumber = athleteDb.Startnumber.Value;
+
+            if (StartNumber.HasValue) raceAthlete.Startnumber = StartNumber.Value;
             context.RaceAthletes.AddObject(raceAthlete);
             context.SaveChanges();
         }
@@ -259,6 +257,92 @@ namespace ITimeU.Models
                 ctx.RaceAthletes.DeleteObject(athleteToRemove);
                 ctx.SaveChanges();
             }
+        }
+
+        /// <summary>
+        /// Startnumbers the exists in db.
+        /// </summary>
+        /// <param name="startnumber">The startnumber.</param>
+        /// <returns></returns>
+        public static bool StartnumberExistsInDb(int startnumber)
+        {
+            using (var context = new Entities())
+            {
+                return context.Athletes.Where(athlete => athlete.IsDeleted == false).Any(athlete => athlete.Startnumber.Value == startnumber);
+            }
+        }
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                var athleteToDelete = context.Athletes.Where(athlete => athlete.ID == Id).Single();
+                athleteToDelete.IsDeleted = true;
+                context.SaveChanges();
+            }
+        }
+
+        public static List<AthleteModel> GetAthletes(int clubId)
+        {
+            using (var context = new Entities())
+            {
+                return context.Athletes.
+                    Where(athlete => athlete.ClubID.HasValue && athlete.ClubID.Value == clubId).
+                    Select(athlete => new AthleteModel()
+                {
+                    Id = athlete.ID,
+                    FirstName = athlete.FirstName,
+                    LastName = athlete.LastName,
+                    Email = athlete.Email,
+                    Birthday = athlete.Birthday.HasValue ? athlete.Birthday.Value : 0,
+                    //Club = athlete.ClubID.HasValue ?
+                    //new ClubModel()
+                    //{
+                    //    Id = athlete.ClubID.Value,
+                    //    Name = athlete.Club.Name
+                    //}
+                    //: null,
+                    Gender = athlete.Gender,
+                    PhoneNumber = athlete.Phone,
+                    PostalAddress = athlete.PostalAddress,
+                    PostalCode = athlete.PostalCode,
+                    StartNumber = athlete.Startnumber.HasValue ? athlete.Startnumber.Value : 0
+                    //AthleteClass = athlete.ClassID.HasValue
+                    //? new AthleteClassModel()
+                    //{
+                    //    Id = athlete.ClassID.Value,
+                    //    Name = athlete.AthleteClass.Name
+                    //}
+                    //: null
+                }).ToList();
+            }
+        }
+
+        public static List<AthleteModel> GetAthletesForRace(int raceId)
+        {
+            var athletes = new List<AthleteModel>();
+            using (var context = new Entities())
+            {
+                var raceathletes = context.RaceAthletes.Where(ra => ra.RaceId == raceId).ToList();
+                foreach (var raceathlete in raceathletes)
+                {
+                    var athlete = new AthleteModel()
+                    {
+                        Id = raceathlete.Athlete.ID,
+                        FirstName = raceathlete.Athlete.FirstName,
+                        LastName = raceathlete.Athlete.LastName,
+                        Email = raceathlete.Athlete.Email,
+                        Birthday = raceathlete.Athlete.Birthday.HasValue ? raceathlete.Athlete.Birthday.Value : 0,
+                        Gender = raceathlete.Athlete.Gender,
+                        PhoneNumber = raceathlete.Athlete.Phone,
+                        PostalAddress = raceathlete.Athlete.PostalAddress,
+                        PostalCode = raceathlete.Athlete.PostalCode,
+                        StartNumber = raceathlete.Athlete.Startnumber.HasValue ? raceathlete.Athlete.Startnumber.Value : 0
+                    };
+                    athletes.Add(athlete);
+                }
+            }
+            return athletes;
         }
     }
 }

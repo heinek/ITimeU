@@ -16,7 +16,7 @@ namespace ITimeU.Tests.Controllers
     public class ResultsControllerTest : ScenarioClass
     {
         ResultsController resultController;
-
+        EventModel eventModel;
         RaceModel race;
         TimerModel timer;
         CheckpointModel checkpoint;
@@ -33,7 +33,7 @@ namespace ITimeU.Tests.Controllers
         public void TestCleanup()
         {
             StartScenario();
-            //Teardown();
+            Teardown();
         }
 
         [TestMethod]
@@ -64,7 +64,10 @@ namespace ITimeU.Tests.Controllers
         /// <returns></returns>
         private void Setup()
         {
+            eventModel = new EventModel("Testevent", DateTime.Today);
+            eventModel.Save();
             race = new RaceModel("Testrace", DateTime.Today);
+            race.EventId = eventModel.EventId;
             race.Save();
             timer = new TimerModel();
             timer.RaceID = race.RaceId;
@@ -83,10 +86,11 @@ namespace ITimeU.Tests.Controllers
 
         private void Teardown()
         {
-            timestart.DeleteRaceintermediate(checkpoint.Id, checkpointorder.ID);
+            //timestart.DeleteRaceintermediate(checkpoint.Id, checkpointorder.ID);
             checkpoint.Delete();
             timer.Delete();
             race.Delete();
+            eventModel.Delete();
         }
     }
 }

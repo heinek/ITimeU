@@ -2,57 +2,78 @@
 @{
     ViewBag.Title = "Importer atleter";
 }
-
-<h2>Importer deltakere fra FriRes</h2>
-
-<!-- Upload database file selector and submit button -->
-@{ Html.BeginForm("ImportFromFriRes", "ImportAthletes", FormMethod.Post, new { enctype = "multipart/form-data"} ); }
-<p>Velg database for import av deltakere fra FriRes:</p>
-<input type="file" name="file" value="Velg database" />
-<input type="submit" value="Forhåndsvis deltakere" class="btnRegular" />
-@{ Html.EndForm(); }
-
-@if (ViewBag.Error != null)
-{
-    <!-- Show errors -->
-    <p class="input-validation-error">@ViewBag.Error</p>
-}
-
-@if (Model != null)
-{
-    <!-- Show athletes found in database -->
-    <h4>Deltakere funnet databasefil:</h4>
-    <table>
-        <tr>
-            <th>Fornavn</th>
-            <th>Etternavn</th>
-            <th>Klasse</th>
-            <th>Klubb</th>
-            <th>Fødselsår</th>
-            <th>Startnummer</th>
-        </tr>
-
-        @foreach (ITimeU.Models.AthleteModel athlete in Model)
-        {
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", new { @class = "topmenulink" }) | 
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Importer deltakere fra FriRes</h2>
+    <!-- Upload database file selector and submit button -->
+    @{ Html.BeginForm("ImportFromFriRes", "ImportAthletes", FormMethod.Post, new { enctype = "multipart/form-data" }); }
+    <p>
+        Velg database for import av deltakere fra FriRes:</p>
+    <input type="file" name="file" value="Velg database" />
+    <input type="submit" value="Forhåndsvis deltakere" class="btnRegular" />
+    @{ Html.EndForm(); }
+    @if (ViewBag.Error != null)
+    {
+        <!-- Show errors -->
+        <p class="input-validation-error">@ViewBag.Error</p>
+    }
+    @if (Model != null)
+    {
+        <!-- Show athletes found in database -->
+        <h4>
+            Deltakere funnet databasefil:</h4>
+        <table>
             <tr>
-                <td>@athlete.FirstName</td>
-                <td>@athlete.LastName</td>
-                <td>@athlete.AthleteClass</td>
-                <td>@athlete.Club</td>
-                <td>@athlete.Birthday</td>
-                <td>@athlete.StartNumber</td>
+                <th>
+                    Fornavn
+                </th>
+                <th>
+                    Etternavn
+                </th>
+                <th>
+                    Klasse
+                </th>
+                <th>
+                    Klubb
+                </th>
+                <th>
+                    Fødselsår
+                </th>
+                <th>
+                    Startnummer
+                </th>
             </tr>
-        }
-    </table>
-}
- 
-@if (Model != null)
-{
-    <!-- Show button for storing listed athletes to database -->
-    <p></p>
-    Html.BeginForm("ImportUploadedAthletes", "ImportAthletes", FormMethod.Post);
-    <input type="submit"
-        value="Lagre deltakere"
-        class="btnRegular" />
-    Html.EndForm();
-}
+            @foreach (ITimeU.Models.AthleteModel athlete in Model)
+            {
+                <tr>
+                    <td>@athlete.FirstName
+                    </td>
+                    <td>@athlete.LastName
+                    </td>
+                    <td>@athlete.AthleteClass
+                    </td>
+                    <td>@athlete.Club
+                    </td>
+                    <td>@athlete.Birthday
+                    </td>
+                    <td>@athlete.StartNumber
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    @if (Model != null)
+    {
+        <!-- Show button for storing listed athletes to database -->
+        <p>
+        </p>
+        Html.BeginForm("ImportUploadedAthletes", "ImportAthletes", FormMethod.Post);
+        <input type="submit" value="Lagre deltakere" class="btnRegular" />
+        Html.EndForm();
+    }
+</div>

@@ -5,111 +5,111 @@ to use a different color start by replacing all instances of
 ----------------------------------------------------------*/
 body
 {
-    background-color: #F3F0E2;
-    font-size: 75%;
-    font-family: Verdana, Tahoma, Arial, "Helvetica Neue" , Helvetica, Sans-Serif;
-    margin: 0;
-    padding: 0;
-    color: #696969;
+	background-color: #F3F0E2;
+	font-size: 75%;
+	font-family: Verdana, Tahoma, Arial, "Helvetica Neue" , Helvetica, Sans-Serif;
+	margin: 0;
+	padding: 0;
+	color: #696969;
 }
 
 a:link
 {
-    color: #fff;
-    text-decoration: none;
-    border: 0px;
+	color: #2DA72E;
+	text-decoration: none;
+	border: 0px;
 }
 a:visited
 {
-	color: #fff;
-    border: 0px;
-    text-decoration: none;
+	color: #2DA72E;
+	border: 0px;
+	text-decoration: none;
 }
 a:hover
 {
-    color: #ccc;
-    text-decoration: none;
-    border: 0px;
+	color: #ccc;
+	text-decoration: none;
+	border: 0px;
 }
 a:active
 {
-    border: 0px;
-    text-decoration: none;
+	border: 0px;
+	text-decoration: none;
 }
 
 p, ul
 {
-    margin-bottom: 20px;
-    line-height: 1.6em;
+	margin-bottom: 20px;
+	line-height: 1.6em;
 }
 
 /* HEADINGS   
 ----------------------------------------------------------*/
 h1, h2, h3, h4, h5, h6
 {
-    font-size: 1.5em;
-    color: #000;
+	font-size: 1.5em;
+	color: #000;
 }
 
 h1
 {
-    font-size: 2em;
-    padding-bottom: 0;
-    margin-bottom: 0;
+	font-size: 2em;
+	padding-bottom: 0;
+	margin-bottom: 0;
 }
 h2
 {
-    padding: 0 0 10px 0;
+	padding: 0 0 10px 0;
 }
 h3
 {
-    font-size: 1.2em;
+	font-size: 1.2em;
 }
 h4
 {
-    font-size: 1.1em;
+	font-size: 1.1em;
 }
 h5, h6
 {
-    font-size: 1em;
+	font-size: 1em;
 }
 
 /* this rule styles <h2> tags that are the 
 first child of the left and right table columns */
 .rightColumn > h1, .rightColumn > h2, .leftColumn > h1, .leftColumn > h2
 {
-    margin-top: 0;
+	margin-top: 0;
 }
 
 .menubig
 {
-    padding-left: 120px;
-    text-align: center;
-    font-size: 36px;
-    font-weight: 600;
-    color: White;
-    position: relative;
-    top: -230px;
+	padding-left: 120px;
+	text-align: center;
+	font-size: 36px;
+	font-weight: 600;
+	color: White;
+	position: relative;
+	top: -230px;
 }
 
 .biglink:link
 {
-    font-family: Verdana;
-    text-decoration: none;
-    color: White;
+	font-family: Verdana;
+	text-decoration: none;
+	color: White;
 }
 
 .biglink:visited
 {
-    text-decoration: none;
-    color: White;
+	text-decoration: none;
+	color: White;
 }
 
 .biglink:hover
 {
-    text-decoration: none;
-    font-weight: 900;
-    color: White;
+	text-decoration: none;
+	font-weight: 900;
+	color: White;
 }
 /* PRIMARY LAYOUT ELEMENTS   
 ----------------------------------------------------------*/
@@ -118,105 +118,105 @@ first child of the left and right table columns */
 page width. Or, you can specify an exact pixel width. */
 .page
 {
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #header
 {
-    position: relative;
-    margin-bottom: 0px;
-    color: #000;
-    padding: 0;
+	position: relative;
+	margin-bottom: 0px;
+	color: #000;
+	padding: 0;
 }
 
 #header h1
 {
-    font-weight: bold;
-    padding: 5px 0;
-    margin: 0;
-    color: #fff;
-    border: none;
-    line-height: 2em;
-    font-size: 32px !important;
+	font-weight: bold;
+	padding: 5px 0;
+	margin: 0;
+	color: #fff;
+	border: none;
+	line-height: 2em;
+	font-size: 32px !important;
 }
 
 #main
 {
-    padding: 30px 30px 15px 30px;
-    background-color: #fff;
-    margin-bottom: 30px;
-    _height: 1px; /* only IE6 applies CSS properties starting with an underscore */
+	padding: 30px 30px 15px 30px;
+	background-color: #fff;
+	margin-bottom: 30px;
+	_height: 1px; /* only IE6 applies CSS properties starting with an underscore */
 }
 
 #footer
 {
-    color: #999;
-    padding: 10px 0;
-    text-align: center;
-    line-height: normal;
-    margin: 0;
-    font-size: .9em;
+	color: #999;
+	padding: 10px 0;
+	text-align: center;
+	line-height: normal;
+	margin: 0;
+	font-size: .9em;
 }
 
 .contentmargin
 {
-    margin: 6px;
+	margin: 6px;
 }
 
 /* TAB MENU   
 ----------------------------------------------------------*/
 ul#menu
 {
-    border-bottom: 1px #5C87B2 solid;
-    padding: 0 0 2px;
-    position: relative;
-    margin: 0;
-    text-align: right;
+	border-bottom: 1px #5C87B2 solid;
+	padding: 0 0 2px;
+	position: relative;
+	margin: 0;
+	text-align: right;
 }
 
 ul#menu li
 {
-    display: inline;
-    list-style: none;
+	display: inline;
+	list-style: none;
 }
 
 ul#menu li#greeting
 {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    color: #fff;
+	padding: 10px 20px;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 2.8em;
+	color: #fff;
 }
 
 ul#menu li a
 {
-    padding: 10px 20px;
-    font-weight: bold;
-    text-decoration: none;
-    line-height: 2.8em;
-    background-color: #e8eef4;
-    color: #034af3;
+	padding: 10px 20px;
+	font-weight: bold;
+	text-decoration: none;
+	line-height: 2.8em;
+	background-color: #e8eef4;
+	color: #034af3;
 }
 
 ul#menu li a:hover
 {
-    background-color: #fff;
-    text-decoration: none;
+	background-color: #fff;
+	text-decoration: none;
 }
 
 ul#menu li a:active
 {
-    background-color: #a6e2a6;
-    text-decoration: none;
+	background-color: #a6e2a6;
+	text-decoration: none;
 }
 
 ul#menu li.selected a
 {
-    background-color: #fff;
-    color: #000;
+	background-color: #fff;
+	color: #000;
 }
 
 /* FORM LAYOUT ELEMENTS   
@@ -224,26 +224,26 @@ ul#menu li.selected a
 
 fieldset
 {
-    border: 1px solid #ddd;
-    padding: 0 1.4em 1.4em 1.4em;
-    margin: 0 0 1.5em 0;
+	border: 1px solid #ddd;
+	padding: 0 1.4em 1.4em 1.4em;
+	margin: 0 0 1.5em 0;
 }
 
 legend
 {
-    font-size: 1.2em;
-    font-weight: bold;
+	font-size: 1.2em;
+	font-weight: bold;
 }
 
 textarea
 {
-    min-height: 75px;
+	min-height: 75px;
 }
 
 
 input[type="text"]
 {
-    border: 1px solid #CCC;
+	border: 1px solid #CCC;
 }
 /*
 input[type="button"]
@@ -263,8 +263,8 @@ input[type="button"]:hover
 */
 input[type="password"]
 {
-    width: 200px;
-    border: 1px solid #CCC;
+	width: 200px;
+	border: 1px solid #CCC;
 }
 
 /* TABLE
@@ -272,125 +272,124 @@ input[type="password"]
 
 table
 {
-    border: solid 1px #e8eef4;
-    border-collapse: collapse;
+	width:500px;
+	border-collapse: collapse;
 }
 
 table td
 {
-    padding: 5px;
-    border: solid 1px #e8eef4;
+	padding: 5px;
 }
 
 table th
 {
-    padding: 6px 5px;
-    text-align: left;
-    background-color: #e8eef4;
-    border: solid 1px #e8eef4;
+	padding: 6px 5px;
+	text-align: left;
+	color:White;
+	background-color: #1678A7;
 }
 
 /* TABLE DIVS
 ----------------------------------------------------------*/
 .container
 {
-    display: table;
+	display: table;
 }
 .containermaster
 {
-    display: table;
-    width: 100%;
-    height: 100%;
+	display: table;
+	width: 100%;
+	height: 100%;
 }
 .row
 {
-    display: table-row;
+	display: table-row;
 }
 .left, .right, .middle, .rightmost
 {
-    display: table-cell;
-    padding: 5px 5px 5px 5px;
-    vertical-align: top;
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
 }
 
 .rowtopmaster
 {
-    display: table-row;
-    background-color: #2A2925;
-    width: 100%;
-    height: 70px;
+	display: table-row;
+	background-color: #2A2925;
+	width: 100%;
+	height: 70px;
 }
 
 .lefttopmaster
 {
-    display: table-cell;
-    padding: 5px 5px 5px 5px;
-    vertical-align: top;
-    width: 30%;
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
 }
 
 .righttopmaster
 {
-    display: table-cell;
-    padding: 5px 5px 5px 5px;
-    vertical-align: top;
-    width: 30%;
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
 }
 
 .leftmiddlemaster
 {
-    display: table-cell;
-    padding: 5px 5px 5px 5px;
-    vertical-align: top;
-    width: 30%;
-    background-color: #EAE3C6;
-    height: 100%;
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+	background-color: #EAE3C6;
+	height: 100%;
 }
 .rightmiddlemaster
 {
-    display: table-cell;
-    padding: 5px 5px 5px 5px;
-    vertical-align: top;
-    width: 30%;
-    background-color: #EAE3C6;
-    height: 100%;
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+	background-color: #EAE3C6;
+	height: 100%;
 }
 .centermiddlemaster
 {
-    width: 900px;
-    padding: 0;
-    margin: 0;
+	width: 900px;
+	padding: 0;
+	margin: 0;
 }
 .rowmiddlemaster
 {
-    display: table-row;
-    height: 700px;
+	display: table-row;
+	height: 700px;
 }
 .errormessagearea
 {
-    height: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 14px;
-    border: 1px solid;
-    margin: 10px 10px;
-    padding: 15px 10px 15px 50px;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    color: #D8000C;
-    background-color: #FFBABA; /*    background-image: url('error.png');    */
+	height: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	border: 1px solid;
+	margin: 10px 10px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	color: #D8000C;
+	background-color: #FFBABA; /*    background-image: url('error.png');    */
 }
 .statusmessagearea
 {
-    height: 20px;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:14px;
-    border: 1px solid;
-    margin: 10px 10px;
-    padding:15px 10px 15px 50px;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    color: #4F8A10;
-    background-color: #DFF2BF;    
+	height: 20px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	border: 1px solid;
+	margin: 10px 10px;
+	padding: 15px 10px 15px 50px;
+	background-repeat: no-repeat;
+	background-position: 10px center;
+	color: #4F8A10;
+	background-color: #DFF2BF;
 }
 
 
@@ -398,274 +397,279 @@ table th
 ----------------------------------------------------------*/
 .background
 {
-    background-image: url("images/DefaultBG.png");
-    background-repeat: no-repeat;
-    background-position: top;
-    width: 900px;
-    height: 601px;
-/*
-    opacity: .5;
-    filter: alpha(opacity=50);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-*/
+	background-image: url("images/DefaultBG.png");
+	background-repeat: no-repeat;
+	background-position: top;
+	width: 900px;
+	height: 601px; /*     opacity: .5;     filter: alpha(opacity=50);     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; */
 }
 .clear
 {
-    clear: both;
+	clear: both;
 }
 
 .error
 {
-    color: Red;
+	color: Red;
 }
 
 #menucontainer
 {
-    margin-top: 40px;
+	margin-top: 40px;
 }
 
 .textbox
 {
-    width: 195px;
-    margin-bottom: 10px;
+	width: 195px;
+	margin-bottom: 10px;
 }
 
 .textboxlarge
 {
-    width: 250px;
-    padding: 3px 3px;
-    height: 15px;
-    border: 1px solid #CCC;
-    margin-bottom: 10px;
+	width: 250px;
+	padding: 3px 3px;
+	height: 15px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
 }
 .textboxmedium
 {
-    width: 24px;
-    padding: 3px 3px;
-    height: 12px;
-    border: 1px solid #CCC;
-    margin-bottom: 10px;
+	width: 24px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
 }
 .textboxsmall
 {
-    width: 15px;
-    padding: 3px 3px;
-    height: 12px;
-    border: 1px solid #CCC;
-    margin-bottom: 10px;
+	width: 15px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
 }
 .textboxxsmall
 {
-    width: 12px;
-    padding: 3px 3px;
-    height: 12px;
-    border: 1px solid #CCC;
-    margin-bottom: 10px;
+	width: 12px;
+	padding: 3px 3px;
+	height: 12px;
+	border: 1px solid #CCC;
+	margin-bottom: 10px;
 }
 .logo
 {
-    background-position: center;
-    margin-top: 8px;
-    margin-bottom: 8px;
-    background-image: url("images/Logo3.png");
+	background-position: center;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	background-image: url("images/Logo3.png");
+	cursor: hand;
+	cursor: pointer;
 }
 .linkimage
 {
-    cursor: hand;
+	cursor: hand;
+	cursor: pointer;
 }
 .menubg
 {
-    padding-top: 220px;
-    padding-left: 84px;
-    background-position: center;
-    background-repeat: no-repeat;
+	padding-top: 220px;
+	padding-left: 144px;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 .listbox
 {
-    width: 100px;
-    height: 200px;
+	width: 100px;
+	height: 200px;
 }
 .listboxwide
 {
-    padding-top: 4px;
-    width: 220px;
-    height: 200px;
+	padding-top: 4px;
+	width: 220px;
+	height: 200px;
 }
 .timer
 {
-    font-weight: bold;
-    font-family: Arial Black;
-    font-size: 20px;
+	font-weight: bold;
+	font-family: Arial Black;
+	font-size: 20px;
+}
+
+.timerbig
+{
+	font-weight: bold;
+	font-family: Arial Black;
+	font-size: 90px;
 }
 
 div#title
 {
-    display: block;
-    float: left;
-    text-align: left;
+	display: block;
+	float: left;
+	text-align: left;
 }
 
 #logindisplay
 {
-    font-size: 1.1em;
-    display: block;
-    text-align: right;
-    margin: 10px;
-    color: White;
+	font-size: 1.1em;
+	display: block;
+	text-align: right;
+	margin: 10px;
+	color: White;
 }
 
 #logindisplay a:link
 {
-    color: white;
-    text-decoration: underline;
+	color: white;
+	text-decoration: underline;
 }
 
 #logindisplay a:visited
 {
-    color: white;
-    text-decoration: underline;
+	color: white;
+	text-decoration: underline;
 }
 
 #logindisplay a:hover
 {
-    color: white;
-    text-decoration: none;
+	color: white;
+	text-decoration: none;
 }
 
 .btnUp
 {
-    background-image: url("images/up.png");
-    border: 1px solid #CCC;
-    background-repeat: no-repeat;
-    margin: 0px;
+	background-image: url("images/up.png");
+	border: 1px solid #CCC;
+	background-repeat: no-repeat;
+	margin: 0px;
 }
 
 .btnUp:hover
 {
-    background-image: url("images/upOver.png");
+	background-image: url("images/upOver.png");
 }
 
 .btnDown
 {
-    background-image: url("images/down.png");
-    border: 1px solid #CCC;
-    background-repeat: no-repeat; /* 	position: relative; 	top: 5px; 	left: -28px; */
-    margin: 0px;
+	background-image: url("images/down.png");
+	border: 1px solid #CCC;
+	background-repeat: no-repeat; /* 	position: relative; 	top: 5px; 	left: -28px; */
+	margin: 0px;
 }
 .btnDown:hover
 {
-    background-image: url("images/downOver.png");
+	background-image: url("images/downOver.png");
 }
 
 .btnDelete
 {
-    background-image: url("images/btnDelete.png");
-    border: 1px solid #CCC;
-    background-repeat: no-repeat;
-    margin: 0px;
+	background-image: url("images/btnDelete.png");
+	border: 1px solid #CCC;
+	background-repeat: no-repeat;
+	margin: 0px;
 }
 
 .btnDelete:hover
 {
-    background-image: url("images/btnDeleteOver.png");
+	background-image: url("images/btnDeleteOver.png");
 }
 
 .btnGo
 {
-    background-image: url("images/Go.png");
-    background-repeat: no-repeat;
-    border-width: 0px;
+	background-image: url("images/Go.png");
+	background-repeat: no-repeat;
+	border-width: 0px;
 }
 .btnRegular
 {
-    background-color: #DB6600;
-    background-image: url("images/button_bg.jpg");
-    border: 1px solid #DB6600;
-    color: #FFFFFF;
-    padding: 3px 6px;
+	background-color: #DB6600;
+	background-image: url("images/button_bg.jpg");
+	border: 1px solid #DB6600;
+	color: #FFFFFF;
+	padding: 3px 6px;
 }
 .btnRegular:hover
 {
-    background-color: #000000;
-    background-image: url("images/button_bg_over.jpg");
-    border: 1px solid #000000;
+	background-color: #000000;
+	background-image: url("images/button_bg_over.jpg");
+	border: 1px solid #000000;
 }
 
 .checkpointBg
 {
-    background-image: url("images/CheckpointBg.png");
-    margin: 10px;
-    padding: 20px, 20px, 10px, 10px;
-    background-repeat: no-repeat;
-    height: 30px;
+	background-image: url("images/CheckpointBg.png");
+	margin: 10px;
+	padding: 20px, 20px, 10px, 10px;
+	background-repeat: no-repeat;
+	height: 30px;
 }
 
 .btnCheckpoint
 {
-    background-image: url("images/CheckpointBgSmall.png");
-    border: 0px;
-    color: White;
-    background-repeat: no-repeat;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding-right: 25px;
-    padding-right: 15px;
+	background-image: url("images/CheckpointBgSmall.png");
+	border: 0px;
+	color: White;
+	background-repeat: no-repeat;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-right: 25px;
+	padding-right: 15px;
 }
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error
 {
-    color: #ff0000;
+	color: #ff0000;
 }
 
 .field-validation-valid
 {
-    display: none;
+	display: none;
 }
 
 .input-validation-error
 {
-    border: 1px solid #ff0000;
-    background-color: #ffeeee;
+	border: 1px solid #ff0000;
+	background-color: #ffeeee;
 }
 
 .validation-summary-errors
 {
-    font-weight: bold;
-    color: #ff0000;
+	font-weight: bold;
+	color: #ff0000;
 }
 
 .validation-summary-valid
 {
-    display: none;
+	display: none;
 }
 
 /* Styles for editor and display helpers
 ----------------------------------------------------------*/
 .display-label, .editor-label
 {
-    margin: 1em 0 0 0;
+	margin: 1em 0 0 0;
 }
 
 .display-field, .editor-field
 {
-    margin: 0.5em 0 0 0;
+	margin: 0.5em 0 0 0;
 }
 
 .text-box
 {
-    width: 30em;
+	width: 30em;
 }
 
 .text-box.multi-line
 {
-    height: 6.5em;
+	height: 6.5em;
 }
 
 .tri-state
 {
-    width: 6em;
+	width: 6em;
 }
 
 .topmenubar
@@ -673,6 +677,14 @@ div#title
 	background-color: #DD9348;
 	width: 100%;
 	height: 16px;
-	color:White;
-	font-weight:bold;
+	color: White;
+	font-weight: bold;
+}
+.topmenulink:link
+{
+	color: White;
+}
+.topmenulink:visited
+{
+	color: White;
 }

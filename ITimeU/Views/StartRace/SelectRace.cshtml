@@ -7,11 +7,11 @@
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var btnChangeEvent = $("#btnChangeEvent");
-        var ddlEvents = $("#ddlEvents");
+        var btnChangeRace = $("#btnChangeRace");
+        var ddlRaces = $("#ddlRaces");
 
-        btnChangeEvent.click(function () {
-            var url = "/StartRace/SelectRace/?eventId=" + ddlEvents.val();
+        btnChangeRace.click(function () {
+            var url = "/StartRace/ComputerSetup/?raceId=" + ddlRaces.val();
             document.location = url;
         });
     });
@@ -23,23 +23,23 @@
 </div>
 <div class="contentmargin">
     <h2>
-        Velg stevne</h2>
+        Velg løp</h2>
     <div class="containter">
         <div class="row">
             <div class="left">
                 <div class="editor-label" style="vertical-align: top">
-                    <b>@Html.Label("lblEvent", "Velg stevne:")</b></div>
+                    <b>@Html.Label("lblRace", "Velg løp:")</b></div>
             </div>
             <div class="row">
                 <div class="left">
                     <br />
-                    @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"), "Velg stevne...")
-                    <input type="button" id="btnChangeEvent" class="btnGo" value=" " />
+                    @Html.DropDownList("ddlRaces", new SelectList(ViewBag.Races, "RaceId", "Name"), "Velg løp...")
+                    <input type="button" id="btnChangeRace" class="btnGo" value=" " />
                 </div>
             </div>
             <div class="row">
                 <div class="left">
-                    @Html.ActionLink("Opprett nytt stevne", "Create", "Event")
+                    @Html.ActionLink("Opprett nytt løp", "Index", "Race")
                 </div>
             </div>
         </div>

@@ -12,7 +12,8 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.Races = RaceModel.GetRaces();
+            ViewBag.Events = EventModel.GetEvents();
+            ViewBag.Races = new List<RaceModel>();
             ViewBag.Timers = new List<Timer>();
             ViewBag.Checkpoints = new List<Checkpoint>();
             var dicStartnumbers = new Dictionary<int, int>();
@@ -31,20 +32,27 @@ namespace ITimeU.Controllers
             return View("Testing");
         }
 
-        [HttpPost]
-        public ActionResult GetTimers(int raceId)
-        {
-            var timeMergeModel = new TimeMergerModel();
-            timeMergeModel.Timers = TimerModel.GetTimers(raceId);
-            var dic = timeMergeModel.Timers.ToDictionary(timer => timer.TimerID, timer => timer.StartTime);
-            return Content(dic.ToListboxvalues());
-        }
 
         [HttpPost]
-        public ActionResult GetCheckpoints(int timerId)
+        public ActionResult GetRaces(int eventId)
         {
-            var timerModel = new TimerModel(timerId);
-            var dic = timerModel.GetCheckpoints().ToDictionary(checkpoint => checkpoint.CheckpointID, checkpoint => checkpoint.Name);
+            var races = RaceModel.GetRaces(eventId).ToDictionary(race => race.RaceId, race => race.Name);
+            return Content(races.ToListboxvalues());
+        }
+
+        //[HttpPost]
+        //public ActionResult GetTimers(int raceId)
+        //{
+        //    var timeMergeModel = new TimeMergerModel();
+        //    timeMergeModel.Timers = TimerModel.GetTimers(raceId);
+        //    var dic = timeMergeModel.Timers.ToDictionary(timer => timer.TimerID, timer => timer.StartTime);
+        //    return Content(dic.ToListboxvalues());
+        //}
+
+        [HttpPost]
+        public ActionResult GetCheckpoints(int raceId)
+        {
+            var dic = CheckpointModel.GetCheckpoints(raceId).ToDictionary(checkpoint => checkpoint.Id, checkpoint => checkpoint.Name);
             return Content(dic.ToListboxvalues());
         }
 

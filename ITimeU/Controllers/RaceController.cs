@@ -12,10 +12,11 @@ namespace ITimeU.Controllers
         public ActionResult Index()
         {
             ViewBag.Error = false;
+            ViewBag.Events = EventModel.GetEvents();
             return View();
         }
 
-        public ActionResult Create(string name, string distance, string startDate)
+        public ActionResult Create(string name, string distance, string startDate, int eventId)
         {
             int intDistance;
             int.TryParse(distance, out intDistance);
@@ -23,6 +24,7 @@ namespace ITimeU.Controllers
             race.Name = name;
             race.Distance = intDistance;
             race.StartDate = Convert.ToDateTime(startDate);
+            race.EventId = eventId;
             race.Save();
             return View("Index");
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -14,10 +10,15 @@ namespace ITimeU.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Races = RaceModel.GetRaces();
+            ViewBag.Events = EventModel.GetEvents();
             return View("Index");
         }
 
+        public ActionResult SelectRace(int eventId)
+        {
+            ViewBag.Races = RaceModel.GetRaces(eventId);
+            return View("SelectRace");
+        }
         public ActionResult ComputerSetup(int raceid)
         {
             var startRace = new StartRaceViewModel(raceid);
@@ -27,6 +28,7 @@ namespace ITimeU.Controllers
         public ActionResult DualPcSetup(int raceid)
         {
             var startRace = new StartRaceViewModel(raceid);
+            ViewBag.RaceId = raceid;
             return View("DualPcSetup", startRace);
         }
     }

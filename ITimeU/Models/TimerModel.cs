@@ -361,6 +361,9 @@ namespace ITimeU.Models
             }
         }
 
+        /// <summary>
+        /// Deletes this timer.
+        /// </summary>
         public void Delete()
         {
             using (var context = new Entities())

@@ -69,6 +69,8 @@
     <Compile Include="Controllers\AthleteController.cs" />
     <Compile Include="Controllers\CheckpointOrderController.cs" />
     <Compile Include="Controllers\CheckpointController.cs" />
+    <Compile Include="Controllers\ClubController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\ImportAthletesController.cs" />
     <Compile Include="Controllers\MockController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
@@ -102,6 +104,7 @@
       <DependentUpon>DBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\AthleteModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\Gender.cs" />
     <Compile Include="Models\ModelNotFoundException.cs" />
     <Compile Include="Models\RaceAthleteModel.cs" />
@@ -118,6 +121,7 @@
   <ItemGroup>
     <Content Include="Content\images\1pc.jpg" />
     <Content Include="Content\images\2pc.jpg" />
+    <Content Include="Content\images\athlete01.jpg" />
     <Content Include="Content\images\bg.jpg" />
     <Content Include="Content\images\btnDelete.png" />
     <Content Include="Content\images\btnDeleteOver.png" />
@@ -130,6 +134,7 @@
     <Content Include="Content\images\DefaultBG.png" />
     <Content Include="Content\images\down.png" />
     <Content Include="Content\images\downOver.png" />
+    <Content Include="Content\images\Event.jpg" />
     <Content Include="Content\images\Go.png" />
     <Content Include="Content\images\Image1.png" />
     <Content Include="Content\images\Logo2.png" />
@@ -140,6 +145,7 @@
     <Content Include="Content\images\menu04.png" />
     <Content Include="Content\images\menu05.png" />
     <Content Include="Content\images\menubg.png" />
+    <Content Include="Content\images\race01.jpg" />
     <Content Include="Content\images\runner01.jpg" />
     <Content Include="Content\images\Speaker200.jpg" />
     <Content Include="Content\images\timer01.jpg" />
@@ -298,6 +304,30 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Admin\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Event\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\StartRace\SelectRace.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\StartRace\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Club\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Club\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Club\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\Athletes.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\AthletesForRace.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

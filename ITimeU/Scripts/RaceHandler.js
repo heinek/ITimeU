@@ -7,15 +7,17 @@ function RaceHandler() { }
 var tbName;
 var tbDistance;
 var tbStartDate;
+var ddlEvents;
 var btnCreate;
 var divErrorMessage;
 var divStatusMessage;
 
-RaceHandler.prototype.setInsertAction = function (_btnCreate, _tbName, _tbDistance, _tbStartDate, _divErrorMessage, _divStatusMessage) {
+RaceHandler.prototype.setInsertAction = function (_btnCreate, _tbName, _tbDistance, _tbStartDate, _ddlEvents, _divErrorMessage, _divStatusMessage) {
     btnCreate = _btnCreate;
     tbName = _tbName;
     tbDistance = _tbDistance;
     tbStartDate = _tbStartDate;
+    ddlEvents = _ddlEvents;
     divErrorMessage = _divErrorMessage;
     divStatusMessage = _divStatusMessage;
 
@@ -34,7 +36,7 @@ RaceHandler.prototype.setInsertAction = function (_btnCreate, _tbName, _tbDistan
         }
         else {
             divErrorMessage.hide();
-            url = "/Race/Create/?name=" + tbName.val() + "&distance=" + tbDistance.val() + "&startDate=" + tbStartDate.val();
+            url = "/Race/Create/?name=" + tbName.val() + "&distance=" + tbDistance.val() + "&startDate=" + tbStartDate.val() + "&eventId=" + ddlEvents.val();
             $.post(url);
             divStatusMessage.show().html('Race has been saved successfully!');
 
@@ -46,7 +48,7 @@ RaceHandler.prototype.setInsertAction = function (_btnCreate, _tbName, _tbDistan
 }
 
 function IsNumber(startNum) {
-    var check = true;    
+    var check = true;
     for (var i = 0; i < startNum.length; i++) {
         if (String.fromCharCode(startNum.charAt(i).charCodeAt(0)).match(/[^0-9]/g))
             check = false;

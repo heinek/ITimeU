@@ -1,11 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using ITimeU.Controllers;
 using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using System.Collections.Generic;
-using System;
 
 namespace ITimeU.Tests.Controllers
 {
@@ -16,32 +16,53 @@ namespace ITimeU.Tests.Controllers
     public class TimerControllerTest : ScenarioClass
     {
 
+        private TimerModel timer;
+        private RaceModel race;
+        private EventModel eventModel;
+        private CheckpointModel checkpoint;
+
+        [TestInitialize]
+        public void TestSetup()
+        {
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("TestRace", DateTime.Today);
+            race.EventId = eventModel.EventId;
+            race.Save();
+            timer = new TimerModel();
+            timer.RaceID = race.RaceId;
+            timer.SaveToDb();
+            checkpoint = new CheckpointModel("Hemsedal", timer, race, 1);
+            checkpoint.SaveToDb();
+            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
+            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            timer.Delete();
+            checkpoint.Delete();
+            race.Delete();
+            eventModel.Delete();
         }
 
         [TestMethod]
         public void A_Checkpoint_Must_Have_A_Timer_When_User_Starts_Timer()
         {
             TimerController timerCtrl = null;
-            CheckpointModel checkpoint = null;
-            var timerInView = CreateTimerWithCheckpoints();
 
             Given("the user has selected a checkpoint", () =>
             {
-                var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-                race.Save();
-                checkpoint = new CheckpointModel("Hemsedal", timerInView, race, 1);
                 timerCtrl = new TimerController();
                 setMockSessionFor(timerCtrl);
             });
 
             When("the user selects a checkpoint and clicks OK", () =>
             {
-                ViewResult ctrlResult = (ViewResult)timerCtrl.Index(timerInView.Id);
-                timerInView = (TimerModel)ctrlResult.Model;
+                ViewResult ctrlResult = (ViewResult)timerCtrl.Index(race.RaceId);
+                timer = (TimerModel)ctrlResult.Model;
             });
 
             Then("the checkpoint's timer should be associated with the timer in the view", () =>
@@ -50,20 +71,8 @@ namespace ITimeU.Tests.Controllers
                 // updates its own instance of the CheckpointModel, not the checkpoint instance we're using
                 // here.
                 CheckpointModel checkpointDb = CheckpointModel.getById(checkpoint.Id);
-                timerInView.ShouldBe(checkpointDb.Timer);
+                timer.ShouldBe(checkpointDb.Timer);
             });
-        }
-
-        private TimerModel CreateTimerWithCheckpoints()
-        {
-            var timer = new TimerModel();
-            var race = new RaceModel("SomeRace", new DateTime(2007, 10, 3));
-            race.Save();
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
-            timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
-            timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
-            return timer;
         }
 
         private static void setMockSessionFor(TimerController timerCtrl)

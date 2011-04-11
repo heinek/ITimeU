@@ -1,6 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ITimeU.Models;
-using System;
 
 namespace ITimeU.Controllers
 {
@@ -16,15 +16,16 @@ namespace ITimeU.Controllers
         {
             var race = RaceModel.GetById(id);
             TimerModel timer = null;
-            if (race.HasTimer())
-                timer = new TimerModel(race.GetTimerId());
+            if (race.GetTimerId().HasValue)
+                timer = new TimerModel(race.GetTimerId().Value);
             else
             {
                 timer = new TimerModel();
                 timer.RaceID = id;
             }
             timer.SaveToDb();
-            ViewBag.Checkpoints = timer.GetCheckpoints();
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(id);
+            ViewBag.RaceId = id;
             Session["timer"] = timer;
             return View("Index", timer);
         }
@@ -41,7 +42,7 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Start();
-            ViewBag.Checkpoints = timer.GetCheckpoints();
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(timer.RaceID.Value);
             Session["timer"] = timer;
             return View("Index", timer);
         }
@@ -53,7 +54,7 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             timer.Stop();
-            ViewBag.Checkpoints = timer.GetCheckpoints();
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(timer.RaceID.Value);
             Session["timer"] = timer;
             return View("Index", timer);
         }
@@ -132,8 +133,8 @@ namespace ITimeU.Controllers
         {
             var race = RaceModel.GetById(id);
             TimerModel timer = null;
-            if (race.HasTimer())
-                timer = TimerModel.GetTimerById(race.GetTimerId());
+            if (race.GetTimerId().HasValue)
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             else
             {
                 timer = new TimerModel();
@@ -141,6 +142,7 @@ namespace ITimeU.Controllers
             }
             timer.SaveToDb();
             Session["timer"] = timer;
+            ViewBag.RaceId = id;
             return View("Speaker", timer);
         }
 

@@ -1,32 +1,49 @@
 ﻿using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
 {
     [TestClass]
     public class AthleteModelTest : ScenarioClass
     {
+        private EventModel eventModel;
+        private RaceModel race;
+        private AthleteModel athlete;
+
+        [TestInitialize]
+        public void TestSetup()
+        {
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("TestRace", DateTime.Today);
+            race.EventId = eventModel.EventId;
+            race.Save();
+            athlete = new AthleteModel("Test", "Testesen");
+            athlete.StartNumber = 999;
+            athlete.SaveToDb();
+        }
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            eventModel.Delete();
+            race.Delete();
+            athlete.Delete();
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Save_A_List_Of_Athletes_To_Database()
         {
             List<AthleteModel> athletes = null;
-            int? previousAthleteDbCount = AthleteModel.GetAll().Count;
+            int previousAthleteDbCount = AthleteModel.GetAll().Count;
 
             Given("we have a list of athletes", () =>
             {
-                athletes = new List<AthleteModel>();
                 athletes.Add(new AthleteModel("Arne", "Hansen"));
                 athletes.Add(new AthleteModel("Geir", "Olsen"));
                 athletes.Add(new AthleteModel("Per", "Iversen"));
@@ -47,16 +64,12 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Save_An_Athlete_To_The_Database()
         {
-            AthleteModel athlete = null;
-
             Given("we have an athlete", () =>
             {
-                athlete = new AthleteModel("Arne", "Hansen");
             });
 
             When("we save the athlete to the database", () =>
             {
-                athlete.SaveToDb();
             });
 
             Then("it should be saved to the database", () =>
@@ -71,11 +84,12 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Save_Athlete_Details_To_The_Database()
         {
-            AthleteModel athlete = null;
-
             Given("we have an athlete", () =>
             {
-                athlete = new AthleteModel("Per", "Olsen", 1997, ClubModel.GetOrCreate("Strindheim"), AthleteClassModel.GetOrCreate("G14"), 26);
+                athlete.Birthday = 1997;
+                athlete.Club = ClubModel.GetOrCreate("Strindheim");
+                athlete.AthleteClass = AthleteClassModel.GetOrCreate("G14");
+                athlete.StartNumber = 26;
             });
 
             When("we save the athlete to the database", () =>
@@ -100,12 +114,10 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void ToString_Should_Return_Firstname_And_Lastname()
         {
-            string toString = null; 
-            AthleteModel athlete = null;
+            string toString = null;
 
             Given("we have an athlete", () =>
             {
-                athlete = new AthleteModel("Arne", "Hansen");
             });
 
             When("we call ToString", () =>
@@ -115,29 +127,30 @@ namespace ITimeU.Tests.Models
 
             Then("we should get firstname and lastname", () =>
             {
-                toString.ShouldBe("Arne Hansen");
+                toString.ShouldBe("Test Testesen");
             });
         }
 
         [TestMethod]
         public void Attempting_To_Retrieve_An_Athlete_That_Does_Not_Exist_In_The_Db_Should_Give_An_Error()
         {
-            AthleteModel athlete = null;
             int athleteIdThatDoesNotExist = -1;
 
-            Given("we have a primary key for an athlete that does not exists in the database", () => {
-                athlete = new AthleteModel("Per", "Olsen");
-                athlete.SaveToDb();
+            Given("we have a primary key for an athlete that does not exists in the database", () =>
+            {
                 athleteIdThatDoesNotExist = athlete.Id;
-                athlete.DeleteFromDb();
+                athlete.Delete();
             });
 
             When("we attempt to fetch an athlete that does not exist in the database", () =>
             {
-                try {
+                try
+                {
                     AthleteModel.GetById(athleteIdThatDoesNotExist);
                     false.ShouldBe(true); // Fail test if exception is not thrown.
-                } catch (ModelNotFoundException e) {
+                }
+                catch (ModelNotFoundException e)
+                {
                     Assert.IsTrue(e.Message.Length > 0);
                 }
             });
@@ -162,13 +175,8 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Connect_An_Athlete_To_A_Race()
         {
-            RaceModel race = null;
-            AthleteModel athlete = null;
-            Given("we have a race and a athlete", () => {
-                 race = new RaceModel("testrace", DateTime.Today);
-                 race.Save();
-                 athlete = new AthleteModel("Test", "Testesen");
-                 athlete.SaveToDb();
+            Given("we have a race and a athlete", () =>
+            {
             });
 
             When("we want to connect a athlete to that race", () =>
@@ -179,6 +187,55 @@ namespace ITimeU.Tests.Models
             Then("the list of athletes for the race should be 1", () =>
             {
                 race.GetAthletes().Count().ShouldBe(1);
+            });
+        }
+
+        [TestMethod]
+        public void We_Should_Check_For_Identical_Startnumber_Before_Adding_A_New_Athlete()
+        {
+            AthleteModel newAthlete = null;
+
+            Given("we have an athlete in the database with startnumber 999", () =>
+            {
+                athlete.ConnectToRace(race.RaceId);
+            });
+
+            When("we want to add a new athlete with the same startnumber", () =>
+            {
+                newAthlete = new AthleteModel("NewAthlete", "Test", 1980, null, null, 999);
+                newAthlete.SaveToDb();
+                newAthlete.ConnectToRace(race.RaceId);
+            });
+
+            Then("we should be warned if the new athlete have a startnumber that is identical to some one else in the database", () =>
+            {
+                AthleteModel.StartnumberExistsInDb(newAthlete.StartNumber.Value).ShouldBeTrue();
+            });
+        }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Get_All_Athletes_For_A_Club()
+        {
+            ClubModel newClub = null;
+            AthleteModel newAthlete = null;
+            List<AthleteModel> athletes = null;
+
+            Given("we have athletes connected to a club", () =>
+            {
+                newClub = new ClubModel("clubTest");
+                newClub.Save();
+                newAthlete = new AthleteModel("Test", "Test", 1980, newClub, null, 12);
+                newAthlete.SaveToDb();
+            });
+
+            When("we want to get all athletes for a club", () =>
+            {
+                athletes = AthleteModel.GetAthletes(newClub.Id);
+            });
+
+            Then("we should be able to get a list of athletes", () =>
+            {
+                athletes.ShouldNotBeNull();
             });
         }
 
