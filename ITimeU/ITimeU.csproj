@@ -69,6 +69,7 @@
     <Compile Include="Controllers\AthleteController.cs" />
     <Compile Include="Controllers\CheckpointOrderController.cs" />
     <Compile Include="Controllers\CheckpointController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\ImportAthletesController.cs" />
@@ -328,6 +329,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Athlete\AthletesForRace.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\Print.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\PrintForClub.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Class\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Class\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Class\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\ResultsForSpeaker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\ResultsSpeaker.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -168,13 +168,39 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Athletes(int clubId)
         {
+            ViewBag.ClubId = clubId;
             return View("Athletes", AthleteModel.GetAthletes(clubId));
+        }
+
+
+        /// <summary>
+        /// Prints the athletes.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PrintForClub(int clubId)
+        {
+            ViewBag.ClubName = ClubModel.GetById(clubId).Name;
+            var athletes = AthleteModel.GetAthletes(clubId);
+            return View(athletes);
         }
 
         [HttpGet]
         public ActionResult AthletesForRace(int raceId)
         {
+            ViewBag.RaceId = raceId;
             return View("Athletes", AthleteModel.GetAthletesForRace(raceId));
+        }
+
+
+        /// <summary>
+        /// Prints the athletes.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Print(int raceId)
+        {
+            ViewBag.RaceName = RaceModel.GetById(raceId).Name;
+            var athletes = AthleteModel.GetAthletesForRace(raceId);
+            return View(athletes);
         }
     }
 }

@@ -12,31 +12,46 @@ namespace ITimeU.Tests.Models
     [TestClass]
     public class RaceIntermediateTest : ScenarioClass
     {
+        private AthleteModel athlete;
+        private EventModel eventModel;
+        private RaceModel race;
+        private ClubModel club;
+        private TimerModel timer;
+
+        [TestInitialize]
+        public void TestSetup()
+        {
+            club = new ClubModel("Test IK");
+            eventModel = new EventModel("TestEvent", DateTime.Today);
+            eventModel.Save();
+            athlete = new AthleteModel("Tester", "Test");
+            athlete.StartNumber = 1;
+            athlete.Club = club;
+            athlete.SaveToDb();
+            race = new RaceModel("TestRace", DateTime.Today);
+            race.EventId = eventModel.EventId;
+            race.Save();
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            athlete.Delete();
+            race.Delete();
+            timer.Delete();
+            club.DeleteFromDb();
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Connect_An_Athlete_To_A_Startnumber()
         {
-            AthleteModel athlete = null;
-            RaceModel race = null;
-            TimerModel timer = null;
-            ClubModel club = null;
             CheckpointOrderModel checkpointOrder;
             RaceIntermediateModel intermediate;
 
             Given("we have an athlete and a startnumber registrert", () =>
             {
-                club = new ClubModel("Test IK");
-                athlete = new AthleteModel("Tester", "Test");
-                athlete.StartNumber = 1;
-                athlete.Club = club;
-                athlete.SaveToDb();
-                race = new RaceModel("TestRace", DateTime.Today);
-                race.Save();
+
                 athlete.ConnectToRace(race.RaceId);
                 timer = CreateNewTimerModelWithCheckpoints(race);
                 checkpointOrder = new CheckpointOrderModel();

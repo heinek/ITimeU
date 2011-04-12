@@ -39,7 +39,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Save_A_List_Of_Athletes_To_Database()
         {
-            List<AthleteModel> athletes = null;
+            var athletes = new List<AthleteModel>();
             int previousAthleteDbCount = AthleteModel.GetAll().Count;
 
             Given("we have a list of athletes", () =>
