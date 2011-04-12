@@ -24,7 +24,36 @@ namespace ITimeU.Controllers
         {
             ViewBag.Gender = getGender();
             ViewBag.BirthDate = getBirthDate();
+            ViewBag.AthleteClass = AthleteClassModel.GetAll();  
+                     
+        }
+
+        private void setEditViewData()
+        {
+            ViewBag.Gender = getGender();
+            ViewBag.BirthDate = getBirthDate();
             ViewBag.AthleteClass = AthleteClassModel.GetAll();
+
+        }
+
+        public ActionResult Edit()
+        {
+            ViewBag.Club = ClubModel.GetAll();
+            ViewBag.IsAthleteUpdate = false;
+            ViewBag.IsAthleteDelete = false;
+            ViewBag.IsValidInput = true; 
+            setViewData();
+            return View("Edit", new AthleteModel());
+        }
+
+        public ActionResult GetAllAthletes(int Id)
+        {                      
+            return Content(new AthleteModel().GetAllByClubId(Id).ToListboxvalues());            
+        }
+
+        public ActionResult GetAthlete(int Id)
+        {
+            return Content(AthleteModel.GetById(Id).ToListboxvalues());
         }
 
         /// <summary>
@@ -46,7 +75,7 @@ namespace ITimeU.Controllers
         public ActionResult Create(string txtFirstName, string txtLastName, string txtEmail, string txtPostalAddress, string txtPostalCode, string txtCity,
                                     string txtPhoneNumber, string genderId, string birthdateId, string txtStartNumber, string clubId, string classId)
         {
-            if (!IsValidInput(txtStartNumber, txtLastName, txtEmail, txtStartNumber))
+            if (!IsValidInput(txtFirstName,txtLastName,txtEmail,txtStartNumber,clubId))
             {
                 ViewBag.IsValidInput = false;
                 ViewBag.IsAthleteCreated = false;
@@ -56,32 +85,121 @@ namespace ITimeU.Controllers
             else
             {
                 int birthdate = 0, startnum = 0;
-                int gender = 0, athleteclub = 0, athleteclass = 0;
+                int gender = 0, athleteclubid = 0, athleteclassid = 0;
 
                 int.TryParse(genderId, out gender);
                 int.TryParse(birthdateId, out birthdate);
                 int.TryParse(txtStartNumber, out startnum);
-                int.TryParse(clubId, out athleteclub);
-                int.TryParse(classId, out athleteclass);
+                int.TryParse(clubId, out athleteclubid);
+                int.TryParse(classId, out athleteclassid);
 
-                Gender g = getGenderNameById(gender);
-                string gendername = g.Name;
-                int birthyear = getBirthDateById(birthdate).BirthYear;
+                Gender getGender = getGenderNameById(gender);
+                string gendername = "";
+                if (getGender != null)
+                {
+                    gendername = getGender.Name;
+                }
+                BirthDate getBirthday = getBirthDateById(birthdate);
+                int birthyear = 0;
+                if (getBirthday != null)
+                {
+                    birthyear = getBirthday.BirthYear;
+                }
 
-                ClubModel athclub = new ClubModel(athleteclub);
-                AthleteClassModel athclass = new AthleteClassModel(athleteclass);
+                ClubModel athclubobj = null;
+                if (athleteclubid != 0)
+                {
+                    athclubobj = new ClubModel(athleteclubid);
+                }
+
+                AthleteClassModel athclassobj = null;
+                if (athleteclassid != 0)
+                {
+                    athclassobj = new AthleteClassModel(athleteclassid);
+                }
 
                 AthleteModel athlete = new AthleteModel(txtFirstName, txtLastName, txtEmail, txtPostalAddress,
-                                    txtPostalCode, txtCity, gendername, birthyear, txtPhoneNumber, startnum, athclub, athclass);
+                                    txtPostalCode, txtCity, gendername, birthyear, txtPhoneNumber, startnum, athclubobj, athclassobj);
                 athlete.SaveToDb();
                 return RedirectToAction("ResetFormField");
             }
         }
 
-        public bool IsValidInput(string firstname, string lastname, string email, string startnumber)
+        public ActionResult EditAthlete(string btnSubmit, string ddAthlete, string txtFirstName, string txtLastName, string txtEmail, string txtPostalAddress, string txtPostalCode, string txtCity,
+                                    string txtPhoneNumber, string ddGender, string ddBirthDate, string txtStartNumber, string ddClass)
+        {
+            if (btnSubmit.Equals("Delete"))
+            {
+                DeleteAthlete(ddAthlete);
+                return RedirectToAction("ResetDeleteFormField");
+            }
+            else
+            {
+                if (!IsValidInput(txtFirstName, txtLastName, txtEmail, txtStartNumber))
+                {
+                    return RedirectToAction("EditFormFail");
+                }
+                else
+                {
+                    int athleteid = 0;
+                    int.TryParse(ddAthlete, out athleteid);                
+                    int birthdate = 0, startnum = 0;
+                    int gender = 0, athleteclass = 0;
+
+
+                    int.TryParse(ddGender, out gender);
+                    int.TryParse(ddBirthDate, out birthdate);
+                    int.TryParse(txtStartNumber, out startnum);
+                    int.TryParse(ddClass, out athleteclass);
+
+                    Gender getGender = getGenderNameById(gender);
+                    string gendername = "";
+                    if (getGender != null)
+                    {
+                        gendername = getGender.Name;
+                    }
+                    BirthDate getBirthday = getBirthDateById(birthdate);
+                    int birthyear = 0;
+                    if (getBirthday != null)
+                    {
+                        birthyear = getBirthday.BirthYear;
+                    }
+
+                    Athlete athleteDb = new Athlete();
+                    athleteDb.ID = athleteid;
+                    athleteDb.FirstName = txtFirstName;
+                    athleteDb.LastName = txtLastName;
+                    athleteDb.Email = txtEmail;
+                    athleteDb.PostalAddress = txtPostalAddress;
+                    athleteDb.PostalCode = txtPostalCode;
+                    athleteDb.PostalPlace = txtCity;
+                    athleteDb.Gender = gendername;
+                    athleteDb.Birthday = birthyear;
+                    athleteDb.Phone = txtPhoneNumber;
+                    athleteDb.Startnumber = startnum;
+                    athleteDb.ClassID = athleteclass;
+
+                    AthleteModel athlete = new AthleteModel(athleteDb);
+                
+                    athlete.SaveToDb();
+                    return RedirectToAction("ResetEditFormField");
+                }
+            } 
+                        
+        }
+
+        private void DeleteAthlete(string id)
+        {
+            int Id = 0;
+            int.TryParse(id, out Id);
+            AthleteModel athlete = new AthleteModel(Id);
+            athlete.DeleteFromDb();
+        }
+
+        public bool IsValidInput(string firstname, string lastname, string email, string startnumber, string clubId = "1")
         {
             int startnum = 0;
-            if (String.IsNullOrEmpty(firstname) || String.IsNullOrEmpty(lastname)
+            if (String.IsNullOrEmpty(firstname) || String.IsNullOrEmpty(lastname) || String.IsNullOrEmpty(clubId)
                 || String.IsNullOrEmpty(email) || String.IsNullOrEmpty(startnumber) || (!isValidEmail(email))
                 || (!int.TryParse(startnumber, out startnum)))
             {
@@ -106,6 +224,38 @@ namespace ITimeU.Controllers
             return View("Index", ClubModel.GetAll());
         }
 
+        public ActionResult ResetEditFormField()
+        {
+            setViewData();
+            ViewBag.Club = ClubModel.GetAll();
+            ViewBag.IsAthleteUpdate = true;
+            ViewBag.IsAthleteDelete = false;
+            //ViewBag.IsValidEmail = true;
+            ViewBag.IsValidInput = true;
+            return View("Edit", new AthleteModel());
+        }
+
+        public ActionResult EditFormFail()
+        {
+            setViewData();            
+            ViewBag.Club = ClubModel.GetAll();
+            ViewBag.IsAthleteUpdate = false;
+            ViewBag.IsAthleteDelete = false;
+            //ViewBag.IsValidEmail = true;
+            ViewBag.IsValidInput = false;
+            return View("Edit", new AthleteModel());
+        }
+        public ActionResult ResetDeleteFormField()
+        {
+            setViewData();
+            ViewBag.Club = ClubModel.GetAll();
+            ViewBag.IsAthleteDelete = true;
+            ViewBag.IsAthleteUpdate = false;
+            ViewBag.IsValidInput = true; 
+            //ViewBag.IsValidEmail = true;
+            //ViewBag.IsValidInput = true;
+            return View("Edit", new AthleteModel());
+        }
         public static bool isValidEmail(string inputEmail)
         {
             //inputEmail = NulltoString(inputEmail);
@@ -128,6 +278,7 @@ namespace ITimeU.Controllers
                 new Gender() { Id = 1, Name = "M" },
                 new Gender() { Id = 2, Name = "K" }
             };
+            gender.Insert(0, null);
             return gender;
         }
 
@@ -138,7 +289,7 @@ namespace ITimeU.Controllers
                 new Gender() { Id = 1, Name = "M" },
                 new Gender() { Id = 2, Name = "K" }
             };
-            return (gender.Single(gid => gid.Id == id));
+            return (gender.SingleOrDefault(gid => gid.Id == id));
         }
 
         private List<BirthDate> getBirthDate()
@@ -150,6 +301,7 @@ namespace ITimeU.Controllers
             {
                 birthdate.Add(new BirthDate() { Id = id++, BirthYear = startdate++ });
             }
+            birthdate.Insert(0, null);
             return birthdate;
         }
 
@@ -162,7 +314,7 @@ namespace ITimeU.Controllers
             {
                 birthdate.Insert(0, new BirthDate() { Id = id++, BirthYear = startdate++ });
             }
-            return birthdate.Single(bday => bday.Id == birthid);
+            return birthdate.SingleOrDefault(bday => bday.Id == birthid);
         }
 
         [HttpGet]

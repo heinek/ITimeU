@@ -170,6 +170,7 @@
     <Content Include="Content\jquery-ui-1.8.10.custom.css" />
     <Content Include="Content\print.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\AthleteHandler.js" />
     <Content Include="Scripts\CheckpointOrderHandler.js" />
     <Content Include="Content\qunit.css" />
     <Content Include="Scripts\date.js" />
@@ -304,7 +305,7 @@
     <Content Include="Views\Timer\Speaker.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Athlete\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Event\Create.cshtml" />
