@@ -207,7 +207,7 @@ namespace ITimeU.Models
         public static void MergeAthletes(int raceid)
         {
             var raceintermediates = GetRaceintermediatesForRace(raceid);
-            var raceathletes = RaceAthleteModel.GetRaceAthletesForRace(raceid);
+            var raceathletes = RaceAthleteModel.GetAthletesConnectedToRace(raceid);
             foreach (var raceathlete in raceathletes)
             {
                 foreach (var raceintermediate in raceintermediates)
