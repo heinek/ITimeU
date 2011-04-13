@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ITimeU.Models;
+using System.Reflection;
 
 namespace ITimeU
 {
@@ -102,6 +103,19 @@ namespace ITimeU
                     listboxlist.Append(string.Format("<option value=\"{0}\">{1} {2}</option>", athlete.Id, athlete.FirstName, athlete.LastName));
                 }
             }
+            return listboxlist.ToString();
+        }
+
+        public static string ToListboxvalues(this AthleteModel Athlete)
+        {
+            StringBuilder listboxlist = new StringBuilder();
+            string seperator = " //// ";
+            Type type = Athlete.GetType();
+            foreach (PropertyInfo property in type.GetProperties())
+            {
+                listboxlist.Append(string.Format("{0}{1}", property.GetValue(Athlete,null),seperator));
+            }           
+            
             return listboxlist.ToString();
         }
 

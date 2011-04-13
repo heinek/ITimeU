@@ -1,0 +1,242 @@
+﻿@model ITimeU.Models.AthleteModel         
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/AthleteHandler.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var ddAthlete = $("#ddAthlete");
+        var ddClub = $("#ddClub");
+        var ddBirthday = $("#ddBirthDate");
+        var ddGender = $("#ddGender");
+        var ddClass = $("#ddClass");
+
+        var btnChangeClub = $("#btnChangeClub");
+        var btnChangeAthlete = $("#btnChangeAthlete");
+
+        var tbFirstName = $("#txtFirstName");
+        var tbLastName = $("#txtLastName");
+        var tbEmail = $("#txtEmail");
+        var tbAddress = $("#txtPostalAddress");
+        var tbPostCode = $("#txtPostalCode");
+        var tbCity = $("#txtCity");
+        var tbPhoneNum = $("#txtPhoneNumber");
+        var tbStartNum = $("#txtStartNumber");
+
+
+        var handler = new AthleteHandler();
+
+        handler.getAllAthletes(
+            btnChangeClub,
+            ddAthlete
+        );
+
+        handler.getAthleteDetails(
+            btnChangeAthlete,
+            tbFirstName,
+            tbLastName,
+            tbEmail,
+            tbAddress,
+            tbPostCode,
+            tbCity,
+            tbPhoneNum,
+            ddGender,
+            ddBirthday,
+            tbStartNum,
+            ddClass
+
+        );
+
+        handler.setChangeActionClub(
+            ddClub
+        );
+
+        handler.setChangeActionAthlete(
+            ddAthlete
+        );
+    });
+</script>
+
+<h2>Edit Athlete</h2>
+@{ Html.BeginForm("EditAthlete", "Athlete", FormMethod.Post); }
+<fieldset>
+@if (!ViewBag.IsValidInput)
+{
+    <div class="errormessagearea">
+        First Name, Last Name, Email and StartNumber must not be empty and invalid.
+    </div>
+}
+@if (ViewBag.IsAthleteUpdate)
+    {
+        <div class="statusmessagearea" id="StatusMessageUpdate">
+            Athlete has been updated successfully!
+        </div>
+    }
+    
+@if (ViewBag.IsAthleteDelete)
+    {
+        <div class="statusmessagearea" id="StatusMessageDelete">
+            Athlete has been deleted successfully!
+        </div>
+    }
+    
+    <table>
+    <tr>
+        <td>
+    <div class="editor-label">
+            @Html.Label("lblClub", "Club")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ddClub", new SelectList(ViewBag.Club, "Id", "Name"), new { @class = "dropdownlist" })
+            <input type="button" id="btnChangeClub" class="btnGo" value=" " />
+        </div>
+            </td>
+        <td></td>
+        <td>
+    <div class="editor-label">
+            @Html.Label("lblAthlete", "Athletes")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("ddAthlete", new SelectList(Model.AthleteDic, "Key", "Value"), new { @class = "dropdownlist" })
+            <input type="button" id="btnChangeAthlete" class="btnGo" value=" " />
+        </div>
+            </td>
+        </tr>
+
+        <tr>
+        <td>
+<div class="editor-label">
+        @Html.Label("lblFirstName", "First Name *")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtFirstName", Model.FirstName, new { @class = "textboxRequired" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblLastName", "Last Name *")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtLastName", null, new { @class = "textboxRequired" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblEmail", "Email *")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtEmail", null, new { @class = "textboxRequired" })
+    </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+<div class="editor-label">
+        @Html.Label("lblPostaladdress", "Postal Address")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtPostalAddress", null, new { @class = "textbox" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblPostalCode", "Postal Code")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtPostalCode", null, new { @class = "textbox" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblCity", "City")
+    </div>
+
+    <div class="editor-field">
+        @Html.TextBox("txtCity", null, new { @class = "textbox" })
+    </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+        <div class="editor-label">
+                @Html.Label("lblPhoneNumber", "Phone Number")
+            </div>
+
+            <div class="editor-field">
+                @Html.TextBox("txtPhoneNumber", null, new { @class = "textbox" })
+            </div>
+                </td>
+        <td>
+<div class="editor-label">
+        @Html.Label("lblGender", "Gender")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("ddGender", new SelectList(ViewBag.Gender, "Id", "Name"), new { @class = "dropdownlist" })
+    </div>
+        </td>
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblBirthDate", "Birthdate")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("ddBirthDate", new SelectList(ViewBag.BirthDate, "Id", "BirthYear"), new { @class = "dropdownlist" })
+    </div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+        <div class="editor-label">
+                @Html.Label("lblStartNumber", "StartNumber *")
+            </div>
+
+            <div class="editor-field">
+                @Html.TextBox("txtStartNumber", null, new { @class = "textboxRequired" })
+            </div>
+        </td>
+
+        
+
+        <td>
+<div class="editor-label">
+        @Html.Label("lblClass", "AthleteClass")
+    </div>
+    <div class="editor-field">
+        @Html.DropDownList("ddClass", new SelectList(ViewBag.AthleteClass, "Id", "Name"), new { @class = "dropdownlist" })
+    </div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>
+            <input type="submit" class="btnRegular" name="btnSubmit"  value="Update" style="width: 100px" />
+        </td>        
+        <td>
+            <input type="submit" class="btnRegular" name="btnSubmit" value="Delete" style="width: 100px" />
+        </td>     
+    </tr>
+</table>
+</fieldset>
+@{ Html.EndForm(); }
+

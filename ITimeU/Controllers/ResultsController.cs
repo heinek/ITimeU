@@ -135,5 +135,16 @@ namespace ITimeU.Controllers
             var raceIntermediates = RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid);
             return View(raceIntermediates);
         }
+
+        [HttpGet]
+        public ActionResult ResultsSpeaker(int raceId)
+        {
+            return View();
+        }
+
+        public ActionResult ResultsForSpeaker(int checkpointId)
+        {
+            return View(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointId));
+        }
     }
 }

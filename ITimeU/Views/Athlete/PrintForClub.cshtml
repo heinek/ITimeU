@@ -1,0 +1,38 @@
+﻿@model IEnumerable<ITimeU.Models.AthleteModel>
+@{
+    Layout = null;
+}
+<link rel="stylesheet" type="text/css" href="../../Content/print.css" media="print">
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Klubbliste</title>
+</head>
+<body>
+    <h2>
+        Utøvere for @ViewBag.ClubName</h2>
+    <div class="contentmargin">
+        <table style="width: 800">
+            <tr>
+                <th align="left" style="width: 400">
+                    Navn
+                </th>
+                <th align="left" style="width: 80">
+                    StartNumber
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.FullName
+                    </td>
+                    <td>
+                        @item.StartNumber
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

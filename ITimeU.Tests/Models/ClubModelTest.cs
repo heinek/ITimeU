@@ -15,7 +15,6 @@ namespace ITimeU.Tests.Models
         public void TestCleanup()
         {
             StartScenario();
-            club.DeleteFromDb();
         }
 
         [TestMethod]

@@ -12,7 +12,6 @@ namespace ITimeU.Models
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        private string fullname;
         public string FullName
         {
             get
@@ -31,6 +30,8 @@ namespace ITimeU.Models
         public ClubModel Club { get; set; }
         public AthleteClassModel AthleteClass { get; set; }
         public int? StartNumber { get; set; }
+
+        public Dictionary<int, string> AthleteDic { get; set; }
 
         private bool dbEntryCreated
         {
@@ -80,6 +81,27 @@ namespace ITimeU.Models
             return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
         }
 
+        public List<AthleteModel> GetAllByClubId(int id)
+        {
+            var entities = new Entities();
+            IEnumerable<Athlete> athletes = entities.Athletes.AsEnumerable<Athlete>();
+
+            List<AthleteModel> athleteModels = new List<AthleteModel>();
+            AthleteDic.Clear();
+            foreach (Athlete athleteDb in athletes)
+            {
+                if (athleteDb.ClubID == id)
+                {
+                    AthleteModel athleteModel = new AthleteModel(athleteDb);
+                    athleteModels.Add(athleteModel);
+                    AthleteDic.Add(athleteModel.Id, athleteModel.FullName);
+                    
+                }
+            }                       
+
+            return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
+        }
+
         public AthleteModel(string firstName, string lastName)
         {
             FirstName = firstName;
@@ -98,6 +120,15 @@ namespace ITimeU.Models
             FirstName = athleteDb.FirstName;
             LastName = athleteDb.LastName;
             Birthday = athleteDb.Birthday;
+            Email = athleteDb.Email;
+            PostalAddress = athleteDb.PostalAddress;
+            PostalCode = athleteDb.PostalCode;
+            City = athleteDb.PostalPlace;
+            PhoneNumber = athleteDb.Phone;
+            Gender = athleteDb.Gender;
+            Birthday = athleteDb.Birthday;
+
+
             if (athleteDb.Club != null)
                 Club = ClubModel.GetOrCreate(athleteDb.Club.Name);
             if (athleteDb.AthleteClass != null)
@@ -132,12 +163,21 @@ namespace ITimeU.Models
             Gender = gender;
             PhoneNumber = phonenumber;
             Email = email;
+            
         }
 
         public AthleteModel()
         {
             // TODO: Complete member initialization
+            AthleteDic = new Dictionary<int, string>();
         }
+
+        public AthleteModel(int id)
+        {
+            Id = id;
+        }
+
+        
 
         /// <summary>
         /// Saves a list of athletes to the database.
