@@ -37,5 +37,10 @@ namespace ITimeU.Controllers
                 check = false;
             return check;
         }
+
+        public ActionResult Setup()
+        {
+            return View("Setup");
+        }
     }
 }

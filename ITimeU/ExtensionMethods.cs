@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using ITimeU.Models;
-using System.Reflection;
 
 namespace ITimeU
 {
@@ -113,9 +113,9 @@ namespace ITimeU
             Type type = Athlete.GetType();
             foreach (PropertyInfo property in type.GetProperties())
             {
-                listboxlist.Append(string.Format("{0}{1}", property.GetValue(Athlete,null),seperator));
-            }           
-            
+                listboxlist.Append(string.Format("{0}{1}", property.GetValue(Athlete, null), seperator));
+            }
+
             return listboxlist.ToString();
         }
 
@@ -129,18 +129,42 @@ namespace ITimeU
             {
                 using (var context = new Entities())
                 {
-                    table.Append(string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>", 
+                    table.Append(string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td></tr>",
                         rank,
                         context.CheckpointOrders.
                         Where(checkpointOrder => checkpointOrder.ID == raceintermediate.CheckpointOrderID).
                         Single().StartingNumber,
                         raceintermediate.AthleteId.HasValue ?
                         raceintermediate.AthleteModel.FullName :
-                        " - ", 
+                        " - ",
                         raceintermediate.AthleteModel.Club.Name,
                         context.Runtimes.
                         Where(runtime => runtime.RuntimeID == raceintermediate.RuntimeId).
                         Single().Runtime1.ToTimerString()));
+                }
+                rank++;
+            }
+            table.Append("</table>");
+            return table.ToString();
+        }
+
+        public static string ToTable(this List<ResultsViewModel> lstResults)
+        {
+            var sortedList = lstResults.OrderBy(result => result.Time);
+            StringBuilder table = new StringBuilder();
+            table.Append("<table style='width: 800'><tr><th align='left' style='width: 100'>Passeringspunkt</th><th align='left' style='width: 80'>Plassering</th><th align='left' style='width: 100'>Startnummer</th><th align='left'>Navn</th><th align='left'>Klubb</th><th align='left'>Tid</th></tr>");
+            int rank = 1;
+            foreach (var result in sortedList)
+            {
+                using (var context = new Entities())
+                {
+                    table.Append(string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>",
+                        result.Checkpointname,
+                        rank,
+                        result.Startnumber,
+                        result.Fullname,
+                        result.Clubname,
+                        result.Time));
                 }
                 rank++;
             }

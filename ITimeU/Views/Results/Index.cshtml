@@ -107,7 +107,7 @@
         });
 
         btnPrint.click(function () {
-            printWin = window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val() + "&racename=" + $("#ddlRaces option:selected").text() + "&checkpointname=" + $("#ddlCheckpoints option:selected").text(), "_blank", "height=800,left=100,top=100,width=800,toolbar=no,titlebar=0,status=0,menubar=yes,location= no,scrollbars=1");
+            printWin = window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val(), "_blank", "height=800,left=100,top=100,width=800,toolbar=no,titlebar=0,status=0,menubar=yes,location= no,scrollbars=1");
             printWin.print();
 
         });

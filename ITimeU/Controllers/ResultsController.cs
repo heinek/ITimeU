@@ -128,10 +128,11 @@ namespace ITimeU.Controllers
         /// <param name="racename">The racename.</param>
         /// <param name="checkpointname">The checkpointname.</param>
         /// <returns></returns>
-        public ActionResult Print(int checkpointid, string racename, string checkpointname)
+        public ActionResult Print(int checkpointid)
         {
-            ViewBag.RaceName = racename;
-            ViewBag.CheckpointName = checkpointname;
+            var checkpoint = CheckpointModel.getById(checkpointid);
+            ViewBag.RaceName = checkpoint.Race.Name;
+            ViewBag.CheckpointName = checkpoint.Name;
             var raceIntermediates = RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid);
             return View(raceIntermediates);
         }
@@ -144,6 +145,7 @@ namespace ITimeU.Controllers
 
         public ActionResult ResultsForSpeaker(int checkpointId)
         {
+            ViewBag.CheckpointId = checkpointId;
             return View(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointId));
         }
     }

@@ -24,8 +24,8 @@ namespace ITimeU.Controllers
         {
             ViewBag.Gender = getGender();
             ViewBag.BirthDate = getBirthDate();
-            ViewBag.AthleteClass = AthleteClassModel.GetAll();  
-                     
+            ViewBag.AthleteClass = AthleteClassModel.GetAll();
+
         }
 
         private void setEditViewData()
@@ -41,14 +41,14 @@ namespace ITimeU.Controllers
             ViewBag.Club = ClubModel.GetAll();
             ViewBag.IsAthleteUpdate = false;
             ViewBag.IsAthleteDelete = false;
-            ViewBag.IsValidInput = true; 
+            ViewBag.IsValidInput = true;
             setViewData();
             return View("Edit", new AthleteModel());
         }
 
         public ActionResult GetAllAthletes(int Id)
-        {                      
-            return Content(new AthleteModel().GetAllByClubId(Id).ToListboxvalues());            
+        {
+            return Content(new AthleteModel().GetAllByClubId(Id).ToListboxvalues());
         }
 
         public ActionResult GetAthlete(int Id)
@@ -75,7 +75,7 @@ namespace ITimeU.Controllers
         public ActionResult Create(string txtFirstName, string txtLastName, string txtEmail, string txtPostalAddress, string txtPostalCode, string txtCity,
                                     string txtPhoneNumber, string genderId, string birthdateId, string txtStartNumber, string clubId, string classId)
         {
-            if (!IsValidInput(txtFirstName,txtLastName,txtEmail,txtStartNumber,clubId))
+            if (!IsValidInput(txtFirstName, txtLastName, txtEmail, txtStartNumber, clubId))
             {
                 ViewBag.IsValidInput = false;
                 ViewBag.IsAthleteCreated = false;
@@ -142,7 +142,7 @@ namespace ITimeU.Controllers
                 else
                 {
                     int athleteid = 0;
-                    int.TryParse(ddAthlete, out athleteid);                
+                    int.TryParse(ddAthlete, out athleteid);
                     int birthdate = 0, startnum = 0;
                     int gender = 0, athleteclass = 0;
 
@@ -180,12 +180,12 @@ namespace ITimeU.Controllers
                     athleteDb.ClassID = athleteclass;
 
                     AthleteModel athlete = new AthleteModel(athleteDb);
-                
+
                     athlete.SaveToDb();
                     return RedirectToAction("ResetEditFormField");
                 }
-            } 
-                        
+            }
+
         }
 
         private void DeleteAthlete(string id)
@@ -237,7 +237,7 @@ namespace ITimeU.Controllers
 
         public ActionResult EditFormFail()
         {
-            setViewData();            
+            setViewData();
             ViewBag.Club = ClubModel.GetAll();
             ViewBag.IsAthleteUpdate = false;
             ViewBag.IsAthleteDelete = false;
@@ -251,7 +251,7 @@ namespace ITimeU.Controllers
             ViewBag.Club = ClubModel.GetAll();
             ViewBag.IsAthleteDelete = true;
             ViewBag.IsAthleteUpdate = false;
-            ViewBag.IsValidInput = true; 
+            ViewBag.IsValidInput = true;
             //ViewBag.IsValidEmail = true;
             //ViewBag.IsValidInput = true;
             return View("Edit", new AthleteModel());
@@ -340,7 +340,7 @@ namespace ITimeU.Controllers
         public ActionResult AthletesForRace(int raceId)
         {
             ViewBag.RaceId = raceId;
-            return View("Athletes", AthleteModel.GetAthletesForRace(raceId));
+            return View("AthletesForRace", AthleteModel.GetAthletesForRace(raceId));
         }
 
 

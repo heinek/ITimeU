@@ -1,4 +1,4 @@
-﻿@model ITimeU.Models.TimerModel
+﻿@model IEnumerable<ITimeU.Models.ResultsViewModel>
 @{
     ViewBag.Title = "Speaker";
 }
@@ -8,8 +8,25 @@
 <script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+
+        setInterval(function () {
+            var hdRaceIdval = $('#hdRaceId').val();
+            var updateUrl = '@Url.Action("Update", "Timer")';
+            $.ajax({
+                url: updateUrl,
+                type: 'GET',
+                data: { id: hdRaceIdval },
+                cache: false,
+                success: function (result) {
+                    $('#someDivId').html(result);
+                }
+            });
+        }, 5000);
+
+
         var timer;
         var btnUpdate = $("#btnUpdate");
+        var btnUpdateResults = $("#btnUpdateResults");
         var timeFormatFactory = new TimeFormatFactory();
         var lblTimer = $("#lblRunningTimer");
         var url = "/Timer/GetStartruntimeForSpeaker/";
@@ -46,7 +63,9 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" }) | 
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" })
+        |
     </center>
 </div>
 <div class="contentmargin">
@@ -55,6 +74,10 @@
             <div class="left">
                 <center>
                     <span id="lblRunningTimer" class="timerbig"></span>
+                    <h2>
+                        Resultater</h2>
+                        <div id="someDivId"></div>
+
                 </center>
             </div>
         </div>
@@ -66,4 +89,5 @@
             </div>
         </div>
     </div>
+    <input type="hidden" name="hdRaceId" id="hdRaceId" value="@ViewBag.RaceId" />
 </div>

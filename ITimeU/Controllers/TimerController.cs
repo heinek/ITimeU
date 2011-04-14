@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using ITimeU.Models;
 
@@ -131,6 +132,7 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Speaker(int id)
         {
+            ViewBag.RaceId = id;
             var race = RaceModel.GetById(id);
             TimerModel timer = null;
             if (race.GetTimerId().HasValue)
@@ -141,9 +143,18 @@ namespace ITimeU.Controllers
                 timer.RaceID = id;
             }
             timer.SaveToDb();
-            Session["timer"] = timer;
             ViewBag.RaceId = id;
-            return View("Speaker", timer);
+            Session["timer"] = timer;
+            var raceintermediates = RaceIntermediateModel.GetRaceintermediatesForRace(id).
+                Select(raceintermediate => new ResultsViewModel()
+                {
+                    Checkpointname = raceintermediate.CheckpointModel.Name,
+                    Clubname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.Club.Name : " - ",
+                    Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullName : " - ",
+                    Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : 0,
+                    Time = raceintermediate.RuntimeModel.RuntimeToTime
+                });
+            return View("Speaker", raceintermediates);
         }
 
         [HttpGet]
@@ -160,6 +171,20 @@ namespace ITimeU.Controllers
                 runtime = (int)ts.TotalMilliseconds;
             }
             return Content(runtime.ToString());
+        }
+
+        public ActionResult Update(int id)
+        {
+            var raceintermediates = RaceIntermediateModel.GetRaceintermediatesForRace(id).
+                Select(raceintermediate => new ResultsViewModel()
+                {
+                    Checkpointname = raceintermediate.CheckpointModel.Name,
+                    Clubname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.Club.Name : " - ",
+                    Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullName : " - ",
+                    Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : 0,
+                    Time = raceintermediate.RuntimeModel.RuntimeToTime
+                }).ToList();
+            return Content(raceintermediates.ToTable());
         }
     }
 }

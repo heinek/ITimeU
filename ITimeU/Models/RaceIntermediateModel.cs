@@ -175,6 +175,13 @@ namespace ITimeU.Models
                     Select(raceintermediate => new RaceIntermediateModel()
                     {
                         CheckpointID = raceintermediate.CheckpointID,
+                        CheckpointModel = new CheckpointModel()
+                        {
+                            Id = raceintermediate.CheckpointID,
+                            Name = raceintermediate.Checkpoint.Name,
+                            Sortorder = raceintermediate.Checkpoint.SortOrder,
+                            RaceId = raceintermediate.Checkpoint.RaceID
+                        },
                         CheckpointOrderID = raceintermediate.CheckpointOrderID,
                         CheckpointorderModel = new CheckpointOrderModel()
                         {
@@ -194,10 +201,14 @@ namespace ITimeU.Models
                         AthleteModel = new AthleteModel()
                         {
                             Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
-                            FirstName = raceintermediate.Athlete.FirstName,
-                            LastName = raceintermediate.Athlete.LastName,
-                            Birthday = raceintermediate.Athlete.Birthday,
-                            StartNumber = raceintermediate.Athlete.Startnumber
+                            FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : " - ",
+                            LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : " - ",
+                            StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : 0,
+                            Club = new ClubModel()
+                            {
+                                Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.ClubID : 0,
+                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : " - "
+                            }
                         }
                     }).ToList();
                 return list;

@@ -10,7 +10,7 @@ namespace ITimeU.Models
 
     public class CheckpointModel
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         private bool dbEntryCreated
         {
@@ -22,7 +22,7 @@ namespace ITimeU.Models
             }
         }
 
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         private TimerModel timer;
         public TimerModel Timer

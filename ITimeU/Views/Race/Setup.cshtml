@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Setup";
 }
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -7,25 +7,20 @@
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var imgAthlete = $("#imgAthlete");
+        var imgEvent = $("#imgEvent");
         var imgRace = $("#imgRace");
-        var imgClub = $("#imgClub");
-        var imgResults = $("#imgResults");
+        var imgCheckpoint = $("#imgCheckpoint");
 
+        imgEvent.click(function () {
+            var url = "/Event/Create/";
+            document.location = url;
+        });
         imgRace.click(function () {
-            var url = "/Race/Setup/";
+            var url = "/Race/";
             document.location = url;
         });
-        imgClub.click(function () {
-            var url = "/Club/";
-            document.location = url;
-        });
-        imgAthlete.click(function () {
-            var url = "/Athlete/";
-            document.location = url;
-        });
-        imgResults.click(function () {
-            var url = "/TimeMerger/";
+        imgCheckpoint.click(function () {
+            var url = "/Checkpoint/Create/";
             document.location = url;
         });
 
@@ -48,11 +43,10 @@
 <div class="contentmargin">
     <div class="container">
         <div class="row">
-            <div class="menubg">
-                <img src="../../Content/images/lopoppsett_off.png" id="imgRace" alt="Løpsoppsett" class="logo" /><img  id="imgClub"
-                    src="../../Content/images/klubber_off.png" alt="Klubber" class="logo" /><img id="imgAthlete"
-                        src="../../Content/images/lopere_off.png" alt="Løpere" class="logo" /><img id="imgResults" src="../../Content/images/resultatadm_off.png"
-                            alt="Resultater" class="logo" />
+            <div class="menubg" style="padding-left:220px">
+                <img src="../../Content/images/stevne_off.png" id="imgEvent" alt="Stevne" class="logo" /><img
+                    src="../../Content/images/lop_off.png" alt="Løp" class="logo" id="imgRace" /><img id="imgCheckpoint"
+                        src="../../Content/images/passering_off.png" alt="Passeringspunkt" class="logo" />
             </div>
         </div>
     </div>
