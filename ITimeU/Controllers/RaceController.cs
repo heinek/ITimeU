@@ -41,9 +41,18 @@ namespace ITimeU.Controllers
             return check;
         }
 
-        public ActionResult List(int eventId)
+        public ActionResult Delete(int raceid, int eventid)
         {
-            return View("List", RaceModel.GetRaces(eventId));
+            var race = RaceModel.GetById(raceid);
+            race.Delete();
+            return View("List", RaceModel.GetRaces(eventid));
+        }
+
+        public ActionResult List(int? eventId)
+        {
+            if (eventId.HasValue)
+                return View("List", RaceModel.GetRaces(eventId.Value));
+            return View("List", RaceModel.GetRaces());
         }
         public ActionResult Setup()
         {
