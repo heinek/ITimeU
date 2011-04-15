@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -17,23 +18,33 @@ namespace ITimeU.Controllers
         public ActionResult Index(int raceId)
         {
             var race = RaceModel.GetById(raceId);
-            TimerModel timer = null;
-            if (race.GetTimerId().HasValue)
+            TimerModel timer;
+            TimeStartnumberModel timeStartnumberModel;
+            if (Session["TimeStartnumber"] != null)
             {
-                timer = new TimerModel(race.GetTimerId().Value);
-                timer.RaceID = raceId;
+                timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
+                timer = timeStartnumberModel.Timer;
             }
             else
             {
-                timer = new TimerModel();
-                timer.RaceID = raceId;
+                timer = null;
+                if (race.GetTimerId().HasValue)
+                {
+                    timer = new TimerModel(race.GetTimerId().Value);
+                    timer.RaceID = raceId;
+                }
+                else
+                {
+                    timer = new TimerModel();
+                    timer.RaceID = raceId;
+                }
+                timeStartnumberModel = new TimeStartnumberModel(timer);
             }
             timer.SaveToDb();
             var checkpointOrder = new CheckpointOrderModel();
 
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
             ViewBag.RaceId = raceId;
-            var timeStartnumberModel = new TimeStartnumberModel(timer);
             timeStartnumberModel.ChangeCheckpoint(timer.GetFirstCheckpointId());
             timeStartnumberModel.CheckpointOrder = checkpointOrder;
             Session["TimeStartnumber"] = timeStartnumberModel;
@@ -137,6 +148,22 @@ namespace ITimeU.Controllers
             Session["TimeStartnumber"] = timeStartnumberModel;
             return Content(timeStartnumberModel.CheckpointIntermediates[timeStartnumberModel.CurrentCheckpointId].ToListboxvalues());
 
+        }
+
+        [HttpGet]
+        public ActionResult GetStartruntime()
+        {
+            var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
+            DateTime starttime;
+            int runtime = 0;
+
+            if (timeStartnumberModel.Timer.StartTime.HasValue)
+            {
+                starttime = timeStartnumberModel.Timer.StartTime.Value;
+                var ts = DateTime.Now - starttime;
+                runtime = (int)ts.TotalMilliseconds;
+            }
+            return Content(runtime.ToString());
         }
     }
 }

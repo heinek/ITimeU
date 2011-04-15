@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ITimeU.Models.EventModel>
+@{
+    ViewBag.Title = "Index";
+}
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        |
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Stevner</h2>
+    <p>
+        @Html.ActionLink("Opprett nytt stevne", "Create")
+    </p>
+    <table>
+        <tr>
+            <th>
+                Navn
+            </th>
+            <th>
+                Dato
+            </th>
+            <th>
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @String.Format("{0:g}", item.EventDate)
+                </td>
+                <td align="right">
+                    @Html.ActionLink("Endre", "Edit", new { id = item.EventId }) |
+                    @Html.ActionLink("Slett", "Delete", new { id = item.EventId })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

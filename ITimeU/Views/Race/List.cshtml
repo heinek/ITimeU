@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ITimeU.Models.RaceModel>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th></th>
+        <th>
+            RaceId
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            StartDate
+        </th>
+        <th>
+            Distance
+        </th>
+        <th>
+            EventId
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+        <td>
+            @item.RaceId
+        </td>
+        <td>
+            @item.Name
+        </td>
+        <td>
+            @String.Format("{0:g}", item.StartDate)
+        </td>
+        <td>
+            @item.Distance
+        </td>
+        <td>
+            @item.EventId
+        </td>
+    </tr>
+}
+
+</table>
+

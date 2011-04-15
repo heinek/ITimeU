@@ -1,7 +1,7 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Checkpoint]    Script Date: 04/14/2011 10:30:11 ******/
+/****** Object:  Table [dbo].[Checkpoint]    Script Date: 04/15/2011 14:02:40 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -23,11 +23,11 @@ CREATE TABLE [dbo].[Checkpoint](
 
 GO
 
-ALTER TABLE [dbo].[Checkpoint]  WITH CHECK ADD  CONSTRAINT [FK_Checkpoint_Timer] FOREIGN KEY([TimerID])
-REFERENCES [dbo].[Timer] ([TimerID])
+ALTER TABLE [dbo].[Checkpoint]  WITH CHECK ADD  CONSTRAINT [FK_Checkpoint_Race] FOREIGN KEY([RaceID])
+REFERENCES [dbo].[Race] ([RaceID])
 GO
 
-ALTER TABLE [dbo].[Checkpoint] CHECK CONSTRAINT [FK_Checkpoint_Timer]
+ALTER TABLE [dbo].[Checkpoint] CHECK CONSTRAINT [FK_Checkpoint_Race]
 GO
 
 ALTER TABLE [dbo].[Checkpoint] ADD  CONSTRAINT [DF_Checkpoint_IsDeleted]  DEFAULT ((0)) FOR [IsDeleted]

@@ -188,6 +188,13 @@ namespace ITimeU.Controllers
 
         }
 
+        public ActionResult Delete(int id, int clubid)
+        {
+            DeleteAthlete(id.ToString());
+            ViewBag.ClubId = clubid;
+            return View("Athletes", AthleteModel.GetAthletes(clubid));
+        }
+
         private void DeleteAthlete(string id)
         {
             int Id = 0;
@@ -252,8 +259,6 @@ namespace ITimeU.Controllers
             ViewBag.IsAthleteDelete = true;
             ViewBag.IsAthleteUpdate = false;
             ViewBag.IsValidInput = true;
-            //ViewBag.IsValidEmail = true;
-            //ViewBag.IsValidInput = true;
             return View("Edit", new AthleteModel());
         }
         public static bool isValidEmail(string inputEmail)

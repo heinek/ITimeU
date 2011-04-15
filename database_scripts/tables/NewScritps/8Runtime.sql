@@ -1,7 +1,7 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Runtime]    Script Date: 04/14/2011 10:29:38 ******/
+/****** Object:  Table [dbo].[Runtime]    Script Date: 04/15/2011 14:02:29 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -19,6 +19,13 @@ CREATE TABLE [dbo].[Runtime](
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+GO
+
+ALTER TABLE [dbo].[Runtime]  WITH CHECK ADD  CONSTRAINT [FK_Runtime_Checkpoint] FOREIGN KEY([CheckpointID])
+REFERENCES [dbo].[Checkpoint] ([CheckpointID])
+GO
+
+ALTER TABLE [dbo].[Runtime] CHECK CONSTRAINT [FK_Runtime_Checkpoint]
 GO
 
 ALTER TABLE [dbo].[Runtime] ADD  CONSTRAINT [DF_Runtime_IsMerged]  DEFAULT ((0)) FOR [IsMerged]

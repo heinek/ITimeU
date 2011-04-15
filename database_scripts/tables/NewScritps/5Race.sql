@@ -1,7 +1,7 @@
 USE [ITimeU]
 GO
 
-/****** Object:  Table [dbo].[Race]    Script Date: 04/14/2011 10:29:04 ******/
+/****** Object:  Table [dbo].[Race]    Script Date: 04/15/2011 14:02:57 ******/
 SET ANSI_NULLS ON
 GO
 
