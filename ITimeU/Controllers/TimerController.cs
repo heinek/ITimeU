@@ -159,9 +159,13 @@ namespace ITimeU.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetStartruntimeForSpeaker()
+        public ActionResult GetStartruntimeForSpeaker(int raceid)
         {
-            TimerModel timer = (TimerModel)Session["timer"];
+            var race = RaceModel.GetById(raceid);
+
+            TimerModel timer = null;
+            if (race.GetTimerId().HasValue)
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             DateTime starttime;
             int runtime = 0;
 

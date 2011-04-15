@@ -59,7 +59,7 @@
         timer.doDisplay();
 
         var cp = ddlCheckpoints.val();
-        if (cp == "") {
+        if (cp == undefined) {
             $("#dialog:ui-dialog").dialog("destroy");
 
             $("#dialog-message").dialog({
@@ -67,6 +67,7 @@
                 buttons: {
                     Ok: function () {
                         $(this).dialog("close");
+                        document.location = "/Checkpoint/Create/";
                     }
                 }
             });
@@ -307,7 +308,10 @@
         </div>
         <div class="row">
             <div class="left">
+            @if (Model.CheckpointRuntimes != null)
+            {
                 @Html.ListBox("listIntermediate", new SelectList(Model.CheckpointRuntimes[Model.CurrentCheckpointId], "Key", "Value"), new { @class = "listbox" })
+            }
             </div>
             <div class="right">
                 @Html.TextBox("tbEditHour", null, new { @class = "textboxsmall" })<input type="button"
@@ -333,7 +337,7 @@
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
         Dette vil stoppe løpet, er du sikker?</p>
 </div>
-<div id="dialog-message" title="Manglende passeringspunkt">
+<div id="dialog-message" title="Manglende passeringspunkt" style="display:none">
 	<p>
 		Dette løpet mangler passeringspunkt.
 	</p>

@@ -59,6 +59,21 @@
         });
         timer.doDisplay();
 
+        var cp = ddlCheckpoints.val();
+        if (cp == undefined) {
+            $("#dialog:ui-dialog").dialog("destroy");
+
+            $("#dialog-message").dialog({
+                modal: true,
+                buttons: {
+                    Ok: function () {
+                        $(this).dialog("close");
+                        document.location = "/Checkpoint/Create/";
+                    }
+                }
+            });
+        }
+
         btnStart.click(function () {
             if (btnStart.val() == startBtnText || btnStart.val() == restartBtnText) {
                 timer.startStop();
@@ -260,4 +275,12 @@
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
         Dette vil stoppe løpet, er du sikker?</p>
+</div>
+<div id="dialog-message" title="Manglende passeringspunkt" style="display:none">
+	<p>
+		Dette løpet mangler passeringspunkt.
+	</p>
+	<p>
+		Du må opprette nye passeringspunkt før du kan starte løpet.
+	</p>
 </div>

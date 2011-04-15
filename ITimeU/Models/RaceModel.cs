@@ -11,6 +11,7 @@ namespace ITimeU.Models
         public DateTime StartDate { get; set; }
         public int? Distance { get; set; }
         public int EventId { get; set; }
+        public EventModel Event { get; set; }
 
         public RaceModel()
         {
@@ -26,7 +27,11 @@ namespace ITimeU.Models
         public RaceModel(Race raceDb)
         {
             RaceId = raceDb.RaceID;
-            EventId = raceDb.EventId.HasValue ? raceDb.EventId.Value : 0;
+            if (raceDb.EventId.HasValue)
+            {
+                EventId = raceDb.EventId.Value;
+                Event = EventModel.GetById(raceDb.EventId.Value);
+            }
             Name = raceDb.Name;
             StartDate = raceDb.StartDate;
             Distance = raceDb.Distance;
@@ -64,11 +69,34 @@ namespace ITimeU.Models
                     {
                         RaceId = race.RaceID,
                         Name = race.Name,
-                        StartDate = race.StartDate
+                        StartDate = race.StartDate,
+                        EventId = race.EventId.Value,
+                        Event = EventModel.GetById(race.EventId.Value)
                     }).ToList();
             }
         }
 
+        public static List<RaceModel> GetRaces(int eventId)
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Races.Where(race => !race.IsDeleted && race.EventId == eventId).Select(race =>
+                    new RaceModel()
+                    {
+                        RaceId = race.RaceID,
+                        Name = race.Name,
+                        StartDate = race.StartDate,
+                        Distance = race.Distance,
+                        EventId = race.EventId.Value,
+                        Event = new EventModel()
+                        {
+                            EventId = race.EventId.Value,
+                            Name = race.Event.Name,
+                            EventDate = race.Event.EventDate
+                        }
+                    }).ToList();
+            }
+        }
         //public void InsertRace(Race races)
         //{
 
@@ -236,18 +264,5 @@ namespace ITimeU.Models
             }
         }
 
-        public static List<RaceModel> GetRaces(int eventId)
-        {
-            using (var ctx = new Entities())
-            {
-                return ctx.Races.Where(race => !race.IsDeleted && race.EventId == eventId).Select(race =>
-                    new RaceModel()
-                    {
-                        RaceId = race.RaceID,
-                        Name = race.Name,
-                        StartDate = race.StartDate
-                    }).ToList();
-            }
-        }
     }
 }
