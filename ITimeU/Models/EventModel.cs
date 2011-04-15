@@ -15,7 +15,6 @@ namespace ITimeU.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayName("Dato")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EventDate { get; set; }
 
         public EventModel()

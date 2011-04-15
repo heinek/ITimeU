@@ -39,6 +39,7 @@
         var startedruntime = 0;
         var urlupdate = "/Timer/GetStartruntime/";
 
+
         $.get(urlupdate, function (data) {
             startedruntime = parseInt(data, 10);
             if (startedruntime == 0) {
@@ -56,6 +57,25 @@
             lblTimer.html(displayText);
         });
         timer.doDisplay();
+
+        var cp = ddlCheckpoints.val();
+        if (cp == "") {
+            $("#dialog:ui-dialog").dialog("destroy");
+
+            $("#dialog-message").dialog({
+                modal: true,
+                buttons: {
+                    Ok: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        }
+
+
+        $.post("/Timer/ChangeCheckpoint/?checkpointid=" + ddlCheckpoints.val(), function (data) {
+            listIntermediate.html(data);
+        });
 
         btnStart.click(function () {
 
@@ -312,4 +332,12 @@
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
         Dette vil stoppe løpet, er du sikker?</p>
+</div>
+<div id="dialog-message" title="Manglende passeringspunkt">
+	<p>
+		Dette løpet mangler passeringspunkt.
+	</p>
+	<p>
+		Du må opprette nye passeringspunkt før du kan starte løpet.
+	</p>
 </div>

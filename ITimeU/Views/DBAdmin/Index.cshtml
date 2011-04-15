@@ -37,11 +37,14 @@
     </center>
     @if (ViewBag.Error != null)
     {
-        <p class="input-validation-error" id="error"></p>
+        <p class="input-validation-error" id="error">
+            @ViewBag.Error
+        </p>
     }
     @if (ViewBag.Success != null)
     {
         <div class="statusmessagearea" id="StatusMessage">
+            @ViewBag.Success
         </div>
     }
 </div>

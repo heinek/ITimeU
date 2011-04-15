@@ -41,6 +41,10 @@ namespace ITimeU.Controllers
             return check;
         }
 
+        public ActionResult List(int eventId)
+        {
+            return View("List", RaceModel.GetRaces(eventId));
+        }
         public ActionResult Setup()
         {
             return View("Setup");

@@ -10,22 +10,25 @@ namespace ITimeU.Controllers
 
         public ActionResult Index()
         {
+            if (Session["success"] != null)
+                ViewBag.Success = (string)Session["success"];
+            else
+                ViewBag.Error = (string)Session["error"];
             return View();
         }
 
         [HttpPost]
         public ActionResult DeleteDB()
         {
-            string result = "";
             if (DBAdminModel.DeleteAll())
             {
-                result = "All data har blitt slettet";
+                Session["success"] = "All data har blitt slettet";
             }
             else
             {
-                result = "Det skjedde en feil under nullstilling av databasen";
+                Session["error"] = "Det skjedde en feil under nullstilling av databasen";
             }
-            return Content(result);
+            return View("Index");
         }
     }
 }

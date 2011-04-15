@@ -16,21 +16,14 @@ namespace ITimeU.Controllers
         public ActionResult Index(int id)
         {
             var race = RaceModel.GetById(id);
+
             TimerModel timer;
-            if (Session["timer"] != null)
-            {
-                timer = (TimerModel)Session["timer"];
-            }
+            if (race.GetTimerId().HasValue)
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             else
             {
-                timer = null;
-                if (race.GetTimerId().HasValue)
-                    timer = new TimerModel(race.GetTimerId().Value);
-                else
-                {
-                    timer = new TimerModel();
-                    timer.RaceID = id;
-                }
+                timer = new TimerModel();
+                timer.RaceID = id;
             }
             timer.SaveToDb();
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(id);

@@ -9,6 +9,7 @@ namespace ITimeU.Models
             {
                 try
                 {
+
                     var raceintermediates = context.RaceIntermediates;
                     foreach (var raceintermediate in raceintermediates)
                     {

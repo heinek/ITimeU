@@ -28,15 +28,14 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult Create(EventModel model)
         {
-            try
+            var newModel = new EventModel(model.Name, model.EventDate);
+            if (newModel.Save())
             {
-                var newModel = new EventModel(model.Name, model.EventDate);
-                newModel.Save();
                 ViewData.ModelState.Clear();
                 ViewBag.Success = "Stevne ble opprettet";
                 return View();
             }
-            catch
+            else
             {
                 ViewBag.Error = "Det skjedde en feil under lagring av stevne";
                 return View();
