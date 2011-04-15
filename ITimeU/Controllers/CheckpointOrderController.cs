@@ -82,7 +82,7 @@ namespace ITimeU.Controllers
             try
             {
                 CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-                model.DeleteCheckpointOrderDB(id);
+                model.DeleteCheckpointOrderDB();
                 return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
             }
             catch

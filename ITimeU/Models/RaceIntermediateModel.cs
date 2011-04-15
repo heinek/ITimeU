@@ -232,5 +232,18 @@ namespace ITimeU.Models
                 }
             }
         }
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                var intermediateToDelete = context.RaceIntermediates.
+                    Single(intermediate => intermediate.CheckpointID == CheckpointID
+                        && intermediate.CheckpointOrderID == CheckpointOrderID
+                        && intermediate.RuntimeId == RuntimeId);
+                context.DeleteObject(intermediateToDelete);
+                context.SaveChanges();
+            }
+        }
     }
 }

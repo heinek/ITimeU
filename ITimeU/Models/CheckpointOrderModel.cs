@@ -248,10 +248,10 @@ namespace ITimeU.Models
             CheckpointOrderDic.Remove(checkpointOrderId);
         }
 
-        public void DeleteCheckpointOrderDB(int checkpointOrderId)
+        public void DeleteCheckpointOrderDB()
         {
-            RemoveFromCheckpointOrdersDictionary(checkpointOrderId);
-            DeleteCheckpointOrderInDb(checkpointOrderId);
+            RemoveFromCheckpointOrdersDictionary(ID);
+            DeleteCheckpointOrderInDb(ID);
         }
 
         private static void DeleteCheckpointOrderInDb(int checkpointOrderId)

@@ -84,5 +84,19 @@ namespace ITimeU.Models
                 }).OrderBy(evnt => evnt.Name).ToList();
             }
         }
+
+        public static EventModel GetById(int id)
+        {
+            using (var context = new Entities())
+            {
+                var eventDb = context.Events.Single(evnt => evnt.EventId == id);
+                return new EventModel()
+                {
+                    EventId = eventDb.EventId,
+                    Name = eventDb.Name,
+                    EventDate = eventDb.EventDate
+                };
+            }
+        }
     }
 }

@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" href="@Url.Content("~/Content/jquery-ui-1.8.10.custom.css")">
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var btnDelete = $("#btnDelete");
+
+        btnDelete.click(function () {
+            url = "/DBAdmin/DeleteDB/";
+            $("#dialog:ui-dialog").dialog("destroy");
+
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                height: 140,
+                modal: true,
+                buttons: {
+                    "Nullstill": function () {
+                        $(this).dialog("close");
+                        $.post(url);
+                    },
+                    "Avbryt": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    });
+</script>
+<div class="contentmargin">
+    <h2>
+        Nullstill database</h2>
+    <center>
+        <input type="button" name="btnDelete" id="btnDelete" class="btnRegular" value="Nullstill database" />
+    </center>
+    @if (ViewBag.Error != null)
+    {
+        <p class="input-validation-error" id="error"></p>
+    }
+    @if (ViewBag.Success != null)
+    {
+        <div class="statusmessagearea" id="StatusMessage">
+        </div>
+    }
+</div>
+<div id="dialog-confirm" title="Nullstill databasen" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Dette vil nullstille hele databasen, er du sikker?</p>
+</div>

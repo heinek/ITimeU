@@ -1,22 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
 {
     [TestClass]
     public class AthleteClassModelTest : ScenarioClass
     {
+        private AthleteClassModel athleteClass;
 
+        [TestInitialize]
+        public void TestSetup()
+        {
+            athleteClass = null;
+        }
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            athleteClass.Delete();
         }
 
         [TestMethod]
@@ -24,7 +27,6 @@ namespace ITimeU.Tests.Models
         {
             When_Fetching_An_Athlete_Class_That_Does_Not_Exists_In_The_Db_We_Should_Create_That_Class();
 
-            AthleteClassModel athleteClass = null;
             int previousCount = 0;
 
             Given("we want to fetch a spesific athlete class called G17");
@@ -46,7 +48,6 @@ namespace ITimeU.Tests.Models
         public void When_Fetching_An_Athlete_Class_That_Does_Not_Exists_In_The_Db_We_Should_Create_That_Class()
         {
 
-            AthleteClassModel athleteClass = null;
             int previousCount = -1;
 
             Given("we want to fetch a spesific class called G17");

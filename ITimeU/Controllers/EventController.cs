@@ -10,7 +10,7 @@ namespace ITimeU.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(EventModel.GetEvents());
         }
 
         //
@@ -33,14 +33,21 @@ namespace ITimeU.Controllers
                 var newModel = new EventModel(model.Name, model.EventDate);
                 newModel.Save();
                 ViewData.ModelState.Clear();
-                ViewBag.Feedback = "Stevne ble opprettet";
+                ViewBag.Success = "Stevne ble opprettet";
                 return View();
             }
             catch
             {
-                ViewBag.Feedback = "Det skjedde en feil under lagring av stevne";
+                ViewBag.Error = "Det skjedde en feil under lagring av stevne";
                 return View();
             }
+        }
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var eventToDelete = EventModel.GetById(id);
+            eventToDelete.Delete();
+            return View("Index", EventModel.GetEvents());
         }
     }
 }

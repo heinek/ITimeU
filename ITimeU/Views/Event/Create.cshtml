@@ -24,7 +24,8 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" })
         |
     </center>
 </div>
@@ -52,7 +53,15 @@
         <p>
             <input type="submit" value="Opprett" class="btnRegular" />
         </p>
-        
-        @ViewBag.Feedback
+    }
+    @if (ViewBag.Error != null)
+    {
+        <p class="input-validation-error">@ViewBag.Error</p>
+    }
+    @if (ViewBag.Success != null)
+    {
+        <div class="statusmessagearea" id="StatusMessage">
+            @ViewBag.Success
+        </div>
     }
 </div>

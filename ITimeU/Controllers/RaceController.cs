@@ -26,6 +26,9 @@ namespace ITimeU.Controllers
             race.StartDate = Convert.ToDateTime(startDate);
             race.EventId = eventId;
             race.Save();
+            var checkpoint = new CheckpointModel("Mål", race.RaceId);
+            checkpoint.Sortorder = 99;
+            checkpoint.SaveToDb();
             return View("Index");
         }
 
