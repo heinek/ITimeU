@@ -52,19 +52,7 @@ namespace ITimeU.Models
             if (checkpoint.TimerID != null)
                 this.timer = TimerModel.GetTimerById((int)checkpoint.TimerID);
 
-            Race = RaceModel.GetById(checkpoint.RaceID);
-        }
-
-        /// <summary>
-        /// Creates a CheckpointModel.
-        /// </summary>
-        /// <param name="name">The name of the checkpoint.</param>
-        /// <param name="raceId">The identifier of the race to connect this checkpoint to.</param>
-        public CheckpointModel(string name, int raceId)
-        {
-            Name = name;
-            Race = RaceModel.GetById(raceId);
-            SaveToDb();
+            Race = RaceModel.GetById((int)checkpoint.RaceID);
         }
 
         public CheckpointModel(string name, TimerModel timer, RaceModel race)

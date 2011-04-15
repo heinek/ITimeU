@@ -156,12 +156,14 @@ namespace ITimeU.Tests.Models
         {
             CheckpointModel checkpoint = null;
             CheckpointModel checkpointDb = null;
+            TimerModel timer = new TimerModel();
+            timer.SaveToDb();
             RaceModel race = new RaceModel("Malvikløpet", new System.DateTime(2011, 3, 2));
             race.Save(); // We assume that the race is stored in the database already.
 
             Given("we have a checkpoint in the database", () =>
             {
-                checkpoint = new CheckpointModel("MalvikCheckpoint", race.RaceId);
+                checkpoint = new CheckpointModel("MalvikCheckpoint", timer, race);
                 checkpoint.SaveToDb();
             });
 
