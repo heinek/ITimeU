@@ -2,7 +2,9 @@
 @{
     ViewBag.Title = "Index";
 }
+<link rel="stylesheet" href="@Url.Content("~/Content/jquery-ui-1.8.10.custom.css")">
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Stopwatch.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/TimeFormatFactory.js")" type="text/javascript"></script>
@@ -36,22 +38,69 @@
         var restartBtnText = "Restart";
         var StartNumber = $('#tbStartnumber');
         var checkNumber = true;
+        var startedruntime = 0;
+        var urlupdate = "/TimeStartnumber/GetStartruntime/";
+
+        $.get(urlupdate, function (data) {
+            startedruntime = parseInt(data, 10);
+            if (startedruntime == 0) {
+                btnStart.val(startBtnText);
+            }
+            else {
+                btnStart.val(stopBtnText);
+                timer.startStop();
+            }
+        });
 
         timer = new Stopwatch(function (runtime) {
+            runtime = runtime + startedruntime;
             var displayText = timeFormatFactory.MSSDFormat(runtime);
             lblTimer.html(displayText);
         });
         timer.doDisplay();
 
+        var cp = ddlCheckpoints.val();
+        if (cp == undefined) {
+            $("#dialog:ui-dialog").dialog("destroy");
+
+            $("#dialog-message").dialog({
+                modal: true,
+                buttons: {
+                    Ok: function () {
+                        $(this).dialog("close");
+                        document.location = "/Checkpoint/Create/";
+                    }
+                }
+            });
+        }
+
         btnStart.click(function () {
-            timer.startStop();
             if (btnStart.val() == startBtnText || btnStart.val() == restartBtnText) {
+                timer.startStop();
                 btnStart.val(stopBtnText);
                 $.post("/TimeStartnumber/Start/");
             }
             else {
-                btnStart.val(restartBtnText);
-                $.post("/TimeStartnumber/Stop/");
+                $("#dialog:ui-dialog").dialog("destroy");
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        "Stopp": function () {
+                            timer.startStop();
+                            $(this).dialog("close");
+                            $.post("/TimeStartnumber/Stop/");
+                             btnStart.val(restartBtnText);
+                            if (btnIntermediate) {
+                                Tools.disable(btnIntermediate);
+                            }
+                        },
+                        "Avbryt": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
             }
         });
 
@@ -221,4 +270,17 @@
             </div>
         </div>
     </div>
+</div>
+<div id="dialog-confirm" title="Stopp timer?" style="display:none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Dette vil stoppe løpet, er du sikker?</p>
+</div>
+<div id="dialog-message" title="Manglende passeringspunkt" style="display:none">
+	<p>
+		Dette løpet mangler passeringspunkt.
+	</p>
+	<p>
+		Du må opprette nye passeringspunkt før du kan starte løpet.
+	</p>
 </div>

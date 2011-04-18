@@ -15,7 +15,6 @@ namespace ITimeU.Models
         [Required]
         [DataType(DataType.Date)]
         [DisplayName("Dato")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EventDate { get; set; }
 
         public EventModel()
@@ -82,6 +81,20 @@ namespace ITimeU.Models
                     EventDate = evnt.EventDate,
                     Name = evnt.Name
                 }).OrderBy(evnt => evnt.Name).ToList();
+            }
+        }
+
+        public static EventModel GetById(int id)
+        {
+            using (var context = new Entities())
+            {
+                var eventDb = context.Events.Single(evnt => evnt.EventId == id);
+                return new EventModel()
+                {
+                    EventId = eventDb.EventId,
+                    Name = eventDb.Name,
+                    EventDate = eventDb.EventDate
+                };
             }
         }
     }

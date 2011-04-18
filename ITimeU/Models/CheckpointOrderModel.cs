@@ -35,6 +35,7 @@ namespace ITimeU.Models
 
         private static bool CheckpointWithStartNumberExists(int checkpointId, int startingNumber, Entities entities)
         {
+            if (startingNumber == 0) return false;
             return entities.CheckpointOrders.Any(
                 chkpnt =>
                     (chkpnt.StartingNumber == startingNumber &&
@@ -77,7 +78,7 @@ namespace ITimeU.Models
 
         private static int GetHighestExistingOrderNumberForCheckpoint(int checkpointId, Entities entities)
         {
-            return (int) entities.CheckpointOrders.
+            return (int)entities.CheckpointOrders.
                 Where(chkpntid => chkpntid.CheckpointID == checkpointId).
                 OrderByDescending(chkpnt => chkpnt.OrderNumber).
                 First().OrderNumber;
@@ -87,7 +88,7 @@ namespace ITimeU.Models
         {
             entities.CheckpointOrders.AddObject(checkpointOrder);
             entities.SaveChanges();
-            
+
         }
 
         private void AddToCheckpointOrderDic(int checkpointId, Entities entities)
@@ -128,7 +129,7 @@ namespace ITimeU.Models
 
         private static int GetOrderNumber(int checkpointOrderId, Entities entities)
         {
-            return (int) entities.CheckpointOrders.
+            return (int)entities.CheckpointOrders.
                 Single(checkpointOrder => checkpointOrder.ID == checkpointOrderId).
                 OrderNumber;
         }
@@ -151,7 +152,7 @@ namespace ITimeU.Models
 
         private static int GetNextOrderNumber(int checkpointId, int orderNumber, Entities entities)
         {
-            return (int) entities.CheckpointOrders.
+            return (int)entities.CheckpointOrders.
                 Where(checkpointOrder =>
                     (checkpointOrder.CheckpointID == checkpointId &&
                     checkpointOrder.OrderNumber > orderNumber)).
@@ -194,7 +195,7 @@ namespace ITimeU.Models
 
         private static int GetLowestExistingOrderNumberForCheckpoint(int checkpointId, Entities entities)
         {
-            return (int) entities.CheckpointOrders.
+            return (int)entities.CheckpointOrders.
                 Where(chkpntid => chkpntid.CheckpointID == checkpointId).OrderBy(chkpnt => chkpnt.OrderNumber).
                 First().OrderNumber;
         }
@@ -217,7 +218,7 @@ namespace ITimeU.Models
 
         private static int GetPreviousOrderNumber(int checkpointId, int orderNumber, Entities entities)
         {
-            return (int) entities.CheckpointOrders.
+            return (int)entities.CheckpointOrders.
                 Where(chkpnt => (chkpnt.CheckpointID == checkpointId && chkpnt.OrderNumber < orderNumber)).
                 Max(chkpnt => chkpnt.OrderNumber);
         }
@@ -248,10 +249,10 @@ namespace ITimeU.Models
             CheckpointOrderDic.Remove(checkpointOrderId);
         }
 
-        public void DeleteCheckpointOrderDB(int checkpointOrderId)
+        public void DeleteCheckpointOrderDB()
         {
-            RemoveFromCheckpointOrdersDictionary(checkpointOrderId);
-            DeleteCheckpointOrderInDb(checkpointOrderId);
+            RemoveFromCheckpointOrdersDictionary(ID);
+            DeleteCheckpointOrderInDb(ID);
         }
 
         private static void DeleteCheckpointOrderInDb(int checkpointOrderId)

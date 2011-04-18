@@ -4,7 +4,8 @@
 }
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("KLUBBER", "Index", "Club", null, new { @class = "topmenulink" })
         |
     </center>
 </div>
@@ -29,5 +30,15 @@
         <p>
             <input type="submit" class="btnRegular" value="Lagre" />
         </p>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <p class="input-validation-error">@ViewBag.Error</p>
+    }
+    @if (ViewBag.Success != null)
+    {
+        <div class="statusmessagearea" id="StatusMessage">
+            @ViewBag.Success
+        </div>
     }
 </div>

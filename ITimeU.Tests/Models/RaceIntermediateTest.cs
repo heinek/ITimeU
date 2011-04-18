@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
-using ITimeU.Models;
 
 namespace ITimeU.Tests.Models
 {
@@ -17,6 +16,10 @@ namespace ITimeU.Tests.Models
         private RaceModel race;
         private ClubModel club;
         private TimerModel timer;
+        private CheckpointOrderModel checkpointOrder;
+        private RaceIntermediateModel intermediate;
+        private CheckpointModel checkpoint;
+
 
         [TestInitialize]
         public void TestSetup()
@@ -31,6 +34,9 @@ namespace ITimeU.Tests.Models
             race = new RaceModel("TestRace", DateTime.Today);
             race.EventId = eventModel.EventId;
             race.Save();
+            checkpointOrder = null;
+            intermediate = null;
+            checkpoint = null;
         }
 
         [TestCleanup]
@@ -41,17 +47,17 @@ namespace ITimeU.Tests.Models
             race.Delete();
             timer.Delete();
             club.DeleteFromDb();
+            if (intermediate != null) intermediate.Delete();
+            if (checkpointOrder != null) checkpointOrder.DeleteCheckpointOrderDB();
+            if (checkpoint != null) checkpoint.Delete();
         }
 
         [TestMethod]
         public void It_Should_Be_Possible_To_Connect_An_Athlete_To_A_Startnumber()
         {
-            CheckpointOrderModel checkpointOrder;
-            RaceIntermediateModel intermediate;
 
             Given("we have an athlete and a startnumber registrert", () =>
             {
-
                 athlete.ConnectToRace(race.RaceId);
                 timer = CreateNewTimerModelWithCheckpoints(race);
                 checkpointOrder = new CheckpointOrderModel();
@@ -80,10 +86,9 @@ namespace ITimeU.Tests.Models
         /// <returns></returns>
         private TimerModel CreateNewTimerModelWithCheckpoints(RaceModel race)
         {
-            var timer = new TimerModel();
+            timer = new TimerModel();
             timer.RaceID = race.RaceId;
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
+            checkpoint = new CheckpointModel("Checkpoint1", timer, race, 1);
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             return timer;

@@ -24,9 +24,13 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult Edit(ClubModel club)
         {
-            club.Update();
-            ViewData.ModelState.Clear();
-            ViewBag.Feedback = "Klubb lagret!";
+            if (club.Update())
+            {
+                ViewData.ModelState.Clear();
+                ViewBag.Success = "Klubb lagret!";
+            }
+            else
+                ViewBag.Error = "Det skjedde en feil under oppdatering av klubb.";
             return View("Edit");
         }
 
@@ -44,13 +48,21 @@ namespace ITimeU.Controllers
             {
                 club.SaveToDb();
                 ViewData.ModelState.Clear();
-                ViewBag.Feedback = "Klubb lagret";
+                ViewBag.Success = "Klubb lagret";
             }
             catch (Exception)
             {
-                ViewBag.Feedback = "Det skjedde en feil under lagring";
+                ViewBag.Error = "Det skjedde en feil under lagring";
             }
             return View("Create");
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var club = ClubModel.GetById(id);
+            club.DeleteFromDb();
+            return View("Index", ClubModel.GetClubs());
         }
     }
 }

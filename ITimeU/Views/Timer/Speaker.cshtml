@@ -29,7 +29,7 @@
         var btnUpdateResults = $("#btnUpdateResults");
         var timeFormatFactory = new TimeFormatFactory();
         var lblTimer = $("#lblRunningTimer");
-        var url = "/Timer/GetStartruntimeForSpeaker/";
+        var url = "/Timer/GetStartruntimeForSpeaker/?raceid=" + $('#hdRaceId').val();
         var divNotStarted = $("#divNotStarted");
         var divStarted = $("#divStarted");
         var startedruntime;

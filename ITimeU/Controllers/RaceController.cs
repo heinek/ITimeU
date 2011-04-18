@@ -26,6 +26,9 @@ namespace ITimeU.Controllers
             race.StartDate = Convert.ToDateTime(startDate);
             race.EventId = eventId;
             race.Save();
+            var checkpoint = new CheckpointModel("Mål", race.RaceId);
+            checkpoint.Sortorder = 99;
+            checkpoint.SaveToDb();
             return View("Index");
         }
 
@@ -38,6 +41,19 @@ namespace ITimeU.Controllers
             return check;
         }
 
+        public ActionResult Delete(int raceid, int eventid)
+        {
+            var race = RaceModel.GetById(raceid);
+            race.Delete();
+            return View("List", RaceModel.GetRaces(eventid));
+        }
+
+        public ActionResult List(int? eventId)
+        {
+            if (eventId.HasValue)
+                return View("List", RaceModel.GetRaces(eventId.Value));
+            return View("List", RaceModel.GetRaces());
+        }
         public ActionResult Setup()
         {
             return View("Setup");

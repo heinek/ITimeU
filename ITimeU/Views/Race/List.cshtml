@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ITimeU.Models.RaceModel>
+@{
+    ViewBag.Title = "List";
+}
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        |
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Løp</h2>
+    <p>
+        @Html.ActionLink("Opprett ny klubb", "Create")
+    </p>
+    <table>
+        <tr>
+            <th>
+                Løp
+            </th>
+            <th>
+                StartDate
+            </th>
+            <th>
+                Distance
+            </th>
+            <th>
+                Stevne
+            </th>
+            <th>
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.RaceId
+                </td>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @String.Format("{0:g}", item.StartDate)
+                </td>
+                <td>
+                    @item.Distance
+                </td>
+                <td>
+                @item.Event.Name
+                </td>
+                <td>
+                    @Html.ActionLink("Slett", "Delete", new { raceid=item.RaceId, eventid = item.EventId  })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

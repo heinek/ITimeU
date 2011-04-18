@@ -16,9 +16,10 @@ namespace ITimeU.Controllers
         public ActionResult Index(int id)
         {
             var race = RaceModel.GetById(id);
-            TimerModel timer = null;
+
+            TimerModel timer;
             if (race.GetTimerId().HasValue)
-                timer = new TimerModel(race.GetTimerId().Value);
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             else
             {
                 timer = new TimerModel();
@@ -158,9 +159,13 @@ namespace ITimeU.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetStartruntimeForSpeaker()
+        public ActionResult GetStartruntimeForSpeaker(int raceid)
         {
-            TimerModel timer = (TimerModel)Session["timer"];
+            var race = RaceModel.GetById(raceid);
+
+            TimerModel timer = null;
+            if (race.GetTimerId().HasValue)
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             DateTime starttime;
             int runtime = 0;
 
@@ -185,6 +190,22 @@ namespace ITimeU.Controllers
                     Time = raceintermediate.RuntimeModel.RuntimeToTime
                 }).ToList();
             return Content(raceintermediates.ToTable());
+        }
+
+        [HttpGet]
+        public ActionResult GetStartruntime()
+        {
+            var timer = (TimerModel)Session["timer"];
+            DateTime starttime;
+            int runtime = 0;
+
+            if (timer.StartTime.HasValue)
+            {
+                starttime = timer.StartTime.Value;
+                var ts = DateTime.Now - starttime;
+                runtime = (int)ts.TotalMilliseconds;
+            }
+            return Content(runtime.ToString());
         }
     }
 }

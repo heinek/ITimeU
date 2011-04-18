@@ -25,7 +25,7 @@
         //tbStartDate.mask("99/99/9999");
 
         tbStartDate.datepicker({
-            dateFormat: "dd/mm/yy",
+            dateFormat: 'dd.mm.yy',
             showOn: "button",
             buttonImage: "/Content/images/Calendar.png",
             buttonImageOnly: true,
@@ -50,7 +50,7 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" })
         |
     </center>
 </div>
