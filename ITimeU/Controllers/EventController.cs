@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -28,6 +29,11 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult Create(EventModel model)
         {
+            if (model.EventDate < DateTime.Today)
+            {
+                ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                return View();
+            }
             var newModel = new EventModel(model.Name, model.EventDate);
             if (newModel.Save())
             {

@@ -9,10 +9,11 @@ namespace ITimeU.Models
     public class EventModel
     {
         public int EventId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Stevnenavn er obligatorisk")]
         [DisplayName("Navn")]
+        [StringLength(150, ErrorMessage = "Stevnenavn kan ikke være lengre enn 150 bokstaver")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Dato er obligatorisk")]
         [DataType(DataType.Date)]
         [DisplayName("Dato")]
         public DateTime EventDate { get; set; }
