@@ -106,9 +106,37 @@ namespace ITimeU.Models
             Id = timer.TimerID;
             StartTime = timer.StartTime;
             EndTime = timer.EndTime;
-
+            CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
+            CheckpointRuntimes.Add(CurrentCheckpointId, new Dictionary<int, int>());
             if (StartTime != null && EndTime == null)
                 IsStarted = true;
+            if (timer.RaceID.HasValue)
+            {
+                RaceID = timer.RaceID.Value;
+                using (var context = new Entities())
+                {
+                    foreach (var checkpoint in CheckpointModel.GetCheckpoints(timer.RaceID.Value))
+                    {
+                        var runtimes = context.Runtimes.Where(runt => runt.CheckpointID == checkpoint.Id).Select(runt => new RuntimeModel()
+                        {
+                            Id = runt.RuntimeID,
+                            CheckPointId = runt.CheckpointID,
+                            Runtime = runt.Runtime1,
+                            IsMerged = runt.IsMerged
+                        }).OrderBy(runt => runt.Runtime).ToList();
+                        foreach (var runtime in runtimes)
+                        {
+                            if (!CheckpointRuntimes.ContainsKey(checkpoint.Id))
+                            {
+                                CheckpointRuntimes.Add(checkpoint.Id, new Dictionary<int, int>());
+                                CheckpointRuntimes[checkpoint.Id].Add(runtime.Id, runtime.Runtime);
+                            }
+                            else
+                                CheckpointRuntimes[checkpoint.Id].Add(runtime.Id, runtime.Runtime);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>

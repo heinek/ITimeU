@@ -245,5 +245,30 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
+
+        public static void DeleteRaceintermediatesForRace(int raceid)
+        {
+            using (var context = new Entities())
+            {
+                var intermediatesToDelete = context.RaceIntermediates.Where(intermediate => intermediate.Checkpoint.RaceID == raceid).ToList();
+                foreach (var intermediate in intermediatesToDelete)
+                {
+                    context.DeleteObject(intermediate);
+                }
+
+                var runtimesToDelete = context.Runtimes.Where(runtime => runtime.Checkpoint.RaceID == raceid).ToList();
+                foreach (var runtime in runtimesToDelete)
+                {
+                    context.DeleteObject(runtime);
+                }
+
+                var checkpointordersToDelete = context.CheckpointOrders.Where(cpo => cpo.Checkpoint.RaceID == raceid).ToList();
+                foreach (var cpo in checkpointordersToDelete)
+                {
+                    context.DeleteObject(cpo);
+                }
+                context.SaveChanges();
+            }
+        }
     }
 }

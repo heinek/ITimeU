@@ -39,14 +39,14 @@
     {
         @Html.ValidationSummary(true)
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.Name) *
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
         <span class="datePicker">
-            @Html.LabelFor(model => model.EventDate)
+            @Html.LabelFor(model => model.EventDate) *
             <br />
             @Html.EditorFor(model => model.EventDate)
         </span>

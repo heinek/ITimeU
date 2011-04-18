@@ -101,17 +101,10 @@ namespace ITimeU.Controllers
             return co;
         }
 
-        public ActionResult AddCheckpointOrder(string checkpointID, string startingNumber)
+        public ActionResult AddCheckpointOrder(int checkpointID, int startingNumber)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-            int chkpntID;
-            int startNmb;
-
-            int.TryParse(checkpointID, out chkpntID);
-            int.TryParse(startingNumber, out startNmb);
-
-            model.AddCheckpointOrderDB(chkpntID, startNmb);
-
+            model.AddCheckpointOrderDB(checkpointID, startingNumber);
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 

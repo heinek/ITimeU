@@ -1,0 +1,5 @@
+<connectionStrings>
+  <add name="Entities" connectionString="metadata=res://*/Models.DBModel.csdl|res://*/Models.DBModel.ssdl|res://*/Models.DBModel.msl;provider=System.Data.SqlClient;provider connection string=&quot;
+    Data Source=Z9402765\MSSQLEXPRESS;Initial Catalog=ITimeU;Integrated Security=True;MultipleActiveResultSets=True&quot;" providerName="System.Data.EntityClient" />
+</connectionStrings>
+

@@ -91,7 +91,7 @@ namespace ITimeU.Controllers
             var raceintermediate = RaceIntermediateModel.GetRaceintermediate(checkpointid, checkpointOrderId);
             RuntimeModel.EditRuntime(raceintermediate.RuntimeId, hour, min, sek, msek);
             CheckpointOrderModel.EditCheckpointOrder(raceintermediate.CheckpointOrderID, startnumber);
-            return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).ToListboxvalues());
+            return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).OrderBy(raceinter => raceinter.RuntimeModel.Runtime).ToList().ToListboxvalues());
         }
 
         /// <summary>

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 //using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ITimeU.Models;
 
@@ -75,6 +73,17 @@ namespace ITimeU.Controllers
             return TempData[key]; ;
         }
 
+        public ActionResult List()
+        {
+            return View("List", CheckpointModel.getAll());
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var checkpoint = CheckpointModel.getById(id);
+            checkpoint.Delete();
+            return View("List", CheckpointModel.getAll());
+        }
 
     }
 }

@@ -41,11 +41,11 @@ namespace ITimeU.Controllers
             return check;
         }
 
-        public ActionResult Delete(int raceid, int eventid)
+        public ActionResult Delete(int raceid)
         {
             var race = RaceModel.GetById(raceid);
             race.Delete();
-            return View("List", RaceModel.GetRaces(eventid));
+            return View("List", RaceModel.GetRaces());
         }
 
         public ActionResult List(int? eventId)

@@ -71,7 +71,12 @@ namespace ITimeU.Models
                         Name = race.Name,
                         StartDate = race.StartDate,
                         EventId = race.EventId.Value,
-                        Event = EventModel.GetById(race.EventId.Value)
+                        Event = new EventModel()
+                        {
+                            EventId = race.EventId.Value,
+                            Name = race.Event.Name,
+                            EventDate = race.Event.EventDate
+                        }
                     }).ToList();
             }
         }

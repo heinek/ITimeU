@@ -65,13 +65,11 @@ namespace ITimeU.Controllers
         /// Saves the runtime.
         /// </summary>
         /// <param name="runtime">The runtime.</param>
-        public ActionResult SaveRuntime(string runtime, string checkpointid)
+        public ActionResult SaveRuntime(int runtime, int checkpointid)
         {
             TimerModel timer = (TimerModel)Session["timer"];
-            int milliseconds, cpid;
-            int.TryParse(runtime, out milliseconds);
-            int.TryParse(checkpointid, out cpid);
-            timer.AddRuntime(milliseconds, cpid);
+            var runtimeModel = timer.AddRuntime(runtime, checkpointid);
+            TimeMergerModel.Merge(checkpointid, timer.CheckpointRuntimes[checkpointid], CheckpointOrderModel.GetCheckpointOrders(checkpointid));
             return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
@@ -199,13 +197,27 @@ namespace ITimeU.Controllers
             DateTime starttime;
             int runtime = 0;
 
-            if (timer.StartTime.HasValue)
+            if (timer.StartTime.HasValue && timer.IsStarted)
             {
                 starttime = timer.StartTime.Value;
                 var ts = DateTime.Now - starttime;
                 runtime = (int)ts.TotalMilliseconds;
             }
             return Content(runtime.ToString());
+        }
+
+        [HttpPost]
+        public ActionResult ResetRace(int raceid)
+        {
+            RaceIntermediateModel.DeleteRaceintermediatesForRace(raceid);
+            var timer = (TimerModel)Session["timer"];
+            foreach (var key in timer.CheckpointRuntimes.Keys)
+            {
+                timer.CheckpointRuntimes[key].Clear();
+            }
+            Session["timer"] = timer;
+
+            return Content("");
         }
     }
 }

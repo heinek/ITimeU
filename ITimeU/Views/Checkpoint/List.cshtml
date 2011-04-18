@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ITimeU.Models.RaceModel>
+﻿@model IEnumerable<ITimeU.Models.CheckpointModel>
 @{
     ViewBag.Title = "List";
 }
@@ -11,23 +11,17 @@
 </div>
 <div class="contentmargin">
     <h2>
-        Løp</h2>
+        Passeringspunk</h2>
     <p>
-        @Html.ActionLink("Opprett ny klubb", "Create")
+        @Html.ActionLink("Legg til passeringspunkt", "Create")
     </p>
     <table>
         <tr>
             <th>
+                Passeringspunkt
+            </th>
+            <th>
                 Løp
-            </th>
-            <th>
-                StartDate
-            </th>
-            <th>
-                Distance
-            </th>
-            <th>
-                Stevne
             </th>
             <th>
             </th>
@@ -39,16 +33,10 @@
                     @item.Name
                 </td>
                 <td>
-                    @String.Format("{0:g}", item.StartDate)
+                    @item.Race.Name
                 </td>
                 <td>
-                    @item.Distance
-                </td>
-                <td>
-                @item.Event.Name
-                </td>
-                <td>
-                    @Html.ActionLink("Slett", "Delete", new { raceid=item.RaceId })
+                    @Html.ActionLink("Slett", "Delete", new { id = item.Id })
                 </td>
             </tr>
         }
