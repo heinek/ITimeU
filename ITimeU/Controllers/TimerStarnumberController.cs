@@ -17,30 +17,21 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int raceId)
         {
+
             var race = RaceModel.GetById(raceId);
+
             TimerModel timer;
-            TimeStartnumberModel timeStartnumberModel;
-            if (Session["TimeStartnumber"] != null)
-            {
-                timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
-                timer = timeStartnumberModel.Timer;
-            }
+            if (race.GetTimerId().HasValue)
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             else
             {
-                timer = null;
-                if (race.GetTimerId().HasValue)
-                {
-                    timer = new TimerModel(race.GetTimerId().Value);
-                    timer.RaceID = raceId;
-                }
-                else
-                {
-                    timer = new TimerModel();
-                    timer.RaceID = raceId;
-                }
-                timeStartnumberModel = new TimeStartnumberModel(timer);
+                timer = new TimerModel();
+                timer.RaceID = raceId;
             }
             timer.SaveToDb();
+
+            TimeStartnumberModel timeStartnumberModel;
+            timeStartnumberModel = new TimeStartnumberModel(timer);
             var checkpointOrder = new CheckpointOrderModel();
 
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
@@ -157,13 +148,25 @@ namespace ITimeU.Controllers
             DateTime starttime;
             int runtime = 0;
 
-            if (timeStartnumberModel.Timer.StartTime.HasValue)
+            if (timeStartnumberModel.Timer.StartTime.HasValue && timeStartnumberModel.Timer.IsStarted)
             {
                 starttime = timeStartnumberModel.Timer.StartTime.Value;
                 var ts = DateTime.Now - starttime;
                 runtime = (int)ts.TotalMilliseconds;
             }
             return Content(runtime.ToString());
+        }
+        [HttpPost]
+        public ActionResult ResetRace(int raceid)
+        {
+            var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
+            foreach (var key in timeStartnumberModel.CheckpointIntermediates.Keys)
+            {
+                timeStartnumberModel.CheckpointIntermediates[key].Clear();
+            }
+            RaceIntermediateModel.DeleteRaceintermediatesForRace(raceid);
+            Session["TimeStartnumber"] = timeStartnumberModel;
+            return Content("");
         }
     }
 }

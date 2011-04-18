@@ -12,6 +12,7 @@ namespace ITimeU.Models
         public int CheckpointID { get; set; }
         public int StartingNumber { get; set; }
         public int OrderNumber { get; set; }
+        public bool IsMerged { get; set; }
         public Dictionary<int, int> CheckpointOrderDic { get; set; }
 
         public CheckpointOrderModel()
@@ -39,7 +40,7 @@ namespace ITimeU.Models
             return entities.CheckpointOrders.Any(
                 chkpnt =>
                     (chkpnt.StartingNumber == startingNumber &&
-                    chkpnt.CheckpointID == checkpointId));
+                    chkpnt.CheckpointID == checkpointId && !chkpnt.IsDeleted));
         }
 
         private int CreateCheckpointWithStartNumber(int checkpointId, int startingNumber, Entities entities)
@@ -281,6 +282,7 @@ namespace ITimeU.Models
                 ID = checkpointOrder.ID,
                 OrderNumber = checkpointOrder.OrderNumber.HasValue ? checkpointOrder.OrderNumber.Value : 0,
                 StartingNumber = checkpointOrder.StartingNumber.HasValue ? checkpointOrder.StartingNumber.Value : 0,
+                IsMerged = checkpointOrder.IsMerged,
                 CheckpointOrderDic = new Dictionary<int, int>()
             };
             return checkpointOrderModel;
@@ -360,5 +362,33 @@ namespace ITimeU.Models
             entities.SaveChanges();
         }
 
+
+        public void Save()
+        {
+            using (var context = new Entities())
+            {
+                var cpo = new CheckpointOrder()
+                {
+                    CheckpointID = CheckpointID,
+                    OrderNumber = OrderNumber,
+                    StartingNumber = StartingNumber
+                };
+                context.CheckpointOrders.AddObject(cpo);
+                context.SaveChanges();
+                ID = cpo.ID;
+            }
+        }
+
+        public void Update()
+        {
+            using (var context = new Entities())
+            {
+                var cpodb = context.CheckpointOrders.Single(cpo => cpo.ID == ID);
+                cpodb.IsMerged = IsMerged;
+                cpodb.OrderNumber = OrderNumber;
+                cpodb.StartingNumber = StartingNumber;
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -34,8 +34,8 @@
         var timer;
         var timeFormatFactory = new TimeFormatFactory();
         var startBtnText = "Start";
-        var stopBtnText = "Stop";
-        var restartBtnText = "Restart";
+        var stopBtnText = "Stopp";
+        var restartBtnText = "Nullstill";
         var StartNumber = $('#tbStartnumber');
         var checkNumber = true;
         var startedruntime = 0;
@@ -74,10 +74,40 @@
             });
         }
 
+        $.post("/TimeStartnumber/ChangeCheckpoint/?checkpointid=" + ddlCheckpoints.val(), function (data) {
+            listIntermediate.html(data);
+        });
+
         btnStart.click(function () {
-            if (btnStart.val() == startBtnText || btnStart.val() == restartBtnText) {
+            if (btnStart.val() == restartBtnText) {
+                $("#dialog:ui-dialog").dialog("destroy");
+
+                $("#dialog-reset").dialog({
+                    resizable: false,
+                    height: 140,
+                    modal: true,
+                    buttons: {
+                        "Nullstill": function () {
+                            timer.startStop();
+                            btnStart.val(stopBtnText);
+                            url = "/TimeStartnumber/ResetRace/?raceid=" + $("#hdRaceid").val();
+                            $.post(url, function (data) {
+                                listIntermediate.html(data);
+                            });
+                            startedruntime = 0;
+                            $.post("/TimeStartnumber/Start/");
+                            $(this).dialog("close");
+                        },
+                        "Avbryt": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                });
+            }
+            else if (btnStart.val() == startBtnText) {
                 timer.startStop();
                 btnStart.val(stopBtnText);
+                startedruntime = 0;
                 $.post("/TimeStartnumber/Start/");
             }
             else {
@@ -91,10 +121,7 @@
                             timer.startStop();
                             $(this).dialog("close");
                             $.post("/TimeStartnumber/Stop/");
-                             btnStart.val(restartBtnText);
-                            if (btnIntermediate) {
-                                Tools.disable(btnIntermediate);
-                            }
+                            btnStart.val(restartBtnText);
                         },
                         "Avbryt": function () {
                             $(this).dialog("close");
@@ -191,6 +218,7 @@
             if (e.keyCode == 13) {
                 if (checkNumber == true) {
                     timer.addIntermediate(function (runtime) {
+                        runtime = runtime + startedruntime;
                         var url = "/TimeStartnumber/AddStartnumber/?checkpointId=" + ddlCheckpoints.val() + "&startnumber=" + StartNumber.val() + "&runtime=" + runtime;
                         $.post(url, function (data) {
                             listIntermediate.html(data);
@@ -209,7 +237,9 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" }) | 
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" })
+        |
     </center>
 </div>
 <div class="contentmargin">
@@ -271,16 +301,22 @@
         </div>
     </div>
 </div>
-<div id="dialog-confirm" title="Stopp timer?" style="display:none">
+<div id="dialog-confirm" title="Stopp timer?" style="display: none">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
         Dette vil stoppe løpet, er du sikker?</p>
 </div>
-<div id="dialog-message" title="Manglende passeringspunkt" style="display:none">
-	<p>
-		Dette løpet mangler passeringspunkt.
-	</p>
-	<p>
-		Du må opprette nye passeringspunkt før du kan starte løpet.
-	</p>
+<div id="dialog-message" title="Manglende passeringspunkt" style="display: none">
+    <p>
+        Dette løpet mangler passeringspunkt.
+    </p>
+    <p>
+        Du må opprette nye passeringspunkt før du kan starte løpet.
+    </p>
 </div>
+<div id="dialog-reset" title="Nullstill løpet?" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Dette vil nullstille løpet, er du sikker?</p>
+</div>
+<input type="hidden" name="hdRaceid" id="hdRaceid" value="@ViewBag.RaceId" />

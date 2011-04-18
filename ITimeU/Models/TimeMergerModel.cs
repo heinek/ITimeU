@@ -16,6 +16,17 @@ namespace ITimeU.Models
             Timers = new List<Timer>();
         }
 
+        public static void MergeTimestamp(int checkpointid, int runtimeid)
+        {
+            using (var context = new Entities())
+            {
+                var availableCheckpointorders = context.CheckpointOrders.Where(cpo => !cpo.IsDeleted && !cpo.IsMerged).OrderBy(cpo => cpo.OrderNumber).ToList();
+                if (availableCheckpointorders.Count == 0) return;
+                Merge(checkpointid, availableCheckpointorders.First().ID, runtimeid);
+
+            }
+        }
+
         public static Stack<int> Merge(int checkpointId, string timestampdata, string startnumberdata)
         {
             var timestamps = timestampdata.Split(',');
@@ -32,7 +43,9 @@ namespace ITimeU.Models
             int i = 0;
             foreach (var kvp in dicTimestamps.OrderBy(timestamp => timestamp.Value))
             {
-                Merge(checkpointId, startnumbers[i].ID, kvp.Key);
+                if (startnumbers.Count < i + 1)
+                    break;
+                Merge(checkpointId, startnumbers.OrderBy(stnumb => stnumb.OrderNumber).ToList()[i].ID, kvp.Key);
                 i++;
             }
         }
@@ -40,7 +53,18 @@ namespace ITimeU.Models
         public static RaceIntermediateModel Merge(int checkpointId, int checkpointOrderId, int runtimeId)
         {
             var raceIntermediateModel = new RaceIntermediateModel(checkpointId, checkpointOrderId, runtimeId);
-            if (raceIntermediateModel.Save()) return raceIntermediateModel;
+            if (raceIntermediateModel.Save())
+            {
+                var cpo = CheckpointOrderModel.GetById(checkpointOrderId);
+                cpo.IsMerged = true;
+                cpo.Update();
+
+                var runtime = RuntimeModel.getById(runtimeId);
+                runtime.IsMerged = true;
+                runtime.Update();
+
+                return raceIntermediateModel;
+            }
             return null;
         }
 

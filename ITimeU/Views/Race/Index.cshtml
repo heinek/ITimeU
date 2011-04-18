@@ -64,7 +64,7 @@
         <div class="statusmessagearea" id="StatusMessage" style="display: none">
         </div>
         <div class="editor-label">
-            @Html.Label("lblRaceName", "Navn")
+            @Html.Label("lblRaceName", "Navn") *
         </div>
         <div class="editor-field">
             @Html.TextBox("txtRaceName", null, new { @class = "textbox" })
@@ -76,13 +76,13 @@
             @Html.TextBox("txtRaceDistance", null, new { @class = "textbox" })
         </div>
         <div class="editor-label">
-            @Html.Label("lblRaceDate", "Start Dato")
+            @Html.Label("lblRaceDate", "Start Dato") *
         </div>
         <div class="editor-field">
             @Html.TextBox("txtRaceDate", null, new { @class = "textbox" })
         </div>
                 <div class="editor-label">
-            @Html.Label("lblRace", "Event:")
+            @Html.Label("lblRace", "Event") *
         </div>
         <div class="editor-field">
             @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"))

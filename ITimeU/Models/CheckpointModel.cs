@@ -165,17 +165,26 @@ namespace ITimeU.Models
         /// <returns></returns>
         public static List<CheckpointModel> getAll()
         {
-            var entities = new Entities();
-            IEnumerable<Checkpoint> checkpoints = entities.Checkpoints.AsEnumerable<Checkpoint>();
-
-            List<CheckpointModel> models = new List<CheckpointModel>();
-            foreach (Checkpoint checkpoint in checkpoints)
+            using (var context = new Entities())
             {
-                CheckpointModel converted = new CheckpointModel(checkpoint);
-                models.Add(converted);
+                return context.Checkpoints.
+                    Where(cp => cp.IsDeleted == false).
+                    Select(cp => new CheckpointModel()
+                    {
+                        Id = cp.CheckpointID,
+                        Name = cp.Name,
+                        Sortorder = cp.SortOrder,
+                        Race = new RaceModel()
+                        {
+                            RaceId = cp.Race.RaceID,
+                            EventId = cp.Race.EventId.Value,
+                            Name = cp.Race.Name,
+                            Distance = cp.Race.Distance,
+                            StartDate = cp.Race.StartDate
+                        },
+                        RaceId = cp.RaceID,
+                    }).ToList();
             }
-
-            return models;
         }
 
         public override bool Equals(object obj)
