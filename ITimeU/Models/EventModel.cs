@@ -98,5 +98,13 @@ namespace ITimeU.Models
                 };
             }
         }
+
+        public static bool EventNameExists(string eventName)
+        {
+            using (var context = new Entities())
+            {
+                return context.Events.Any(evnt => evnt.Name.ToLower() == eventName.ToLower() && !evnt.IsDeleted);
+            }
+        }
     }
 }

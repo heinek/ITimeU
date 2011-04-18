@@ -31,7 +31,12 @@ namespace ITimeU.Controllers
         {
             if (model.EventDate < DateTime.Today)
             {
-                ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                ViewBag.Error = "Dato kan ikke være mindre enn dagens dato";
+                return View();
+            }
+            if (EventModel.EventNameExists(model.Name))
+            {
+                ViewBag.Error = "Et stevne med samme navn eksisterer allerede";
                 return View();
             }
             var newModel = new EventModel(model.Name, model.EventDate);
