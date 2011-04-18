@@ -210,6 +210,13 @@ namespace ITimeU.Controllers
         public ActionResult ResetRace(int raceid)
         {
             RaceIntermediateModel.DeleteRaceintermediatesForRace(raceid);
+            var timer = (TimerModel)Session["timer"];
+            foreach (var key in timer.CheckpointRuntimes.Keys)
+            {
+                timer.CheckpointRuntimes[key].Clear();
+            }
+            Session["timer"] = timer;
+
             return Content("");
         }
     }
