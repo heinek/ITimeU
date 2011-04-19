@@ -77,13 +77,14 @@ namespace ITimeU.Controllers
         //
         // GET: /CheckpointOrder/Delete/5
 
-        public ActionResult DeleteCheckpointOrder(int id)
+        public ActionResult DeleteCheckpointOrder(int id, int checkpointId)
         {
             try
             {
-                CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
+                //CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
+                var model = CheckpointOrderModel.GetById(id);
                 model.DeleteCheckpointOrderDB();
-                return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+                return Content(CheckpointOrderModel.GetCheckpointOrders(checkpointId).ToListboxvalues());
             }
             catch
             {

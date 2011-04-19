@@ -51,31 +51,48 @@
         );
 
         handler.setddCheckpointChangeAction(
-        ddCheckpoints,
-        btnChangeCP
+            ddCheckpoints,
+            btnChangeCP
         );
 
         handler.setInsertAction(
-        listCheckpointOrders,
-        tbEdit,
-        divErrorMessage
+            listCheckpointOrders,
+            tbEdit,
+            divErrorMessage
         );
 
-        if ($('#btnChange').is(':disabled')) {
-            var url1 = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val();
-            $.get(url1, function (data) {
-                listCheckpointOrders.html(data);
-                tbedit.val('');
-            });
-        }
+        tbedit.bind("keypress", function (e) {
+            var Key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+            if (Key == 13) {
+                if (!IsNumber(tbedit.val())) {
+                    divErrorMessage.show().html('** Start Number Should be a Number (0-9)');
+                    tbedit.val('');
+                    return;
+                }
 
-        if (!$('#btnChange').is(':disabled')) {
-            var url2 = "/CheckpointOrder/UpdateCheckpointOrder/?ID=" + initialid + "&startingNumber=" + tbedit.val();
-            $.get(url2, function (data) {
-                listCheckpointOrders.html(data);
-                tbedit.val('');
-            });
-        }
+                if (IsDuplicate(tbedit.val())) {
+                    divErrorMessage.show().html('** Start Number already exist');
+                    tbedit.val('');
+                    return;
+                }
+                if ($('#btnChange').is(':disabled')) {
+                    var url1 = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val();
+                    $.get(url1, function (data) {
+                        listCheckpointOrders.html(data);
+                        tbedit.val('');
+                    });
+                }
+                else if (!$('#btnChange').is(':disabled')) {
+                    var url2 = "/CheckpointOrder/UpdateCheckpointOrder/?ID=" + initialid + "&startingNumber=" + tbedit.val();
+                    $.get(url2, function (data) {
+                        listCheckpointOrders.html(data);
+                        tbedit.val('');
+                    });
+                    Tools.disable(btnChange);
+                    Tools.disable(btnDelete);
+                }
+            }
+        });
 
     });
 </script>

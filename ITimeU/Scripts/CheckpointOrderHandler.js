@@ -64,8 +64,17 @@ CheckpointOrderHandler.prototype.setDeleteAction = function (_listCheckpointOrde
     listCheckpointOrders = _listCheckpointOrders;
     btnDelete = _btnDelete;
     btnDelete.bind("click", function () {
-        url = "/CheckpointOrder/DeleteCheckpointOrder/?id=" + initialid;
-        $.get(url, function (data) {
+        var str = "";
+        var strid = "";
+        $("#lstCheckpointOrders :selected").each(function () {
+            strid = $(this).val();
+            str = $(this).text();
+        });
+
+        initialid = strid;
+
+        urlDelete = "/CheckpointOrder/DeleteCheckpointOrder/?id=" + initialid + "&checkpointId=" + $("#ddCheckpoint").val();
+        $.get(urlDelete, function (data) {
             listCheckpointOrders.html(data);
         });
         tbedit.val("");
@@ -98,19 +107,6 @@ CheckpointOrderHandler.prototype.setMoveDownAction = function (_listCheckpointOr
     });
 }
 
-//CheckpointOrderHandler.prototype.setddCheckpointChangeAction = function (_ddCheckpoints) {
-//    ddCheckpoints = _ddCheckpoints;
-//    ddCheckpoints.bind("change", function () {
-//        $("#ddCheckpoint :selected").each(function () {
-//            ddCheckpointId = $(this).val();
-//        });
-//        url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + ddCheckpointId;
-//        $.get(url, function (data) {
-//            listCheckpointOrders.html(data);            
-//        });
-//    });
-//}
-
 CheckpointOrderHandler.prototype.setddCheckpointChangeAction = function (_ddCheckpoints, _btnChangeCP) {
     ddCheckpoints = _ddCheckpoints;
     btnChangeCP = _btnChangeCP;
@@ -129,29 +125,6 @@ CheckpointOrderHandler.prototype.setInsertAction = function (_listCheckpointOrde
     listCheckpointOrders = _listCheckpointOrders;
     tbedit = _tbedit;
     divErrorMessage = _divErrorMessage;
-
-//    tbedit.bind("keypress", function (e) {
-//        var Key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
-//        if (Key == 13) {
-//            if (!IsNumber(tbedit.val())) {
-//                divErrorMessage.show().html('** Start Number Should be a Number (0-9)');
-//                tbedit.val('');
-//                return;
-//            }
-
-//            if (IsDuplicate(tbedit.val())) {
-//                divErrorMessage.show().html('** Start Number already exist');
-//                tbedit.val('');
-//                return;
-//            }
-//            divErrorMessage.hide();
-//            url = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val();
-//            $.get(url, function (data) {
-//                listCheckpointOrders.html(data);
-//                tbedit.val('');
-//            });
-//        }
-//    });
 }
 
 // Verify startNumber is Number 0-9 and not empty

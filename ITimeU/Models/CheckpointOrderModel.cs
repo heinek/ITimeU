@@ -24,6 +24,15 @@ namespace ITimeU.Models
             CheckpointOrderDic = new Dictionary<int, int>();
         }
 
+        public CheckpointOrderModel(int Id)
+        {
+            CheckpointOrder co = CheckpointOrderModel.GetCheckpointOrderById(Id);
+            ID = co.ID;
+            CheckpointID = (int)co.CheckpointID;
+            StartingNumber = (int)co.StartingNumber;
+            OrderNumber = (int)co.OrderNumber;
+        }
+
         public int AddCheckpointOrderDB(int checkpointId, int startingNumber)
         {
             var entities = new Entities();
@@ -256,7 +265,7 @@ namespace ITimeU.Models
             DeleteCheckpointOrderInDb(ID);
         }
 
-        private static void DeleteCheckpointOrderInDb(int checkpointOrderId)
+        public void DeleteCheckpointOrderInDb(int checkpointOrderId)
         {
             var entities = new Entities();
 
