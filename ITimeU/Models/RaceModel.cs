@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ITimeU.Models
@@ -7,9 +9,17 @@ namespace ITimeU.Models
     public class RaceModel
     {
         public int RaceId { get; set; }
+        [Required(ErrorMessage = "Løpsnavn er obligatorisk")]
+        [DisplayName("Navn")]
+        [StringLength(150, ErrorMessage = "Løpsnavn kan ikke være lengre enn 150 bokstaver")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Dato er obligatorisk")]
+        [DataType(DataType.Date)]
+        [DisplayName("Dato")]
         public DateTime StartDate { get; set; }
+        [DisplayName("Distanse")]
         public int? Distance { get; set; }
+        [DisplayName("Stevne")]
         public int EventId { get; set; }
         public EventModel Event { get; set; }
 
@@ -69,6 +79,7 @@ namespace ITimeU.Models
                     {
                         RaceId = race.RaceID,
                         Name = race.Name,
+                        Distance = race.Distance.HasValue ? race.Distance.Value : 0,
                         StartDate = race.StartDate,
                         EventId = race.EventId.Value,
                         Event = new EventModel()
@@ -91,7 +102,7 @@ namespace ITimeU.Models
                         RaceId = race.RaceID,
                         Name = race.Name,
                         StartDate = race.StartDate,
-                        Distance = race.Distance,
+                        Distance = race.Distance.HasValue ? race.Distance.Value : 0,
                         EventId = race.EventId.Value,
                         Event = new EventModel()
                         {
