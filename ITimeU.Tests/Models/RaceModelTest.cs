@@ -60,6 +60,7 @@ namespace ITimeU.Tests.Models
                     racesBefore = ctxDBTest.Races.Count();
                     newTestRace.EventId = newEvent.EventId;
                     newTestRace.Save();
+                    newRace.Save();                   
                 });
 
             Then("The new Race should exist in database", () =>
@@ -77,6 +78,7 @@ namespace ITimeU.Tests.Models
 
             Given("We have inserted a new Race in database", () =>
                 {
+                    newRace.Save();   
                 });
 
             When("We update Race name", () =>
@@ -101,6 +103,7 @@ namespace ITimeU.Tests.Models
 
             Given("We have inserted a new Race in database", () =>
             {
+                newRace.Save();                
             });
 
             When("We update Race distance", () =>
@@ -124,6 +127,7 @@ namespace ITimeU.Tests.Models
 
             Given("We have inserted a new Race in database", () =>
             {
+                newRace.Save();   
             });
 
             When("We update Race name", () =>
@@ -145,6 +149,7 @@ namespace ITimeU.Tests.Models
             Race insertedRace = null;
             Given("We have a Race in database", () =>
                 {
+                    newRace.Save();   
                 });
 
             When("We retrieve a single race", () =>

@@ -6,6 +6,7 @@ using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
+using System;
 
 namespace ITimeU.Tests.Controllers
 {
@@ -55,6 +56,8 @@ namespace ITimeU.Tests.Controllers
 
             Given("the user has selected a checkpoint", () =>
             {
+                race.Save();
+                checkpoint = new CheckpointModel("Hemsedal", timerInView, race, 1);
                 timerCtrl = new TimerController();
                 setMockSessionFor(timerCtrl);
             });
@@ -75,6 +78,8 @@ namespace ITimeU.Tests.Controllers
             });
         }
 
+            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
+            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
         private static void setMockSessionFor(TimerController timerCtrl)
         {
             var sessionItems = new System.Web.SessionState.SessionStateItemCollection();

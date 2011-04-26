@@ -62,30 +62,21 @@ namespace ITimeU.Models
             }
             if (checkpoint.RaceID.HasValue)
                 Race = RaceModel.GetById(checkpoint.RaceID.Value);
-        }
 
-        /// <summary>
-        /// Creates a CheckpointModel.
-        /// </summary>
-        /// <param name="name">The name of the checkpoint.</param>
-        /// <param name="raceId">The identifier of the race to connect this checkpoint to.</param>
-        public CheckpointModel(string name, int raceId)
-        {
-            var race = RaceModel.GetById(raceId);
-            Name = name;
-            Race = race;
-            int? timerid = race.GetTimerId();
-            if(timerid.HasValue)
-                Timer = TimerModel.GetTimerById(timerid.Value);
-            Sortorder = GetNextOrdernumber(raceId);
-            SaveToDb();
+            //Race = RaceModel.GetById((int)checkpoint.RaceID);
+            //var race = RaceModel.GetById(raceId);
+            //int? timerid = race.GetTimerId();
+            //if(timerid.HasValue)
+                //Timer = TimerModel.GetTimerById(timerid.Value);
+            //Sortorder = GetNextOrdernumber(raceId);
+            //SaveToDb();
         }
 
         public CheckpointModel(string name, TimerModel timer, RaceModel race)
         {
             Name = name;
             Race = RaceModel.GetById(race.RaceId);
-            Timer = timer;
+            Timer = timer;            
             SaveToDb();
         }
 
@@ -131,7 +122,7 @@ namespace ITimeU.Models
         /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
-            checkpoint.Name = Name;
+            checkpoint.Name = Name;            
             checkpoint.SortOrder = Sortorder;
             if (timer != null)
                 checkpoint.TimerID = timer.Id;
