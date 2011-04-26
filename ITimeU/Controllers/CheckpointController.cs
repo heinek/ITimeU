@@ -1,5 +1,6 @@
 ﻿using System;
 //using System.Linq;
+using System.Linq;
 using System.Web.Mvc;
 using ITimeU.Models;
 
@@ -84,7 +85,6 @@ namespace ITimeU.Controllers
             checkpoint.Delete();
             return View("List", CheckpointModel.getAll());
         }
-
     }
 }
 

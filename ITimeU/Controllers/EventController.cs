@@ -40,15 +40,23 @@ namespace ITimeU.Controllers
                 return View();
             }
             var newModel = new EventModel(model.Name, model.EventDate);
-            if (newModel.Save())
+            try
             {
-                ViewData.ModelState.Clear();
-                ViewBag.Success = "Stevne ble opprettet";
-                return View();
+                if (newModel.Save())
+                {
+                    ViewData.ModelState.Clear();
+                    ViewBag.Success = "Stevne ble opprettet";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                    return View();
+                }
             }
-            else
+            catch (ArgumentException ex)
             {
-                ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                ViewBag.Error = ex.Message;
                 return View();
             }
         }

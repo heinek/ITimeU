@@ -27,6 +27,27 @@ namespace ITimeU.Models
             }
         }
 
+        public static void Merge(int checkpointId)
+        {
+            using (var context = new Entities())
+            {
+                var timestamps = context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId).OrderBy(runtime => runtime.Runtime1).ToList();
+                var startnumbers = context.CheckpointOrders.Where(startnumber => startnumber.CheckpointID == checkpointId).OrderBy(startnumber => startnumber.OrderNumber).ToList();
+                var raceintermediates = context.RaceIntermediates.Where(intermediate => intermediate.CheckpointID == checkpointId).ToList();
+                //Removes exicting entries in the database
+                raceintermediates.Delete();
+                //Creates new entries
+                int i = 0;
+                foreach (var timestamp in timestamps)
+                {
+                    if (startnumbers.Count < i + 1)
+                        break;
+                    Merge(checkpointId, startnumbers[i].ID, timestamp.RuntimeID);
+                    i++;
+                }
+            }
+        }
+
         public static Stack<int> Merge(int checkpointId, string timestampdata, string startnumberdata)
         {
             var timestamps = timestampdata.Split(',');

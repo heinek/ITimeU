@@ -29,10 +29,6 @@
             <End Role="Race" EntitySet="Race" />
             <End Role="Checkpoint" EntitySet="Checkpoint" />
           </AssociationSet>
-          <AssociationSet Name="FK_CheckpointOrder_Checkpoint" Association="ITimeUModel.Store.FK_CheckpointOrder_Checkpoint">
-            <End Role="Checkpoint" EntitySet="Checkpoint" />
-            <End Role="CheckpointOrder" EntitySet="CheckpointOrder" />
-          </AssociationSet>
           <AssociationSet Name="FK_Race_Event" Association="ITimeUModel.Store.FK_Race_Event">
             <End Role="Event" EntitySet="Event" />
             <End Role="Race" EntitySet="Race" />
@@ -134,7 +130,7 @@
           </Key>
           <Property Name="EventId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="150" />
-          <Property Name="EventDate" Type="datetime" Nullable="false" />
+          <Property Name="EventDate" Type="date" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Race">
@@ -221,18 +217,6 @@
             </Principal>
             <Dependent Role="Checkpoint">
               <PropertyRef Name="RaceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CheckpointOrder_Checkpoint">
-          <End Role="Checkpoint" Type="ITimeUModel.Store.Checkpoint" Multiplicity="0..1" />
-          <End Role="CheckpointOrder" Type="ITimeUModel.Store.CheckpointOrder" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Checkpoint">
-              <PropertyRef Name="CheckpointID" />
-            </Principal>
-            <Dependent Role="CheckpointOrder">
-              <PropertyRef Name="CheckpointID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

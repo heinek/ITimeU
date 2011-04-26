@@ -52,7 +52,7 @@ namespace ITimeU.Tests.Models
 
             Given("We want to insert new Race in the database", () =>
                 {
-                    newTestRace = new RaceModel("test", DateTime.Today);
+                    newTestRace = new RaceModel("test" + DateTime.Now.Ticks.ToString(), DateTime.Today);
                 });
 
             When("We insert a new Race in database", () =>
@@ -291,6 +291,34 @@ namespace ITimeU.Tests.Models
             Then("we should get a list of races", () =>
             {
                 races.ShouldBeInstanceOfType<List<RaceModel>>();
+            });
+        }
+        [TestMethod]
+        public void We_Should_Be_Able_A_Race_With_Same_Name_In_The_Same_Event()
+        {
+            string exp = "";
+            var raceDup = new RaceModel();
+            string raceName = newRace.Name;
+            Given("We want to create a race with the same name as a previous race in the same race", () =>
+            {
+                raceDup.Name = raceName;
+                raceDup.EventId = newEvent.EventId;
+            });
+
+            When("we save the race", () =>
+            {
+                try
+                {
+                    raceDup.Save();
+                }
+                catch (Exception ex)
+                {
+                    exp = ex.Message;
+                }
+            });
+            Then("we should get an exception", () =>
+            {
+                exp.ShouldBe("Det eksisterer allerede et løp med samme navn for dette stevnet");
             });
         }
 

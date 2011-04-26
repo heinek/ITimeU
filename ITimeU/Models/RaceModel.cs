@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace ITimeU.Models
 {
@@ -51,6 +51,7 @@ namespace ITimeU.Models
         {
             using (var context = new Entities())
             {
+                if (context.Races.Where(r => r.EventId == EventId).Any(r => r.Name == Name)) throw new ArgumentException("Det eksisterer allerede et løp med samme navn for dette stevnet");
                 var race = new Race();
                 race.Name = Name;
                 race.StartDate = StartDate;

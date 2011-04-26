@@ -203,7 +203,7 @@ namespace ITimeU.Models
                             Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
                             FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : " - ",
                             LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : " - ",
-                            StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : 0,
+                            StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : null,
                             Club = new ClubModel()
                             {
                                 Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.ClubID : 0,

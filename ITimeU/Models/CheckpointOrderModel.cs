@@ -352,11 +352,13 @@ namespace ITimeU.Models
         /// <param name="newstartnumber">The new startnumber.</param>
         public static void EditCheckpointOrder(int cporderid, int newstartnumber)
         {
-            var entities = new Entities();
-            var checkpointOrder =
-                entities.CheckpointOrders.Where(order => order.ID == cporderid).SingleOrDefault();
-            checkpointOrder.StartingNumber = newstartnumber;
-            entities.SaveChanges();
+            using (var context = new Entities())
+            {
+                var checkpointOrder =
+                    context.CheckpointOrders.Where(order => order.ID == cporderid).SingleOrDefault();
+                checkpointOrder.StartingNumber = newstartnumber;
+                context.SaveChanges();
+            }
         }
 
         public void DeleteAllCheckpointOrdersOnCheckpoint(int checkpointId)
