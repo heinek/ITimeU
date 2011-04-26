@@ -29,18 +29,26 @@ namespace ITimeU.Controllers
             race.Distance = model.Distance;
             race.StartDate = model.StartDate;
             race.EventId = model.EventId;
-            if (race.Save())
+            try
             {
-                var checkpoint = new CheckpointModel("Mål", race.RaceId);
-                checkpoint.Sortorder = 99;
-                checkpoint.SaveToDb();
-                ViewData.ModelState.Clear();
-                ViewBag.Success = "Løp ble opprettet";
-                return View();
+                if (race.Save())
+                {
+                    var checkpoint = new CheckpointModel("Mål", race.RaceId);
+                    checkpoint.Sortorder = 99;
+                    checkpoint.SaveToDb();
+                    ViewData.ModelState.Clear();
+                    ViewBag.Success = "Løp ble opprettet";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Error = "Det skjedde en feil under lagring av løp";
+                    return View();
+                }
             }
-            else
+            catch (ArgumentException ex)
             {
-                ViewBag.Error = "Det skjedde en feil under lagring av løp";
+                ViewBag.Error = ex.Message;
                 return View();
             }
         }

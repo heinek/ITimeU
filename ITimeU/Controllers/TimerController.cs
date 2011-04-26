@@ -69,7 +69,7 @@ namespace ITimeU.Controllers
         {
             TimerModel timer = (TimerModel)Session["timer"];
             var runtimeModel = timer.AddRuntime(runtime, checkpointid);
-            TimeMergerModel.Merge(checkpointid, timer.CheckpointRuntimes[checkpointid], CheckpointOrderModel.GetCheckpointOrders(checkpointid));
+            TimeMergerModel.Merge(checkpointid);
             return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
@@ -150,7 +150,7 @@ namespace ITimeU.Controllers
                     Checkpointname = raceintermediate.CheckpointModel.Name,
                     Clubname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.Club.Name : " - ",
                     Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullName : " - ",
-                    Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : 0,
+                    Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : raceintermediate.CheckpointorderModel.StartingNumber,
                     Time = raceintermediate.RuntimeModel.RuntimeToTime
                 });
             return View("Speaker", raceintermediates);
@@ -184,7 +184,7 @@ namespace ITimeU.Controllers
                     Checkpointname = raceintermediate.CheckpointModel.Name,
                     Clubname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.Club.Name : " - ",
                     Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullName : " - ",
-                    Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : 0,
+                    Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : raceintermediate.CheckpointorderModel.StartingNumber,
                     Time = raceintermediate.RuntimeModel.RuntimeToTime
                 }).ToList();
             return Content(raceintermediates.ToTable());

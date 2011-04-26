@@ -177,5 +177,25 @@ namespace ITimeU
             TimeSpan ts = new TimeSpan(0, 0, 0, 0, milliseconds);
             return String.Format("{0}:{1}:{2}.{3}", ts.Hours.ToString("0"), ts.Minutes.ToString("00"), ts.Seconds.ToString("00"), ts.Milliseconds.ToString().Substring(0, 1));
         }
+
+        public static bool Delete(this List<RaceIntermediate> intermediates)
+        {
+            try
+            {
+            using (var context = new Entities())
+            {
+                foreach (var intermediate in intermediates)
+                {
+                    context.DeleteObject(intermediate);
+                }
+                context.SaveChanges();
+            }
+            return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

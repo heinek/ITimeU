@@ -40,6 +40,7 @@ namespace ITimeU.Models
         /// <returns></returns>
         public bool Save()
         {
+            if (EventDate < DateTime.Today.Date) throw new ArgumentException("Ugyldig dato for stevne");
             using (var context = new Entities())
             {
                 var newEvent = new Event();
@@ -58,6 +59,8 @@ namespace ITimeU.Models
                 }
             }
         }
+
+
 
         /// <summary>
         /// Deletes this event.
