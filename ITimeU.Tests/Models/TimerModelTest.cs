@@ -109,7 +109,11 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void Stopping_A_Timer_Twice_Should_Throw_Exception()
         {
-            Given("we have a started timer");
+            string exmessage = "";
+            Given("we have a started timer", () =>
+                {
+                    timer.Start();
+                });
 
             When("we stop the timer twice", () =>
             {
@@ -119,10 +123,16 @@ namespace ITimeU.Tests.Models
                     timer.Stop();
                     false.ShouldBeTrue(); // Fail test, we shouldn't get here.
                 }
-                catch (InvalidOperationException) { }
+                catch (InvalidOperationException ex)
+                {
+                    exmessage = ex.Message;
+                }
             });
 
-            Then("we should get an exception");
+            Then("we should get an exception", () =>
+                {
+                    exmessage.ShouldBe("Cannot stop a stopped timer");
+                });
         }
 
         [TestMethod]

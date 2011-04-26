@@ -72,6 +72,13 @@ namespace ITimeU.Models
             //SaveToDb();
         }
 
+        public CheckpointModel(string name, int raceId)
+        {
+            Name = name;
+            Race = RaceModel.GetById(raceId);
+            SaveToDb();
+        }
+
         public CheckpointModel(string name, TimerModel timer, RaceModel race)
         {
             Name = name;

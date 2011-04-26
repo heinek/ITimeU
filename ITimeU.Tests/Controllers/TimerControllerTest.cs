@@ -56,8 +56,7 @@ namespace ITimeU.Tests.Controllers
 
             Given("the user has selected a checkpoint", () =>
             {
-                race.Save();
-                checkpoint = new CheckpointModel("Hemsedal", timerInView, race, 1);
+                checkpoint = new CheckpointModel("Hemsedal", race.RaceId);
                 timerCtrl = new TimerController();
                 setMockSessionFor(timerCtrl);
             });
@@ -78,8 +77,6 @@ namespace ITimeU.Tests.Controllers
             });
         }
 
-            var checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
-            var checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
         private static void setMockSessionFor(TimerController timerCtrl)
         {
             var sessionItems = new System.Web.SessionState.SessionStateItemCollection();

@@ -23,7 +23,7 @@ namespace ITimeU.Models
         public int EventId { get; set; }
         public EventModel Event { get; set; }
 
-        private RaceModel()
+        public RaceModel()
         {
 
         }
@@ -94,7 +94,7 @@ namespace ITimeU.Models
         }
 
         public static List<RaceModel> GetRaces(int eventId)
-        //{
+        {
             using (var ctx = new Entities())
             {
                 return ctx.Races.Where(race => !race.IsDeleted && race.EventId == eventId).Select(race =>

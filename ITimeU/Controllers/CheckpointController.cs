@@ -85,19 +85,6 @@ namespace ITimeU.Controllers
             checkpoint.Delete();
             return View("List", CheckpointModel.getAll());
         }
-
-
-        private void SetTempData(string key, object value)
-        {
-            TempData[key] = value;
-        }
-
-        private object GetTempData(string key)
-        {
-            return TempData[key]; ;
-        }
-
-
     }
 }
 

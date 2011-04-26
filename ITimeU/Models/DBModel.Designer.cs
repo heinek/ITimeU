@@ -966,14 +966,12 @@ namespace ITimeU.Models
         /// </summary>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
         /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
-        /// <param name="timerID">Initial value of the TimerID property.</param>
         /// <param name="sortOrder">Initial value of the SortOrder property.</param>
         public static Checkpoint CreateCheckpoint(global::System.Int32 checkpointID, global::System.Boolean isDeleted, global::System.Int32 sortOrder)
         {
             Checkpoint checkpoint = new Checkpoint();
             checkpoint.CheckpointID = checkpointID;
             checkpoint.IsDeleted = isDeleted;
-            checkpoint.TimerID = timerID;
             checkpoint.SortOrder = sortOrder;
             return checkpoint;
         }
@@ -1083,9 +1081,9 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 TimerID
+        public Nullable<global::System.Int32> TimerID
         {
             get
             {
@@ -1100,8 +1098,8 @@ namespace ITimeU.Models
                 OnTimerIDChanged();
             }
         }
-        private global::System.Int32 _TimerID;
-        partial void OnTimerIDChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _TimerID;
+        partial void OnTimerIDChanging(Nullable<global::System.Int32> value);
         partial void OnTimerIDChanged();
     
         /// <summary>
@@ -1131,44 +1129,6 @@ namespace ITimeU.Models
         #endregion
     
         #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Timer")]
-        public Timer Timer
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Timer> TimerReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Timer>("ITimeUModel.FK_Checkpoint_Timer", "Timer", value);
-                }
-            }
-        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1985,30 +1945,31 @@ namespace ITimeU.Models
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> Distance
+        public global::System.Boolean IsDeleted
         {
             get
             {
-                return _Distance;
+                return _IsDeleted;
             }
             set
             {
-                OnDistanceChanging(value);
-                ReportPropertyChanging("Distance");
-                _Distance = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Distance");
-                OnDistanceChanged();
+                OnIsDeletedChanging(value);
+                ReportPropertyChanging("IsDeleted");
+                _IsDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDeleted");
+                OnIsDeletedChanged();
             }
         }
-        private Nullable<global::System.Int32> _Distance;
-        partial void OnDistanceChanging(Nullable<global::System.Int32> value);
-        partial void OnDistanceChanged();
+        private global::System.Boolean _IsDeleted;
+        partial void OnIsDeletedChanging(global::System.Boolean value);
+        partial void OnIsDeletedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public Nullable<global::System.Int32> EventId
         {
@@ -2993,28 +2954,6 @@ namespace ITimeU.Models
         #endregion
     
         #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_Checkpoint_Timer", "Checkpoint")]
-        public EntityCollection<Checkpoint> Checkpoints
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Checkpoint>("ITimeUModel.FK_Checkpoint_Timer", "Checkpoint");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Checkpoint>("ITimeUModel.FK_Checkpoint_Timer", "Checkpoint", value);
-                }
-            }
-        }
     
         /// <summary>
         /// No Metadata Documentation available.
