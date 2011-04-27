@@ -186,10 +186,9 @@ namespace ITimeU.Models
         public static void SaveToDb(List<AthleteModel> athletes)
         {
             Entities context = new Entities();
-            foreach (AthleteModel athlete in athletes)
             {
-                Athlete athleteDb = createAthleteDbFrom(athlete);
-                context.Athletes.AddObject(athleteDb);
+                foreach (AthleteModel athlete in athletes)
+                    athlete.SaveToDb();
             }
             context.SaveChanges();
 

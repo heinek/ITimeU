@@ -35,6 +35,14 @@
             document.location = url;
         });
 
+        $("img").hover(
+            function () {
+                this.src = this.src.replace("_off", "_on");
+            },
+            function () {
+                this.src = this.src.replace("_on", "_off");
+            }
+        );
     });
 </script>
 <div class="topmenubar">
@@ -44,29 +52,15 @@
     </center>
 </div>
 <div class="contentmargin">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tr>
-            <td align="center">
-                <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td>
-                            <img src="../../Content/images/1pc.jpg" class="linkimage" id="img1pc" alt="En pc oppsett" />
-                        </td>
-                        <td>
-                            <img src="../../Content/images/2pc.jpg" class="linkimage" id="img2pc" alt="To pc oppsett" />
-                        </td>
-                        <td>
-                            <img src="../../Content/images/Speaker200.jpg" class="linkimage" id="imgSpeaker"
-                                alt="Speaker" />
-                        </td>
-                                                <td>
-                            <img src="../../Content/images/athlete01.jpg" class="linkimage" id="imgAthletes"
-                                alt="Athletes" />
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+        <div class="container">
+        <div class="row">
+            <div class="menubg">
+                <img src="../../Content/images/1pc_off.png" id="img1pc" alt="1 pc" class="logo" /><img  id="img2pc"
+                    src="../../Content/images/2pc_off.png" alt="2 pc" class="logo" /><img id="imgSpeaker"
+                        src="../../Content/images/speaker_off.png" alt="Speaker" class="logo" /><img id="imgAthletes" src="../../Content/images/startliste_off.png"
+                            alt="Startliste" class="logo" />
+            </div>
+        </div>
+    </div>
     @Html.Hidden("hdRaceid", Model.RaceId)
 </div>

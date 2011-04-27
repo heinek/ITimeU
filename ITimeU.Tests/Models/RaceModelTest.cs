@@ -188,7 +188,7 @@ namespace ITimeU.Tests.Models
         {
             int athletesNotConnectedToRace = 0;
             AthleteModel athlete = null;
-
+            var aclass = AthleteClassModel.GetOrCreate("12 år");
             Given("we have a race with athletes", () =>
             {
             });
@@ -196,14 +196,15 @@ namespace ITimeU.Tests.Models
             When("we want to add a new athlete", () =>
             {
                 athlete = new AthleteModel("Testing", "Tester");
+                athlete.AthleteClass = aclass;
                 athlete.SaveToDb();
-                athletesNotConnectedToRace = newRace.GetAthletesNotConnected().Count;
+                athletesNotConnectedToRace = newRace.GetAthletesNotConnected(aclass.Id).Count;
                 athlete.ConnectToRace(newRace.RaceId);
             });
 
             Then("the number of athletes not connected to the race should be reduced by 1", () =>
             {
-                newRace.GetAthletesNotConnected().Count.ShouldBe(athletesNotConnectedToRace - 1);
+                newRace.GetAthletesNotConnected(aclass.Id).Count.ShouldBe(athletesNotConnectedToRace - 1);
                 athlete.Delete();
             });
         }

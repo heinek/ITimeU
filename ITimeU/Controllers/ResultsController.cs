@@ -148,5 +148,10 @@ namespace ITimeU.Controllers
             ViewBag.CheckpointId = checkpointId;
             return View(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointId));
         }
+
+        public ActionResult ResultSetup()
+        {
+            return View();
+        }
     }
 }
