@@ -89,7 +89,8 @@ namespace ITimeU.Models
         private static int GetHighestExistingOrderNumberForCheckpoint(int checkpointId, Entities entities)
         {
             return (int)entities.CheckpointOrders.
-                Where(chkpntid => chkpntid.CheckpointID == checkpointId).
+                Where(chkpntid => chkpntid.CheckpointID == checkpointId 
+                    && !chkpntid.IsDeleted == true).
                 OrderByDescending(chkpnt => chkpnt.OrderNumber).
                 First().OrderNumber;
         }
@@ -106,7 +107,8 @@ namespace ITimeU.Models
             CheckpointOrderDic.Clear();
             IOrderedQueryable<CheckpointOrder> checkpointOrders =
                 entities.CheckpointOrders.
-                Where(chkpnt => chkpnt.CheckpointID == checkpointId).
+                Where(chkpnt => chkpnt.CheckpointID == checkpointId &&
+                    !chkpnt.IsDeleted).
                 OrderByDescending(ordernum => ordernum.OrderNumber);
 
             foreach (CheckpointOrder chkpntOrder in checkpointOrders)
@@ -165,7 +167,7 @@ namespace ITimeU.Models
             return (int)entities.CheckpointOrders.
                 Where(checkpointOrder =>
                     (checkpointOrder.CheckpointID == checkpointId &&
-                    checkpointOrder.OrderNumber > orderNumber)).
+                    checkpointOrder.OrderNumber > orderNumber) && !checkpointOrder.IsDeleted == true).
                 Min(checkpointOrder => checkpointOrder.OrderNumber);
         }
 
@@ -174,7 +176,7 @@ namespace ITimeU.Models
             return entities.CheckpointOrders.
                 Single(checkpointOrder =>
                     (checkpointOrder.OrderNumber == orderNumber &&
-                        checkpointOrder.CheckpointID == checkpointId)).
+                        checkpointOrder.CheckpointID == checkpointId && !checkpointOrder.IsDeleted == true)).
                     ID;
         }
 
@@ -206,7 +208,9 @@ namespace ITimeU.Models
         private static int GetLowestExistingOrderNumberForCheckpoint(int checkpointId, Entities entities)
         {
             return (int)entities.CheckpointOrders.
-                Where(chkpntid => chkpntid.CheckpointID == checkpointId).OrderBy(chkpnt => chkpnt.OrderNumber).
+                Where(chkpntid => chkpntid.CheckpointID == checkpointId
+                    && !chkpntid.IsDeleted == true).
+                OrderBy(chkpnt => chkpnt.OrderNumber).
                 First().OrderNumber;
         }
 
@@ -229,7 +233,7 @@ namespace ITimeU.Models
         private static int GetPreviousOrderNumber(int checkpointId, int orderNumber, Entities entities)
         {
             return (int)entities.CheckpointOrders.
-                Where(chkpnt => (chkpnt.CheckpointID == checkpointId && chkpnt.OrderNumber < orderNumber)).
+                Where(chkpnt => (chkpnt.CheckpointID == checkpointId && chkpnt.OrderNumber < orderNumber && !chkpnt.IsDeleted == true)).
                 Max(chkpnt => chkpnt.OrderNumber);
         }
 
@@ -311,7 +315,7 @@ namespace ITimeU.Models
                 Where(checkpointorder =>
                     checkpointorder.CheckpointID == checkpointId &&
                     !checkpointorder.IsDeleted).
-                    OrderBy(checkpoint => checkpoint.OrderNumber).
+                    OrderByDescending(checkpoint => checkpoint.OrderNumber).
                     ToList();
         }
 

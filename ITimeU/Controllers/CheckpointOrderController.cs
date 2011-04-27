@@ -125,7 +125,6 @@ namespace ITimeU.Controllers
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
-
         public ActionResult UpdateCheckpointOrder(int ID, int startingNumber)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
