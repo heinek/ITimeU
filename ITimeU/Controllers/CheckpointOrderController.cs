@@ -70,6 +70,7 @@ namespace ITimeU.Controllers
                 }
                 tmpValue = int.Parse(value);
                 CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);
+                TimeMergerModel.Merge(origCheckpointOrder.CheckpointID.Value);
                 return View("Index", model);
             }
         }
@@ -88,6 +89,7 @@ namespace ITimeU.Controllers
             }
             catch
             {
+                TimeMergerModel.Merge(checkpointId);
                 return View();
             }
         }
@@ -122,14 +124,16 @@ namespace ITimeU.Controllers
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
             model.MoveCheckpointDown(checkpointID, startingNumber, checkpointOrderId);
+            TimeMergerModel.Merge(checkpointID);
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
-
 
         public ActionResult UpdateCheckpointOrder(int ID, int startingNumber)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
             model.UpdateCheckpointOrderDB(ID, startingNumber);
+            CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);
+            TimeMergerModel.Merge(origCheckpointOrder.CheckpointID.Value);
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 

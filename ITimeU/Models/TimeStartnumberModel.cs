@@ -74,7 +74,6 @@ namespace ITimeU.Models
         /// <param name="cporderid">The cporderid.</param>
         public void DeleteRaceintermediate(int cpid, int cporderid)
         {
-
             CheckpointIntermediates[CurrentCheckpointId].Remove(CheckpointIntermediates[CurrentCheckpointId].Where(raceintermediate => raceintermediate.CheckpointID == cpid && raceintermediate.CheckpointOrderID == cporderid).Single());
             RaceIntermediateModel.DeleteRaceintermediate(cpid, cporderid);
         }

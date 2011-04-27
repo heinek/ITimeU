@@ -31,8 +31,8 @@ namespace ITimeU.Models
         {
             using (var context = new Entities())
             {
-                var timestamps = context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId).OrderBy(runtime => runtime.Runtime1).ToList();
-                var startnumbers = context.CheckpointOrders.Where(startnumber => startnumber.CheckpointID == checkpointId).OrderBy(startnumber => startnumber.OrderNumber).ToList();
+                var timestamps = context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId && !runtime.IsDeleted).OrderBy(runtime => runtime.Runtime1).ToList();
+                var startnumbers = context.CheckpointOrders.Where(startnumber => startnumber.CheckpointID == checkpointId && !startnumber.IsDeleted).OrderBy(startnumber => startnumber.OrderNumber).ToList();
                 var raceintermediates = context.RaceIntermediates.Where(intermediate => intermediate.CheckpointID == checkpointId).ToList();
                 //Removes exicting entries in the database
                 foreach (var intermediate in raceintermediates)

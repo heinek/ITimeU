@@ -17,18 +17,6 @@
                 Koble utøvere til løp</h2>
         </div>
         <div class="container">
-            @*                    <div class="row">
-                <div class="left">
-                    <div class="editor-label" style="vertical-align: top">
-                        <b>@Html.Label("lblEvent", "Stevne:")</b>
-                    </div>
-                </div>
-                <div class="middle">
-                    <br />
-                    @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"), "Velg stevne...")
-                    <input type="submit" name="changeEvent" id="changeEvent" class="btnGo" value=" " />
-                </div>
-            </div>*@
             <div class="row">
                 <div class="left">
                     <div class="editor-label" style="vertical-align: top">
@@ -44,7 +32,7 @@
             <div class="row">
                 <div class="left">
                     <div class="editor-label" style="vertical-align: top">
-                        <b>@Html.Label("lblClass", "Løp:")</b>
+                        <b>@Html.Label("lblClass", "Klasse:")</b>
                     </div>
                 </div>
                 <div class="middle">
@@ -83,7 +71,7 @@
                     <br />
                 </div>
                 <div class="right">
-                    @Html.ListBoxFor(model => model.ConnectedSelected, new MultiSelectList(Model.AthletesConnected, "Id", "FullName", Model.ConnectedSelected), new { @class = "listboxwide" })
+                    @Html.ListBoxFor(model => model.ConnectedSelected, new MultiSelectList(Model.AthletesConnected, "Id", "FullNameClass", Model.ConnectedSelected), new { @class = "listboxwide" })
                 </div>
             </div>
         </div>

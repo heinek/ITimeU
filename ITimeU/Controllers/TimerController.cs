@@ -16,7 +16,7 @@ namespace ITimeU.Controllers
         public ActionResult Index(int id)
         {
             var race = RaceModel.GetById(id);
-
+            ViewBag.RaceName = race.Name;
             TimerModel timer;
             if (race.GetTimerId().HasValue)
                 timer = TimerModel.GetTimerById(race.GetTimerId().Value);
@@ -129,6 +129,7 @@ namespace ITimeU.Controllers
         {
             ViewBag.RaceId = id;
             var race = RaceModel.GetById(id);
+            ViewBag.RaceName = race.Name;
             TimerModel timer = null;
             if (race.GetTimerId().HasValue)
                 timer = TimerModel.GetTimerById(race.GetTimerId().Value);

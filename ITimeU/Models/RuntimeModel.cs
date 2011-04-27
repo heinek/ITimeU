@@ -65,7 +65,7 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
-                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                runtimeToDelete.IsDeleted = true;
                 ctx.SaveChanges();
             }
         }
@@ -115,11 +115,9 @@ namespace ITimeU.Models
         {
             using (var context = new Entities())
             {
-                return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId && runtime.IsMerged == false).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
+                return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId && runtime.IsMerged == false && !runtime.IsDeleted).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
             }
         }
-
-
 
         public void Update()
         {
