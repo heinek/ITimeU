@@ -273,7 +273,8 @@ namespace ITimeU.Models
                 entities.CheckpointOrders.
                 Where(checkpointOrder => checkpointOrder.ID == checkpointOrderId).
                 Single();
-            entities.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
+            checkpointOrderToDelete.IsDeleted = true;            
+            //entities.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
             entities.SaveChanges();
         }
 
@@ -299,11 +300,17 @@ namespace ITimeU.Models
 
         public static List<CheckpointOrder> GetCheckpointOrders(int checkpointId)
         {
+            //return new Entities().CheckpointOrders.
+            //    Where(checkpointorder =>
+            //        checkpointorder.CheckpointID == checkpointId &&
+            //        !checkpointorder.IsDeleted &&
+            //        !checkpointorder.IsMerged).
+            //        OrderBy(checkpoint => checkpoint.OrderNumber).
+            //        ToList();
             return new Entities().CheckpointOrders.
                 Where(checkpointorder =>
                     checkpointorder.CheckpointID == checkpointId &&
-                    !checkpointorder.IsDeleted &&
-                    !checkpointorder.IsMerged).
+                    !checkpointorder.IsDeleted).
                     OrderBy(checkpoint => checkpoint.OrderNumber).
                     ToList();
         }
@@ -311,11 +318,16 @@ namespace ITimeU.Models
         public void GetStartingNumbersForCheckpoint(int checkpointID)
         {
             CheckpointOrderDic.Clear();
+            //IOrderedQueryable<CheckpointOrder> checkpointOrders = new Entities().CheckpointOrders.
+            //    Where(chkpnt =>
+            //        chkpnt.CheckpointID == checkpointID &&
+            //        !chkpnt.IsDeleted &&
+            //        !chkpnt.IsMerged).
+            //        OrderByDescending(ordernum => ordernum.OrderNumber);
             IOrderedQueryable<CheckpointOrder> checkpointOrders = new Entities().CheckpointOrders.
                 Where(chkpnt =>
                     chkpnt.CheckpointID == checkpointID &&
-                    !chkpnt.IsDeleted &&
-                    !chkpnt.IsMerged).
+                    !chkpnt.IsDeleted).
                     OrderByDescending(ordernum => ordernum.OrderNumber);
 
             foreach (CheckpointOrder chkpntOrder in checkpointOrders)
