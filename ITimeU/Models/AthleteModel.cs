@@ -168,6 +168,7 @@ namespace ITimeU.Models
 
         public AthleteModel()
         {
+            SetDefaultId();
             // TODO: Complete member initialization
             AthleteDic = new Dictionary<int, string>();
         }
@@ -186,10 +187,9 @@ namespace ITimeU.Models
         public static void SaveToDb(List<AthleteModel> athletes)
         {
             Entities context = new Entities();
-            {
-                foreach (AthleteModel athlete in athletes)
-                    athlete.SaveToDb();
-            }
+            foreach (AthleteModel athlete in athletes)
+                athlete.SaveToDb();
+
             context.SaveChanges();
 
         }
