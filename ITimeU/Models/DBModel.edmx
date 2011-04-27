@@ -130,7 +130,7 @@
           </Key>
           <Property Name="EventId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="150" />
-          <Property Name="EventDate" Type="datetime" Nullable="false" />
+          <Property Name="EventDate" Type="date" Nullable="false" />
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Race">
@@ -392,6 +392,10 @@
             <End Role="Checkpoint" EntitySet="Checkpoints" />
             <End Role="Runtime" EntitySet="Runtimes" />
           </AssociationSet>
+          <AssociationSet Name="FK_CheckpointOrder_Checkpoint" Association="ITimeUModel.FK_CheckpointOrder_Checkpoint">
+            <End Role="Checkpoint" EntitySet="Checkpoints" />
+            <End Role="CheckpointOrder" EntitySet="CheckpointOrders" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Athlete">
           <Key>
@@ -435,6 +439,7 @@
           <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
           <Property Type="Boolean" Name="IsMerged" Nullable="false" />
           <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" FromRole="CheckpointOrder" ToRole="RaceIntermediate" />
+          <NavigationProperty Name="Checkpoint" Relationship="ITimeUModel.FK_CheckpointOrder_Checkpoint" FromRole="CheckpointOrder" ToRole="Checkpoint" />
         </EntityType>
         <EntityType Name="Club">
           <Key>
@@ -518,6 +523,7 @@
           <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_Checkpoint" FromRole="Checkpoint" ToRole="RaceIntermediate" />
           <NavigationProperty Name="Race" Relationship="ITimeUModel.FK_Checkpoint_Race" FromRole="Checkpoint" ToRole="Race" />
           <NavigationProperty Name="Runtimes" Relationship="ITimeUModel.FK_Runtime_Checkpoint" FromRole="Checkpoint" ToRole="Runtime" />
+          <NavigationProperty Name="CheckpointOrders" Relationship="ITimeUModel.FK_CheckpointOrder_Checkpoint" FromRole="Checkpoint" ToRole="CheckpointOrder" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
@@ -679,6 +685,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CheckpointOrder_Checkpoint">
+          <End Type="ITimeUModel.Checkpoint" Role="Checkpoint" Multiplicity="0..1" />
+          <End Type="ITimeUModel.CheckpointOrder" Role="CheckpointOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Checkpoint">
+              <PropertyRef Name="CheckpointID" />
+            </Principal>
+            <Dependent Role="CheckpointOrder">
+              <PropertyRef Name="CheckpointID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
    </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -834,15 +852,15 @@
       <Diagram Name="DBModel" ZoomLevel="74">
         <EntityTypeShape EntityType="ITimeUModel.Athlete" Width="1.5" PointX="5" PointY="5" Height="4.0956022135416674" />
         <EntityTypeShape EntityType="ITimeUModel.AthleteClass" Width="1.5" PointX="2.75" PointY="6.25" Height="1.595683593749996" />
-        <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="10.875" PointY="4.25" Height="2.1010138980547586" />
-        <EntityTypeShape EntityType="ITimeUModel.Club" Width="1.5" PointX="7.75" PointY="7.75" Height="1.9351000082492824" />
-        <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="10.5" PointY="7.75" Height="1.7691861184438054" />
+        <EntityTypeShape EntityType="ITimeUModel.CheckpointOrder" Width="1.5" PointX="9.625" PointY="4.125" Height="2.2669277878602339" />
+        <EntityTypeShape EntityType="ITimeUModel.Club" Width="1.5" PointX="7.25" PointY="7.75" Height="1.9351000082492824" />
+        <EntityTypeShape EntityType="ITimeUModel.Runtime" Width="1.5" PointX="11.375" PointY="7.75" Height="1.9351000082492824" />
         <AssociationConnector Association="ITimeUModel.FK_Athlete_AthleteClass" >
           <ConnectorPoint PointX="4.25" PointY="6.9686791694164274" />
           <ConnectorPoint PointX="5" PointY="6.9686791694164274" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Athlete_Club" >
-          <ConnectorPoint PointX="7.75" PointY="8.3380333429574964" />
+          <ConnectorPoint PointX="7.25" PointY="8.3380333429574964" />
           <ConnectorPoint PointX="6.5" PointY="8.3380333429574964" />
         </AssociationConnector>
         <EntityTypeShape EntityType="ITimeUModel.RaceAthlete" Width="1.5" PointX="2.75" PointY="3.75" Height="1.7691861184438062" />
@@ -850,7 +868,7 @@
           <ConnectorPoint PointX="5" PointY="5.2595930592219027" />
           <ConnectorPoint PointX="4.25" PointY="5.2595930592219027" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="10.25" PointY="0.75" Height="2.5571907552083388" />
+        <EntityTypeShape EntityType="ITimeUModel.Checkpoint" Width="1.5" PointX="11" PointY="0.75" Height="2.5987555674711866" />
         <EntityTypeShape EntityType="ITimeUModel.Timer" Width="1.5" PointX="8" PointY="0.875" Height="2.3648893229166674" />
         <EntityTypeShape EntityType="ITimeUModel.Race" Width="1.5" PointX="6" PointY="0.875" Height="2.1010138980547595" />
         <AssociationConnector Association="ITimeUModel.FK_RaceAthlete_Race" >
@@ -862,26 +880,28 @@
           <ConnectorPoint PointX="7.5" PointY="1.9255069490273788" />
           <ConnectorPoint PointX="8" PointY="1.9255069490273788" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="7.875" PointY="4.5" Height="2.4328416776657136" />
+        <EntityTypeShape EntityType="ITimeUModel.RaceIntermediate" Width="1.5" PointX="7.125" PointY="4.5" Height="2.4328416776657136" />
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Athlete" >
           <ConnectorPoint PointX="6.5" PointY="5.9664208388328568" />
-          <ConnectorPoint PointX="7.875" PointY="5.9664208388328568" />
+          <ConnectorPoint PointX="7.125" PointY="5.9664208388328568" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Checkpoint" >
-          <ConnectorPoint PointX="10.4609375" PointY="3.3487555674711866" />
-          <ConnectorPoint PointX="10.4609375" PointY="6.5926355654088669" />
-          <ConnectorPoint PointX="9.375" PointY="6.5926355654088669" />
+          <ConnectorPoint PointX="11.87500125" PointY="3.3487555674711866" />
+          <ConnectorPoint PointX="11.87500125" PointY="6.6936347327629733" />
+          <ConnectorPoint PointX="11.630208333333334" PointY="6.6936347327629724" />
+          <ConnectorPoint PointX="11.463541666666666" PointY="6.6936347327629733" />
+          <ConnectorPoint PointX="8.625" PointY="6.6936347327629733" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_CheckpointOrder" >
-          <ConnectorPoint PointX="10.875" PointY="5.42550694902738" />
-          <ConnectorPoint PointX="10.544270833333334" PointY="5.4255069490273788" />
-          <ConnectorPoint PointX="10.377604166666666" PointY="5.42550694902738" />
-          <ConnectorPoint PointX="9.375" PointY="5.42550694902738" />
+          <ConnectorPoint PointX="9.625" PointY="5.4459638939301165" />
+          <ConnectorPoint PointX="8.625" PointY="5.4459638939301165" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_RaceIntermediate_Runtime" >
-          <ConnectorPoint PointX="10.65625" PointY="7.75" />
-          <ConnectorPoint PointX="10.65625" PointY="6.7939911215372906" />
-          <ConnectorPoint PointX="9.375" PointY="6.7939911215372906" />
+          <ConnectorPoint PointX="12.53906375" PointY="7.75" />
+          <ConnectorPoint PointX="12.53906375" PointY="6.8444907052143442" />
+          <ConnectorPoint PointX="11.630208333333334" PointY="6.8444907052143433" />
+          <ConnectorPoint PointX="11.463541666666666" PointY="6.8444907052143442" />
+          <ConnectorPoint PointX="8.625" PointY="6.8444907052143442" />
         </AssociationConnector>
         <EntityTypeShape EntityType="ITimeUModel.Event" Width="1.5" PointX="3.75" PointY="1.25" Height="1.7691861184438089" />
         <AssociationConnector Association="ITimeUModel.FK_Race_Event" >
@@ -889,12 +909,21 @@
           <ConnectorPoint PointX="6" PointY="2.1345930592219045" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Checkpoint_Race" >
-          <ConnectorPoint PointX="7.5" PointY="3.1936347327629724" />
-          <ConnectorPoint PointX="10.25" PointY="3.1936347327629724" />
+          <ConnectorPoint PointX="7.5" PointY="3.1106777878602347" />
+          <ConnectorPoint PointX="11" PointY="3.1106777878602347" />
         </AssociationConnector>
         <AssociationConnector Association="ITimeUModel.FK_Runtime_Checkpoint" >
-          <ConnectorPoint PointX="10.796875" PointY="3.3487555674711866" />
-          <ConnectorPoint PointX="10.796875" PointY="7.75" />
+          <ConnectorPoint PointX="11.546875" PointY="3.3487555674711866" />
+          <ConnectorPoint PointX="11.546875" PointY="7.75" />
+        </AssociationConnector>
+        <AssociationConnector Association="ITimeUModel.FK_CheckpointOrder_Checkpoint" ManuallyRouted="false" >
+          <ConnectorPoint PointX="12.2031275" PointY="3.3487555674711866" />
+          <ConnectorPoint PointX="12.2031275" PointY="5.2584638939301165" />
+          <ConnectorPoint PointX="11.958334583333334" PointY="5.2584638939301156" />
+          <ConnectorPoint PointX="11.791667916666667" PointY="5.2584638939301165" />
+          <ConnectorPoint PointX="11.630208333333334" PointY="5.2584638939301156" />
+          <ConnectorPoint PointX="11.463541666666666" PointY="5.2584638939301165" />
+          <ConnectorPoint PointX="11.125" PointY="5.2584638939301165" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

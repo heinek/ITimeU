@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ITimeU.Models;
 
 namespace ITimeU.Models
 {
@@ -9,7 +8,9 @@ namespace ITimeU.Models
     {
         public int Id { get; set; }
         public int Runtime { get; set; }
-        public string RuntimeToTime { 
+        public bool IsMerged { get; set; }
+        public string RuntimeToTime
+        {
             get
             {
                 return Runtime.ToTimerString();
@@ -38,7 +39,7 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 Runtime runtimeDb = ctx.Runtimes.Single(runtimeTemp => runtimeTemp.RuntimeID == runtimeId);
-                return new RuntimeModel(runtimeDb.RuntimeID, runtimeDb.Runtime1, runtimeDb.CheckpointID);
+                return new RuntimeModel(runtimeDb.RuntimeID, runtimeDb.Runtime1, runtimeDb.CheckpointID) { IsMerged = runtimeDb.IsMerged };
             }
         }
 
@@ -116,6 +117,20 @@ namespace ITimeU.Models
             {
                 return context.Runtimes.Where(runtime => runtime.CheckpointID == checkpointId && runtime.IsMerged == false).ToDictionary(runtime => runtime.RuntimeID, runtime => runtime.Runtime1);
             }
+        }
+
+
+
+        public void Update()
+        {
+            using (var context = new Entities())
+            {
+                var runtimedb = context.Runtimes.Single(rtime => rtime.RuntimeID == Id);
+                runtimedb.IsMerged = IsMerged;
+                runtimedb.Runtime1 = Runtime;
+                context.SaveChanges();
+            }
+
         }
     }
 }

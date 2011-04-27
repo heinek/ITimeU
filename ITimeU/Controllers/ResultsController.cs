@@ -91,7 +91,7 @@ namespace ITimeU.Controllers
             var raceintermediate = RaceIntermediateModel.GetRaceintermediate(checkpointid, checkpointOrderId);
             RuntimeModel.EditRuntime(raceintermediate.RuntimeId, hour, min, sek, msek);
             CheckpointOrderModel.EditCheckpointOrder(raceintermediate.CheckpointOrderID, startnumber);
-            return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).ToListboxvalues());
+            return Content(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointid).OrderBy(raceinter => raceinter.RuntimeModel.Runtime).ToList().ToListboxvalues());
         }
 
         /// <summary>
@@ -147,6 +147,29 @@ namespace ITimeU.Controllers
         {
             ViewBag.CheckpointId = checkpointId;
             return View(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointId));
+        }
+
+        public ActionResult ResultSetup()
+        {
+            return View();
+        }
+
+        public ActionResult SelectEvent()
+        {
+            ViewBag.Events = EventModel.GetEvents();
+            return View("SelectEvent");
+        }
+
+        public ActionResult SelectRace(int eventId)
+        {
+            ViewBag.Races = RaceModel.GetRaces(eventId);
+            return View("SelectRace");
+        }
+
+        public ActionResult SelectCheckpoint(int raceId)
+        {
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
+            return View("SelectCheckpoint");
         }
     }
 }

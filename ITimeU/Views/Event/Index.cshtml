@@ -33,10 +33,9 @@
                     @item.Name
                 </td>
                 <td>
-                    @String.Format("{0:g}", item.EventDate)
+                    @String.Format("{0:d}", item.EventDate)
                 </td>
                 <td align="right">
-                    @Html.ActionLink("Endre", "Edit", new { id = item.EventId }) |
                     @Html.ActionLink("Slett", "Delete", new { id = item.EventId })
                 </td>
             </tr>

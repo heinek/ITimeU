@@ -203,7 +203,7 @@ namespace ITimeU.Models
                             Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
                             FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : " - ",
                             LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : " - ",
-                            StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : 0,
+                            StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : null,
                             Club = new ClubModel()
                             {
                                 Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.ClubID : 0,
@@ -242,6 +242,31 @@ namespace ITimeU.Models
                         && intermediate.CheckpointOrderID == CheckpointOrderID
                         && intermediate.RuntimeId == RuntimeId);
                 context.DeleteObject(intermediateToDelete);
+                context.SaveChanges();
+            }
+        }
+
+        public static void DeleteRaceintermediatesForRace(int raceid)
+        {
+            using (var context = new Entities())
+            {
+                var intermediatesToDelete = context.RaceIntermediates.Where(intermediate => intermediate.Checkpoint.RaceID == raceid).ToList();
+                foreach (var intermediate in intermediatesToDelete)
+                {
+                    context.DeleteObject(intermediate);
+                }
+
+                var runtimesToDelete = context.Runtimes.Where(runtime => runtime.Checkpoint.RaceID == raceid).ToList();
+                foreach (var runtime in runtimesToDelete)
+                {
+                    context.DeleteObject(runtime);
+                }
+
+                var checkpointordersToDelete = context.CheckpointOrders.Where(cpo => cpo.Checkpoint.RaceID == raceid).ToList();
+                foreach (var cpo in checkpointordersToDelete)
+                {
+                    context.DeleteObject(cpo);
+                }
                 context.SaveChanges();
             }
         }

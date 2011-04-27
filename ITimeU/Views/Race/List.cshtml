@@ -13,7 +13,7 @@
     <h2>
         Løp</h2>
     <p>
-        @Html.ActionLink("Opprett ny klubb", "Create")
+        @Html.ActionLink("Opprett nytt løp", "Index")
     </p>
     <table>
         <tr>
@@ -36,22 +36,22 @@
         {
             <tr>
                 <td>
-                    @item.RaceId
+                @Html.ActionLink(item.Name, "AthletesForRace", "Athlete", new { raceId = item.RaceId }, null)
                 </td>
                 <td>
-                    @item.Name
+                    @String.Format("{0:d}", item.StartDate)
                 </td>
                 <td>
-                    @String.Format("{0:g}", item.StartDate)
-                </td>
-                <td>
-                    @item.Distance
+                    @if (item.Distance.HasValue)
+                    {
+                        @item.Distance.Value;
+                    }
                 </td>
                 <td>
                 @item.Event.Name
                 </td>
                 <td>
-                    @Html.ActionLink("Slett", "Delete", new { raceid=item.RaceId, eventid = item.EventId  })
+                    @Html.ActionLink("Slett", "Delete", new { raceid=item.RaceId })
                 </td>
             </tr>
         }

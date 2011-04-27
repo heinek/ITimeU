@@ -30,6 +30,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Race_Event", "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Event), "Race", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Race), true)]
 [assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Checkpoint_Race", "Race", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Race), "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Checkpoint), true)]
 [assembly: EdmRelationshipAttribute("ITimeUModel", "FK_Runtime_Checkpoint", "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ITimeU.Models.Checkpoint), "Runtime", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.Runtime), true)]
+[assembly: EdmRelationshipAttribute("ITimeUModel", "FK_CheckpointOrder_Checkpoint", "Checkpoint", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ITimeU.Models.Checkpoint), "CheckpointOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ITimeU.Models.CheckpointOrder), true)]
 
 #endregion
 
@@ -1210,6 +1211,28 @@ namespace ITimeU.Models
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_CheckpointOrder_Checkpoint", "CheckpointOrder")]
+        public EntityCollection<CheckpointOrder> CheckpointOrders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<CheckpointOrder>("ITimeUModel.FK_CheckpointOrder_Checkpoint", "CheckpointOrder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<CheckpointOrder>("ITimeUModel.FK_CheckpointOrder_Checkpoint", "CheckpointOrder", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -1411,6 +1434,44 @@ namespace ITimeU.Models
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RaceIntermediate>("ITimeUModel.FK_RaceIntermediate_CheckpointOrder", "RaceIntermediate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ITimeUModel", "FK_CheckpointOrder_Checkpoint", "Checkpoint")]
+        public Checkpoint Checkpoint
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Checkpoint>("ITimeUModel.FK_CheckpointOrder_Checkpoint", "Checkpoint").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Checkpoint>("ITimeUModel.FK_CheckpointOrder_Checkpoint", "Checkpoint").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Checkpoint> CheckpointReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Checkpoint>("ITimeUModel.FK_CheckpointOrder_Checkpoint", "Checkpoint");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Checkpoint>("ITimeUModel.FK_CheckpointOrder_Checkpoint", "Checkpoint", value);
                 }
             }
         }

@@ -73,5 +73,6 @@ namespace ITimeU.Tests.Models
                 runtimes.First().Value.ShouldBe(400);
             });
         }
+
     }
 }

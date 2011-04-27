@@ -6,6 +6,7 @@ using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
+using System;
 
 namespace ITimeU.Tests.Controllers
 {
@@ -55,6 +56,7 @@ namespace ITimeU.Tests.Controllers
 
             Given("the user has selected a checkpoint", () =>
             {
+                checkpoint = new CheckpointModel("Hemsedal", race.RaceId);
                 timerCtrl = new TimerController();
                 setMockSessionFor(timerCtrl);
             });

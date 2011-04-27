@@ -12,6 +12,7 @@ namespace ITimeU.Models
         public int CheckpointID { get; set; }
         public int StartingNumber { get; set; }
         public int OrderNumber { get; set; }
+        public bool IsMerged { get; set; }
         public Dictionary<int, int> CheckpointOrderDic { get; set; }
 
         public CheckpointOrderModel()
@@ -21,6 +22,15 @@ namespace ITimeU.Models
             StartingNumber = -1;
             OrderNumber = -1;
             CheckpointOrderDic = new Dictionary<int, int>();
+        }
+
+        public CheckpointOrderModel(int Id)
+        {
+            CheckpointOrder co = CheckpointOrderModel.GetCheckpointOrderById(Id);
+            ID = co.ID;
+            CheckpointID = (int)co.CheckpointID;
+            StartingNumber = (int)co.StartingNumber;
+            OrderNumber = (int)co.OrderNumber;
         }
 
         public int AddCheckpointOrderDB(int checkpointId, int startingNumber)
@@ -39,7 +49,7 @@ namespace ITimeU.Models
             return entities.CheckpointOrders.Any(
                 chkpnt =>
                     (chkpnt.StartingNumber == startingNumber &&
-                    chkpnt.CheckpointID == checkpointId));
+                    chkpnt.CheckpointID == checkpointId && !chkpnt.IsDeleted));
         }
 
         private int CreateCheckpointWithStartNumber(int checkpointId, int startingNumber, Entities entities)
@@ -255,7 +265,7 @@ namespace ITimeU.Models
             DeleteCheckpointOrderInDb(ID);
         }
 
-        private static void DeleteCheckpointOrderInDb(int checkpointOrderId)
+        public void DeleteCheckpointOrderInDb(int checkpointOrderId)
         {
             var entities = new Entities();
 
@@ -263,7 +273,8 @@ namespace ITimeU.Models
                 entities.CheckpointOrders.
                 Where(checkpointOrder => checkpointOrder.ID == checkpointOrderId).
                 Single();
-            entities.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
+            checkpointOrderToDelete.IsDeleted = true;            
+            //entities.CheckpointOrders.DeleteObject(checkpointOrderToDelete);
             entities.SaveChanges();
         }
 
@@ -281,6 +292,7 @@ namespace ITimeU.Models
                 ID = checkpointOrder.ID,
                 OrderNumber = checkpointOrder.OrderNumber.HasValue ? checkpointOrder.OrderNumber.Value : 0,
                 StartingNumber = checkpointOrder.StartingNumber.HasValue ? checkpointOrder.StartingNumber.Value : 0,
+                IsMerged = checkpointOrder.IsMerged,
                 CheckpointOrderDic = new Dictionary<int, int>()
             };
             return checkpointOrderModel;
@@ -288,11 +300,17 @@ namespace ITimeU.Models
 
         public static List<CheckpointOrder> GetCheckpointOrders(int checkpointId)
         {
+            //return new Entities().CheckpointOrders.
+            //    Where(checkpointorder =>
+            //        checkpointorder.CheckpointID == checkpointId &&
+            //        !checkpointorder.IsDeleted &&
+            //        !checkpointorder.IsMerged).
+            //        OrderBy(checkpoint => checkpoint.OrderNumber).
+            //        ToList();
             return new Entities().CheckpointOrders.
                 Where(checkpointorder =>
                     checkpointorder.CheckpointID == checkpointId &&
-                    !checkpointorder.IsDeleted &&
-                    !checkpointorder.IsMerged).
+                    !checkpointorder.IsDeleted).
                     OrderBy(checkpoint => checkpoint.OrderNumber).
                     ToList();
         }
@@ -300,11 +318,16 @@ namespace ITimeU.Models
         public void GetStartingNumbersForCheckpoint(int checkpointID)
         {
             CheckpointOrderDic.Clear();
+            //IOrderedQueryable<CheckpointOrder> checkpointOrders = new Entities().CheckpointOrders.
+            //    Where(chkpnt =>
+            //        chkpnt.CheckpointID == checkpointID &&
+            //        !chkpnt.IsDeleted &&
+            //        !chkpnt.IsMerged).
+            //        OrderByDescending(ordernum => ordernum.OrderNumber);
             IOrderedQueryable<CheckpointOrder> checkpointOrders = new Entities().CheckpointOrders.
                 Where(chkpnt =>
                     chkpnt.CheckpointID == checkpointID &&
-                    !chkpnt.IsDeleted &&
-                    !chkpnt.IsMerged).
+                    !chkpnt.IsDeleted).
                     OrderByDescending(ordernum => ordernum.OrderNumber);
 
             foreach (CheckpointOrder chkpntOrder in checkpointOrders)
@@ -341,11 +364,13 @@ namespace ITimeU.Models
         /// <param name="newstartnumber">The new startnumber.</param>
         public static void EditCheckpointOrder(int cporderid, int newstartnumber)
         {
-            var entities = new Entities();
-            var checkpointOrder =
-                entities.CheckpointOrders.Where(order => order.ID == cporderid).SingleOrDefault();
-            checkpointOrder.StartingNumber = newstartnumber;
-            entities.SaveChanges();
+            using (var context = new Entities())
+            {
+                var checkpointOrder =
+                    context.CheckpointOrders.Where(order => order.ID == cporderid).SingleOrDefault();
+                checkpointOrder.StartingNumber = newstartnumber;
+                context.SaveChanges();
+            }
         }
 
         public void DeleteAllCheckpointOrdersOnCheckpoint(int checkpointId)
@@ -360,5 +385,33 @@ namespace ITimeU.Models
             entities.SaveChanges();
         }
 
+
+        public void Save()
+        {
+            using (var context = new Entities())
+            {
+                var cpo = new CheckpointOrder()
+                {
+                    CheckpointID = CheckpointID,
+                    OrderNumber = OrderNumber,
+                    StartingNumber = StartingNumber
+                };
+                context.CheckpointOrders.AddObject(cpo);
+                context.SaveChanges();
+                ID = cpo.ID;
+            }
+        }
+
+        public void Update()
+        {
+            using (var context = new Entities())
+            {
+                var cpodb = context.CheckpointOrders.Single(cpo => cpo.ID == ID);
+                cpodb.IsMerged = IsMerged;
+                cpodb.OrderNumber = OrderNumber;
+                cpodb.StartingNumber = StartingNumber;
+                context.SaveChanges();
+            }
+        }
     }
 }

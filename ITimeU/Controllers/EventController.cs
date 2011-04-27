@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -28,16 +29,34 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult Create(EventModel model)
         {
-            var newModel = new EventModel(model.Name, model.EventDate);
-            if (newModel.Save())
+            if (model.EventDate < DateTime.Today)
             {
-                ViewData.ModelState.Clear();
-                ViewBag.Success = "Stevne ble opprettet";
+                ViewBag.Error = "Dato kan ikke være mindre enn dagens dato";
                 return View();
             }
-            else
+            if (EventModel.EventNameExists(model.Name))
             {
-                ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                ViewBag.Error = "Et stevne med samme navn eksisterer allerede";
+                return View();
+            }
+            var newModel = new EventModel(model.Name, model.EventDate);
+            try
+            {
+                if (newModel.Save())
+                {
+                    ViewData.ModelState.Clear();
+                    ViewBag.Success = "Stevne ble opprettet";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                    return View();
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                ViewBag.Error = ex.Message;
                 return View();
             }
         }

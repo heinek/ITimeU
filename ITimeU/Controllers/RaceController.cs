@@ -8,12 +8,49 @@ namespace ITimeU.Controllers
     {
         //
         // GET: /Race/
-
+        [HttpGet]
         public ActionResult Index()
         {
-            ViewBag.Error = false;
             ViewBag.Events = EventModel.GetEvents();
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Index(RaceModel model)
+        {
+            ViewBag.Events = EventModel.GetEvents();
+            if (model.StartDate < DateTime.Today)
+            {
+                ViewBag.Error = "Dato kan ikke være mindre enn dagens dato";
+                return View();
+            }
+            var race = new RaceModel();
+            race.Name = model.Name;
+            race.Distance = model.Distance;
+            race.StartDate = model.StartDate;
+            race.EventId = model.EventId;
+            try
+            {
+                if (race.Save())
+                {
+                    var checkpoint = new CheckpointModel("Mål", race.RaceId);
+                    checkpoint.Sortorder = 99;
+                    checkpoint.SaveToDb();
+                    ViewData.ModelState.Clear();
+                    ViewBag.Success = "Løp ble opprettet";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Error = "Det skjedde en feil under lagring av løp";
+                    return View();
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View();
+            }
         }
 
         public ActionResult Create(string name, string distance, string startDate, int eventId)
@@ -41,11 +78,11 @@ namespace ITimeU.Controllers
             return check;
         }
 
-        public ActionResult Delete(int raceid, int eventid)
+        public ActionResult Delete(int raceid)
         {
             var race = RaceModel.GetById(raceid);
             race.Delete();
-            return View("List", RaceModel.GetRaces(eventid));
+            return View("List", RaceModel.GetRaces());
         }
 
         public ActionResult List(int? eventId)

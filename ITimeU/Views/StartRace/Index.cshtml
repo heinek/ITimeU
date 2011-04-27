@@ -11,8 +11,13 @@
         var ddlEvents = $("#ddlEvents");
 
         btnChangeEvent.click(function () {
-            var url = "/StartRace/SelectRace/?eventId=" + ddlEvents.val();
-            document.location = url;
+            if (ddlEvents.val() == "") {
+                alert("Velg stevne.");
+            }
+            else {
+                var url = "/StartRace/SelectRace/?eventId=" + ddlEvents.val();
+                document.location = url;
+            }
         });
     });
 </script>

@@ -20,7 +20,7 @@
         });
 
         imgResults.click(function () {
-            var url = "/Results/";
+            var url = "/Results/ResultSetup/";
             document.location = url;
         });
 
@@ -33,18 +33,29 @@
             var url = "/Admin/";
             document.location = url;
         });
+
+        $("img").hover(
+            function () {
+                this.src = this.src.replace("_off", "_on");
+            },
+            function () {
+                this.src = this.src.replace("_on", "_off");
+            }
+        );
     });
 </script>
 <div class="container">
     <div class="background">
         <div class="row">
-        <div class="menubg">
-            <img src="../../Content/images/menu01.png" class="logo" id="imgRace" alt="Logo" /><img
-                src="../../Content/images/menu02.png" class="logo" id="imgResults" alt="Logo" /><img
-                    src="../../Content/images/menu03.png" class="logo" id="imgImport" alt="Logo" /><img
-                        src="../../Content/images/menu04.png" class="logo" id="imgAdmin" alt="Logo" /><img
-                            src="../../Content/images/menu05.png" class="logo" id="imgUndefined" style="display: none" alt="Logo" />
-        </div>
+            <div class="menubg">
+                <center>
+                    <img src="../../Content/images/start_off.png" id="imgRace" alt="Start løp" class="logo" /><img
+                        id="imgResults" src="../../Content/images/resultater_off.png" alt="Resultater"
+                        class="logo" /><img id="imgImport" src="../../Content/images/importer_off.png" alt="Løpere"
+                            class="logo" /><img id="imgAdmin" src="../../Content/images/resultatadm_off.png"
+                                alt="Resultater" class="logo" />
+                </center>
+            </div>
         </div>
     </div>
 </div>

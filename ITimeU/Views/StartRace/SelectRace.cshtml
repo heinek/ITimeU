@@ -11,8 +11,13 @@
         var ddlRaces = $("#ddlRaces");
 
         btnChangeRace.click(function () {
-            var url = "/StartRace/ComputerSetup/?raceId=" + ddlRaces.val();
-            document.location = url;
+            if (ddlRaces.val() == "") {
+                alert("Velg løp.");
+            }
+            else {
+                var url = "/StartRace/ComputerSetup/?raceId=" + ddlRaces.val();
+                document.location = url;
+            }
         });
     });
 </script>

@@ -22,7 +22,7 @@ namespace ITimeU.Tests.Models
         private CheckpointModel checkpoint2;
         private EventModel eventModel;
         private RaceModel race;
-        
+
         [TestInitialize]
         public void TestSetup()
         {
@@ -35,6 +35,7 @@ namespace ITimeU.Tests.Models
             race.Save();
             checkpoint1 = new CheckpointModel("Checkpoint1", timer, race, 1);
             checkpoint2 = new CheckpointModel("Checkpoint2", timer, race, 2);
+            timer.RaceID = race.RaceId;
             timer.CurrentCheckpointId = timer.GetFirstCheckpointId();
             timer.CheckpointRuntimes.Add(timer.CurrentCheckpointId, new Dictionary<int, int>());
             checkpointOrderModel = new CheckpointOrderModel();

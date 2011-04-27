@@ -52,7 +52,7 @@ namespace ITimeU.Tests.Models
 
             Given("We want to insert new Race in the database", () =>
                 {
-                    newTestRace = new RaceModel("test", DateTime.Today);
+                    newTestRace = new RaceModel("test" + DateTime.Now.Ticks.ToString(), DateTime.Today);
                 });
 
             When("We insert a new Race in database", () =>
@@ -188,7 +188,7 @@ namespace ITimeU.Tests.Models
         {
             int athletesNotConnectedToRace = 0;
             AthleteModel athlete = null;
-
+            var aclass = AthleteClassModel.GetOrCreate("12 år");
             Given("we have a race with athletes", () =>
             {
             });
@@ -196,14 +196,15 @@ namespace ITimeU.Tests.Models
             When("we want to add a new athlete", () =>
             {
                 athlete = new AthleteModel("Testing", "Tester");
+                athlete.AthleteClass = aclass;
                 athlete.SaveToDb();
-                athletesNotConnectedToRace = newRace.GetAthletesNotConnected().Count;
+                athletesNotConnectedToRace = newRace.GetAthletesNotConnected(aclass.Id).Count;
                 athlete.ConnectToRace(newRace.RaceId);
             });
 
             Then("the number of athletes not connected to the race should be reduced by 1", () =>
             {
-                newRace.GetAthletesNotConnected().Count.ShouldBe(athletesNotConnectedToRace - 1);
+                newRace.GetAthletesNotConnected(aclass.Id).Count.ShouldBe(athletesNotConnectedToRace - 1);
                 athlete.Delete();
             });
         }
@@ -291,6 +292,34 @@ namespace ITimeU.Tests.Models
             Then("we should get a list of races", () =>
             {
                 races.ShouldBeInstanceOfType<List<RaceModel>>();
+            });
+        }
+        [TestMethod]
+        public void We_Should_Be_Able_A_Race_With_Same_Name_In_The_Same_Event()
+        {
+            string exp = "";
+            var raceDup = new RaceModel();
+            string raceName = newRace.Name;
+            Given("We want to create a race with the same name as a previous race in the same race", () =>
+            {
+                raceDup.Name = raceName;
+                raceDup.EventId = newEvent.EventId;
+            });
+
+            When("we save the race", () =>
+            {
+                try
+                {
+                    raceDup.Save();
+                }
+                catch (Exception ex)
+                {
+                    exp = ex.Message;
+                }
+            });
+            Then("we should get an exception", () =>
+            {
+                exp.ShouldBe("Det eksisterer allerede et løp med samme navn for dette stevnet");
             });
         }
 

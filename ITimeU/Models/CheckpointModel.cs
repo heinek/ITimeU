@@ -62,22 +62,20 @@ namespace ITimeU.Models
             }
             if (checkpoint.RaceID.HasValue)
                 Race = RaceModel.GetById(checkpoint.RaceID.Value);
+
+            //Race = RaceModel.GetById((int)checkpoint.RaceID);
+            //var race = RaceModel.GetById(raceId);
+            //int? timerid = race.GetTimerId();
+            //if(timerid.HasValue)
+                //Timer = TimerModel.GetTimerById(timerid.Value);
+            //Sortorder = GetNextOrdernumber(raceId);
+            //SaveToDb();
         }
 
-        /// <summary>
-        /// Creates a CheckpointModel.
-        /// </summary>
-        /// <param name="name">The name of the checkpoint.</param>
-        /// <param name="raceId">The identifier of the race to connect this checkpoint to.</param>
         public CheckpointModel(string name, int raceId)
         {
-            var race = RaceModel.GetById(raceId);
             Name = name;
-            Race = race;
-            int? timerid = race.GetTimerId();
-            if(timerid.HasValue)
-                Timer = TimerModel.GetTimerById(timerid.Value);
-            Sortorder = GetNextOrdernumber(raceId);
+            Race = RaceModel.GetById(raceId);
             SaveToDb();
         }
 
@@ -85,7 +83,7 @@ namespace ITimeU.Models
         {
             Name = name;
             Race = RaceModel.GetById(race.RaceId);
-            Timer = timer;
+            Timer = timer;            
             SaveToDb();
         }
 
@@ -131,7 +129,7 @@ namespace ITimeU.Models
         /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
-            checkpoint.Name = Name;
+            checkpoint.Name = Name;            
             checkpoint.SortOrder = Sortorder;
             if (timer != null)
                 checkpoint.TimerID = timer.Id;
@@ -165,17 +163,26 @@ namespace ITimeU.Models
         /// <returns></returns>
         public static List<CheckpointModel> getAll()
         {
-            var entities = new Entities();
-            IEnumerable<Checkpoint> checkpoints = entities.Checkpoints.AsEnumerable<Checkpoint>();
-
-            List<CheckpointModel> models = new List<CheckpointModel>();
-            foreach (Checkpoint checkpoint in checkpoints)
+            using (var context = new Entities())
             {
-                CheckpointModel converted = new CheckpointModel(checkpoint);
-                models.Add(converted);
+                return context.Checkpoints.
+                    Where(cp => cp.IsDeleted == false).
+                    Select(cp => new CheckpointModel()
+                    {
+                        Id = cp.CheckpointID,
+                        Name = cp.Name,
+                        Sortorder = cp.SortOrder,
+                        Race = new RaceModel()
+                        {
+                            RaceId = cp.Race.RaceID,
+                            EventId = cp.Race.EventId.Value,
+                            Name = cp.Race.Name,
+                            Distance = cp.Race.Distance,
+                            StartDate = cp.Race.StartDate
+                        },
+                        RaceId = cp.RaceID,
+                    }).ToList();
             }
-
-            return models;
         }
 
         public override bool Equals(object obj)
