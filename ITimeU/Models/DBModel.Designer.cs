@@ -2623,13 +2623,15 @@ namespace ITimeU.Models
         /// <param name="runtime1">Initial value of the Runtime1 property.</param>
         /// <param name="checkpointID">Initial value of the CheckpointID property.</param>
         /// <param name="isMerged">Initial value of the IsMerged property.</param>
-        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID, global::System.Boolean isMerged)
+        /// <param name="isDeleted">Initial value of the IsDeleted property.</param>
+        public static Runtime CreateRuntime(global::System.Int32 runtimeID, global::System.Int32 runtime1, global::System.Int32 checkpointID, global::System.Boolean isMerged, global::System.Boolean isDeleted)
         {
             Runtime runtime = new Runtime();
             runtime.RuntimeID = runtimeID;
             runtime.Runtime1 = runtime1;
             runtime.CheckpointID = checkpointID;
             runtime.IsMerged = isMerged;
+            runtime.IsDeleted = isDeleted;
             return runtime;
         }
 
@@ -2734,6 +2736,30 @@ namespace ITimeU.Models
         private global::System.Boolean _IsMerged;
         partial void OnIsMergedChanging(global::System.Boolean value);
         partial void OnIsMergedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsDeleted
+        {
+            get
+            {
+                return _IsDeleted;
+            }
+            set
+            {
+                OnIsDeletedChanging(value);
+                ReportPropertyChanging("IsDeleted");
+                _IsDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsDeleted");
+                OnIsDeletedChanged();
+            }
+        }
+        private global::System.Boolean _IsDeleted;
+        partial void OnIsDeletedChanging(global::System.Boolean value);
+        partial void OnIsDeletedChanged();
 
         #endregion
     

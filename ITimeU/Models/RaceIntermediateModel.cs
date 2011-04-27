@@ -108,7 +108,10 @@ namespace ITimeU.Models
             using (var context = new Entities())
             {
                 var raceintermediateToDelete = context.RaceIntermediates.Where(raceintermediate => raceintermediate.CheckpointID == cpid && raceintermediate.CheckpointOrderID == cpOrderid).SingleOrDefault();
-                raceintermediateToDelete.IsDeleted = true;
+                //raceintermediateToDelete.IsDeleted = true;
+                RuntimeModel.DeleteRuntime(raceintermediateToDelete.RuntimeId);
+                CheckpointOrderModel.DeleteCheckpointOrder(raceintermediateToDelete.CheckpointOrderID);
+                context.DeleteObject(raceintermediateToDelete);
                 context.SaveChanges();
             }
         }

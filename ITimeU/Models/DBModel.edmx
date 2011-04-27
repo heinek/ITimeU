@@ -173,6 +173,7 @@
           <Property Name="Runtime" Type="int" Nullable="false" />
           <Property Name="CheckpointID" Type="int" Nullable="false" />
           <Property Name="IsMerged" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Timer">
           <Key>
@@ -462,6 +463,7 @@
           <Property Type="Boolean" Name="IsMerged" Nullable="false" />
           <NavigationProperty Name="RaceIntermediates" Relationship="ITimeUModel.FK_RaceIntermediate_Runtime" FromRole="Runtime" ToRole="RaceIntermediate" />
           <NavigationProperty Name="Checkpoint" Relationship="ITimeUModel.FK_Runtime_Checkpoint" FromRole="Runtime" ToRole="Checkpoint" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
         </EntityType>
         <Association Name="FK_Athlete_AthleteClass">
           <End Type="ITimeUModel.AthleteClass" Role="AthleteClass" Multiplicity="0..1" />
@@ -757,6 +759,7 @@
           <EntitySetMapping Name="Runtimes">
             <EntityTypeMapping TypeName="ITimeUModel.Runtime">
               <MappingFragment StoreEntitySet="Runtime">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsMerged" ColumnName="IsMerged" />
                 <ScalarProperty Name="CheckpointID" ColumnName="CheckpointID" />
                 <ScalarProperty Name="Runtime1" ColumnName="Runtime" />

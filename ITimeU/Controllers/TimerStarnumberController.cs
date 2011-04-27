@@ -36,6 +36,7 @@ namespace ITimeU.Controllers
 
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
             ViewBag.RaceId = raceId;
+            ViewBag.RaceName = race.Name;
             timeStartnumberModel.ChangeCheckpoint(timer.GetFirstCheckpointId());
             timeStartnumberModel.CheckpointOrder = checkpointOrder;
             Session["TimeStartnumber"] = timeStartnumberModel;
@@ -74,10 +75,13 @@ namespace ITimeU.Controllers
         /// <param name="runtime">The runtime.</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddStartnumber(int checkpointId, int startnumber, int runtime)
+        public ActionResult AddStartnumber(int checkpointId, string startnumber, int runtime)
         {
+            int startnr;
+            if (!int.TryParse(startnumber, out startnr))
+                startnr = 0;
             var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
-            timeStartnumberModel.AddStartnumber(checkpointId, startnumber, runtime);
+            timeStartnumberModel.AddStartnumber(checkpointId, startnr, runtime);
             Session["TimeStartnumber"] = timeStartnumberModel;
             TimeMergerModel.Merge(checkpointId);
             return Content(timeStartnumberModel.CheckpointIntermediates[timeStartnumberModel.CurrentCheckpointId].ToListboxvalues());
