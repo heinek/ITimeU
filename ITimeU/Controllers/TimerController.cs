@@ -82,16 +82,12 @@ namespace ITimeU.Controllers
         /// <param name="sek">Seconds.</param>
         /// <param name="msek">Milliseconds.</param>
         /// <returns></returns>
-        public ActionResult EditRuntime(string orginalruntimeid, string hour, string min, string sek, string msek)
+        public ActionResult EditRuntime(int orginalruntimeid, int hour, int min, int sek, int msek)
         {
             TimerModel timer = (TimerModel)Session["timer"];
-            int orgid, h, m, s, ms;
-            int.TryParse(orginalruntimeid.Trim(), out orgid);
-            int.TryParse(hour, out h);
-            int.TryParse(min, out m);
-            int.TryParse(sek, out s);
-            int.TryParse(msek, out ms);
-            timer.EditRuntime(orgid, h, m, s, ms);
+            timer.EditRuntime(orginalruntimeid, hour, min, sek, msek);
+            var runtime = RuntimeModel.getById(orginalruntimeid);
+            TimeMergerModel.Merge(runtime.CheckPointId);
             return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
@@ -99,12 +95,12 @@ namespace ITimeU.Controllers
         /// Deletes the runtime.
         /// </summary>
         /// <param name="runtimeid">The runtimeid.</param>
-        public ActionResult DeleteRuntime(string runtimeid)
+        public ActionResult DeleteRuntime(int runtimeid)
         {
             TimerModel timer = (TimerModel)Session["timer"];
-            int rtid;
-            int.TryParse(runtimeid.Trim(), out rtid);
-            timer.DeleteRuntime(rtid);
+            var runtime = RuntimeModel.getById(runtimeid);
+            timer.DeleteRuntime(runtimeid);
+            TimeMergerModel.Merge(runtime.CheckPointId);
             return Content(SaveToSessionAndReturnRuntimes(timer));
         }
 
