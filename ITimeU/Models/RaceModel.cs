@@ -222,8 +222,9 @@ namespace ITimeU.Models
             var athletes = new List<AthleteModel>();
             using (var ctx = new Entities())
             {
+                var racesQuery = ctx.RaceAthletes.Where(ra => ra.RaceId == RaceId);
                 var athletesQuery = from a in ctx.Athletes
-                                    where !(from ra in ctx.RaceAthletes select ra.AthleteId).Contains(a.ID)
+                                    where !(from ra in racesQuery select ra.AthleteId).Contains(a.ID)
                                     select a;
 
                 foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false && a.ClassID == classId))
