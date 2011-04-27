@@ -41,6 +41,7 @@
     </div>
 }
 
+
 <table>
     <tr>
         <td>
@@ -151,7 +152,7 @@
         @Html.Label("lblClub", "Club *")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("clubId", new SelectList(Model, "Id", "Name"), new { @class = "dropdownlistRequired" })
+        @Html.DropDownList("clubId", new SelectList(Model, "Id", "Name"), "Velg Club...", new { @class = "dropdownlistRequired" })
     </div>
         </td>
 
@@ -160,7 +161,7 @@
         @Html.Label("lblClass", "Klasse")
     </div>
     <div class="editor-field">
-        @Html.DropDownList("classId", new SelectList(ViewBag.AthleteClass, "Id", "Name"), new { @class = "dropdownlist" })
+        @Html.DropDownList("classId", new SelectList(ViewBag.AthleteClass, "Id", "Name"), "Velg Class...", new { @class = "dropdownlist" })
     </div>
         </td>
     </tr>

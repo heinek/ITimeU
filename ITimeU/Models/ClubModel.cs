@@ -124,7 +124,7 @@ namespace ITimeU.Models
                 ClubModel clubModel = new ClubModel(clubDb);
                 clubModels.Add(clubModel);
             }
-            clubModels.Insert(0, null);
+            //clubModels.Insert(0, null);
             return clubModels;
         }
 

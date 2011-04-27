@@ -119,7 +119,7 @@ namespace ITimeU.Models
                 AthleteClassModel athleteClass = new AthleteClassModel(athleteClassDb);
                 athleteClassModels.Add(athleteClass);
             }
-            athleteClassModels.Insert(0, null);
+            //athleteClassModels.Insert(0, null);
             return athleteClassModels;
         }
 
