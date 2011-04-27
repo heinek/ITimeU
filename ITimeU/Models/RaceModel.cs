@@ -217,7 +217,7 @@ namespace ITimeU.Models
             return athletes;
         }
 
-        public List<AthleteModel> GetAthletesNotConnected()
+        public List<AthleteModel> GetAthletesNotConnected(int classId)
         {
             var athletes = new List<AthleteModel>();
             using (var ctx = new Entities())
@@ -226,7 +226,7 @@ namespace ITimeU.Models
                                     where !(from ra in ctx.RaceAthletes select ra.AthleteId).Contains(a.ID)
                                     select a;
 
-                foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false))
+                foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false && a.ClassID == classId))
                 {
                     athletes.Add(new AthleteModel()
                     {
@@ -280,6 +280,5 @@ namespace ITimeU.Models
                 context.SaveChanges();
             }
         }
-
     }
 }

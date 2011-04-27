@@ -37,7 +37,7 @@
         var stopBtnText = "Stopp";
         var restartBtnText = "Nullstill";
         var startedruntime = 0;
-        
+
         var urlupdate = "/Timer/GetStartruntime/";
         $.get(urlupdate, function (data) {
             startedruntime = parseInt(data, 10);
@@ -87,8 +87,7 @@
                     modal: true,
                     buttons: {
                         "Nullstill": function () {
-                            timer.startStop();
-                            btnStart.val(stopBtnText);
+                            btnStart.val(startBtnText);
                             if (btnIntermediate) {
                                 Tools.enable(btnIntermediate);
                             }
@@ -97,7 +96,7 @@
                                 listIntermediate.html(data);
                             });
                             startedruntime = 0;
-                            $.post("/Timer/Start/");
+                            timer.resetLap();
                             $(this).dialog("close");
                         },
                         "Avbryt": function () {
@@ -334,7 +333,7 @@
         </div>
         <div class="row">
             <div class="left">
-                @if (Model.CheckpointRuntimes != null)
+                @if (Model.CheckpointRuntimes != null && Model.CheckpointRuntimes.ContainsKey(Model.CurrentCheckpointId))
                 {
                     @Html.ListBox("listIntermediate", new SelectList(Model.CheckpointRuntimes[Model.CurrentCheckpointId], "Key", "Value"), new { @class = "listbox" })
                 }

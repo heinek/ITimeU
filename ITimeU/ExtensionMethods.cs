@@ -152,7 +152,7 @@ namespace ITimeU
         {
             var sortedList = lstResults.OrderBy(result => result.Time);
             StringBuilder table = new StringBuilder("");
-            table.Append("<table style='width: 800'><tr><th align='left' style='width: 100'>Passeringspunkt</th><th align='left' style='width: 80'>Plassering</th><th align='left' style='width: 100'>Startnummer</th><th align='left'>Navn</th><th align='left'>Klubb</th><th align='left'>Tid</th></tr>");
+            table.Append("<table style='width: 900'><tr><th align='left' style='width: 100'>Passeringspunkt</th><th align='left' style='width: 80'>Plassering</th><th align='left' style='width: 100'>Startnummer</th><th align='left'>Navn</th><th align='left'>Klubb</th><th align='left'>Tid</th></tr>");
             int rank = 1;
             foreach (var result in sortedList)
             {
@@ -182,15 +182,15 @@ namespace ITimeU
         {
             try
             {
-            using (var context = new Entities())
-            {
-                foreach (var intermediate in intermediates)
+                using (var context = new Entities())
                 {
-                    context.DeleteObject(intermediate);
+                    foreach (var intermediate in intermediates)
+                    {
+                        context.DeleteObject(intermediate);
+                    }
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
-            }
-            return true;
+                return true;
             }
             catch (Exception)
             {

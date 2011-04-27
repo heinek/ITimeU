@@ -23,7 +23,7 @@ namespace ITimeU.Models
                 {
                     var raceintermediates = context.RaceIntermediates.Where(interm => interm.CheckpointID == checkpoint.Id).Select(interm => new RaceIntermediateModel()
                     {
-                        AthleteId = interm.AthleteId,
+                        AthleteId = interm.AthleteId.HasValue ? interm.AthleteId.Value : 0,
                         CheckpointID = interm.CheckpointID,
                         CheckpointOrderID = interm.CheckpointOrderID,
                         RuntimeId = interm.RuntimeId

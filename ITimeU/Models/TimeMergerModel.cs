@@ -35,7 +35,11 @@ namespace ITimeU.Models
                 var startnumbers = context.CheckpointOrders.Where(startnumber => startnumber.CheckpointID == checkpointId).OrderBy(startnumber => startnumber.OrderNumber).ToList();
                 var raceintermediates = context.RaceIntermediates.Where(intermediate => intermediate.CheckpointID == checkpointId).ToList();
                 //Removes exicting entries in the database
-                raceintermediates.Delete();
+                foreach (var intermediate in raceintermediates)
+                {
+                    context.DeleteObject(intermediate);
+                }
+                context.SaveChanges();
                 //Creates new entries
                 int i = 0;
                 foreach (var timestamp in timestamps)
@@ -46,6 +50,8 @@ namespace ITimeU.Models
                     i++;
                 }
             }
+            var checkpoint = CheckpointModel.getById(checkpointId);
+            RaceIntermediateModel.MergeAthletes(checkpoint.RaceId.Value);
         }
 
         public static Stack<int> Merge(int checkpointId, string timestampdata, string startnumberdata)

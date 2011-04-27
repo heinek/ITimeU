@@ -124,7 +124,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\1pc.jpg" />
+    <Content Include="Content\images\1pc_off.png" />
+    <Content Include="Content\images\1pc_on.png" />
     <Content Include="Content\images\2pc.jpg" />
+    <Content Include="Content\images\2pc_off.png" />
+    <Content Include="Content\images\2pc_on.png" />
     <Content Include="Content\images\athlete01.jpg" />
     <Content Include="Content\images\bg.jpg" />
     <Content Include="Content\images\btnDelete.png" />
@@ -140,7 +144,11 @@
     <Content Include="Content\images\downOver.png" />
     <Content Include="Content\images\Event.jpg" />
     <Content Include="Content\images\Go.png" />
+    <Content Include="Content\images\godkjenn_off.png" />
+    <Content Include="Content\images\godkjenn_on.png" />
     <Content Include="Content\images\Image1.png" />
+    <Content Include="Content\images\importer_off.png" />
+    <Content Include="Content\images\importer_on.png" />
     <Content Include="Content\images\klubber_off.png" />
     <Content Include="Content\images\klubber_on.png" />
     <Content Include="Content\images\left.png" />
@@ -163,9 +171,19 @@
     <Content Include="Content\images\race01.jpg" />
     <Content Include="Content\images\resultatadm_off.png" />
     <Content Include="Content\images\resultatadm_on.png" />
+    <Content Include="Content\images\resultater_off.png" />
+    <Content Include="Content\images\resultater_on.png" />
+    <Content Include="Content\images\resultatliste_off.png" />
+    <Content Include="Content\images\resultatliste_on.png" />
     <Content Include="Content\images\right.png" />
     <Content Include="Content\images\runner01.jpg" />
     <Content Include="Content\images\Speaker200.jpg" />
+    <Content Include="Content\images\speaker_off.png" />
+    <Content Include="Content\images\speaker_on.png" />
+    <Content Include="Content\images\startliste_off.png" />
+    <Content Include="Content\images\startliste_on.png" />
+    <Content Include="Content\images\start_off.png" />
+    <Content Include="Content\images\start_on.png" />
     <Content Include="Content\images\stevne_off.png" />
     <Content Include="Content\images\stevne_on.png" />
     <Content Include="Content\images\timer01.jpg" />
@@ -389,6 +407,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Checkpoint\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\ResultSetup.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -80,7 +80,9 @@ namespace ITimeU.Models
         {
             StartTime = null;
             IsStarted = false;
+            CurrentCheckpointId = GetFirstCheckpointId();
             CheckpointRuntimes = new Dictionary<int, Dictionary<int, int>>();
+            CheckpointRuntimes.Add(CurrentCheckpointId, new Dictionary<int, int>());
         }
 
         /// <summary>

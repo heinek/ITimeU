@@ -88,14 +88,13 @@
                     modal: true,
                     buttons: {
                         "Nullstill": function () {
-                            timer.startStop();
-                            btnStart.val(stopBtnText);
+                            btnStart.val(startBtnText);
                             url = "/TimeStartnumber/ResetRace/?raceid=" + $("#hdRaceid").val();
                             $.post(url, function (data) {
                                 listIntermediate.html(data);
                             });
                             startedruntime = 0;
-                            $.post("/TimeStartnumber/Start/");
+                            timer.resetLap();
                             $(this).dialog("close");
                         },
                         "Avbryt": function () {
