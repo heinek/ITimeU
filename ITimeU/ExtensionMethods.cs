@@ -150,22 +150,25 @@ namespace ITimeU
 
         public static string ToTable(this List<ResultsViewModel> lstResults)
         {
-            var sortedList = lstResults.OrderBy(result => result.Time);
+            var sortedList = lstResults.OrderBy(res => res.Checkpointname).ThenBy(res => res.Time);
             StringBuilder table = new StringBuilder("");
-            table.Append("<table style='width: 900'><tr><th align='left' style='width: 100'>Passeringspunkt</th><th align='left' style='width: 80'>Plassering</th><th align='left' style='width: 100'>Startnummer</th><th align='left'>Navn</th><th align='left'>Klubb</th><th align='left'>Tid</th></tr>");
+            table.Append("<table style='width: 950'><tr><th align='left' style='width: 100'>Passeringspunkt</th><th align='left' style='width: 80'>Plass</th><th align='left' style='width: 100'>Startnr.</th><th align='left' style='width: 300'>Navn</th><th align='left'>Klubb</th><th align='left' style='width: 100'>Tid</th></tr>");
             int rank = 1;
+            string cpname = "Default";
             foreach (var result in sortedList)
             {
-                using (var context = new Entities())
+                if (result.Checkpointname != cpname)
                 {
-                    table.Append(string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>",
-                        result.Checkpointname,
-                        rank,
-                        result.Startnumber,
-                        result.Fullname,
-                        result.Clubname,
-                        result.Time));
+                    rank = 1;
+                    cpname = result.Checkpointname;
                 }
+                table.Append(string.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td><td>{4}</td><td>{5}</td></tr>",
+                    result.Checkpointname,
+                    rank,
+                    result.Startnumber,
+                    result.Fullname,
+                    result.Clubname,
+                    result.Time));
                 rank++;
             }
             table.Append("</table>");

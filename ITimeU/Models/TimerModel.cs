@@ -119,7 +119,7 @@ namespace ITimeU.Models
                 {
                     foreach (var checkpoint in CheckpointModel.GetCheckpoints(timer.RaceID.Value))
                     {
-                        var runtimes = context.Runtimes.Where(runt => runt.CheckpointID == checkpoint.Id).Select(runt => new RuntimeModel()
+                        var runtimes = context.Runtimes.Where(runt => runt.CheckpointID == checkpoint.Id && !runt.IsDeleted).Select(runt => new RuntimeModel()
                         {
                             Id = runt.RuntimeID,
                             CheckPointId = runt.CheckpointID,
@@ -314,7 +314,7 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtime.Id).Single();
-                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                runtimeToDelete.IsDeleted = true;
                 ctx.SaveChanges();
             }
         }
@@ -329,7 +329,7 @@ namespace ITimeU.Models
             using (var ctx = new Entities())
             {
                 var runtimeToDelete = ctx.Runtimes.Where(runt => runt.RuntimeID == runtimeid).Single();
-                ctx.Runtimes.DeleteObject(runtimeToDelete);
+                runtimeToDelete.IsDeleted = true;
                 ctx.SaveChanges();
             }
         }

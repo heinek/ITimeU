@@ -411,6 +411,15 @@
   <ItemGroup>
     <Content Include="Views\Results\ResultSetup.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\SelectEvent.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\SelectRace.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\SelectCheckpoint.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

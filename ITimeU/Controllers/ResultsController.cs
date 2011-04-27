@@ -153,5 +153,23 @@ namespace ITimeU.Controllers
         {
             return View();
         }
+
+        public ActionResult SelectEvent()
+        {
+            ViewBag.Events = EventModel.GetEvents();
+            return View("SelectEvent");
+        }
+
+        public ActionResult SelectRace(int eventId)
+        {
+            ViewBag.Races = RaceModel.GetRaces(eventId);
+            return View("SelectRace");
+        }
+
+        public ActionResult SelectCheckpoint(int raceId)
+        {
+            ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
+            return View("SelectCheckpoint");
+        }
     }
 }
