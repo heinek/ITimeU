@@ -35,12 +35,24 @@
             <th>
                 Navn
             </th>
+            <th>
+                Klubb
+            </th>
+            <th>
+                Startnummer
+            </th>
         </tr>
         @foreach (var item in Model)
         {
             <tr>
                 <td>
                     @item.FullName
+                </td>
+                <td>
+                    @item.Club
+                </td>
+                <td>
+                    @item.StartNumber
                 </td>
             </tr>
         }

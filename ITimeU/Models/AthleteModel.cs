@@ -376,6 +376,12 @@ namespace ITimeU.Models
                         PhoneNumber = raceathlete.Athlete.Phone,
                         PostalAddress = raceathlete.Athlete.PostalAddress,
                         PostalCode = raceathlete.Athlete.PostalCode,
+                        Club = raceathlete.Athlete.ClubID.HasValue ? new ClubModel()
+                        {
+                            Id = raceathlete.Athlete.ClubID.Value,
+                            Name = raceathlete.Athlete.Club.Name
+                        } : null,
+
                         StartNumber = raceathlete.Athlete.Startnumber.HasValue ? raceathlete.Athlete.Startnumber.Value : 0
                     };
                     athletes.Add(athlete);
