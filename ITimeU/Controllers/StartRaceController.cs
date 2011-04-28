@@ -17,11 +17,14 @@ namespace ITimeU.Controllers
         public ActionResult SelectRace(int eventId)
         {
             ViewBag.Races = RaceModel.GetRaces(eventId);
+            ViewBag.EventId = eventId;
             return View("SelectRace");
         }
         public ActionResult ComputerSetup(int raceid)
         {
+            var race = RaceModel.GetById(raceid);
             var startRace = new StartRaceViewModel(raceid);
+            startRace.EvetntId = race.EventId;
             return View("ComputerSetup", startRace);
         }
 

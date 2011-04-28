@@ -5,7 +5,10 @@
 }
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" }) | 
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) 
+        | @Html.ActionLink("TILBAKE", "List", "Checkpoint", null, new { @class = "topmenulink" }) 
+        | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" }) 
+        | 
     </center>
 </div>
 <div class="contentmargin">

@@ -11,9 +11,11 @@ namespace ITimeU.Controllers
     {
         //
         // GET: /Athlete/
-
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(int? raceId)
         {
+            if (raceId.HasValue)
+                ViewBag.RaceId = raceId.Value;
             setViewData();
             ViewBag.IsAthleteCreated = false;
             ViewBag.IsValidInput = true;

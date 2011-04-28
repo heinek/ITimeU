@@ -23,7 +23,9 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) |
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) 
+        | @Html.ActionLink("TILBAKE", "Index", "StartRace", null, new { @class = "topmenulink" }) 
+        |
     </center>
 </div>
 <div class="contentmargin">
@@ -44,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="left">
-                    @Html.ActionLink("Opprett nytt løp", "Index", "Race")
+                    @Html.ActionLink("Opprett nytt løp", "Index", "Race", new { eventId = ViewBag.EventId }, null)
                 </div>
             </div>
         </div>
