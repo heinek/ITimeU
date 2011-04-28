@@ -48,6 +48,7 @@
 <div class="topmenubar">
     <center>
         | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("TILBAKE", "SelectRace", "StartRace", new { eventId = Model.EvetntId }, new { @class = "topmenulink" })
         |
     </center>
 </div>

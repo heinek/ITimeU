@@ -51,9 +51,6 @@ namespace ITimeU.Controllers
         public ActionResult GetCheckpoints(int raceId)
         {
             return Content(CheckpointModel.GetCheckpoints(raceId).ToDictionary(checkpoint => checkpoint.Id, checkpoint => checkpoint.Name).ToListboxvalues());
-            //var timerModel = new TimerModel(timerId);
-            //var dic = timerModel.GetCheckpoints().ToDictionary(checkpoint => checkpoint.CheckpointID, checkpoint => checkpoint.Name);
-            //return Content(dic.ToListboxvalues());
         }
 
         /// <summary>
@@ -146,6 +143,7 @@ namespace ITimeU.Controllers
         public ActionResult ResultsForSpeaker(int checkpointId)
         {
             ViewBag.CheckpointId = checkpointId;
+            ViewBag.RaceId = CheckpointModel.getById(checkpointId).RaceId;
             return View(RaceIntermediateModel.GetRaceintermediatesForCheckpoint(checkpointId));
         }
 
@@ -168,6 +166,7 @@ namespace ITimeU.Controllers
 
         public ActionResult SelectCheckpoint(int raceId)
         {
+            ViewBag.EventId = RaceModel.GetById(raceId).EventId;
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
             return View("SelectCheckpoint");
         }

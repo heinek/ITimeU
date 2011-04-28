@@ -12,8 +12,10 @@ namespace ITimeU.Controllers
         // GET: /RaceAthlete/
 
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? raceId)
         {
+            if (raceId.HasValue)
+                ViewBag.RaceId = raceId.Value;
             ViewBag.Races = RaceModel.GetRaces();
             ViewBag.Classes = AthleteClassModel.GetAll();
             RaceAthleteViewModel model = new RaceAthleteViewModel()
@@ -28,6 +30,8 @@ namespace ITimeU.Controllers
         public ActionResult Index(RaceAthleteViewModel model, string changeRace, string changeClass, string add, string remove, string ddlRaces, string ddlClasses)
         {
             ModelState.Clear();
+            ViewBag.Controller = "";
+            ViewBag.Action = "";
             ViewBag.Races = RaceModel.GetRaces();
             ViewBag.Classes = AthleteClassModel.GetAll();
             RestoreSavedState(model);

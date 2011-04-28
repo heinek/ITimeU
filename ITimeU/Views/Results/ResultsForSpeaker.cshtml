@@ -19,7 +19,7 @@
 <div class="topmenubar">
     <center>
         | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
-        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("TILBAKE", "SelectCheckpoint", "Results", new { raceId = ViewBag.RaceId }, new { @class = "topmenulink" })
         |
     </center>
 </div>

@@ -94,6 +94,10 @@
             }
         });
 
+        $.post("/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + ddCheckpoints.val(), function (data) {
+            listCheckpointOrders.html(data);
+        });
+
     });
 </script>
 <script language="javascript" type="text/javascript">
@@ -127,7 +131,7 @@
     <div id="ErrorMessage" style="color: Red; display: none">
     </div>
     <div class="editor-label">
-        @Html.Label("lblCheckpointOrders", "Rekkefølge(siste passering øverst)")
+        @Html.Label("lblCheckpointOrders", "Rekkefølge (siste passering øverst)")
     </div>
     <div class="editor-field" style="position: relative">
         @Html.ListBox("lstCheckpointOrders", new SelectList(Model.CheckpointOrderDic, "Key", "Value"), new { @class = "listbox" })

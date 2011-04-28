@@ -6,7 +6,12 @@
 }
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" }) | 
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) 
+        @if(ViewBag.RaceId != null){
+            <span>| </span>@Html.ActionLink("STARTLISTE", "AthletesForRace", "Athlete", new {raceId = ViewBag.RaceId}, new { @class = "topmenulink" })
+        }
+        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" }) 
+        | 
     </center>
 </div>
 <div class="contentmargin">
