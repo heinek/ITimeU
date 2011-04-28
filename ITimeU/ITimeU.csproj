@@ -58,7 +58,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web">
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions">
       <Private>True</Private>
     </Reference>
@@ -67,9 +67,7 @@
     </Reference>
     <Reference Include="System.Web.Routing">
       <Private>True</Private>
-    </Reference>
-      <Private>True</Private>
-    </Reference>
+    </Reference>      
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />

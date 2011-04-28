@@ -186,8 +186,7 @@ namespace ITimeU.Controllers
                 return Content("updated");
             }
         }
-
-        public ActionResult DeleteAthlete(string ddAthlete)
+        
         public ActionResult Delete(int id, int clubid)
         {
             DeleteAthlete(id.ToString());
@@ -195,6 +194,7 @@ namespace ITimeU.Controllers
             return View("Athletes", AthleteModel.GetAthletes(clubid));
         }
 
+        public ActionResult DeleteAthlete(string ddAthlete)
         {         
             int Id = 0;
             int.TryParse(ddAthlete, out Id);

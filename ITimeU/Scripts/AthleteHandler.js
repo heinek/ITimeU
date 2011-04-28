@@ -39,18 +39,18 @@ AthleteHandler.prototype.getAthleteDetails = function (_btnChangeAthlete, _tbFir
                 athlete = data.split(' //// ');
                 _tbFirstName.val(athlete[1]);
                 _tbLastName.val(athlete[2]);
-                _tbAddress.val(athlete[4]);
-                _tbEmail.val(athlete[7]);
-                _tbPostCode.val(athlete[5]);
-                _tbCity.val(athlete[6]);
-                _tbPhoneNum.val(athlete[9]);
-                _tbStartNum.val(athlete[13]);
+                _tbAddress.val(athlete[5]);
+                _tbEmail.val(athlete[8]);
+                _tbPostCode.val(athlete[6]);
+                _tbCity.val(athlete[7]);
+                _tbPhoneNum.val(athlete[10]);
+                _tbStartNum.val(athlete[14]);
 
-                var birthvalue = $("#ddBirthDate option:contains('" + athlete[10] + "')").val();
+                var birthvalue = $("#ddBirthDate option:contains('" + athlete[11] + "')").val();
                 _ddBirthday.val(birthvalue);
-                var gendervalue = $("#ddGender option:contains('" + athlete[8] + "')").val();
+                var gendervalue = $("#ddGender option:contains('" + athlete[9] + "')").val();
                 _ddGender.val(gendervalue);
-                var classvalue = $("#ddClass option:contains('" + athlete[12] + "')").val();
+                var classvalue = $("#ddClass option:contains('" + athlete[13] + "')").val();
                 _ddClass.val(classvalue);
             });
         }
