@@ -39,6 +39,9 @@
     <center>
         | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
         | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" })
+                @if(ViewBag.EventId != null){
+            <span>| </span>@Html.ActionLink("START LØP", "SelectRace", "StartRace", new { eventId = ViewBag.EventId }, new { @class = "topmenulink" })
+        }
         |
     </center>
 </div>

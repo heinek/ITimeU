@@ -28,7 +28,7 @@
     <h2>
         Utøvere</h2>
     <p>
-        @Html.ActionLink("Legg til utøver", "Index") | @Html.ActionLink("Koble utøvere til løp", "Index", "RaceAthlete", null, null)
+        @Html.ActionLink("Legg til utøver", "Index", "Athlete", new { raceId = ViewBag.RaceId }, null) | @Html.ActionLink("Koble utøvere til løp", "Index", "RaceAthlete", new { raceId = ViewBag.RaceId }, null)
     </p>
     <table>
         <tr>

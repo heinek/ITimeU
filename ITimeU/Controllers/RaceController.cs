@@ -9,8 +9,10 @@ namespace ITimeU.Controllers
         //
         // GET: /Race/
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int? eventId)
         {
+            if (eventId.HasValue)
+                ViewBag.EventId = eventId.Value;
             ViewBag.Events = EventModel.GetEvents();
             return View();
         }
