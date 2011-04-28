@@ -92,6 +92,7 @@
     <Compile Include="Models\CheckpointModelTest.cs" />
     <Compile Include="Models\CheckpointOrderModelTest.cs" />
     <Compile Include="Models\ClubModelTest.cs" />
+    <Compile Include="Models\EventModelTest.cs" />
     <Compile Include="Models\RaceIntermediateTest.cs" />
     <Compile Include="Models\RaceModelTest.cs" />
     <Compile Include="Models\RuntimeModelTest.cs" />
@@ -113,14 +114,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+    <Shadow Include="Test References\ITimeU.accessor" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\ITimeU\ITimeU.csproj">
       <Project>{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}</Project>
       <Name>ITimeU</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <Shadow Include="Test References\ITimeU.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

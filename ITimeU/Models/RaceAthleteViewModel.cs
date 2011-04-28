@@ -8,6 +8,7 @@ namespace ITimeU.Models
         public List<AthleteModel> AthletesConnected { get; set; }
         public string SavedConnected { get; set; }
         public int RaceId { get; set; }
+        public int ClassId { get; set; }
         public int[] AvailableSelected { get; set; }
         public int[] ConnectedSelected { get; set; }
     }

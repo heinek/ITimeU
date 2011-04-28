@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "ResultsSpeaker";
+}
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
+<script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var btnChangeCheckpoint = $("#btnChangeCheckpoint");
+        var ddlCheckpoints = $("#ddlCheckpoints");
+
+        btnChangeCheckpoint.click(function () {
+            var url = "/Results/ResultsForSpeaker/?checkpointId=" + ddlCheckpoints.val();
+            document.location = url;
+        });
+    });
+</script>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) |
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Velg passeringspunkt</h2>
+    <div class="containter">
+        <div class="row">
+            <div class="left">
+                <div class="editor-label" style="vertical-align: top">
+                    <b>@Html.Label("lblCheckpoint", "Velg passeringspunkt:")</b></div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    <br />
+                    @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Races, "CheckpointId", "Name"), "Velg passeringspunkt...")
+                    <input type="button" id="btnChangeCheckpoint" class="btnGo" value=" " />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

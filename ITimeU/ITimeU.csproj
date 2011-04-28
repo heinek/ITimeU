@@ -58,7 +58,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Web">
     <Reference Include="System.Web.Extensions">
       <Private>True</Private>
     </Reference>
@@ -66,6 +66,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Routing">
+      <Private>True</Private>
+    </Reference>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
@@ -79,7 +81,9 @@
     <Compile Include="Controllers\AthleteController.cs" />
     <Compile Include="Controllers\CheckpointOrderController.cs" />
     <Compile Include="Controllers\CheckpointController.cs" />
+    <Compile Include="Controllers\ClassController.cs" />
     <Compile Include="Controllers\ClubController.cs" />
+    <Compile Include="Controllers\DBAdminController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\ImportAthletesController.cs" />
     <Compile Include="Controllers\MockController.cs" />
@@ -108,6 +112,7 @@
     <Compile Include="Models\CheckpointOrderModel.cs" />
     <Compile Include="Models\CheckpointModel.cs" />
     <Compile Include="Models\ClubModel.cs" />
+    <Compile Include="Models\DBAdminModel.cs" />
     <Compile Include="Models\DBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -121,6 +126,7 @@
     <Compile Include="Models\RaceAthleteViewModel.cs" />
     <Compile Include="Models\RaceIntermediateModel.cs" />
     <Compile Include="Models\RaceModel.cs" />
+    <Compile Include="Models\ResultsViewModel.cs" />
     <Compile Include="Models\RuntimeModel.cs" />
     <Compile Include="Models\StartRaceViewModel.cs" />
     <Compile Include="Models\TimeMergerModel.cs" />
@@ -130,9 +136,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\1pc.jpg" />
+    <Content Include="Content\images\1pc_off.png" />
+    <Content Include="Content\images\1pc_on.png" />
     <Content Include="Content\images\2pc.jpg" />
+    <Content Include="Content\images\2pc_off.png" />
+    <Content Include="Content\images\2pc_on.png" />
+    <Content Include="Content\images\admin_off.png" />
+    <Content Include="Content\images\admin_on.png" />
     <Content Include="Content\images\athlete01.jpg" />
     <Content Include="Content\images\bg.jpg" />
+    <Content Include="Content\images\bgrunner.png" />
     <Content Include="Content\images\btnDelete.png" />
     <Content Include="Content\images\btnDeleteOver.png" />
     <Content Include="Content\images\button_bg.jpg" />
@@ -141,23 +154,61 @@
     <Content Include="Content\images\checkpoint01.jpg" />
     <Content Include="Content\images\CheckpointBg.png" />
     <Content Include="Content\images\CheckpointBgSmall.png" />
+    <Content Include="Content\images\classes_off.png" />
+    <Content Include="Content\images\classes_on.png" />
     <Content Include="Content\images\DefaultBG.png" />
     <Content Include="Content\images\down.png" />
     <Content Include="Content\images\downOver.png" />
     <Content Include="Content\images\Event.jpg" />
     <Content Include="Content\images\Go.png" />
+    <Content Include="Content\images\godkjenn_off.png" />
+    <Content Include="Content\images\godkjenn_on.png" />
     <Content Include="Content\images\Image1.png" />
+    <Content Include="Content\images\importer_off.png" />
+    <Content Include="Content\images\importer_on.png" />
+    <Content Include="Content\images\klubber_off.png" />
+    <Content Include="Content\images\klubber_on.png" />
+    <Content Include="Content\images\left.png" />
     <Content Include="Content\images\Logo2.png" />
     <Content Include="Content\images\Logo3.png" />
+    <Content Include="Content\images\lopere_off.png" />
+    <Content Include="Content\images\lopere_on.png" />
+    <Content Include="Content\images\loperlist_off.png" />
+    <Content Include="Content\images\loperlist_on.png" />
+    <Content Include="Content\images\lopoppsett_off.png" />
+    <Content Include="Content\images\lopoppsett_on.png" />
+    <Content Include="Content\images\lop_off.png" />
+    <Content Include="Content\images\lop_on.png" />
     <Content Include="Content\images\menu01.png" />
     <Content Include="Content\images\menu02.png" />
     <Content Include="Content\images\menu03.png" />
     <Content Include="Content\images\menu04.png" />
     <Content Include="Content\images\menu05.png" />
     <Content Include="Content\images\menubg.png" />
+    <Content Include="Content\images\passeringer_off.png" />
+    <Content Include="Content\images\passeringer_on.png" />
+    <Content Include="Content\images\passering_off.png" />
+    <Content Include="Content\images\passering_on.png" />
     <Content Include="Content\images\race01.jpg" />
+    <Content Include="Content\images\resultatadm_off.png" />
+    <Content Include="Content\images\resultatadm_on.png" />
+    <Content Include="Content\images\resultater_off.png" />
+    <Content Include="Content\images\resultater_on.png" />
+    <Content Include="Content\images\resultatliste_off.png" />
+    <Content Include="Content\images\resultatliste_on.png" />
+    <Content Include="Content\images\right.png" />
     <Content Include="Content\images\runner01.jpg" />
     <Content Include="Content\images\Speaker200.jpg" />
+    <Content Include="Content\images\speaker_off.png" />
+    <Content Include="Content\images\speaker_on.png" />
+    <Content Include="Content\images\startliste_off.png" />
+    <Content Include="Content\images\startliste_on.png" />
+    <Content Include="Content\images\start_off.png" />
+    <Content Include="Content\images\start_on.png" />
+    <Content Include="Content\images\stevne_off.png" />
+    <Content Include="Content\images\stevne_on.png" />
+    <Content Include="Content\images\tidtaking_off.png" />
+    <Content Include="Content\images\tidtaking_on.png" />
     <Content Include="Content\images\timer01.jpg" />
     <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -235,6 +286,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
     <Folder Include="upload\" />
   </ItemGroup>
   <ItemGroup>
@@ -339,6 +391,60 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Athlete\AthletesForRace.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\Print.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\PrintForClub.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Class\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Class\Create.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Class\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\ResultsForSpeaker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\ResultsSpeaker.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Race\Setup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Event\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DBAdmin\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Race\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Checkpoint\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\ResultSetup.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\SelectEvent.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\SelectRace.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Results\SelectCheckpoint.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Athlete\Setup.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

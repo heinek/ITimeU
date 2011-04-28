@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -10,7 +11,7 @@ namespace ITimeU.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            return View(EventModel.GetEvents());
         }
 
         //
@@ -28,19 +29,43 @@ namespace ITimeU.Controllers
         [HttpPost]
         public ActionResult Create(EventModel model)
         {
+            if (model.EventDate < DateTime.Today)
+            {
+                ViewBag.Error = "Dato kan ikke være mindre enn dagens dato";
+                return View();
+            }
+            if (EventModel.EventNameExists(model.Name))
+            {
+                ViewBag.Error = "Et stevne med samme navn eksisterer allerede";
+                return View();
+            }
+            var newModel = new EventModel(model.Name, model.EventDate);
             try
             {
-                var newModel = new EventModel(model.Name, model.EventDate);
-                newModel.Save();
-                ViewData.ModelState.Clear();
-                ViewBag.Feedback = "Stevne ble opprettet";
-                return View();
+                if (newModel.Save())
+                {
+                    ViewData.ModelState.Clear();
+                    ViewBag.Success = "Stevne ble opprettet";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Error = "Det skjedde en feil under lagring av stevne";
+                    return View();
+                }
             }
-            catch
+            catch (ArgumentException ex)
             {
-                ViewBag.Feedback = "Det skjedde en feil under lagring av stevne";
+                ViewBag.Error = ex.Message;
                 return View();
             }
+        }
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var eventToDelete = EventModel.GetById(id);
+            eventToDelete.Delete();
+            return View("Index", EventModel.GetEvents());
         }
     }
 }

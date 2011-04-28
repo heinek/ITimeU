@@ -108,7 +108,10 @@ namespace ITimeU.Models
             using (var context = new Entities())
             {
                 var raceintermediateToDelete = context.RaceIntermediates.Where(raceintermediate => raceintermediate.CheckpointID == cpid && raceintermediate.CheckpointOrderID == cpOrderid).SingleOrDefault();
-                raceintermediateToDelete.IsDeleted = true;
+                //raceintermediateToDelete.IsDeleted = true;
+                RuntimeModel.DeleteRuntime(raceintermediateToDelete.RuntimeId);
+                CheckpointOrderModel.DeleteCheckpointOrder(raceintermediateToDelete.CheckpointOrderID);
+                context.DeleteObject(raceintermediateToDelete);
                 context.SaveChanges();
             }
         }
@@ -175,6 +178,13 @@ namespace ITimeU.Models
                     Select(raceintermediate => new RaceIntermediateModel()
                     {
                         CheckpointID = raceintermediate.CheckpointID,
+                        CheckpointModel = new CheckpointModel()
+                        {
+                            Id = raceintermediate.CheckpointID,
+                            Name = raceintermediate.Checkpoint.Name,
+                            Sortorder = raceintermediate.Checkpoint.SortOrder,
+                            RaceId = raceintermediate.Checkpoint.RaceID
+                        },
                         CheckpointOrderID = raceintermediate.CheckpointOrderID,
                         CheckpointorderModel = new CheckpointOrderModel()
                         {
@@ -194,10 +204,14 @@ namespace ITimeU.Models
                         AthleteModel = new AthleteModel()
                         {
                             Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
-                            FirstName = raceintermediate.Athlete.FirstName,
-                            LastName = raceintermediate.Athlete.LastName,
-                            Birthday = raceintermediate.Athlete.Birthday,
-                            StartNumber = raceintermediate.Athlete.Startnumber
+                            FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : " - ",
+                            LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : " - ",
+                            StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : null,
+                            Club = new ClubModel()
+                            {
+                                Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.ClubID : 0,
+                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : " - "
+                            }
                         }
                     }).ToList();
                 return list;
@@ -207,7 +221,7 @@ namespace ITimeU.Models
         public static void MergeAthletes(int raceid)
         {
             var raceintermediates = GetRaceintermediatesForRace(raceid);
-            var raceathletes = RaceAthleteModel.GetRaceAthletesForRace(raceid);
+            var raceathletes = RaceAthleteModel.GetAthletesConnectedToRace(raceid);
             foreach (var raceathlete in raceathletes)
             {
                 foreach (var raceintermediate in raceintermediates)
@@ -219,6 +233,44 @@ namespace ITimeU.Models
                         raceintermediate.Update();
                     }
                 }
+            }
+        }
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                var intermediateToDelete = context.RaceIntermediates.
+                    Single(intermediate => intermediate.CheckpointID == CheckpointID
+                        && intermediate.CheckpointOrderID == CheckpointOrderID
+                        && intermediate.RuntimeId == RuntimeId);
+                context.DeleteObject(intermediateToDelete);
+                context.SaveChanges();
+            }
+        }
+
+        public static void DeleteRaceintermediatesForRace(int raceid)
+        {
+            using (var context = new Entities())
+            {
+                var intermediatesToDelete = context.RaceIntermediates.Where(intermediate => intermediate.Checkpoint.RaceID == raceid).ToList();
+                foreach (var intermediate in intermediatesToDelete)
+                {
+                    context.DeleteObject(intermediate);
+                }
+
+                var runtimesToDelete = context.Runtimes.Where(runtime => runtime.Checkpoint.RaceID == raceid).ToList();
+                foreach (var runtime in runtimesToDelete)
+                {
+                    context.DeleteObject(runtime);
+                }
+
+                var checkpointordersToDelete = context.CheckpointOrders.Where(cpo => cpo.Checkpoint.RaceID == raceid).ToList();
+                foreach (var cpo in checkpointordersToDelete)
+                {
+                    context.DeleteObject(cpo);
+                }
+                context.SaveChanges();
             }
         }
     }

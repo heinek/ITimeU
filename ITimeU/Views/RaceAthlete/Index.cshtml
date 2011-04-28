@@ -2,10 +2,13 @@
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
-@using(Html.BeginForm()){
+@using (Html.BeginForm())
+{
     <div class="topmenubar">
         <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("OPPRETT LØP", "Index", "Race", null, new { @class = "topmenulink" }) |
+            | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+            | @Html.ActionLink("OPPRETT LØP", "Index", "Race", null, new { @class = "topmenulink" })
+            |
         </center>
     </div>
     <div class="contentmargin">
@@ -14,18 +17,6 @@
                 Koble utøvere til løp</h2>
         </div>
         <div class="container">
-@*                    <div class="row">
-                <div class="left">
-                    <div class="editor-label" style="vertical-align: top">
-                        <b>@Html.Label("lblEvent", "Stevne:")</b>
-                    </div>
-                </div>
-                <div class="middle">
-                    <br />
-                    @Html.DropDownList("ddlEvents", new SelectList(ViewBag.Events, "EventId", "Name"), "Velg stevne...")
-                    <input type="submit" name="changeEvent" id="changeEvent" class="btnGo" value=" " />
-                </div>
-            </div>*@
             <div class="row">
                 <div class="left">
                     <div class="editor-label" style="vertical-align: top">
@@ -41,8 +32,26 @@
             <div class="row">
                 <div class="left">
                     <div class="editor-label" style="vertical-align: top">
+                        <b>@Html.Label("lblClass", "Klasse:")</b>
+                    </div>
+                </div>
+                <div class="middle">
+                    <br />
+                    @Html.DropDownList("ddlClasses", new SelectList(ViewBag.Classes, "Id", "Name", Model.ClassId), "Velg klasse...")
+                    <input type="submit" name="changeClass" id="changeClass" class="btnGo" value=" " />
+                </div>
+            </div>
+            <div class="row">
+                <div class="left">
+                    <div class="editor-label" style="vertical-align: top">
                         <b>@Html.Label("lblAthletes", "Marker deltakere")</b>
                     </div>
+                </div>
+                <div class="middle">
+                </div>
+                <div class="right">
+                    <br />
+                    <b>@Html.Label("lblAthletesConnected", "Koblede deltagere")</b>
                 </div>
             </div>
         </div>
@@ -62,11 +71,11 @@
                     <br />
                 </div>
                 <div class="right">
-                    @Html.ListBoxFor(model => model.ConnectedSelected, new MultiSelectList(Model.AthletesConnected, "Id", "FullName", Model.ConnectedSelected), new { @class = "listboxwide" })
+                    @Html.ListBoxFor(model => model.ConnectedSelected, new MultiSelectList(Model.AthletesConnected, "Id", "FullNameClass", Model.ConnectedSelected), new { @class = "listboxwide" })
                 </div>
             </div>
         </div>
     </div>
-    @Html.HiddenFor(model=>model.SavedConnected)
+    @Html.HiddenFor(model => model.SavedConnected)
     @Html.HiddenFor(model => model.RaceId)
 }

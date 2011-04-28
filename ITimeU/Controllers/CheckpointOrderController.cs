@@ -70,6 +70,7 @@ namespace ITimeU.Controllers
                 }
                 tmpValue = int.Parse(value);
                 CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);
+                TimeMergerModel.Merge(origCheckpointOrder.CheckpointID.Value);
                 return View("Index", model);
             }
         }
@@ -77,16 +78,18 @@ namespace ITimeU.Controllers
         //
         // GET: /CheckpointOrder/Delete/5
 
-        public ActionResult DeleteCheckpointOrder(int id)
+        public ActionResult DeleteCheckpointOrder(int id, int checkpointId)
         {
             try
             {
-                CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-                model.DeleteCheckpointOrderDB(id);
-                return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
+                //CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
+                var model = CheckpointOrderModel.GetById(id);
+                model.DeleteCheckpointOrderDB();
+                return Content(CheckpointOrderModel.GetCheckpointOrders(checkpointId).ToListboxvalues());
             }
             catch
             {
+                TimeMergerModel.Merge(checkpointId);
                 return View();
             }
         }
@@ -101,63 +104,36 @@ namespace ITimeU.Controllers
             return co;
         }
 
-        public ActionResult AddCheckpointOrder(string checkpointID, string startingNumber)
+        public ActionResult AddCheckpointOrder(int checkpointID, int startingNumber)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-            int chkpntID;
-            int startNmb;
-
-            int.TryParse(checkpointID, out chkpntID);
-            int.TryParse(startingNumber, out startNmb);
-
-            model.AddCheckpointOrderDB(chkpntID, startNmb);
-
+            model.AddCheckpointOrderDB(checkpointID, startingNumber);
+            TimeMergerModel.Merge(checkpointID);
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
-        public ActionResult MoveCheckpointUp(string checkpointID, string startingNumber, string checkpointOrderId)
+        public ActionResult MoveCheckpointUp(int checkpointID, int startingNumber, int checkpointOrderId)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-            int chkpntID;
-            int startNmb;
-            int checkpointOrderIdInt;
-
-            int.TryParse(checkpointID, out chkpntID);
-            int.TryParse(startingNumber, out startNmb);
-            int.TryParse(checkpointOrderId, out checkpointOrderIdInt);
-
-            model.MoveCheckpointUp(chkpntID, startNmb, checkpointOrderIdInt);
-
+            model.MoveCheckpointUp(checkpointID, startingNumber, checkpointOrderId);
+            TimeMergerModel.Merge(checkpointID);
             return Content(model.CheckpointOrderDic.ToListboxvalues());
         }
 
-        public ActionResult MoveCheckpointDown(string checkpointID, string startingNumber, string checkpointOrderId)
+        public ActionResult MoveCheckpointDown(int checkpointID, int startingNumber, int checkpointOrderId)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-            int chkpntID;
-            int startNmb;
-            int Id;
-
-            int.TryParse(checkpointID, out chkpntID);
-
-            int.TryParse(startingNumber, out startNmb);
-            int.TryParse(checkpointOrderId, out Id);
-
-            model.MoveCheckpointDown(chkpntID, startNmb, Id);
-
+            model.MoveCheckpointDown(checkpointID, startingNumber, checkpointOrderId);
+            TimeMergerModel.Merge(checkpointID);
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 
-
-        public ActionResult UpdateCheckpointOrder(int ID, string startingNumber)
+        public ActionResult UpdateCheckpointOrder(int ID, int startingNumber)
         {
             CheckpointOrderModel model = (CheckpointOrderModel)Session["checkpoint"];
-            int StartNmb;
-
-            int.TryParse(startingNumber, out StartNmb);
-
-            model.UpdateCheckpointOrderDB(ID, StartNmb);
-
+            model.UpdateCheckpointOrderDB(ID, startingNumber);
+            CheckpointOrder origCheckpointOrder = CheckpointOrderModel.GetCheckpointOrderById(ID);
+            TimeMergerModel.Merge(origCheckpointOrder.CheckpointID.Value);
             return Content(model.CheckpointOrderDic.ToListboxvalues(toTimer: false));
         }
 

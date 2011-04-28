@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace ITimeU.Models
@@ -18,6 +17,23 @@ namespace ITimeU.Models
             var intermediates = new List<RaceIntermediateModel>();
             CheckpointIntermediates = new Dictionary<int, List<RaceIntermediateModel>>();
             CheckpointIntermediates.Add(timer.GetFirstCheckpointId(), intermediates);
+            using (var context = new Entities())
+            {
+                foreach (var checkpoint in CheckpointModel.GetCheckpoints(timer.RaceID.Value))
+                {
+                    var raceintermediates = context.RaceIntermediates.Where(interm => interm.CheckpointID == checkpoint.Id).Select(interm => new RaceIntermediateModel()
+                    {
+                        AthleteId = interm.AthleteId.HasValue ? interm.AthleteId.Value : 0,
+                        CheckpointID = interm.CheckpointID,
+                        CheckpointOrderID = interm.CheckpointOrderID,
+                        RuntimeId = interm.RuntimeId
+                    }).ToList();
+                    if (!CheckpointIntermediates.ContainsKey(checkpoint.Id))
+                        CheckpointIntermediates.Add(checkpoint.Id, raceintermediates);
+                    else
+                        CheckpointIntermediates[checkpoint.Id] = raceintermediates;
+                }
+            }
             this.Intermediates = intermediates;
         }
 
@@ -43,7 +59,8 @@ namespace ITimeU.Models
         /// <returns></returns>
         public void AddStartnumber(int cpId, int startNr, int runtimeint)
         {
-            var checkpointOrderId =  CheckpointOrder.AddCheckpointOrderDB(cpId, startNr);
+            var checkpointOrderId = CheckpointOrder.AddCheckpointOrderDB(cpId, startNr);
+            if (checkpointOrderId == 0) return;
             var runtimeId = Timer.AddRuntime(runtimeint, cpId).Id;
             RaceIntermediateModel raceIntermediate = new RaceIntermediateModel(cpId, checkpointOrderId, runtimeId);
             raceIntermediate.Save();

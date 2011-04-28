@@ -272,7 +272,7 @@ input[type="password"]
 
 table
 {
-	width:500px;
+	width: 800px;
 	border-collapse: collapse;
 }
 
@@ -285,7 +285,7 @@ table th
 {
 	padding: 6px 5px;
 	text-align: left;
-	color:White;
+	color: White;
 	background-color: #1678A7;
 }
 
@@ -299,7 +299,10 @@ table th
 {
 	display: table;
 	width: 100%;
+	position: relative;
+	height: auto !important;
 	height: 100%;
+	min-height: 100%;
 }
 .row
 {
@@ -343,7 +346,6 @@ table th
 	vertical-align: top;
 	width: 30%;
 	background-color: #EAE3C6;
-	height: 100%;
 }
 .rightmiddlemaster
 {
@@ -356,14 +358,49 @@ table th
 }
 .centermiddlemaster
 {
+	display: table-cell;
 	width: 900px;
 	padding: 0;
 	margin: 0;
+	height:770px;
 }
 .rowmiddlemaster
 {
 	display: table-row;
-	height: 700px;
+}
+.rowbottommaster
+{
+	display: table-row;
+	bottom: 0;
+	height: 60px;
+	border-top:2px double gray;
+}
+
+.leftbottommaster
+{
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+	height: 60px;
+	background-color: #2A2925;
+}
+.centerbottommaster
+{
+	width: 900px;
+	padding: 0;
+	margin: 0;
+	height: 60px;
+	background-color: #2A2925;
+}
+.rightbottommaster
+{
+	display: table-cell;
+	padding: 5px 5px 5px 5px;
+	vertical-align: top;
+	width: 30%;
+	height: 60px;
+	background-color: #2A2925;
 }
 .errormessagearea
 {
@@ -391,17 +428,31 @@ table th
 	color: #4F8A10;
 	background-color: #DFF2BF;
 }
+.statusmessagearea
+{
+    height: 20px;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border: 1px solid;
+    margin: 10px 10px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    color: #4F8A10;
+    background-color: #DFF2BF;    
+}
+
 
 
 /* MISC  
 ----------------------------------------------------------*/
 .background
 {
-	background-image: url("images/DefaultBG.png");
+	background-image: url("images/bgrunner.png");
 	background-repeat: no-repeat;
 	background-position: top;
 	width: 900px;
-	height: 601px; /*     opacity: .5;     filter: alpha(opacity=50);     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; */
+	height: 600px;
 }
 .clear
 {
@@ -426,14 +477,14 @@ table th
 
 .textboxRequired
 {
-    width: 195px;
-    margin-bottom: 10px;
-    background-color:#FFFFCC;    
+	width: 195px;
+	margin-bottom: 10px;
+	background-color: #FFFFCC;
 }
 
 .dropdownlist
 {
-    width: 195px;    
+	width: 195px;
     margin-bottom: 10px;
 }
 
@@ -441,7 +492,7 @@ table th
 {
     width: 195px; 
     margin-bottom: 10px; 
-    background-color:#FFFFCC;   
+	background-color: #FFFFCC;
 }
 
 .textboxlarge
@@ -490,10 +541,24 @@ table th
 	cursor: hand;
 	cursor: pointer;
 }
-.menubg
+.menubg4
 {
-	padding-top: 220px;
-	padding-left: 144px;
+	padding-top: 200px;
+	padding-left: 154px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.menubg3
+{
+	padding-top: 200px;
+	padding-left: 223px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.menubg2
+{
+	padding-top: 200px;
+	padding-left: 300px;
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -638,11 +703,11 @@ div#title
 
 a.custom
 {
-   background-color: #DB6600;
-    background-image: url("images/button_bg.jpg");
-    border: 1px solid #DB6600;
-    color: #FFFFFF;
-    padding: 3px 6px;   
+	background-color: #DB6600;
+	background-image: url("images/button_bg.jpg");
+	border: 1px solid #DB6600;
+	color: #FFFFFF;
+	padding: 3px 6px;
 }
 
 /* Styles for validation helpers

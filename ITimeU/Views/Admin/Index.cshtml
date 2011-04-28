@@ -9,54 +9,52 @@
     $(document).ready(function () {
         var imgAthlete = $("#imgAthlete");
         var imgRace = $("#imgRace");
-        var imgCheckpoint = $("#imgCheckpoint");
-        var imgEvent = $("#imgEvent");
+        var imgClub = $("#imgClub");
+        var imgResults = $("#imgResults");
 
-        imgEvent.click(function () {
-            var url = "/Event/Create/";
-            document.location = url;
-        });
         imgRace.click(function () {
-            var url = "/Race/";
+            var url = "/Race/Setup/";
             document.location = url;
         });
-        imgCheckpoint.click(function () {
-            var url = "/Checkpoint/Create/";
+        imgClub.click(function () {
+            var url = "/Club/";
             document.location = url;
         });
         imgAthlete.click(function () {
-            var url = "/Athlete/";
+            var url = "/Athlete/Setup/";
             document.location = url;
         });
+        imgResults.click(function () {
+            var url = "/Results/";
+            document.location = url;
+        });
+
+        $("img").hover(
+            function () {
+                this.src = this.src.replace("_off", "_on");
+            },
+            function () {
+                this.src = this.src.replace("_on", "_off");
+            }
+        );
     });
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | 
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        |
     </center>
 </div>
-<div class="contentmargin">
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tr>
-            <td align="center">
-                <table border="0" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td>
-                            <img src="../../Content/images/Event.jpg" class="linkimage" id="imgEvent" alt="Opprett event" />
-                        </td>
-                        <td>
-                            <img src="../../Content/images/race01.jpg" class="linkimage" id="imgRace" alt="Opprett løp" />
-                        </td>
-                        <td>
-                            <img src="../../Content/images/athlete01.jpg" class="linkimage" id="imgAthlete" alt="Opprett utøver" />
-                        </td>
-                        <td>
-                            <img src="../../Content/images/checkpoint01.jpg" class="linkimage" id="imgCheckpoint"
-                                alt="Opprett passeringspunkt" />
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+<div class="container">
+    <div class="background">
+        <div class="row">
+            <div class="menubg4">
+                <img src="../../Content/images/lopoppsett_off.png" id="imgRace" alt="Løpsoppsett"
+                    class="logo" /><img id="imgClub" src="../../Content/images/klubber_off.png" alt="Klubber"
+                        class="logo" /><img id="imgAthlete" src="../../Content/images/lopere_off.png" alt="Løpere"
+                            class="logo" /><img id="imgResults" src="../../Content/images/resultatadm_off.png"
+                                alt="Resultater" class="logo" />
+            </div>
+        </div>
+    </div>
 </div>

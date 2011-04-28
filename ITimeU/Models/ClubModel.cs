@@ -256,13 +256,21 @@ namespace ITimeU.Models
             }
         }
 
-        public void Update()
+        public bool Update()
         {
-            using (var context = new Entities())
+            try
             {
-                var club = context.Clubs.Single(clb => clb.ClubID == Id);
-                club.Name = Name;
-                context.SaveChanges();
+                using (var context = new Entities())
+                {
+                    var club = context.Clubs.Single(clb => clb.ClubID == Id);
+                    club.Name = Name;
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

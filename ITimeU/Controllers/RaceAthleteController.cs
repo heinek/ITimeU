@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using ITimeU.Models;
 
@@ -16,6 +15,7 @@ namespace ITimeU.Controllers
         public ActionResult Index()
         {
             ViewBag.Races = RaceModel.GetRaces();
+            ViewBag.Classes = AthleteClassModel.GetAll();
             RaceAthleteViewModel model = new RaceAthleteViewModel()
             {
                 AthletesAvailable = new List<AthleteModel>(),
@@ -25,10 +25,11 @@ namespace ITimeU.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(RaceAthleteViewModel model, string changeRace, string add, string remove, string ddlRaces)
+        public ActionResult Index(RaceAthleteViewModel model, string changeRace, string changeClass, string add, string remove, string ddlRaces, string ddlClasses)
         {
             ModelState.Clear();
             ViewBag.Races = RaceModel.GetRaces();
+            ViewBag.Classes = AthleteClassModel.GetAll();
             RestoreSavedState(model);
             if (!string.IsNullOrEmpty(add))
                 AssignAthleteToRace(model);
@@ -36,15 +37,25 @@ namespace ITimeU.Controllers
                 RemoveAthleteFromRace(model);
             else if (!string.IsNullOrEmpty(changeRace))
             {
-                //model.AthletesAvailable = AthleteModel.GetAll().Except(model.AthletesConnected).ToList();
                 model.RaceId = Convert.ToInt32(ddlRaces);
                 var race = RaceModel.GetById(model.RaceId);
-                model.AthletesConnected = race.GetAthletes();
-                model.AthletesAvailable = race.GetAthletesNotConnected();
-
+                model.AthletesAvailable = new List<AthleteModel>();
+                model.AthletesConnected = race.GetAthletes().OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
+            }
+            else if (!string.IsNullOrEmpty(changeClass))
+            {
+                var race = RaceModel.GetById(model.RaceId);
+                model.ClassId = Convert.ToInt32(ddlClasses);
+                model.AthletesConnected = race.GetAthletes().OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
+                model.AthletesAvailable = race.GetAthletesNotConnected(model.ClassId).OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
             }
             SaveState(model);
             return View(model);
+        }
+
+        private void ChangeClass(RaceAthleteViewModel model)
+        {
+            throw new NotImplementedException();
         }
 
         private void SaveState(RaceAthleteViewModel model)
@@ -76,26 +87,26 @@ namespace ITimeU.Controllers
                     athlete.ConnectToRace(model.RaceId);
                 }
                 model.AthletesConnected = race.GetAthletes();
-                model.AthletesAvailable = race.GetAthletesNotConnected();
+                model.AthletesAvailable = race.GetAthletesNotConnected(model.ClassId);
                 model.AvailableSelected = null;
             }
         }
 
-         void RemoveAthleteFromRace(RaceAthleteViewModel model)
-         {
-             var race = RaceModel.GetById(model.RaceId);
-             if (model.ConnectedSelected != null)
-             {
-                 var athletes = AthleteModel.GetAll().Where(a => model.ConnectedSelected.Contains(a.Id));
-                 foreach (var athlete in athletes)
-                 {
-                     athlete.RemoveFromRace(model.RaceId);
-                 }
-                 model.AthletesConnected = race.GetAthletes();
-                 model.AthletesAvailable = race.GetAthletesNotConnected();
-                 model.ConnectedSelected = null;
-             }
-         }
+        void RemoveAthleteFromRace(RaceAthleteViewModel model)
+        {
+            var race = RaceModel.GetById(model.RaceId);
+            if (model.ConnectedSelected != null)
+            {
+                var athletes = AthleteModel.GetAll().Where(a => model.ConnectedSelected.Contains(a.Id));
+                foreach (var athlete in athletes)
+                {
+                    athlete.RemoveFromRace(model.RaceId);
+                }
+                model.AthletesConnected = race.GetAthletes();
+                model.AthletesAvailable = race.GetAthletesNotConnected(model.ClassId);
+                model.ConnectedSelected = null;
+            }
+        }
 
     }
 }

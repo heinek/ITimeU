@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using ITimeU.Models;
 
 namespace ITimeU.Controllers
@@ -16,24 +17,26 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Index(int raceId)
         {
+
             var race = RaceModel.GetById(raceId);
-            TimerModel timer = null;
+
+            TimerModel timer;
             if (race.GetTimerId().HasValue)
-            {
-                timer = new TimerModel(race.GetTimerId().Value);
-                timer.RaceID = raceId;
-            }
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
             else
             {
                 timer = new TimerModel();
                 timer.RaceID = raceId;
             }
             timer.SaveToDb();
+
+            TimeStartnumberModel timeStartnumberModel;
+            timeStartnumberModel = new TimeStartnumberModel(timer);
             var checkpointOrder = new CheckpointOrderModel();
 
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
             ViewBag.RaceId = raceId;
-            var timeStartnumberModel = new TimeStartnumberModel(timer);
+            ViewBag.RaceName = race.Name;
             timeStartnumberModel.ChangeCheckpoint(timer.GetFirstCheckpointId());
             timeStartnumberModel.CheckpointOrder = checkpointOrder;
             Session["TimeStartnumber"] = timeStartnumberModel;
@@ -72,15 +75,15 @@ namespace ITimeU.Controllers
         /// <param name="runtime">The runtime.</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AddStartnumber(string checkpointId, string startnumber, string runtime)
+        public ActionResult AddStartnumber(int checkpointId, string startnumber, int runtime)
         {
-            int cpId, startNr, runtimeint;
-            int.TryParse(checkpointId, out cpId);
-            int.TryParse(startnumber, out startNr);
-            int.TryParse(runtime, out runtimeint);
+            int startnr;
+            if (!int.TryParse(startnumber, out startnr))
+                startnr = 0;
             var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
-            timeStartnumberModel.AddStartnumber(cpId, startNr, runtimeint);
+            timeStartnumberModel.AddStartnumber(checkpointId, startnr, runtime);
             Session["TimeStartnumber"] = timeStartnumberModel;
+            TimeMergerModel.Merge(checkpointId);
             return Content(timeStartnumberModel.CheckpointIntermediates[timeStartnumberModel.CurrentCheckpointId].ToListboxvalues());
         }
 
@@ -115,8 +118,8 @@ namespace ITimeU.Controllers
             var runtimeId = RaceIntermediateModel.GetRaceintermediate(checkpointid, checkpointOrderId).RuntimeId;
             RuntimeModel.EditRuntime(runtimeId, hour, min, sek, msek);
             timeStartnumberModel.EditStartnumber(checkpointid, checkpointOrderId, startnumber);
-
             Session["TimeStartnumber"] = timeStartnumberModel;
+            TimeMergerModel.Merge(checkpointid);
             return Content(timeStartnumberModel.CheckpointIntermediates[timeStartnumberModel.CurrentCheckpointId].ToListboxvalues());
         }
 
@@ -127,16 +130,42 @@ namespace ITimeU.Controllers
         /// <param name="checkpointOrderId">The checkpoint order id.</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult DeleteRaceintermediate(string checkpointid, string checkpointOrderId)
+        public ActionResult DeleteRaceintermediate(int checkpointid, int checkpointOrderId)
         {
             var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
-            int cpid, cporderid;
-            int.TryParse(checkpointid.Trim(), out cpid);
-            int.TryParse(checkpointOrderId.Trim(), out cporderid);
-            timeStartnumberModel.DeleteRaceintermediate(cpid, cporderid);
+            timeStartnumberModel.DeleteRaceintermediate(checkpointid, checkpointOrderId);
             Session["TimeStartnumber"] = timeStartnumberModel;
+            TimeMergerModel.Merge(checkpointid);
             return Content(timeStartnumberModel.CheckpointIntermediates[timeStartnumberModel.CurrentCheckpointId].ToListboxvalues());
 
+        }
+
+        [HttpGet]
+        public ActionResult GetStartruntime()
+        {
+            var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
+            DateTime starttime;
+            int runtime = 0;
+
+            if (timeStartnumberModel.Timer.StartTime.HasValue && timeStartnumberModel.Timer.IsStarted)
+            {
+                starttime = timeStartnumberModel.Timer.StartTime.Value;
+                var ts = DateTime.Now - starttime;
+                runtime = (int)ts.TotalMilliseconds;
+            }
+            return Content(runtime.ToString());
+        }
+        [HttpPost]
+        public ActionResult ResetRace(int raceid)
+        {
+            var timeStartnumberModel = (TimeStartnumberModel)Session["TimeStartnumber"];
+            foreach (var key in timeStartnumberModel.CheckpointIntermediates.Keys)
+            {
+                timeStartnumberModel.CheckpointIntermediates[key].Clear();
+            }
+            RaceIntermediateModel.DeleteRaceintermediatesForRace(raceid);
+            Session["TimeStartnumber"] = timeStartnumberModel;
+            return Content("");
         }
     }
 }

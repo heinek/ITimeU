@@ -5,7 +5,7 @@
 }
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" }) | 
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" }) | 
     </center>
 </div>
 <div class="contentmargin">
@@ -25,14 +25,15 @@
             Navn kan ikke være tomt.
         </div>
     }
+
     <div class="editor-label">
-        @Html.Label("lblRace", "Løp:")
+        @Html.Label("lblRace", "Løp:") *
     </div>
     <div class="editor-field">
         @Html.DropDownList("raceId", new SelectList(Model, "RaceID", "Name"))
     </div>
     <div class="editor-label">
-        @Html.Label("lblCheckpointName", "Navn:")
+        @Html.Label("lblCheckpointName", "Navn:") *
     </div>
     <div class="editor-field">
         @Html.TextBox("txtCheckpointName", null, new { @class = "textbox" })

@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Setup";
+}
+<script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var imgEvent = $("#imgEvent");
+        var imgRace = $("#imgRace");
+        var imgCheckpoint = $("#imgCheckpoint");
+
+        imgEvent.click(function () {
+            var url = "/Event/Index/";
+            document.location = url;
+        });
+        imgRace.click(function () {
+            var url = "/Race/List/";
+            document.location = url;
+        });
+        imgCheckpoint.click(function () {
+            var url = "/Checkpoint/List/";
+            document.location = url;
+        });
+
+        $("img").hover(
+            function () {
+                this.src = this.src.replace("_off", "_on");
+            },
+            function () {
+                this.src = this.src.replace("_on", "_off");
+            }
+        );
+    });
+</script>
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        |
+    </center>
+</div>
+<div class="container">
+    <div class="background">
+        <div class="row">
+            <div class="menubg3">
+                <img src="../../Content/images/stevne_off.png" id="imgEvent" alt="Stevne" class="logo" /><img
+                    src="../../Content/images/lop_off.png" alt="Løp" class="logo" id="imgRace" /><img
+                        id="imgCheckpoint" src="../../Content/images/passering_off.png" alt="Passeringspunkt"
+                        class="logo" />
+            </div>
+        </div>
+    </div>
+</div>

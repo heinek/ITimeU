@@ -39,7 +39,7 @@ namespace ITimeU.Tests.Models
         [TestMethod]
         public void It_Should_Be_Possible_To_Save_A_List_Of_Athletes_To_Database()
         {
-            List<AthleteModel> athletes = null;
+            var athletes = new List<AthleteModel>();
             int previousAthleteDbCount = AthleteModel.GetAll().Count;
 
             Given("we have a list of athletes", () =>
@@ -58,6 +58,51 @@ namespace ITimeU.Tests.Models
             {
                 int athleteDbCount = AthleteModel.GetAll().Count;
                 athleteDbCount.ShouldBe(previousAthleteDbCount + 3);
+            });
+        }
+
+        [TestMethod]
+        public void It_Should_Be_Possible_To_Save_A_List_Of_Athletes_WithDetails_To_Database()
+        {
+            var athletes = new List<AthleteModel>();
+            int previousAthleteDbCount = AthleteModel.GetAll().Count;
+
+            AthleteModel athlete1 = null;
+            AthleteModel athlete2 = null;
+            AthleteModel athlete3 = null;
+
+            var clubStrindheim = ClubModel.GetOrCreate("Strindheim");
+            var clubMalvik = ClubModel.GetOrCreate("Malvik");
+            var classG8 = AthleteClassModel.GetOrCreate("G8");
+            var classG14 = AthleteClassModel.GetOrCreate("G14");
+
+            Given("we have a list of athletes with club and class details", () =>
+            {
+                
+
+                athlete1 = new AthleteModel() {FirstName = "Ole", LastName = "Hansen", Club = clubStrindheim, AthleteClass = classG14};
+                athlete2 = new AthleteModel() {FirstName = "Nils", LastName = "Olsen", Club = clubStrindheim, AthleteClass = classG8};
+                athlete3 = new AthleteModel() {FirstName = "Trond", LastName = "Iversen", Club = clubMalvik, AthleteClass = classG14};
+
+                athletes.Add(athlete1);
+                athletes.Add(athlete2);
+                athletes.Add(athlete3);
+            });
+
+            When("we save the list to the database", () =>
+            {
+                AthleteModel.SaveToDb(athletes);
+            });
+
+            Then("the athletes in the list should be saved in the database", () =>
+            {
+                int athleteDbCount = AthleteModel.GetAll().Count;
+                athleteDbCount.ShouldBe(previousAthleteDbCount + 3);
+                AthleteModel newAthlete2 = AthleteModel.GetById(athlete2.Id);
+                newAthlete2.FirstName.ShouldBe("Nils");
+                newAthlete2.LastName.ShouldBe("Olsen");
+                newAthlete2.Club.ShouldBe(clubStrindheim);
+                newAthlete2.AthleteClass.ShouldBe(classG8);
             });
         }
 

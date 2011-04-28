@@ -9,13 +9,13 @@ namespace ITimeU.Models
     public class EventModel
     {
         public int EventId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Stevnenavn er obligatorisk")]
         [DisplayName("Navn")]
+        [StringLength(150, ErrorMessage = "Stevnenavn kan ikke være lengre enn 150 bokstaver")]
         public string Name { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Dato er obligatorisk")]
         [DataType(DataType.Date)]
         [DisplayName("Dato")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EventDate { get; set; }
 
         public EventModel()
@@ -40,6 +40,7 @@ namespace ITimeU.Models
         /// <returns></returns>
         public bool Save()
         {
+            if (EventDate < DateTime.Today.Date) throw new ArgumentException("Ugyldig dato for stevne");
             using (var context = new Entities())
             {
                 var newEvent = new Event();
@@ -58,6 +59,8 @@ namespace ITimeU.Models
                 }
             }
         }
+
+
 
         /// <summary>
         /// Deletes this event.
@@ -82,6 +85,28 @@ namespace ITimeU.Models
                     EventDate = evnt.EventDate,
                     Name = evnt.Name
                 }).OrderBy(evnt => evnt.Name).ToList();
+            }
+        }
+
+        public static EventModel GetById(int id)
+        {
+            using (var context = new Entities())
+            {
+                var eventDb = context.Events.Single(evnt => evnt.EventId == id);
+                return new EventModel()
+                {
+                    EventId = eventDb.EventId,
+                    Name = eventDb.Name,
+                    EventDate = eventDb.EventDate
+                };
+            }
+        }
+
+        public static bool EventNameExists(string eventName)
+        {
+            using (var context = new Entities())
+            {
+                return context.Events.Any(evnt => evnt.Name.ToLower() == eventName.ToLower() && !evnt.IsDeleted);
             }
         }
     }

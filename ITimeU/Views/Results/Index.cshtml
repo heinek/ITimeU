@@ -107,7 +107,7 @@
         });
 
         btnPrint.click(function () {
-            printWin = window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val() + "&racename=" + $("#ddlRaces option:selected").text() + "&checkpointname=" + $("#ddlCheckpoints option:selected").text(), "_blank", "height=800,left=100,top=100,width=800,toolbar=no,titlebar=0,status=0,menubar=yes,location= no,scrollbars=1");
+            printWin = window.open("/Results/Print/?checkpointid=" + ddlCheckpoints.val(), "_blank", "height=800,left=100,top=100,width=800,toolbar=no,titlebar=0,status=0,menubar=yes,location= no,scrollbars=1");
             printWin.print();
 
         });
@@ -141,7 +141,8 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) |
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        |
     </center>
 </div>
 <div class="contentmargin">
@@ -149,7 +150,7 @@
         <h2>
             Resultatliste</h2>
     </div>
-    <div class="containter">
+    <div class="container">
         <div class="row">
             <div class="left">
                 <div class="editor-label" style="vertical-align: top">
@@ -220,6 +221,8 @@
                 <input type="button" id="btnPrint" value="Skriv ut" class="btnRegular" style="width: 110px" />
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <div class="left">
                 <div id="divResults">

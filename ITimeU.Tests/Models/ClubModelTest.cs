@@ -11,11 +11,17 @@ namespace ITimeU.Tests.Models
         private const string CLUB_BYAASEN = "Byåsen";
         private ClubModel club;
 
+        [TestInitialize]
+        public void TestSetup()
+        {
+            club = null;
+        }
+
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
-            club.DeleteFromDb();
+            if (club != null) club.DeleteFromDb();
         }
 
         [TestMethod]

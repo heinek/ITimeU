@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Web;
 
 namespace ITimeU.Models
 {
     public class AthleteClassModel
     {
         public int Id { get; set; }
+        [Required]
+        [DisplayName("Navn")]
         public string Name { get; set; }
 
         private static Entities entitiesStatic = new Entities();
@@ -32,7 +35,7 @@ namespace ITimeU.Models
         {
             this.Id = id;
             var entities = new Entities();
-            this.Name = entities.AthleteClasses.Single(athcls => athcls.ID == id).Name;            
+            this.Name = entities.AthleteClasses.Single(athcls => athcls.ID == id).Name;
         }
 
         public AthleteClassModel(AthleteClass athleteClass)
@@ -111,18 +114,16 @@ namespace ITimeU.Models
         /// <returns></returns>
         public static List<AthleteClassModel> GetAll()
         {
-            IEnumerable<AthleteClass> athleteClasses = entitiesStatic.AthleteClasses.AsEnumerable<AthleteClass>();
-
-            List<AthleteClassModel> athleteClassModels = new List<AthleteClassModel>();
-            foreach (AthleteClass athleteClassDb in athleteClasses)
+            using (var context = new Entities())
             {
-                AthleteClassModel athleteClass = new AthleteClassModel(athleteClassDb);
-                athleteClassModels.Add(athleteClass);
+                return context.AthleteClasses.Select(clss => new AthleteClassModel()
+                {
+                    Id = clss.ID,
+                    Name = clss.Name
+                }).OrderBy(clss => clss.Name).ToList();
             }
             //athleteClassModels.Insert(0, null);
-            return athleteClassModels;
         }
-
 
         public static AthleteClassModel GetOrCreate(string name)
         {
@@ -171,6 +172,39 @@ namespace ITimeU.Models
             catch (InvalidOperationException)
             {
                 // No DB entry found, do noting
+            }
+        }
+
+        public static AthleteClassModel GetById(int id)
+        {
+            using (var context = new Entities())
+            {
+                var model = context.AthleteClasses.Where(athleteclass => athleteclass.ID == id).Single();
+                return new AthleteClassModel()
+                {
+                    Id = model.ID,
+                    Name = model.Name
+                };
+            }
+        }
+
+        public void Update()
+        {
+            using (var context = new Entities())
+            {
+                var model = context.AthleteClasses.Where(athleteclass => athleteclass.ID == Id).Single();
+                model.Name = Name;
+                context.SaveChanges();
+            }
+        }
+
+        public void Delete()
+        {
+            using (var context = new Entities())
+            {
+                var model = context.AthleteClasses.Where(athleteclass => athleteclass.ID == Id).Single();
+                context.DeleteObject(model);
+                context.SaveChanges();
             }
         }
     }

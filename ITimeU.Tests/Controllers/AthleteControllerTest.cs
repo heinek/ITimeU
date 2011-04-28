@@ -17,36 +17,40 @@ namespace ITimeU.Tests.Controllers
     public class AthleteControllerTest : ScenarioClass
     {
         private AthleteController controller;
+        private EventModel eventModel;
+        private RaceModel race;
+        private AthleteModel athlete;
 
         [TestInitialize]
         public void TestStartup()
         {
+            eventModel = new EventModel("Test", DateTime.Today);
+            eventModel.Save();
+            race = new RaceModel("testrace", DateTime.Today);
+            race.EventId = eventModel.EventId;
+            race.Save();
+            athlete = new AthleteModel("Test", "Testesen");
         }
 
         [TestCleanup]
         public void TestCleanup()
         {
             StartScenario();
+            eventModel.Delete();
+            race.Delete();
+            athlete.Delete();
         }
 
         [TestMethod]
         public void We_Should_Get_A_List_Of_Athletes_Connected_To_A_Race()
         {
             ViewResult result = null;
-            RaceModel race = null;
-            AthleteModel athlete = null;
 
             Given("we have a race connected to an athlete and a controller", () =>
             {
                 controller = new AthleteController();
-                var eventModel = new EventModel("Test", DateTime.Today);
-                eventModel.Save();
-                race = new RaceModel("testrace", DateTime.Today);
-                race.EventId = eventModel.EventId;
-                race.Save();
-                athlete = new AthleteModel("Test", "Testesen");
-                athlete.ConnectToRace(race.RaceId);
                 athlete.SaveToDb();
+                athlete.ConnectToRace(race.RaceId);
             });
 
             When("we want to see athletes for a race", () =>

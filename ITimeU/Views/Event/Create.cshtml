@@ -9,12 +9,14 @@
 <link href="/Content/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css" />
 <script src="@Url.Content("/Scripts/date.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.maskedinput-1.2.2.js")" type="text/javascript"></script>
+<script src="@Url.Content("/Scripts/MicrosoftMvcValidation.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         var divErrorMessage = $("#ErrorMessage");
 
         $('.datePicker :text').datepicker({
             buttonImage: "/Content/images/Calendar.png",
+            dateFormat: 'dd.mm.yy',
             buttonImageOnly: true,
             buttonText: "Velg dato",
             showOn: "both",
@@ -24,7 +26,8 @@
 </script>
 <div class="topmenubar">
     <center>
-        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" }) | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("LØPSOPPSETT", "Setup", "Race", null, new { @class = "topmenulink" })
         |
     </center>
 </div>
@@ -37,22 +40,31 @@
     {
         @Html.ValidationSummary(true)
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.Name) *
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Name)
             @Html.ValidationMessageFor(model => model.Name)
         </div>
         <span class="datePicker">
-            @Html.LabelFor(model => model.EventDate)
+            @Html.LabelFor(model => model.EventDate) *
             <br />
             @Html.EditorFor(model => model.EventDate)
+            @Html.ValidationMessageFor(model => model.EventDate)
         </span>
 
         <p>
             <input type="submit" value="Opprett" class="btnRegular" />
         </p>
-        
-        @ViewBag.Feedback
+    }
+    @if (ViewBag.Error != null)
+    {
+        <p class="input-validation-error">@ViewBag.Error</p>
+    }
+    @if (ViewBag.Success != null)
+    {
+        <div class="statusmessagearea" id="StatusMessage">
+            @ViewBag.Success
+        </div>
     }
 </div>

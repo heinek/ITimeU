@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ITimeU.Models.RaceModel>
+@{
+    ViewBag.Title = "List";
+}
+<div class="topmenubar">
+    <center>
+        | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
+        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
+        |
+    </center>
+</div>
+<div class="contentmargin">
+    <h2>
+        Løp</h2>
+    <p>
+        @Html.ActionLink("Opprett nytt løp", "Index")
+    </p>
+    <table>
+        <tr>
+            <th>
+                Løp
+            </th>
+            <th>
+                StartDate
+            </th>
+            <th>
+                Distance
+            </th>
+            <th>
+                Stevne
+            </th>
+            <th>
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                @Html.ActionLink(item.Name, "AthletesForRace", "Athlete", new { raceId = item.RaceId }, null)
+                </td>
+                <td>
+                    @String.Format("{0:d}", item.StartDate)
+                </td>
+                <td>
+                    @if (item.Distance.HasValue)
+                    {
+                        @item.Distance.Value;
+                    }
+                </td>
+                <td>
+                @item.Event.Name
+                </td>
+                <td>
+                    @Html.ActionLink("Slett", "Delete", new { raceid=item.RaceId })
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -21,7 +21,7 @@ namespace ITimeU.Models
         /// </summary>
         /// <param name="raceid">The raceid.</param>
         /// <returns></returns>
-        public static List<RaceAthleteModel> GetRaceAthletesForRace(int raceid)
+        public static List<RaceAthleteModel> GetAthletesConnectedToRace(int raceid)
         {
             using (var context = new Entities())
             {

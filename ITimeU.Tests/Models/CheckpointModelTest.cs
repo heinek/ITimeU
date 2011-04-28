@@ -5,6 +5,7 @@ using ITimeU.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TinyBDD.Dsl.GivenWhenThen;
 using TinyBDD.Specification.MSTest;
+using System;
 
 namespace ITimeU.Tests.Models
 {
@@ -75,6 +76,7 @@ namespace ITimeU.Tests.Models
             When("we create the checkpoint", () =>
             {
                 newCheckpoint = new CheckpointModel("MyCheckpoint", timer, race, 1);
+                newCheckpoint = new CheckpointModel("MyCheckpoint", new TimerModel(), race, 1);
             });
 
             Then("it should exist in the database", () =>
@@ -89,6 +91,7 @@ namespace ITimeU.Tests.Models
         {
             Given("we have a timer which is associated with a checkpoint", () =>
             {
+                checkpoint = new CheckpointModel("RelationToTimerCheckpoint", timer, race);
             });
 
             When("we start the timer", () => timer.Start());
@@ -109,6 +112,7 @@ namespace ITimeU.Tests.Models
 
             When("when we create a checkpoint and associate it with a timer", () =>
             {
+                checkpoint = new CheckpointModel("Supercheckpoint", timer, race);
             });
 
             Then("the checkpoint should have the correct timer associated with it", () =>
@@ -122,8 +126,10 @@ namespace ITimeU.Tests.Models
         public void We_Should_Be_Able_To_Insert_And_Fetch_A_Checkpoint_To_Database()
         {
             CheckpointModel checkpointDb = null;
+
             Given("we have a checkpoint", () =>
             {
+                checkpoint = new CheckpointModel("MyCheckpoint", timer, race, 1);
             });
 
             When("we fetch the same checkpoint from database", () =>
@@ -141,6 +147,8 @@ namespace ITimeU.Tests.Models
         public void We_Should_Be_Able_To_Insert_And_Fetch_A_Checkpoint_With_A_Race_To_Database()
         {
             CheckpointModel checkpointDb = null;
+            TimerModel timer = new TimerModel();
+            timer.SaveToDb();
 
             Given("we have a checkpoint in the database", () =>
             {

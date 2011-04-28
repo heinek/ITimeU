@@ -19,6 +19,13 @@ namespace ITimeU.Models
                 return FirstName + " " + LastName;
             }
         }
+        public string FullNameClass
+        {
+            get
+            {
+                return FirstName + " " + LastName + (AthleteClass != null ? " (" + AthleteClass.Name + ")" : "");
+            }
+        }
         public string PostalAddress { get; private set; }
         public string PostalCode { get; private set; }
         public string City { get; private set; }
@@ -95,9 +102,9 @@ namespace ITimeU.Models
                     AthleteModel athleteModel = new AthleteModel(athleteDb);
                     athleteModels.Add(athleteModel);
                     AthleteDic.Add(athleteModel.Id, athleteModel.FullName);
-                    
+
                 }
-            }                       
+            }
 
             return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
         }
@@ -163,11 +170,12 @@ namespace ITimeU.Models
             Gender = gender;
             PhoneNumber = phonenumber;
             Email = email;
-            
+
         }
 
         public AthleteModel()
         {
+            SetDefaultId();
             // TODO: Complete member initialization
             AthleteDic = new Dictionary<int, string>();
         }
@@ -177,7 +185,7 @@ namespace ITimeU.Models
             Id = id;
         }
 
-        
+
 
         /// <summary>
         /// Saves a list of athletes to the database.
@@ -187,10 +195,8 @@ namespace ITimeU.Models
         {
             Entities context = new Entities();
             foreach (AthleteModel athlete in athletes)
-            {
-                Athlete athleteDb = createAthleteDbFrom(athlete);
-                context.Athletes.AddObject(athleteDb);
-            }
+                athlete.SaveToDb();
+
             context.SaveChanges();
 
         }
@@ -377,6 +383,12 @@ namespace ITimeU.Models
                         PhoneNumber = raceathlete.Athlete.Phone,
                         PostalAddress = raceathlete.Athlete.PostalAddress,
                         PostalCode = raceathlete.Athlete.PostalCode,
+                        Club = raceathlete.Athlete.ClubID.HasValue ? new ClubModel()
+                        {
+                            Id = raceathlete.Athlete.ClubID.Value,
+                            Name = raceathlete.Athlete.Club.Name
+                        } : null,
+
                         StartNumber = raceathlete.Athlete.Startnumber.HasValue ? raceathlete.Athlete.Startnumber.Value : 0
                     };
                     athletes.Add(athlete);

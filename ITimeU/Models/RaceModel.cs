@@ -1,16 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace ITimeU.Models
 {
     public class RaceModel
     {
         public int RaceId { get; set; }
+        [Required(ErrorMessage = "Løpsnavn er obligatorisk")]
+        [DisplayName("Navn")]
+        [StringLength(150, ErrorMessage = "Løpsnavn kan ikke være lengre enn 150 bokstaver")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "Dato er obligatorisk")]
+        [DataType(DataType.Date)]
+        [DisplayName("Dato")]
         public DateTime StartDate { get; set; }
+        [DisplayName("Distanse")]
         public int? Distance { get; set; }
+        [DisplayName("Stevne")]
         public int EventId { get; set; }
+        public EventModel Event { get; set; }
 
         public RaceModel()
         {
@@ -26,7 +37,11 @@ namespace ITimeU.Models
         public RaceModel(Race raceDb)
         {
             RaceId = raceDb.RaceID;
-            EventId = raceDb.EventId.HasValue ? raceDb.EventId.Value : 0;
+            if (raceDb.EventId.HasValue)
+            {
+                EventId = raceDb.EventId.Value;
+                Event = EventModel.GetById(raceDb.EventId.Value);
+            }
             Name = raceDb.Name;
             StartDate = raceDb.StartDate;
             Distance = raceDb.Distance;
@@ -36,6 +51,7 @@ namespace ITimeU.Models
         {
             using (var context = new Entities())
             {
+                if (context.Races.Where(r => r.EventId == EventId).Any(r => r.Name == Name)) throw new ArgumentException("Det eksisterer allerede et løp med samme navn for dette stevnet");
                 var race = new Race();
                 race.Name = Name;
                 race.StartDate = StartDate;
@@ -64,11 +80,40 @@ namespace ITimeU.Models
                     {
                         RaceId = race.RaceID,
                         Name = race.Name,
-                        StartDate = race.StartDate
+                        Distance = race.Distance.HasValue ? race.Distance.Value : 0,
+                        StartDate = race.StartDate,
+                        EventId = race.EventId.Value,
+                        Event = new EventModel()
+                        {
+                            EventId = race.EventId.Value,
+                            Name = race.Event.Name,
+                            EventDate = race.Event.EventDate
+                        }
                     }).ToList();
             }
         }
 
+        public static List<RaceModel> GetRaces(int eventId)
+        {
+            using (var ctx = new Entities())
+            {
+                return ctx.Races.Where(race => !race.IsDeleted && race.EventId == eventId).Select(race =>
+                    new RaceModel()
+                    {
+                        RaceId = race.RaceID,
+                        Name = race.Name,
+                        StartDate = race.StartDate,
+                        Distance = race.Distance.HasValue ? race.Distance.Value : 0,
+                        EventId = race.EventId.Value,
+                        Event = new EventModel()
+                        {
+                            EventId = race.EventId.Value,
+                            Name = race.Event.Name,
+                            EventDate = race.Event.EventDate
+                        }
+                    }).ToList();
+            }
+        }
         //public void InsertRace(Race races)
         //{
 
@@ -172,16 +217,17 @@ namespace ITimeU.Models
             return athletes;
         }
 
-        public List<AthleteModel> GetAthletesNotConnected()
+        public List<AthleteModel> GetAthletesNotConnected(int classId)
         {
             var athletes = new List<AthleteModel>();
             using (var ctx = new Entities())
             {
+                var racesQuery = ctx.RaceAthletes.Where(ra => ra.RaceId == RaceId);
                 var athletesQuery = from a in ctx.Athletes
-                                    where !(from ra in ctx.RaceAthletes select ra.AthleteId).Contains(a.ID)
+                                    where !(from ra in racesQuery select ra.AthleteId).Contains(a.ID)
                                     select a;
 
-                foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false))
+                foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false && a.ClassID == classId))
                 {
                     athletes.Add(new AthleteModel()
                     {
@@ -233,20 +279,6 @@ namespace ITimeU.Models
             {
                 context.Races.Where(race => race.RaceID == RaceId).Single().IsDeleted = true;
                 context.SaveChanges();
-            }
-        }
-
-        public static List<RaceModel> GetRaces(int eventId)
-        {
-            using (var ctx = new Entities())
-            {
-                return ctx.Races.Where(race => !race.IsDeleted && race.EventId == eventId).Select(race =>
-                    new RaceModel()
-                    {
-                        RaceId = race.RaceID,
-                        Name = race.Name,
-                        StartDate = race.StartDate
-                    }).ToList();
             }
         }
     }

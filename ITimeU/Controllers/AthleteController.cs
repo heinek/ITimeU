@@ -21,12 +21,17 @@ namespace ITimeU.Controllers
             return View(ClubModel.GetAll());
         }
 
+        public ActionResult Setup()
+        {
+            return View();
+        }
+
         private void setViewData()
         {
             ViewBag.Gender = getGender();
             ViewBag.BirthDate = getBirthDate();
-            ViewBag.AthleteClass = AthleteClassModel.GetAll();  
-                     
+            ViewBag.AthleteClass = AthleteClassModel.GetAll();
+
         }
 
         private void setEditViewData()
@@ -42,7 +47,7 @@ namespace ITimeU.Controllers
             ViewBag.Club = ClubModel.GetAll();
             ViewBag.IsAthleteUpdate = false;
             ViewBag.IsAthleteDelete = false;
-            ViewBag.IsValidInput = true; 
+            ViewBag.IsValidInput = true;
             setViewData();
             return View("Edit", new AthleteModel());
         }
@@ -183,6 +188,13 @@ namespace ITimeU.Controllers
         }
 
         public ActionResult DeleteAthlete(string ddAthlete)
+        public ActionResult Delete(int id, int clubid)
+        {
+            DeleteAthlete(id.ToString());
+            ViewBag.ClubId = clubid;
+            return View("Athletes", AthleteModel.GetAthletes(clubid));
+        }
+
         {         
             int Id = 0;
             int.TryParse(ddAthlete, out Id);
@@ -226,7 +238,7 @@ namespace ITimeU.Controllers
 
         public ActionResult EditFormFail()
         {
-            setViewData();            
+            setViewData();
             ViewBag.Club = ClubModel.GetAll();
             ViewBag.IsAthleteUpdate = false;
             ViewBag.IsAthleteDelete = false;            
@@ -305,13 +317,39 @@ namespace ITimeU.Controllers
         [HttpGet]
         public ActionResult Athletes(int clubId)
         {
+            ViewBag.ClubId = clubId;
             return View("Athletes", AthleteModel.GetAthletes(clubId));
+        }
+
+
+        /// <summary>
+        /// Prints the athletes.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult PrintForClub(int clubId)
+        {
+            ViewBag.ClubName = ClubModel.GetById(clubId).Name;
+            var athletes = AthleteModel.GetAthletes(clubId);
+            return View(athletes);
         }
 
         [HttpGet]
         public ActionResult AthletesForRace(int raceId)
         {
-            return View("Athletes", AthleteModel.GetAthletesForRace(raceId));
+            ViewBag.RaceId = raceId;
+            return View("AthletesForRace", AthleteModel.GetAthletesForRace(raceId));
+        }
+
+
+        /// <summary>
+        /// Prints the athletes.
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Print(int raceId)
+        {
+            ViewBag.RaceName = RaceModel.GetById(raceId).Name;
+            var athletes = AthleteModel.GetAthletesForRace(raceId);
+            return View(athletes);
         }
     }
 }
