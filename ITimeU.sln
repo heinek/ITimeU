@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU", "ITimeU\ITimeU.csproj", "{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU.Tests", "ITimeU.Tests\ITimeU.Tests.csproj", "{E92D2870-1EAB-4BD1-BC96-41D783A6ACCA}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B9131DB2-4982-4004-81BC-2B7D92000A7D}"
 	ProjectSection(SolutionItems) = preProject
 		ITimeU.vsmdi = ITimeU.vsmdi
 		Local.testsettings = Local.testsettings
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU", "ITimeU\ITimeU.csproj", "{3C31CBE1-3B08-48EE-BDFB-F06769861ED4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITimeU.Tests", "ITimeU.Tests\ITimeU.Tests.csproj", "{E92D2870-1EAB-4BD1-BC96-41D783A6ACCA}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution

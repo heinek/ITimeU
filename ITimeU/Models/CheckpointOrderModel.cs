@@ -88,11 +88,16 @@ namespace ITimeU.Models
 
         private static int GetHighestExistingOrderNumberForCheckpoint(int checkpointId, Entities entities)
         {
-            return (int)entities.CheckpointOrders.
-                Where(chkpntid => chkpntid.CheckpointID == checkpointId 
-                    && !chkpntid.IsDeleted == true).
-                OrderByDescending(chkpnt => chkpnt.OrderNumber).
-                First().OrderNumber;
+            if (entities.CheckpointOrders.Where(chkpntid => chkpntid.CheckpointID == checkpointId
+                    && !chkpntid.IsDeleted).Count() > 0)
+            {
+                return (int)entities.CheckpointOrders.
+                    Where(chkpntid => chkpntid.CheckpointID == checkpointId
+                        && !chkpntid.IsDeleted).
+                    OrderByDescending(chkpnt => chkpnt.OrderNumber).
+                    First().OrderNumber;
+            }
+            return 0;
         }
 
         private static void SaveCheckpointOrder(CheckpointOrder checkpointOrder, Entities entities)
