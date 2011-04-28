@@ -20,6 +20,11 @@ namespace ITimeU.Controllers
             return View(ClubModel.GetAll());
         }
 
+        public ActionResult Setup()
+        {
+            return View();
+        }
+
         private void setViewData()
         {
             ViewBag.Gender = getGender();

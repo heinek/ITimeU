@@ -1,6 +1,5 @@
-﻿@model ITimeU.Models.StartRaceViewModel
-@{
-    ViewBag.Title = "DualPcSetup";
+﻿@{
+    ViewBag.Title = "Setup";
 }
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
@@ -8,18 +7,17 @@
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        var imgTimer = $("#imgTimer");
-        var imgRunner = $("#imgRunner");
-        var hdRaceid = $("#hdRaceid");
+        var imgAthletes = $("#imgAthletes");
+        var imgClasses = $("#imgClasses");
 
 
-        imgTimer.click(function () {
-            var url = "/Timer/Index/" + hdRaceid.val();
+        imgAthletes.click(function () {
+            var url = "/Athlete/";
             document.location = url;
         });
 
-        imgRunner.click(function () {
-            var url = "/CheckpointOrder/?raceId=" + hdRaceid.val();
+        imgClasses.click(function () {
+            var url = "/Class/";
             document.location = url;
         });
 
@@ -36,7 +34,7 @@
 <div class="topmenubar">
     <center>
         | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
-        | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" })
+        | @Html.ActionLink("ADMIN", "Index", "Admin", null, new { @class = "topmenulink" })
         |
     </center>
 </div>
@@ -45,11 +43,11 @@
         <div class="row">
             <div class="menubg2">
                 <center>
-                    <img src="../../Content/images/tidtaking_off.png" id="imgTimer" alt="Tidtaking" class="logo" /><img
-                        id="imgRunner" src="../../Content/images/passeringer_off.png" alt="Passeringer" class="logo" />
+                    <img src="../../Content/images/loperlist_off.png" id="imgAthletes" alt="Løpere" class="logo" /><img
+                        id="imgClasses" src="../../Content/images/classes_off.png" alt="Klasser"
+                        class="logo" />
                 </center>
             </div>
         </div>
     </div>
 </div>
-@Html.Hidden("hdRaceid", Model.RaceId)

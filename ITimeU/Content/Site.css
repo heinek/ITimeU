@@ -448,11 +448,11 @@ table th
 ----------------------------------------------------------*/
 .background
 {
-	background-image: url("images/DefaultBG.png");
+	background-image: url("images/bgrunner.png");
 	background-repeat: no-repeat;
 	background-position: top;
 	width: 900px;
-	height: 601px; /*     opacity: .5;     filter: alpha(opacity=50);     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)"; */
+	height: 600px;
 }
 .clear
 {
@@ -539,10 +539,24 @@ table th
 	cursor: hand;
 	cursor: pointer;
 }
-.menubg
+.menubg4
 {
-	padding-top: 220px;
-	padding-left: 144px;
+	padding-top: 200px;
+	padding-left: 154px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.menubg3
+{
+	padding-top: 200px;
+	padding-left: 223px;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.menubg2
+{
+	padding-top: 200px;
+	padding-left: 300px;
 	background-position: center;
 	background-repeat: no-repeat;
 }

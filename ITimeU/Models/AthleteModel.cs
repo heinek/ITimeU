@@ -23,7 +23,7 @@ namespace ITimeU.Models
         {
             get
             {
-                return FirstName + " " + LastName + (AthleteClass != null ? "(" + AthleteClass.Name + ")" : "");
+                return FirstName + " " + LastName + (AthleteClass != null ? " (" + AthleteClass.Name + ")" : "");
             }
         }
         public string PostalAddress { get; private set; }
@@ -102,9 +102,9 @@ namespace ITimeU.Models
                     AthleteModel athleteModel = new AthleteModel(athleteDb);
                     athleteModels.Add(athleteModel);
                     AthleteDic.Add(athleteModel.Id, athleteModel.FullName);
-                    
+
                 }
-            }                       
+            }
 
             return athleteModels.OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
         }
@@ -170,7 +170,7 @@ namespace ITimeU.Models
             Gender = gender;
             PhoneNumber = phonenumber;
             Email = email;
-            
+
         }
 
         public AthleteModel()
@@ -185,7 +185,7 @@ namespace ITimeU.Models
             Id = id;
         }
 
-        
+
 
         /// <summary>
         /// Saves a list of athletes to the database.
