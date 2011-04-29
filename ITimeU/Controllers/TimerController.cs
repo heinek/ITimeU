@@ -146,7 +146,7 @@ namespace ITimeU.Controllers
                 {
                     Checkpointname = raceintermediate.CheckpointModel.Name,
                     Clubname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.Club.Name : " - ",
-                    Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullName : " - ",
+                    Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullNameClass : " - ",
                     Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : raceintermediate.CheckpointorderModel.StartingNumber,
                     Time = raceintermediate.RuntimeModel.RuntimeToTime
                 });
@@ -180,7 +180,7 @@ namespace ITimeU.Controllers
                 {
                     Checkpointname = raceintermediate.CheckpointModel.Name,
                     Clubname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.Club.Name : " - ",
-                    Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullName : " - ",
+                    Fullname = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteModel.FullNameClass : " - ",
                     Startnumber = raceintermediate.AthleteId.HasValue ? (raceintermediate.AthleteModel.StartNumber.HasValue ? raceintermediate.AthleteModel.StartNumber.Value : 0) : raceintermediate.CheckpointorderModel.StartingNumber,
                     Time = raceintermediate.RuntimeModel.RuntimeToTime
                 }).ToList();
