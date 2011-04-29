@@ -67,7 +67,7 @@ namespace ITimeU.Models
             //var race = RaceModel.GetById(raceId);
             //int? timerid = race.GetTimerId();
             //if(timerid.HasValue)
-                //Timer = TimerModel.GetTimerById(timerid.Value);
+            //Timer = TimerModel.GetTimerById(timerid.Value);
             //Sortorder = GetNextOrdernumber(raceId);
             //SaveToDb();
         }
@@ -83,7 +83,7 @@ namespace ITimeU.Models
         {
             Name = name;
             Race = RaceModel.GetById(race.RaceId);
-            Timer = timer;            
+            Timer = timer;
             SaveToDb();
         }
 
@@ -129,7 +129,7 @@ namespace ITimeU.Models
         /// <param name="checkpoint">The checkpoint database entity.</param>
         private void updateDbEntry(Checkpoint checkpoint)
         {
-            checkpoint.Name = Name;            
+            checkpoint.Name = Name;
             checkpoint.SortOrder = Sortorder;
             if (timer != null)
                 checkpoint.TimerID = timer.Id;

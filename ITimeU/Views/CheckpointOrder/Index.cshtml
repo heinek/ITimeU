@@ -77,7 +77,7 @@
                     return;
                 }
                 if ($('#btnChange').is(':disabled')) {
-                    var url1 = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val();
+                    var url1 = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + ddCheckpoints.val() + "&startingNumber=" + tbedit.val();
                     $.get(url1, function (data) {
                         listCheckpointOrders.html(data);
                         divErrorMessage.show().html(' ');

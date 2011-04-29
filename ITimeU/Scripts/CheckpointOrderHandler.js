@@ -127,6 +127,10 @@ CheckpointOrderHandler.prototype.setInsertAction = function (_listCheckpointOrde
     divErrorMessage = _divErrorMessage;
 }
 
+function SetCheckpointId(ddlCPId) {
+    ddCheckpointId = ddlCPId;
+}
+
 // Verify startNumber is Number 0-9 and not empty
 // If Number return True else False
 function IsNumber(startNum) {
