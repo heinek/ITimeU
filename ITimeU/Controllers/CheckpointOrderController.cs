@@ -14,6 +14,8 @@ namespace ITimeU.Controllers
             var checkpoint = new CheckpointOrderModel();
             Session["checkpoint"] = checkpoint;
             ViewBag.RaceId = raceId;
+            var race = RaceModel.GetById(raceId);
+            ViewBag.RaceName = race.Name;
             ViewBag.Checkpoints = CheckpointModel.GetCheckpoints(raceId);
             return View(checkpoint);
         }

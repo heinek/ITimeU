@@ -168,6 +168,8 @@
     <Content Include="Content\images\importer_on.png" />
     <Content Include="Content\images\klubber_off.png" />
     <Content Include="Content\images\klubber_on.png" />
+    <Content Include="Content\images\koble_off.png" />
+    <Content Include="Content\images\koble_on.png" />
     <Content Include="Content\images\left.png" />
     <Content Include="Content\images\Logo2.png" />
     <Content Include="Content\images\Logo3.png" />
