@@ -20,7 +20,8 @@
 <div class="topmenubar">
     <center>
         | @Html.ActionLink("HJEM", "Index", "Home", null, new { @class = "topmenulink" })
-        | @Html.ActionLink("TILBAKE", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" })
+        | @Html.ActionLink("START LØP", "ComputerSetup", "StartRace", new { raceid = ViewBag.RaceId }, new { @class = "topmenulink" })
+        | @Html.ActionLink("LØPSOVERSIKT", "List", "Race", null, new { @class = "topmenulink" })
         |
     </center>
 </div>

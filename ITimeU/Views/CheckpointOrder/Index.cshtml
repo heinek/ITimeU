@@ -79,6 +79,7 @@
                     var url1 = "/CheckpointOrder/AddCheckpointOrder/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val();
                     $.get(url1, function (data) {
                         listCheckpointOrders.html(data);
+                        divErrorMessage.show().html(' ');
                         tbedit.val('');
                     });
                 }
@@ -86,6 +87,7 @@
                     var url2 = "/CheckpointOrder/UpdateCheckpointOrder/?ID=" + initialid + "&startingNumber=" + tbedit.val();
                     $.get(url2, function (data) {
                         listCheckpointOrders.html(data);
+                        divErrorMessage.show().html(' ');
                         tbedit.val('');
                     });
                     Tools.disable(btnChange);
