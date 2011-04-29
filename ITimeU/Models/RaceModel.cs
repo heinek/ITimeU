@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace ITimeU.Models
 {
@@ -227,26 +227,29 @@ namespace ITimeU.Models
                                     where !(from ra in racesQuery select ra.AthleteId).Contains(a.ID)
                                     select a;
 
-                foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false && a.ClassID == classId))
+                foreach (var athlete in athletesQuery.Where(a => !a.IsDeleted.HasValue || a.IsDeleted.Value == false))
                 {
-                    athletes.Add(new AthleteModel()
+                    if (classId == 0 || athlete.ClassID == classId)
                     {
-                        Id = athlete.ID,
-                        FirstName = athlete.FirstName,
-                        LastName = athlete.LastName,
-                        StartNumber = athlete.Startnumber.HasValue ? athlete.Startnumber.Value : 0,
-                        AthleteClass = athlete.ClassID.HasValue ? new AthleteClassModel()
+                        athletes.Add(new AthleteModel()
                         {
-                            Id = athlete.AthleteClass.ID,
-                            Name = athlete.AthleteClass.Name
-                        } : null,
-                        Birthday = athlete.Birthday.HasValue ? athlete.Birthday.Value : 0,
-                        Club = athlete.ClubID.HasValue ? new ClubModel()
-                        {
-                            Id = athlete.Club.ClubID,
-                            Name = athlete.Club.Name
-                        } : null
-                    });
+                            Id = athlete.ID,
+                            FirstName = athlete.FirstName,
+                            LastName = athlete.LastName,
+                            StartNumber = athlete.Startnumber.HasValue ? athlete.Startnumber.Value : 0,
+                            AthleteClass = athlete.ClassID.HasValue ? new AthleteClassModel()
+                            {
+                                Id = athlete.AthleteClass.ID,
+                                Name = athlete.AthleteClass.Name
+                            } : null,
+                            Birthday = athlete.Birthday.HasValue ? athlete.Birthday.Value : 0,
+                            Club = athlete.ClubID.HasValue ? new ClubModel()
+                            {
+                                Id = athlete.Club.ClubID,
+                                Name = athlete.Club.Name
+                            } : null
+                        });
+                    }
                 }
             }
             return athletes;

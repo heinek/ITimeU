@@ -188,6 +188,20 @@ namespace ITimeU.Controllers
         }
 
         [HttpGet]
+        public ActionResult HasStopped(int raceId)
+        {
+            var race = RaceModel.GetById(raceId);
+            TimerModel timer = null;
+            if (race.GetTimerId().HasValue)
+            {
+                timer = TimerModel.GetTimerById(race.GetTimerId().Value);
+                if (timer.EndTime.HasValue)
+                    return Content("Stopped");
+            }
+            return Content("");
+        }
+
+        [HttpGet]
         public ActionResult GetStartruntime()
         {
             var timer = (TimerModel)Session["timer"];

@@ -49,7 +49,9 @@ namespace ITimeU.Controllers
             else if (!string.IsNullOrEmpty(changeClass))
             {
                 var race = RaceModel.GetById(model.RaceId);
-                model.ClassId = Convert.ToInt32(ddlClasses);
+                var classid = 0;
+                if (int.TryParse(ddlClasses, out classid))
+                    model.ClassId = classid;
                 model.AthletesConnected = race.GetAthletes().OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
                 model.AthletesAvailable = race.GetAthletesNotConnected(model.ClassId).OrderBy(athlete => athlete.FirstName).ThenBy(athlete => athlete.LastName).ToList();
             }

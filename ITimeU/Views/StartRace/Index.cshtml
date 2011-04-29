@@ -1,7 +1,9 @@
 ﻿@{
     ViewBag.Title = "Velg løp";
 }
+<link rel="stylesheet" href="@Url.Content("~/Content/jquery-ui-1.8.10.custom.css")">
 <script src="@Url.Content("~/Scripts/jquery-1.4.4.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery-ui-1.8.10.custom.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("/Scripts/jquery.validate.min.js")" type="text/javascript"></script> 
 <script src="@Url.Content("/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Tools.js")" type="text/javascript"></script>
@@ -9,6 +11,21 @@
     $(document).ready(function () {
         var btnChangeEvent = $("#btnChangeEvent");
         var ddlEvents = $("#ddlEvents");
+
+        var ev = ddlEvents.val();
+        if (ev == undefined) {
+            $("#dialog:ui-dialog").dialog("destroy");
+
+            $("#dialog-message").dialog({
+                modal: true,
+                buttons: {
+                    Ok: function () {
+                        $(this).dialog("close");
+                        document.location = "/Event/Create/";
+                    }
+                }
+            });
+        }
 
         btnChangeEvent.click(function () {
             if (ddlEvents.val() == "") {
@@ -49,4 +66,12 @@
             </div>
         </div>
     </div>
+</div>
+<div id="dialog-message" title="Manglende stevner" style="display: none">
+    <p>
+        Det har ikke blitt opprettet et stevne
+    </p>
+    <p>
+        Du må opprette nytt stevne
+    </p>
 </div>

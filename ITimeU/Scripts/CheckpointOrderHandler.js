@@ -87,7 +87,7 @@ CheckpointOrderHandler.prototype.setMoveUpAction = function (_listCheckpointOrde
     listCheckpointOrders = _listCheckpointOrders;
     btnUp = _btnUp;
     btnUp.bind("click", function () {
-        url = "/CheckpointOrder/MoveCheckpointUp/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val() + "&checkpointOrderId=" + initialid;
+        url = "/CheckpointOrder/MoveCheckpointUp/?checkpointID=" + $("#ddCheckpoint").val() + "&startingNumber=" + tbedit.val() + "&checkpointOrderId=" + initialid;
         $.get(url, function (data) {
             listCheckpointOrders.html(data);
             //listCheckpointOrders.options[3].selected = true;            
@@ -99,8 +99,8 @@ CheckpointOrderHandler.prototype.setMoveDownAction = function (_listCheckpointOr
     listCheckpointOrders = _listCheckpointOrders;
     btnDown = _btnDown;
 
-    btnDown.bind("click", function () {       
-        url = "/CheckpointOrder/MoveCheckpointDown/?checkpointID=" + ddCheckpointId + "&startingNumber=" + tbedit.val() + "&checkpointOrderId=" + initialid;
+    btnDown.bind("click", function () {
+        url = "/CheckpointOrder/MoveCheckpointDown/?checkpointID=" + $("#ddCheckpoint").val() + "&startingNumber=" + tbedit.val() + "&checkpointOrderId=" + initialid;
         $.get(url, function (data) {
             listCheckpointOrders.html(data);
         });
@@ -111,9 +111,7 @@ CheckpointOrderHandler.prototype.setddCheckpointChangeAction = function (_ddChec
     ddCheckpoints = _ddCheckpoints;
     btnChangeCP = _btnChangeCP;
     btnChangeCP.bind("click", function () {
-        $("#ddCheckpoint :selected").each(function () {
-            ddCheckpointId = $(this).val();
-        });
+        ddCheckpointId = ddCheckpoints.val();
         url = "/CheckpointOrder/GetStartingNumbersForCheckpoint/?checkpointID=" + ddCheckpointId;
         $.post(url, function (data) {
             listCheckpointOrders.html(data);
