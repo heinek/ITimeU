@@ -214,6 +214,13 @@ namespace ITimeU.Models
                             FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : " - ",
                             LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : " - ",
                             StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : null,
+                            AthleteClass = //(raceintermediate.Athlete.ClassID.HasValue ? 
+                            new AthleteClassModel()
+                            {
+                                Id = raceintermediate.Athlete.ClassID.Value,
+                                Name = raceintermediate.Athlete.AthleteClass.Name
+                            }, 
+                            //: null),
                             Club = new ClubModel()
                             {
                                 Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.ClubID : 0,
