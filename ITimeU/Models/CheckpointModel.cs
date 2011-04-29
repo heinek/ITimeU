@@ -176,6 +176,9 @@ namespace ITimeU.Models
                         {
                             RaceId = cp.Race.RaceID,
                             EventId = cp.Race.EventId.Value,
+                            Event = new EventModel() {
+                                Name = cp.Race.Event.Name
+                            },
                             Name = cp.Race.Name,
                             Distance = cp.Race.Distance,
                             StartDate = cp.Race.StartDate

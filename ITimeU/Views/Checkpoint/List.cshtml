@@ -25,6 +25,9 @@
                 Løp
             </th>
             <th>
+                Stevne
+            </th>
+            <th>
             </th>
         </tr>
         @foreach (var item in Model)
@@ -35,6 +38,9 @@
                 </td>
                 <td>
                     @item.Race.Name
+                </td>
+                <td>
+                    @item.Race.Event.Name
                 </td>
                 <td>
                     @Html.ActionLink("Slett", "Delete", new { id = item.Id })
