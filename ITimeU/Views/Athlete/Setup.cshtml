@@ -9,7 +9,6 @@
     $(document).ready(function () {
         var imgAthletes = $("#imgAthletes");
         var imgClasses = $("#imgClasses");
-        var imgConnect = $("#imgConnect");
 
         imgAthletes.click(function () {
             var url = "/Athlete/";
@@ -17,11 +16,6 @@
         });
 
         imgClasses.click(function () {
-            var url = "/Class/";
-            document.location = url;
-        });
-
-        imgConnect.click(function () {
             var url = "/Class/";
             document.location = url;
         });
@@ -46,13 +40,10 @@
 <div class="container">
     <div class="background">
         <div class="row">
-            <div class="menubg3">
+            <div class="menubg2">
                 <center>
                     <img src="../../Content/images/loperlist_off.png" id="imgAthletes" alt="Løpere" class="logo" /><img
                         id="imgClasses" src="../../Content/images/classes_off.png" alt="Klasser"
-                        class="logo" />
-                        <img
-                        id="imgConnect" src="../../Content/images/koble_off.png" alt="Koble utøvere til løp"
                         class="logo" />
                 </center>
             </div>
