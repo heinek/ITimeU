@@ -122,6 +122,7 @@ namespace ITimeU.Models
                     Name = clss.Name
                 }).OrderBy(clss => clss.Name).ToList();
             }
+            //athleteClassModels.Insert(0, null);
         }
 
         public static AthleteClassModel GetOrCreate(string name)

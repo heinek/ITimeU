@@ -58,9 +58,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Web">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions">
       <Private>True</Private>
     </Reference>
@@ -69,7 +67,7 @@
     </Reference>
     <Reference Include="System.Web.Routing">
       <Private>True</Private>
-    </Reference>
+    </Reference>      
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -467,8 +465,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54197</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/ITimeU</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
