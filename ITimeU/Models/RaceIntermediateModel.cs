@@ -158,6 +158,11 @@ namespace ITimeU.Models
                                 Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : " - "
                             },
                             Birthday = raceintermediate.Athlete.Birthday,
+                            AthleteClass = (raceintermediate.Athlete.ClassID.HasValue ? new AthleteClassModel()
+                            {
+                                Id = raceintermediate.Athlete.ClassID.Value,
+                                Name = raceintermediate.Athlete.AthleteClass.Name
+                            } : null),
                             StartNumber = raceintermediate.Athlete.Startnumber
                         }
                     }).ToList();
