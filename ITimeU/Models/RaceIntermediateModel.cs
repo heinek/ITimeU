@@ -127,6 +127,7 @@ namespace ITimeU.Models
             {
                 var list = context.RaceIntermediates.
                     Where(raceintermediate => raceintermediate.CheckpointID == checkpointId && !raceintermediate.IsDeleted).
+                    OrderBy(raceintermediate => raceintermediate.CheckpointOrder.OrderNumber).
                     Select(raceintermediate => new RaceIntermediateModel()
                     {
                         CheckpointID = raceintermediate.CheckpointID,
@@ -175,6 +176,7 @@ namespace ITimeU.Models
             {
                 var list = context.RaceIntermediates.
                     Where(raceintermediate => raceintermediate.Checkpoint.RaceID == raceid && !raceintermediate.IsDeleted).
+                    OrderBy(raceintermediate => raceintermediate.CheckpointOrder.OrderNumber).
                     Select(raceintermediate => new RaceIntermediateModel()
                     {
                         CheckpointID = raceintermediate.CheckpointID,

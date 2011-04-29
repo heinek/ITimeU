@@ -31,6 +31,7 @@
         var tbCity = $("#txtCity");
         var tbPhoneNum = $("#txtPhoneNumber");
         var tbStartNum = $("#txtStartNumber");
+        var btnEdit = $("#btnEdit");
 
 
         var handler = new AthleteHandler();
@@ -63,24 +64,32 @@
         handler.setChangeActionAthlete(
             ddAthlete
         );
+
+        handler.setEditActionAthlete(
+            btnEdit, 
+            tbFirstName,
+            tbLastName,
+            tbEmail,
+            tbAddress,
+            tbPostCode,
+            tbCity,
+            tbPhoneNum,
+            ddGender,
+            ddBirthday,
+            tbStartNum,
+            ddClass
+        );
     });
 </script>
 
 <h2>Edit Athlete</h2>
-@{ Html.BeginForm("EditAthlete", "Athlete", FormMethod.Post); }
+@{ Html.BeginForm("DeleteAthlete", "Athlete", FormMethod.Post); }
 <fieldset>
-@if (!ViewBag.IsValidInput)
-{
-    <div class="errormessagearea">
-        First Name, Last Name, Email and StartNumber must not be empty and invalid.
+    <div class="errormessagearea" id="StatusErrorMessage" style="display: none">        
     </div>
-}
-@if (ViewBag.IsAthleteUpdate)
-    {
-        <div class="statusmessagearea" id="StatusMessageUpdate">
-            Athlete has been updated successfully!
-        </div>
-    }
+
+    <div class="statusmessagearea" id="StatusMessageUpdate" style="display: none">           
+    </div>
     
 @if (ViewBag.IsAthleteDelete)
     {
@@ -96,17 +105,17 @@
             @Html.Label("lblClub", "Club")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ddClub", new SelectList(ViewBag.Club, "Id", "Name"), new { @class = "dropdownlist" })
-            <input type="button" id="btnChangeClub" class="btnGo" value=" " />
-        </div>
-            </td>
-        <td></td>
+            @Html.DropDownList("ddClub", new SelectList(ViewBag.Club, "Id", "Name"), "Velg Club...")              
+            <input type="button" id="btnChangeClub" class="btnGo" value=" " />        
+         </div>
+         </td>
+            <td></td>
         <td>
     <div class="editor-label">
             @Html.Label("lblAthlete", "Athletes")
         </div>
         <div class="editor-field">
-            @Html.DropDownList("ddAthlete", new SelectList(Model.AthleteDic, "Key", "Value"), new { @class = "dropdownlist" })
+            @Html.DropDownList("ddAthlete", new SelectList(Model.AthleteDic, "Key", "Value"), "Velg Athlete...")
             <input type="button" id="btnChangeAthlete" class="btnGo" value=" " />
         </div>
             </td>
@@ -230,7 +239,7 @@
     
     <tr>
         <td>
-            <input type="submit" class="btnRegular" name="btnSubmit"  value="Update" style="width: 100px" />
+            <input type="button" class="btnRegular" id="btnEdit"  value="Update" style="width: 100px" />
         </td>        
         <td>
             <input type="submit" class="btnRegular" name="btnSubmit" value="Delete" style="width: 100px" />

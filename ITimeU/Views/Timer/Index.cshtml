@@ -316,12 +316,15 @@
                 <h2>@ViewBag.RaceName</h2>
             </div>
         </div>
+    </div>
+    <div class="container">
         <div class="row">
             <div class="left">
                 <div class="editor-label" style="vertical-align: top">
-                    <b>@Html.Label("lblCheckpoint", "Passeringspunkt:")</b></div>
+                    <b>@Html.Label("lblCheckpoint", "Passeringspunkt:")</b>
+                </div>
             </div>
-            <div class="row">
+            <div class="middle">
                 <br />
                 @Html.DropDownList("ddlCheckpoints", new SelectList(ViewBag.Checkpoints, "Id", "Name"))
                 <input type="button" id="btnChangeCP" class="btnGo" value=" " />
@@ -362,12 +365,24 @@
         </div>
     </div>
 </div>
-<div id="dialog-confirm" title="Stopp timer?" style="display: none"> <p> <span class="ui-icon
-ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span> Dette vil stoppe
-løpet, er du sikker?</p> </div> <div id="dialog-reset" title="Nullstill løpet?"
-style="display: none"> <p> <span class="ui-icon ui-icon-alert" style="float: left;
-margin: 0 7px 20px 0;"></span> Dette vil nullstille løpet, er du sikker?</p> </div>
+<div id="dialog-confirm" title="Stopp timer?" style="display: none">
+    <p>
+        <span class="ui-icon
+ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>Dette vil stoppe løpet,
+        er du sikker?</p>
+</div>
+<div id="dialog-reset" title="Nullstill løpet?" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Dette vil nullstille løpet, er du sikker?</p>
+</div>
 <div id="dialog-message" title="Manglende passeringspunkt" style="display: none">
-<p> Dette løpet mangler passeringspunkt. </p> <p> Du må opprette nye passeringspunkt
-før du kan starte løpet. </p> </div> <input type="hidden" name="hdRaceid" id="hdRaceid"
+    <p>
+        Dette løpet mangler passeringspunkt.
+    </p>
+    <p>
+        Du må opprette nye passeringspunkt før du kan starte løpet.
+    </p>
+</div>
+<input type="hidden" name="hdRaceid" id="hdRaceid"
 value="@ViewBag.RaceId" />

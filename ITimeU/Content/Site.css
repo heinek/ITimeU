@@ -485,11 +485,13 @@ table th
 .dropdownlist
 {
 	width: 195px;
+    margin-bottom: 10px;
 }
 
 .dropdownlistRequired
 {
-	width: 195px;
+    width: 195px; 
+    margin-bottom: 10px; 
 	background-color: #FFFFCC;
 }
 
