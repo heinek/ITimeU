@@ -62,6 +62,7 @@
         );
 
         tbedit.bind("keypress", function (e) {
+            divErrorMessage.hide();
             var Key = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
             if (Key == 13) {
                 if (!IsNumber(tbedit.val())) {
