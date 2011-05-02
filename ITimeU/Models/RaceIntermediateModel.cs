@@ -155,14 +155,14 @@ namespace ITimeU.Models
                             Club = new ClubModel()
                             {
                                 Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.ClubID.Value : 0,
-                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : " - "
+                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : "-"
                             },
                             Birthday = raceintermediate.Athlete.Birthday,
-                            AthleteClass = (raceintermediate.Athlete.ClassID.HasValue ? new AthleteClassModel()
+                            AthleteClass = new AthleteClassModel()
                             {
-                                Id = raceintermediate.Athlete.ClassID.Value,
-                                Name = raceintermediate.Athlete.AthleteClass.Name
-                            } : null),
+                                Id = raceintermediate.Athlete.ClassID.HasValue ? raceintermediate.Athlete.ClassID.Value : 0,
+                                Name = raceintermediate.Athlete.ClassID.HasValue ? raceintermediate.Athlete.Club.Name : "-"
+                            },
                             StartNumber = raceintermediate.Athlete.Startnumber
                         }
                     }).ToList();
@@ -211,20 +211,18 @@ namespace ITimeU.Models
                         AthleteModel = new AthleteModel()
                         {
                             Id = raceintermediate.AthleteId.HasValue ? raceintermediate.AthleteId.Value : 0,
-                            FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : " - ",
-                            LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : " - ",
+                            FirstName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.FirstName : "-",
+                            LastName = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.LastName : "-",
                             StartNumber = raceintermediate.AthleteId.HasValue ? raceintermediate.Athlete.Startnumber : null,
-                            AthleteClass = //(raceintermediate.Athlete.ClassID.HasValue ? 
-                            new AthleteClassModel()
-                            {
-                                Id = raceintermediate.Athlete.ClassID.Value,
-                                Name = raceintermediate.Athlete.AthleteClass.Name
-                            }, 
-                            //: null),
                             Club = new ClubModel()
                             {
                                 Id = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.ClubID : 0,
-                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : " - "
+                                Name = raceintermediate.Athlete.ClubID.HasValue ? raceintermediate.Athlete.Club.Name : "-"
+                            },
+                            AthleteClass = new AthleteClassModel()
+                            {
+                                Id = raceintermediate.Athlete.ClassID.HasValue ? raceintermediate.Athlete.ClassID.Value : 0,
+                                Name = raceintermediate.Athlete.ClassID.HasValue ? raceintermediate.Athlete.Club.Name : "-"
                             }
                         }
                     }).ToList();
